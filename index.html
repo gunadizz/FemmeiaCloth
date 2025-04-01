@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<style>
+		* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    font-family: 'Montserrat', sans-serif; /* Use Montserrat font */
+}
+
+.loading-container {
+    text-align: center;
+}
+
+.loading-text {
+    font-size: 2rem;
+    color: #333;
+    animation: fadeIn 1s infinite alternate;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Page</title>
+    <link rel="stylesheet" href="styles.css">
+    	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> <!-- Montserrat Light -->
+    	
+</head>
+<body>
+    <div class="loading-container">
+        <div class="loading-text">FemmeiaCloth</div>
+    </div>
+    <script>
+    	// Simulate loading time
+setTimeout(() => {
+    // Redirect to the main page or perform any action after loading
+    window.location.href = 'main.html'; // Change 'main.html' to your actual main page
+}, 3000); // 3 seconds loading time
+</script>
+</body>
+</html>
