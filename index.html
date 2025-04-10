@@ -1,60 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-	<style>
-		* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body, html {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f0f0f0;
-    font-family: 'Montserrat', sans-serif; /* Use Montserrat font */
-}
-
-.loading-container {
-    text-align: center;
-}
-
-.loading-text {
-    font-size: 2rem;
-    color: #333;
-    animation: fadeIn 2s infinite alternate;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-</style>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8">
-    <title>FemmeiaCloth</title>
-	<link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> <!-- Montserrat Light -->
+ 	<link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+ 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FemmeiaCloth</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat';
+    }
 
-    <link rel="stylesheet" href="styles.css">
-    	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> <!-- Montserrat Light -->
-    	
+    body {
+      background-color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeOut 1s ease forwards;
+      animation-delay: 2s;
+    }
+
+    .loading-screen img {
+      width: 300px;
+      height: auto;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .brand-logo {
+      width: 100%;
+      max-width: 200px;
+      margin-bottom: 2rem;
+    }
+
+    .link-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      margin: 0.75rem 0;
+      background: linear-gradient(to right, #111, #888);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .link-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+  </style>
 </head>
 <body>
-    <div class="loading-container">
-        <div class="loading-text">FemmeiaCloth</div>
-    </div>
-    <script>
-    	// Simulate loading time
-setTimeout(() => {
-    // Redirect to the main page or perform any action after loading
-    window.location.href = 'index.html'; // Change 'main.html' to your actual main page
-}, 9000); // 3 seconds loading time
-</script>
+  <!-- Loading Screen -->
+  <div class="loading-screen">
+    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG-20250410-WA0040.jpg" alt="FemmeiaCloth logo loading">
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <img class="brand-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth" />
+    <a href="#" class="link-btn">Instagram</a>
+    <a href="#" class="link-btn">Shopee</a>
+    <a href="#" class="link-btn">WhatsApp</a>
+    <a href="#" class="link-btn">Tokopedia</a>
+    <a href="#" class="link-btn">Beli Sekarang</a>
+  </div>
 </body>
 </html>
