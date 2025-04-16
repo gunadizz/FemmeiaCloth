@@ -16,7 +16,7 @@
     }
 
     body {
-      background-color: #f3f4f6;
+      background-color: #f5f5f5;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -30,19 +30,19 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #f3f4f6;
+      background-color: #f5f5f5;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      animation: fadeOut 1s ease forwards;
+      animation: fadeOut 0.5s ease forwards;
       animation-delay: 2s;
     }
 
     .loading-screen img {
       width: 300px;
       height: auto;
-      animation: float 2s ease-in-out infinite;
+      animation: float 0.5s ease-in-out infinite;
     }
 
     @keyframes float {
@@ -82,7 +82,7 @@
       font-size: 1.1rem;
       cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
     }
 
@@ -93,19 +93,18 @@
   </style>
 </head>
 <body>
-  <!-- Loading Screen -->
+
   <div class="loading-screen">
     <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG-20250410-WA0040.jpg" alt="FemmeiaCloth logo loading">
   </div>
 
-  <!-- Main Content -->
+  
   <div class="container">
     <img class="brand-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth" />
-    <a href="#" class="link-btn">Instagram</a>
+    <a href="https://www.instagram.com/femmeia.cloth/" class="link-btn">Instagram</a>
     <a href="#" class="link-btn">Shopee</a>
-    <a href="#" class="link-btn">WhatsApp</a>
+    <a href="https://wa.me/message/G5WZFQJFT3LXM1" class="link-btn">WhatsApp</a>
     <a href="#" class="link-btn">Tokopedia</a>
-    <a href="#" class="link-btn">Beli Sekarang</a>
   </div>
 </body>
 </html>
