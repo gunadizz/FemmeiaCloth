@@ -161,7 +161,7 @@
           <option value="">-- Pilih --</option>
           <option value="JNE">JNE</option>
           <option value="J&T">J&T</option>
-          <option value="SiCepat">Gosend</option>
+          <option value="Gosend">Gosend</option>
           <option value="Ambil langsung">Ambil langsung</option>
         </select>
       </div>
@@ -177,7 +177,7 @@
       </div>
 
       <label>Catatan Tambahan</label>
-      <textarea name="catatan" placeholder="Contoh: packing kado, ucapan, dll."></textarea>
+      <textarea name="catatan" placeholder="Contoh: packing rapi, dll."></textarea>
 
       <button type="submit">🛒 Pesan Sekarang</button>
       <div class="loading" id="loadingText">⏳ Menyiapkan Pesanan...</div>
@@ -245,15 +245,15 @@
       setTimeout(() => {
         const f = new FormData(this);
         const msg = `*Form Pemesanan Hijab FemmeiaCloth:*\n` +
-          `Nama: ${f.get('nama')}\n` +
-          `No WA: ${f.get('wa')}\n` +
-          `Alamat: ${f.get('alamat')}\n` +
-          `Produk: ${f.get('produk')}\n` +
-          `Warna: ${f.get('warna')}\n` +
-          `Jumlah: ${f.get('jumlah')}\n` +
-          `Pengiriman: ${f.get('pengiriman')}\n` +
-          `Pembayaran: ${f.get('pembayaran')}\n` +
-          `Catatan: ${f.get('catatan')}`;
+          `📛 Nama: ${f.get('nama')}\n` +
+          `📱 No WA: ${f.get('wa')}\n` +
+          `🏠 Alamat: ${f.get('alamat')}\n` +
+          `🛍️ Produk: ${f.get('produk')}\n` +
+          `🎨 Warna: ${f.get('warna')}\n` +
+          `🔢 Jumlah: ${f.get('jumlah')}\n` +
+          `🚚 Pengiriman: ${f.get('pengiriman')}\n` +
+          `💳 Pembayaran: ${f.get('pembayaran')}\n` +
+          `📝 Catatan: ${f.get('catatan')}`;
 
         const waNumber = "6287777420644"; 
         const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
