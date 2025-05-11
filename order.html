@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -42,14 +43,19 @@
       0% { opacity: 0.5s visibility: visible; }
       100% { opacity: 0; visibility: hidden; }
     }
+    
+
     .container {
-      max-width: 450px;
-      margin: 80px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    }
+  width: 95%;
+  max-width: 460px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px 28px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid rgba(255, 192, 203, 0.2);
+  margin: 80px auto;
+}
     h2 {
       text-align: center;
       color: #d26767;
@@ -93,21 +99,26 @@
       border-radius: 8px;
     }
     button {
-      margin-top: 25px;
-      padding: 15px;
-      background: #e07b7b;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      width: 100%;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #c45d5d;
-    }
-    .loading {
+  margin-top: 28px;
+  padding: 14px;
+  background: linear-gradient(135deg, #ff7a7a, #ffb6b9);
+  box-shadow: 0 6px 20px rgba(255, 100, 100, 0.4);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  width: 100%;
+ 
+  transition: all 0.3s;
+}
+button:hover {
+background: linear-gradient(135deg, #ff9a9e, #fecfef);
+box-shadow: 0 6px 50px rgba(255, 100, 100, 0.4);
+}   
+
+ .loading {
       display: none;
       text-align: center;
       margin-top: 15px;
@@ -123,7 +134,7 @@
   </div>
 
   <div class="container" id="formContainer" style="display:none;">
-    <h2>🧾 Form Pemesanan Hijab FemmeiaCloth</h2>
+    <h2>Form Pemesanan Hijab FemmeiaCloth</h2>
     <form id="orderForm">
       <label>Nama Lengkap</label>
       <input type="text" name="nama" required>
@@ -243,9 +254,14 @@
     });
 
     warna.addEventListener('change', function () {
-      const selectedColor = this.value;
-      colorPreview.style.background = colorHexMap[selectedColor] || '#fff';
-    });
+  const selectedColor = this.value;
+  const hex = colorHexMap[selectedColor] || '#fff';
+  colorPreview.style.background = hex;
+  const wrapper = document.getElementById('colorPreview');
+  wrapper.style.boxShadow = `0 10px 30px  ${hex}`;
+  wrapper.style.transition = 'box-shadow 1s ease';
+  wrapper.style.border = `none`;
+});
 
     document.getElementById('orderForm').addEventListener('submit', function (e) {
       e.preventDefault();
@@ -255,6 +271,7 @@
       setTimeout(() => {
         const f = new FormData(this);
         const msg = `*Form Pemesanan Hijab FemmeiaCloth:*\n` +
+          `\n` +
           `Nama: ${f.get('nama')}\n` +
           `No WA: ${f.get('wa')}\n` +
           `Alamat: ${f.get('alamat')}\n` +
@@ -275,4 +292,5 @@
   </script>
 
 </body>
-</html>
+      </html>
+      
