@@ -1,268 +1,267 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Form Pemesanan Hijab FemmeiaCloth</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Form Pemesanan Hijab - FemmeiaCloth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
     body {
       margin: 0;
-      font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(to right, #fce4ec, #f8bbd0);
+      background-color: #fff8f5;
+    }
+    .loader-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #ffdede;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 0 15px;
+      z-index: 999;
+      flex-direction: column;
+      animation: fadeOut 1s ease forwards;
     }
-
-    .form-container {
-      background: white;
-      max-width: 650px;
-      width: 100%;
-      padding: 30px 25px;
-      border-radius: 25px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-      text-align: center;
+    .loader {
+      border: 6px solid #ffe2e2;
+      border-top: 6px solid #e07b7b;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 0.5s linear infinite;
+      margin-bottom: 20px;
     }
-
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes fadeOut {
+      0% { opacity: 0.5s visibility: visible; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+    .container {
+      max-width: 450px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
     h2 {
-      color: #d63384;
-      margin-bottom: 30px;
-      font-size: 2em;
+      text-align: center;
+      color: #d26767;
+      margin-bottom: 24px;
     }
-
     label {
       font-weight: 600;
-      display: block;
-      margin-bottom: 5px;
       margin-top: 15px;
-      color: #444;
-    }
-
-    small {
       display: block;
-      color: #888;
-      font-style: italic;
-      margin-bottom: 5px;
-      font-size: 0.9em;
     }
-
     input, textarea, select {
       width: 100%;
       padding: 12px;
-      border-radius: 12px;
-      border: 1px solid #ddd;
-      font-size: 1em;
-      margin-top: 5px;
-      box-sizing: border-box;
-      transition: border 0.3s ease, box-shadow 0.3s ease;
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      appearance: none;
+      background-color: #fff;
+      transition: 0.3s ease;
     }
-
-    input:focus, textarea:focus, select:focus {
-      border: 1.5px solid #d63384;
-      outline: none;
-      box-shadow: 0 0 8px rgba(214, 51, 132, 0.5);
+    input:focus, select:focus, textarea:focus {
+      border-color: #e07b7b;
+      box-shadow: 0 0 6px rgba(224, 123, 123, 0.5);
     }
-
-    .produk-card {
-      background: #f9f9f9;
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid #ddd;
-      margin-top: 10px;
-      margin-bottom: 15px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .produk-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .produk-card h4 {
-      margin: 0;
-      color: #d63384;
-      font-weight: 700;
-    }
-
-    .produk-card p {
-      margin: 4px 0;
-      font-size: 0.95em;
-    }
-
-    button {
-      background-color: #d63384;
-      color: white;
-      border: none;
-      padding: 16px;
-      width: 100%;
-      font-size: 1.1em;
-      border-radius: 15px;
-      cursor: pointer;
-      margin-top: 25px;
-      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #b02a6b;
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    button:active {
-      transform: scale(1.03);
-    }
-
-    .input-group {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .input-group .half-width {
-      flex: 1;
-    }
-
     .select-wrapper {
       position: relative;
     }
-
-    .select-wrapper select {
-      padding-left: 35px; /* for icon padding */
-    }
-
-    .select-wrapper .icon {
+    .select-wrapper::after {
+      content: "▼";
       position: absolute;
-      top: 12px;
-      left: 10px;
-      font-size: 18px;
-      color: #d63384;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #999;
     }
-
-    @media (max-width: 600px) {
-      .form-container {
-        padding: 20px;
-      }
-
-      h2 {
-        font-size: 1.6em;
-      }
+    .color-preview {
+      margin-top: 10px;
+      height: 30px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      margin-top: 25px;
+      padding: 15px;
+      background: #e07b7b;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #c45d5d;
+    }
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 15px;
+      color: #c45d5d;
     }
   </style>
 </head>
 <body>
 
-  <div class="form-container">
-    <h2>🧾 Form Pemesanan Hijab<br>Femmeia Cloth</h2>
+  <div class="loader-screen" id="loaderScreen">
+    <div class="loader"></div>
+    <span>Memuat Form Pemesanan...</span>
+  </div>
 
-    <label>1. Nama Lengkap</label>
-    <small>📌 Wajib diisi untuk keperluan pengiriman</small>
-    <input type="text" id="nama" placeholder="Nama lengkap kamu">
+  <div class="container" id="formContainer" style="display:none;">
+    <h2>🧾 Form Pemesanan Hijab FemmeiaCloth</h2>
+    <form id="orderForm">
+      <label>Nama Lengkap</label>
+      <input type="text" name="nama" required>
 
-    <label>2. No. WhatsApp Aktif</label>
-    <small>📌 Agar bisa dihubungi saat konfirmasi dan pengiriman</small>
-    <input type="text" id="no_wa" placeholder="Contoh: 081234567890">
+      <label>No. WhatsApp Aktif</label>
+      <input type="tel" name="wa" required>
 
-    <label>3. Alamat Lengkap</label>
-    <small>📌 Sertakan kecamatan, kota, dan kode pos</small>
-    <textarea id="alamat" rows="3" placeholder="Alamat lengkap kamu..."></textarea>
+      <label>Alamat Lengkap</label>
+      <textarea name="alamat" required></textarea>
 
-    <label>4. Produk & Varian</label>
-    <div class="produk-card">
-      <h4>✅ Hijab Paris</h4>
-      <p>💰 Harga: <strong>IDR 35.000</strong></p>
-      <p>🎨 Warna Tersedia: Dusty Pink, Army, Black, Mocha</p>
-    </div>
-
-    <div class="produk-card">
-      <h4>✅ Hijab Segi Empat</h4>
-      <p>💰 Harga: <strong>IDR 40.000</strong></p>
-      <p>🎨 Warna Tersedia: Navy, Beige, Maroon, Cobalt</p>
-    </div>
-
-    <div class="produk-card">
-      <h4>✅ Hijab Pashmina</h4>
-      <p>💰 Harga: <strong>IDR 50.000</strong></p>
-      <p>🎨 Warna Tersedia: Grey, Black, Mocha, Olive</p>
-    </div>
-
-    <div class="input-group">
-      <div class="half-width">
-        <label>5. Jumlah Pesanan</label>
-        <input type="number" id="jumlah" placeholder="Contoh: 2 pcs">
+      <label>Jenis Produk</label>
+      <div class="select-wrapper">
+        <select id="productType" name="produk" required>
+          <option value="">-- Pilih Produk --</option>
+          <option value="Paris Jadul - 35.000">Paris Jadul – Rp35.000</option>
+          <option value="Pashmina Kaos - 55.000">Pashmina Kaos – Rp55.000</option>
+          <option value="Premium Inner - 25.000">Premium Inner – Rp25.000</option>
+        </select>
       </div>
 
-      <div class="half-width">
-        <label>6. Pilih Warna</label>
-        <input type="text" id="warna" placeholder="Contoh: Dusty Pink">
+      <label>Warna</label>
+      <div class="select-wrapper">
+        <select id="warna" name="warna" required>
+          <option value="">-- Pilih Warna --</option>
+        </select>
       </div>
-    </div>
+      <div class="color-preview" id="colorPreview"></div>
 
-    <label>7. Metode Pengiriman</label>
-    <div class="select-wrapper">
-      <span class="icon">🚚</span>
-      <select id="pengiriman">
-        <option value="JNE">JNE</option>
-        <option value="J&T">J&T</option>
-        <option value="SiCepat">SiCepat</option>
-        <option value="Ambil langsung">Ambil langsung</option>
-      </select>
-    </div>
+      <label>Jumlah</label>
+      <input type="number" name="jumlah" min="1" required>
 
-    <label>8. Metode Pembayaran</label>
-    <div class="select-wrapper">
-      <span class="icon">💳</span>
-      <select id="pembayaran">
-        <option value="Transfer Bank">Transfer Bank</option>
-        <option value="COD">COD</option>
-        <option value="Dana / e-wallet">Dana / e-wallet</option>
-      </select>
-    </div>
+      <label>Metode Pengiriman</label>
+      <div class="select-wrapper">
+        <select name="pengiriman" required>
+          <option value="">-- Pilih --</option>
+          <option value="JNE">JNE</option>
+          <option value="J&T">J&T</option>
+          <option value="SiCepat">Gosend</option>
+          <option value="Ambil langsung">Ambil langsung</option>
+        </select>
+      </div>
 
-    <label>9. Catatan Tambahan (opsional)</label>
-    <textarea id="catatan" rows="2" placeholder="Misal: ucapan gift, request packing..."></textarea>
+      <label>Metode Pembayaran</label>
+      <div class="select-wrapper">
+        <select name="pembayaran" required>
+          <option value="">-- Pilih --</option>
+          <option value="Transfer Bank">Transfer Bank</option>
+          <option value="COD">COD</option>
+          <option value="Dana / e-wallet">Dana / e-wallet</option>
+        </select>
+      </div>
 
-    <button onclick="kirimKeWhatsApp()">📲 Kirim ke WhatsApp</button>
+      <label>Catatan Tambahan</label>
+      <textarea name="catatan" placeholder="Contoh: packing kado, ucapan, dll."></textarea>
+
+      <button type="submit">🛒 Pesan Sekarang</button>
+      <div class="loading" id="loadingText">⏳ Menyiapkan Pesanan...</div>
+    </form>
   </div>
 
   <script>
-    function kirimKeWhatsApp() {
-      const nama = document.getElementById("nama").value.trim();
-      const noWa = document.getElementById("no_wa").value.trim();
-      const alamat = document.getElementById("alamat").value.trim();
-      const produk = "Hijab Paris – IDR 35.000";
-      const jumlah = document.getElementById("jumlah").value.trim();
-      const warna = document.getElementById("warna").value.trim();
-      const pengiriman = document.getElementById("pengiriman").value;
-      const pembayaran = document.getElementById("pembayaran").value;
-      const catatan = document.getElementById("catatan").value.trim();
+   
+    window.addEventListener('load', function () {
+      setTimeout(() => {
+        document.getElementById('loaderScreen').style.display = 'none';
+        document.getElementById('formContainer').style.display = 'block';
+      }, 1500);
+    });
 
-      if (!nama || !noWa || !alamat || !jumlah) {
-        alert("❗ Mohon lengkapi semua data wajib!");
-        return;
+    const warnaOptions = {
+      "Paris Jadul - 35.000": ["Hitam", "Stone", "Abu Ash", "Soft Latte", "Cream", "Vanilla", "Biskuit", "Dusty Rose", "Dark Blue", "Dark Choco", "Burgundy", "Maroon"],
+      "Pashmina Kaos - 55.000": ["Hitam", "Dark Grey", "Khaky Putty", "Navy"],
+      "Premium Inner - 25.000": ["BW", "Oat", "Hitam", "Silver", "Dark Grey", "Khaky"]
+    };
+
+    const colorHexMap = {
+      "Hitam": "#000", "Stone": "#b8b6b1", "Abu Ash": "#a9a9a9",
+      "Soft Latte": "#c8b6a6", "Cream": "#fffdd0", "Vanilla": "#f3e5ab",
+      "Biskuit": "#eed2a6", "Dusty Rose": "#dca6a6", "Dark Blue": "#00008b",
+      "Dark Choco": "#654321", "Burgundy": "#800020", "Maroon": "#800000",
+      "Dark Grey": "#4d4d4d", "Silver": "#c0c0c0", "Khaky": "#bdb76b",
+      "Oat": "#eee1c6", "BW": "#fefefe", "Khaky Putty": "#cabfa0", "Navy": "#000080"
+    };
+
+    const productType = document.getElementById('productType');
+    const warna = document.getElementById('warna');
+    const colorPreview = document.getElementById('colorPreview');
+
+    productType.addEventListener('change', function () {
+      const selected = this.value;
+      warna.innerHTML = '<option value="">-- Pilih Warna --</option>';
+      if (warnaOptions[selected]) {
+        warnaOptions[selected].forEach(w => {
+          let opt = document.createElement('option');
+          opt.value = w;
+          opt.textContent = w;
+          warna.appendChild(opt);
+        });
       }
+    });
 
-      const pesan = `Halo FemmeiaCloth, Saya ingin memesan hijab dengan detail berikut:
-🧍 Nama: ${nama}
-📱 WhatsApp: ${noWa}
-📍 Alamat: ${alamat}
-🧕 Produk: ${produk}
-🔢 Jumlah: ${jumlah}
-🎨 Warna: ${warna || '-'}
-🚚 Pengiriman: ${pengiriman}
-💳 Pembayaran: ${pembayaran}
-📝 Catatan: ${catatan || '-'}`;
+    warna.addEventListener('focus', function () {
+      if (!productType.value) {
+        alert("Silakan pilih jenis produk terlebih dahulu.");
+        productType.focus();
+      }
+    });
 
-      const nomorTujuan = "6287777420644"; // 
-      const url = `https://wa.me/${nomorTujuan}?text=${encodeURI(pesan)}`;
+    warna.addEventListener('change', function () {
+      const selectedColor = this.value;
+      colorPreview.style.background = colorHexMap[selectedColor] || '#fff';
+    });
 
-      window.open(url, "_blank");
-    }
+    document.getElementById('orderForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const loadingText = document.getElementById('loadingText');
+      loadingText.style.display = 'block';
+
+      setTimeout(() => {
+        const f = new FormData(this);
+        const msg = `*Form Pemesanan Hijab FemmeiaCloth:*\n` +
+          `Nama: ${f.get('nama')}\n` +
+          `No WA: ${f.get('wa')}\n` +
+          `Alamat: ${f.get('alamat')}\n` +
+          `Produk: ${f.get('produk')}\n` +
+          `Warna: ${f.get('warna')}\n` +
+          `Jumlah: ${f.get('jumlah')}\n` +
+          `Pengiriman: ${f.get('pengiriman')}\n` +
+          `Pembayaran: ${f.get('pembayaran')}\n` +
+          `Catatan: ${f.get('catatan')}`;
+
+        const waNumber = "6287777420644"; 
+        const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+        loadingText.style.display = 'none';
+        window.open(url, "_blank");
+      }, 1000);
+    });
   </script>
 
 </body>
-  </html>
-                                                         
+</html>
