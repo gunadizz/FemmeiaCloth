@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Pemesanan Hijab FemmeiaCloth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to right, #fce4ec, #f8bbd0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 0 15px;
+    }
+
+    .form-container {
+      background: white;
+      max-width: 650px;
+      width: 100%;
+      padding: 30px 25px;
+      border-radius: 25px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    h2 {
+      color: #d63384;
+      margin-bottom: 30px;
+      font-size: 2em;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 15px;
+      color: #444;
+    }
+
+    small {
+      display: block;
+      color: #888;
+      font-style: italic;
+      margin-bottom: 5px;
+      font-size: 0.9em;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 1em;
+      margin-top: 5px;
+      box-sizing: border-box;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border: 1.5px solid #d63384;
+      outline: none;
+      box-shadow: 0 0 8px rgba(214, 51, 132, 0.5);
+    }
+
+    .produk-card {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .produk-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .produk-card h4 {
+      margin: 0;
+      color: #d63384;
+      font-weight: 700;
+    }
+
+    .produk-card p {
+      margin: 4px 0;
+      font-size: 0.95em;
+    }
+
+    button {
+      background-color: #d63384;
+      color: white;
+      border: none;
+      padding: 16px;
+      width: 100%;
+      font-size: 1.1em;
+      border-radius: 15px;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #b02a6b;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    button:active {
+      transform: scale(1.03);
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .input-group .half-width {
+      flex: 1;
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper select {
+      padding-left: 35px; /* for icon padding */
+    }
+
+    .select-wrapper .icon {
+      position: absolute;
+      top: 12px;
+      left: 10px;
+      font-size: 18px;
+      color: #d63384;
+    }
+
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 1.6em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>🧾 Form Pemesanan Hijab<br>Femmeia Cloth</h2>
+
+    <label>1. Nama Lengkap</label>
+    <small>📌 Wajib diisi untuk keperluan pengiriman</small>
+    <input type="text" id="nama" placeholder="Nama lengkap kamu">
+
+    <label>2. No. WhatsApp Aktif</label>
+    <small>📌 Agar bisa dihubungi saat konfirmasi dan pengiriman</small>
+    <input type="text" id="no_wa" placeholder="Contoh: 081234567890">
+
+    <label>3. Alamat Lengkap</label>
+    <small>📌 Sertakan kecamatan, kota, dan kode pos</small>
+    <textarea id="alamat" rows="3" placeholder="Alamat lengkap kamu..."></textarea>
+
+    <label>4. Produk & Varian</label>
+    <div class="produk-card">
+      <h4>✅ Hijab Paris</h4>
+      <p>💰 Harga: <strong>IDR 35.000</strong></p>
+      <p>🎨 Warna Tersedia: Dusty Pink, Army, Black, Mocha</p>
+    </div>
+
+    <div class="produk-card">
+      <h4>✅ Hijab Segi Empat</h4>
+      <p>💰 Harga: <strong>IDR 40.000</strong></p>
+      <p>🎨 Warna Tersedia: Navy, Beige, Maroon, Cobalt</p>
+    </div>
+
+    <div class="produk-card">
+      <h4>✅ Hijab Pashmina</h4>
+      <p>💰 Harga: <strong>IDR 50.000</strong></p>
+      <p>🎨 Warna Tersedia: Grey, Black, Mocha, Olive</p>
+    </div>
+
+    <div class="input-group">
+      <div class="half-width">
+        <label>5. Jumlah Pesanan</label>
+        <input type="number" id="jumlah" placeholder="Contoh: 2 pcs">
+      </div>
+
+      <div class="half-width">
+        <label>6. Pilih Warna</label>
+        <input type="text" id="warna" placeholder="Contoh: Dusty Pink">
+      </div>
+    </div>
+
+    <label>7. Metode Pengiriman</label>
+    <div class="select-wrapper">
+      <span class="icon">🚚</span>
+      <select id="pengiriman">
+        <option value="JNE">JNE</option>
+        <option value="J&T">J&T</option>
+        <option value="SiCepat">SiCepat</option>
+        <option value="Ambil langsung">Ambil langsung</option>
+      </select>
+    </div>
+
+    <label>8. Metode Pembayaran</label>
+    <div class="select-wrapper">
+      <span class="icon">💳</span>
+      <select id="pembayaran">
+        <option value="Transfer Bank">Transfer Bank</option>
+        <option value="COD">COD</option>
+        <option value="Dana / e-wallet">Dana / e-wallet</option>
+      </select>
+    </div>
+
+    <label>9. Catatan Tambahan (opsional)</label>
+    <textarea id="catatan" rows="2" placeholder="Misal: ucapan gift, request packing..."></textarea>
+
+    <button onclick="kirimKeWhatsApp()">📲 Kirim ke WhatsApp</button>
+  </div>
+
+  <script>
+    function kirimKeWhatsApp() {
+      const nama = document.getElementById("nama").value.trim();
+      const noWa = document.getElementById("no_wa").value.trim();
+      const alamat = document.getElementById("alamat").value.trim();
+      const produk = "Hijab Paris – IDR 35.000";
+      const jumlah = document.getElementById("jumlah").value.trim();
+      const warna = document.getElementById("warna").value.trim();
+      const pengiriman = document.getElementById("pengiriman").value;
+      const pembayaran = document.getElementById("pembayaran").value;
+      const catatan = document.getElementById("catatan").value.trim();
+
+      if (!nama || !noWa || !alamat || !jumlah) {
+        alert("❗ Mohon lengkapi semua data wajib!");
+        return;
+      }
+
+      const pesan = `Halo FemmeiaCloth, Saya ingin memesan hijab dengan detail berikut:
+🧍 Nama: ${nama}
+📱 WhatsApp: ${noWa}
+📍 Alamat: ${alamat}
+🧕 Produk: ${produk}
+🔢 Jumlah: ${jumlah}
+🎨 Warna: ${warna || '-'}
+🚚 Pengiriman: ${pengiriman}
+💳 Pembayaran: ${pembayaran}
+📝 Catatan: ${catatan || '-'}`;
+
+      const nomorTujuan = "6287777420644"; // 
+      const url = `https://wa.me/${nomorTujuan}?text=${encodeURI(pesan)}`;
+
+      window.open(url, "_blank");
+    }
+  </script>
+
+</body>
+  </html>
+                                                         
