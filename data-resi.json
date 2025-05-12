@@ -1,0 +1,45 @@
+{
+  "FMC-001": {
+    "namaPenerima": "Gunadi",
+    "alamat": "Jl. Perikanan No. 123, Makassar",
+    "status": [
+      { "waktu": "2025-05-10 09:00", "keterangan": "Pesanan diterima oleh sistem" },
+      { "waktu": "2025-05-10 14:00", "keterangan": "Pesanan sedang diproses" },
+      { "waktu": "2025-05-11 08:00", "keterangan": "Paket dikirim dari Tamalanrea Jaya" },
+      { "waktu": "2025-05-12 10:00", "keterangan": "Pesanan telah sampai ke penerima" }
+    ]
+  },
+  
+  "FMC-002": {
+    "namaPenerima": "Iftitah",
+    "alamat": "Jl. Dahlia No. 45, Maros",
+    "status": [
+      { "waktu": "2025-05-09 08:30", "keterangan": "Pesanan diterima oleh sistem" },
+      { "waktu": "2025-05-09 12:00", "keterangan": "Pesanan sedang diproses di gudang" },
+      { "waktu": "2025-05-10 15:00", "keterangan": "Paket dikirim dari gudang" }
+    ]
+  },
+  
+  "FMC-003": {
+    "namaPenerima": "Gunadi",
+    "alamat": "Jl. Perikanan No. 123, Makassar",
+    "status": [
+      { "waktu": "2025-05-10 09:00", "keterangan": "Pesanan diterima oleh sistem" },
+      { "waktu": "2025-05-10 14:00", "keterangan": "Pesanan sedang diproses" },
+      { "waktu": "2025-05-11 08:00", "keterangan": "Paket dikirim dari Tamalanrea Jaya" },
+      { "waktu": "2025-05-12 10:00", "keterangan": "Pesanan telah sampai ke penerima" }
+    ]
+  },
+  
+  "FMC-004": {
+    "namaPenerima": "Gunadi",
+    "alamat": "Jl. Perikanan No. 123, Makassar",
+    "status": [
+      { "waktu": "2025-05-10 09:00", "keterangan": "Pesanan diterima oleh sistem" },
+      { "waktu": "2025-05-10 14:00", "keterangan": "Pesanan sedang diproses" },
+      { "waktu": "2025-05-11 08:00", "keterangan": "Paket dikirim dari Tamalanrea Jaya" },
+      { "waktu": "2025-05-12 10:00", "keterangan": "Pesanan telah sampai ke penerima" }
+    ]
+  }
+  
+}
