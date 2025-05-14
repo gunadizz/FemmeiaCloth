@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> <!-- Montserrat Light -->
  	<link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
- 
+ <link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#f0f0f0" />
+<link rel="apple-touch-icon" href="/icon-192x192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FemmeiaCloth</title>
   <style>
@@ -107,3 +111,19 @@
     <a href="https://shopee.co.id/femmeiacloth" class="link-btn">Shopee</a>
     <a href="/track.html" class="link-btn">Lacak Paket</a>
   </div>
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+  </script>
+</body>
+</html>
