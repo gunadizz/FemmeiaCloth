@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FemmeiaCloth Finance Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background: #e0e0e0;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 1rem;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: 'Quicksand', sans-serif;
+    }
+    button {
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      margin-top: 1rem;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    canvas {
+      margin-top: 2rem;
+    }
+    .alert {
+      background: #d1e7dd;
+      color: #0f5132;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>FemmeiaCloth Finance Tracker</header>
+  <div class="container">
+    <div id="loginAlert" class="alert" style="display:none;">Berhasil login sebagai <strong>femmeiacloth@gmail.com</strong></div>
+
+    <h2>Catat Transaksi Penjualan</h2>
+    <form id="formTransaksi">
+      <input type="text" id="produk" placeholder="Nama Produk (misal: Hijab Paris)" required />
+      <input type="number" id="jumlah" placeholder="Jumlah Barang" required />
+      <input type="number" id="harga" placeholder="Harga Satuan (Rp)" required />
+      <select id="jenis">
+        <option value="pemasukan">Pemasukan (Penjualan)</option>
+        <option value="pengeluaran">Pengeluaran (Modal/Biaya)</option>
+      </select>
+      <textarea id="catatan" placeholder="Catatan tambahan (opsional)"></textarea>
+      <button type="submit">Catat Transaksi</button>
+    </form>
+
+    <h3>Ringkasan</h3>
+    <p>Total Pemasukan: Rp <span id="totalMasuk">0</span></p>
+    <p>Total Pengeluaran: Rp <span id="totalKeluar">0</span></p>
+    <button onclick="downloadCSV()">Download CSV</button>
+    <button onclick="downloadPDF()">Download PDF</button>
+
+    <canvas id="grafik"></canvas>
+
+    <h3>Riwayat Transaksi</h3>
+    <table>
+      <thead>
+        <tr><th>Tanggal</th><th>Produk</th><th>Jumlah</th><th>Harga</th><th>Jenis</th><th>Catatan</th></tr>
+      </thead>
+      <tbody id="tabelTransaksi"></tbody>
+    </table>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js';
+    import { getFirestore, collection, addDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js';
+    import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
+      authDomain: "femmeiacloth-finance.firebaseapp.com",
+      projectId: "femmeiacloth-finance",
+      storageBucket: "femmeiacloth-finance.appspot.com",
+      messagingSenderId: "517478386163",
+      appId: "1:517478386163:web:51028f5841baa311126a86",
+      measurementId: "G-K4L516Q54R"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const form = document.getElementById('formTransaksi');
+    const tabel = document.getElementById('tabelTransaksi');
+    const totalMasuk = document.getElementById('totalMasuk');
+    const totalKeluar = document.getElementById('totalKeluar');
+    const ctx = document.getElementById('grafik').getContext('2d');
+    const alertBox = document.getElementById('loginAlert');
+    let chart;
+    let allData = [];
+
+    function updateChart(masuk, keluar) {
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pemasukan', 'Pengeluaran'],
+          datasets: [{
+            data: [masuk, keluar],
+            backgroundColor: ['#4caf50', '#f44336']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    }
+
+    function listenTransaksi() {
+      onSnapshot(collection(db, "transaksi"), (snapshot) => {
+        let totalIn = 0, totalOut = 0;
+        tabel.innerHTML = '';
+        allData = [];
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          const row = `<tr><td>${new Date(d.tanggal).toLocaleDateString()}</td><td>${d.produk}</td><td>${d.jumlah}</td><td>Rp ${d.harga}</td><td>${d.jenis}</td><td>${d.catatan || ''}</td></tr>`;
+          tabel.innerHTML += row;
+          allData.push(d);
+          const total = d.harga * d.jumlah;
+          if (d.jenis === 'pemasukan') totalIn += total;
+          else totalOut += total;
+        });
+        totalMasuk.textContent = totalIn;
+        totalKeluar.textContent = totalOut;
+        updateChart(totalIn, totalOut);
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        produk: form.produk.value,
+        jumlah: Number(form.jumlah.value),
+        harga: Number(form.harga.value),
+        jenis: form.jenis.value,
+        catatan: form.catatan.value,
+        tanggal: new Date().toISOString()
+      };
+      try {
+        await addDoc(collection(db, "transaksi"), data);
+        form.reset();
+      } catch (err) {
+        console.error("Gagal simpan:", err);
+      }
+    });
+
+    function downloadCSV() {
+      const csv = Papa.unparse(allData.map(d => ({
+        Tanggal: new Date(d.tanggal).toLocaleDateString(),
+        Produk: d.produk,
+        Jumlah: d.jumlah,
+        Harga: d.harga,
+        Jenis: d.jenis,
+        Catatan: d.catatan || ''
+      })));
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "transaksi_femmeiacloth.csv";
+      link.click();
+    }
+
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("Laporan Transaksi FemmeiaCloth", 10, 10);
+      let y = 20;
+      allData.forEach((d, i) => {
+        doc.text(`${i + 1}. ${new Date(d.tanggal).toLocaleDateString()} - ${d.produk} - ${d.jumlah} x Rp${d.harga} (${d.jenis})`, 10, y);
+        y += 10;
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+      });
+      doc.save("transaksi_femmeiacloth.pdf");
+    }
+
+    signInWithEmailAndPassword(auth, "femmeiacloth@gmail.com", "femmeia")
+      .then(() => {
+        alertBox.style.display = 'block';
+        listenTransaksi();
+      })
+      .catch((error) => console.error("Login gagal:", error));
+  </script>
+</body>
+</html>
