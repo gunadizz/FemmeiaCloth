@@ -1,14 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> <!-- Montserrat Light -->
  	<link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
- <link rel="manifest" href="/public/manifest.json" />
-<meta name="theme-color" content="#f0f0f0" />
-<link rel="apple-touch-icon" href="/IMG_3593.jpeg" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-
+ 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FemmeiaCloth</title>
   <style>
@@ -111,19 +108,86 @@
     <a href="https://shopee.co.id/femmeiacloth" class="link-btn">Shopee</a>
     <a href="/track.html" class="link-btn">Lacak Paket</a>
   </div>
-
+  
   <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/public/service-worker.js')
-        .then((registration) => {
-          console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch((error) => {
-          console.log('Service Worker registration failed:', error);
-        });
-    });
+!function(e, t, a) {
+  function n() {
+    c(`
+      .circle {
+        width: 12px;
+        height: 12px;
+        position: fixed;
+        background: #999;
+        border-radius: 50%;
+        z-index: 99999;
+      }
+    `), o(), r();
   }
-  </script>
+
+  function r() {
+    for (var e = 0; e < d.length; e++) {
+      if (d[e].alpha <= 0) {
+        t.body.removeChild(d[e].el);
+        d.splice(e, 1);
+        e--;
+        continue;
+      }
+      d[e].y--;
+      d[e].scale += 0.004;
+      d[e].alpha -= 0.013;
+      d[e].el.style.cssText = `
+        left:${d[e].x}px;
+        top:${d[e].y}px;
+        opacity:${d[e].alpha};
+        transform:scale(${d[e].scale});
+        background:#999;
+        border-radius:50%;
+        position:fixed;
+        z-index:99999;
+      `;
+    }
+    requestAnimationFrame(r);
+  }
+
+  function o() {
+    const clickHandler = "function" == typeof e.onclick && e.onclick;
+    e.onclick = function(e) {
+      clickHandler && clickHandler(), i(e);
+    }
+  }
+
+  function i(e) {
+    var a = t.createElement("div");
+    a.className = "circle";
+    d.push({
+      el: a,
+      x: e.clientX - 6,
+      y: e.clientY - 6,
+      scale: 1,
+      alpha: 1
+    });
+    t.body.appendChild(a);
+  }
+
+  function c(e) {
+    var a = t.createElement("style");
+    a.type = "text/css";
+    try {
+      a.appendChild(t.createTextNode(e));
+    } catch (t) {
+      a.styleSheet.cssText = e;
+    }
+    t.getElementsByTagName("head")[0].appendChild(a);
+  }
+
+  var d = [];
+  e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || function(e) {
+    setTimeout(e, 1000 / 60);
+  };
+  n();
+}(window, document);
+</script>
+
+
+
 </body>
-</html>
