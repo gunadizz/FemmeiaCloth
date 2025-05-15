@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FemmeiaCloth Finance Tracker</title>
+  <meta name="description" content="Aplikasi pencatatan keuangan untuk bisnis hijab FemmeiaCloth">
+  <meta name="theme-color" content="#6c5ce7">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-bg: #ffffff;
+      --secondary-bg: #f9f9f9;
+      --border-color: #e0e0e0;
+      --text-color: #333333;
+      --accent-color: #6c5ce7;
+      --success-color: #00b894;
+      --danger-color: #d63031;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --radius: 8px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    body {
+      background-color: var(--secondary-bg);
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background-color: var(--primary-bg);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-bottom: 10px;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .card {
+      background-color: var(--primary-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      margin-bottom: 15px;
+      color: var(--accent-color);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      font-size: 16px;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+
+    .suggestions {
+      position: absolute;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      width: calc(100% - 40px);
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 10;
+      display: none;
+    }
+
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .suggestion-item:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    button {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5549c0;
+    }
+
+    .btn-export {
+      background-color: var(--success-color);
+      margin-right: 10px;
+    }
+
+    .btn-export:hover {
+      background-color: #00a383;
+    }
+
+    /* Summary Section */
+    .summary-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .summary-box {
+      flex: 1;
+      min-width: 150px;
+      padding: 15px;
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .income-box {
+      background-color: rgba(0, 184, 148, 0.1);
+      border: 1px solid var(--success-color);
+    }
+
+    .expense-box {
+      background-color: rgba(214, 48, 49, 0.1);
+      border: 1px solid var(--danger-color);
+    }
+
+    .summary-box h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .summary-box p {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--secondary-bg);
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    /* Alert Styles */
+    .alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: var(--radius);
+      background-color: var(--success-color);
+      color: white;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.5s ease;
+      z-index: 1000;
+    }
+
+    .alert.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .export-buttons {
+      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Chart container */
+    .chart-container {
+      position: relative;
+      height: 250px;
+      margin-top: 20px;
+    }
+
+    /* Loading spinner */
+    .loader {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid var(--accent-color);
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Delete button */
+    .btn-delete {
+      background-color: var(--danger-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-delete:hover {
+      background-color: #b52c2c;
+    }
+
+    /* Date header in transaction table */
+    .date-header {
+      background-color: var(--secondary-bg);
+      padding: 10px 15px;
+      font-weight: 600;
+      color: var(--accent-color);
+      border-radius: var(--radius) var(--radius) 0 0;
+      margin-top: 20px;
+    }
+
+    .date-header:first-child {
+      margin-top: 0;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: var(--primary-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .modal-title {
+      margin-bottom: 15px;
+      color: var(--text-color);
+      font-weight: 600;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-cancel {
+      background-color: var(--border-color);
+      color: var(--text-color);
+    }
+
+    .btn-confirm {
+      background-color: var(--danger-color);
+    }
+
+    /* Install button */
+    .install-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* Offline indicator */
+    .offline-indicator {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: var(--danger-color);
+      color: white;
+      padding: 10px 15px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 1000;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .summary-container {
+        flex-direction: column;
+      }
+      
+      th, td {
+        padding: 8px 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FemmeiaCloth Finance Tracker</h1>
+      <button id="installButton" class="install-button">Install App</button>
+    </header>
+
+    <div class="main-content">
+      <!-- Input Form Section -->
+      <div class="card">
+        <h2>Input Transaksi</h2>
+        <form id="formTransaksi">
+          <div class="form-group">
+            <label for="produk">Nama Produk</label>
+            <input type="text" id="produk" required autocomplete="off">
+            <div id="suggestions" class="suggestions"></div>
+          </div>
+          <div class="form-group">
+            <label for="jumlah">Jumlah</label>
+            <input type="number" id="jumlah" min="1" required>
+          </div>
+          <div class="form-group">
+            <label for="harga">Harga Satuan (Rp)</label>
+            <input type="number" id="harga" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="jenis">Jenis Transaksi</label>
+            <select id="jenis" required>
+              <option value="">Pilih Jenis Transaksi</option>
+              <option value="pemasukan">Pemasukan (Penjualan)</option>
+              <option value="pengeluaran">Pengeluaran (Biaya)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="catatan">Catatan (Opsional)</label>
+            <textarea id="catatan" rows="3"></textarea>
+          </div>
+          <button type="submit">Simpan Transaksi</button>
+        </form>
+      </div>
+
+      <!-- Summary Section -->
+      <div class="card">
+        <h2>Ringkasan</h2>
+        <div class="summary-container">
+          <div class="summary-box income-box">
+            <h3>Total Pemasukan</h3>
+            <p id="totalMasuk">Rp 0</p>
+          </div>
+          <div class="summary-box expense-box">
+            <h3>Total Pengeluaran</h3>
+            <p id="totalKeluar">Rp 0</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="grafik"></canvas>
+        </div>
+      </div>
+
+      <!-- Transaction History Section -->
+      <div class="card" style="grid-column: 1 / -1;">
+        <h2>Riwayat Transaksi</h2>
+        <div class="export-buttons">
+          <button id="exportCSV" class="btn-export">Export CSV</button>
+          <button id="exportPDF" class="btn-export">Export PDF</button>
+        </div>
+        <div class="table-container" id="transactionTableContainer">
+          <!-- Transaction data will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Alert -->
+  <div id="loginAlert" class="alert">
+    Berhasil login sebagai FemmeiaCloth
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Yakin ingin menghapus transaksi ini?</h3>
+      <div class="modal-buttons">
+        <button id="cancelDelete" class="btn-cancel">Batal</button>
+        <button id="confirmDelete" class="btn-confirm">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offline Indicator -->
+  <div id="offlineIndicator" class="offline-indicator">
+    Anda sedang offline. Beberapa fitur mungkin tidak tersedia.
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import the functions you need from the SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
+      authDomain: "femmeiacloth-finance.firebaseapp.com",
+      projectId: "femmeiacloth-finance",
+      storageBucket: "femmeiacloth-finance.appspot.com",
+      messagingSenderId: "517478386163",
+      appId: "1:517478386163:web:51028f5841baa311126a86",
+      measurementId: "G-K4L516Q54R"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // Enable offline persistence
+    enableIndexedDbPersistence(db)
+      .catch((err) => {
+        if (err.code == 'failed-precondition') {
+          console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+        } else if (err.code == 'unimplemented') {
+          console.log('The current browser does not support all of the features required to enable persistence');
+        }
+      });
+
+    // Auto login
+    async function autoLogin() {
+      try {
+        await signInWithEmailAndPassword(auth, "femmeiacloth@gmail.com", "femmeia");
+        showAlert("Berhasil login sebagai FemmeiaCloth");
+        loadTransactions();
+      } catch (error) {
+        console.error("Error during auto-login:", error);
+        showAlert("Gagal login: " + error.message, true);
+      }
+    }
+
+    // Show alert function with enhanced animation
+    function showAlert(message, isError = false) {
+      const alert = document.getElementById("loginAlert");
+      alert.textContent = message;
+      
+      if (isError) {
+        alert.style.backgroundColor = "var(--danger-color)";
+      } else {
+        alert.style.backgroundColor = "var(--success-color)";
+      }
+      
+      // Enhanced animation
+      alert.style.opacity = "0";
+      alert.style.transform = "translateX(0)";
+      alert.classList.add("show");
+      
+      setTimeout(() => {
+        alert.style.opacity = "1";
+      }, 10);
+      
+      setTimeout(() => {
+        alert.classList.remove("show");
+      }, 3000);
+    }
+
+    // Format currency
+    function formatRupiah(angka) {
+      return "Rp " + new Intl.NumberFormat('id-ID').format(angka);
+    }
+
+    // Format date in Indonesian
+    function formatDateIndonesian(date) {
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      return date.toLocaleDateString('id-ID', options);
+    }
+
+    // Group transactions by date
+    function groupTransactionsByDate(transactions) {
+      const grouped = {};
+      
+      transactions.forEach(transaction => {
+        const dateStr = formatDateIndonesian(transaction.tanggal);
+        if (!grouped[dateStr]) {
+          grouped[dateStr] = [];
+        }
+        grouped[dateStr].push(transaction);
+      });
+      
+      return grouped;
+    }
+
+    // Product suggestions - Enhanced list
+    const productSuggestions = [
+      "Hijab Paris",
+      "Pashmina Kaos",
+      "Premium Inner",
+      "Inner Rajut",
+      "Hijab Instan",
+      "Hijab Segi Empat",
+      "Hijab Plisket",
+      "Ciput Ninja",
+      "Pashmina Diamond",
+      "Hijab Voal",
+      "Hijab Syari",
+      "Ciput Antem",
+      "Hijab Bergo",
+      "Pashmina Ceruti",
+      "Hijab Sport"
+    ];
+
+    const produkInput = document.getElementById("produk");
+    const suggestionsDiv = document.getElementById("suggestions");
+
+    produkInput.addEventListener("input", function() {
+      const inputValue = this.value.toLowerCase();
+      suggestionsDiv.innerHTML = "";
+      
+      if (inputValue.length < 1) {
+        suggestionsDiv.style.display = "none";
+        return;
+      }
+      
+      const filteredSuggestions = productSuggestions.filter(product => 
+        product.toLowerCase().includes(inputValue)
+      );
+      
+      if (filteredSuggestions.length > 0) {
+        suggestionsDiv.style.display = "block";
+        
+        filteredSuggestions.forEach(suggestion => {
+          const div = document.createElement("div");
+          div.className = "suggestion-item";
+          div.textContent = suggestion;
+          div.addEventListener("click", function() {
+            produkInput.value = suggestion;
+            suggestionsDiv.style.display = "none";
+          });
+          suggestionsDiv.appendChild(div);
+        });
+      } else {
+        suggestionsDiv.style.display = "none";
+      }
+    });
+
+    document.addEventListener("click", function(e) {
+      if (e.target !== produkInput && e.target !== suggestionsDiv) {
+        suggestionsDiv.style.display = "none";
+      }
+    });
+
+    // Handle form submission
+    document.getElementById("formTransaksi").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      const produk = document.getElementById("produk").value;
+      const jumlah = parseInt(document.getElementById("jumlah").value);
+      const harga = parseInt(document.getElementById("harga").value);
+      const jenis = document.getElementById("jenis").value;
+      const catatan = document.getElementById("catatan").value;
+      const tanggal = new Date();
+      const total = jumlah * harga;
+      
+      try {
+        await addDoc(collection(db, "transactions"), {
+          produk,
+          jumlah,
+          harga,
+          total,
+          jenis,
+          catatan,
+          tanggal
+        });
+        
+        showAlert("Transaksi berhasil disimpan!");
+        this.reset();
+        loadTransactions();
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        showAlert("Gagal menyimpan transaksi: " + error.message, true);
+      }
+    });
+
+    // Load transactions from Firestore
+    let transactions = [];
+    
+    async function loadTransactions() {
+      try {
+        const q = query(collection(db, "transactions"), orderBy("tanggal", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        transactions = [];
+        let totalPemasukan = 0;
+        let totalPengeluaran = 0;
+        
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          transactions.push({
+            id: doc.id,
+            ...data,
+            tanggal: data.tanggal.toDate()
+          });
+          
+          if (data.jenis === "pemasukan") {
+            totalPemasukan += data.total;
+          } else {
+            totalPengeluaran += data.total;
+          }
+        });
+        
+        // Update summary
+        document.getElementById("totalMasuk").textContent = formatRupiah(totalPemasukan);
+        document.getElementById("totalKeluar").textContent = formatRupiah(totalPengeluaran);
+        
+        // Update table with grouped transactions
+        renderTransactionTable();
+        
+        // Update chart
+        renderChart(totalPemasukan, totalPengeluaran);
+      } catch (error) {
+        console.error("Error loading transactions: ", error);
+        showAlert("Gagal memuat transaksi: " + error.message, true);
+      }
+    }
+
+    // Render transaction table with date grouping
+    function renderTransactionTable() {
+      const container = document.getElementById("transactionTableContainer");
+      container.innerHTML = "";
+      
+      if (transactions.length === 0) {
+        container.innerHTML = `<p style="text-align: center; padding: 20px;">Belum ada data transaksi</p>`;
+        return;
+      }
+      
+      // Group transactions by date
+      const groupedTransactions = groupTransactionsByDate(transactions);
+      
+      // Create tables for each date group
+      for (const [dateStr, dateTransactions] of Object.entries(groupedTransactions)) {
+        // Add date header
+        const dateHeader = document.createElement("div");
+        dateHeader.className = "date-header";
+        dateHeader.textContent = dateStr;
+        container.appendChild(dateHeader);
+        
+        // Create table for this date group
+        const table = document.createElement("table");
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>Produk</th>
+              <th>Jumlah</th>
+              <th>Harga Satuan</th>
+              <th>Total</th>
+              <th>Jenis</th>
+              <th>Catatan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        `;
+        
+        const tbody = table.querySelector("tbody");
+        
+        dateTransactions.forEach(transaction => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${transaction.produk}</td>
+            <td>${transaction.jumlah}</td>
+            <td>${formatRupiah(transaction.harga)}</td>
+            <td>${formatRupiah(transaction.total)}</td>
+            <td>${transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
+            <td>${transaction.catatan || "-"}</td>
+            <td>
+              <button class="btn-delete" data-id="${transaction.id}">🗑️</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        
+        container.appendChild(table);
+      }
+      
+      // Add event listeners to delete buttons
+      document.querySelectorAll(".btn-delete").forEach(button => {
+        button.addEventListener("click", function() {
+          const transactionId = this.getAttribute("data-id");
+          showDeleteConfirmation(transactionId);
+        });
+      });
+    }
+
+    // Delete transaction confirmation
+    let transactionToDelete = null;
+    const confirmModal = document.getElementById("confirmModal");
+    const cancelDeleteBtn = document.getElementById("cancelDelete");
+    const confirmDeleteBtn = document.getElementById("confirmDelete");
+    
+    function showDeleteConfirmation(transactionId) {
+      transactionToDelete = transactionId;
+      confirmModal.style.display = "flex";
+    }
+    
+    cancelDeleteBtn.addEventListener("click", function() {
+      confirmModal.style.display = "none";
+      transactionToDelete = null;
+    });
+    
+    confirmDeleteBtn.addEventListener("click", async function() {
+      if (transactionToDelete) {
+        try {
+          await deleteDoc(doc(db, "transactions", transactionToDelete));
+          showAlert("Transaksi berhasil dihapus!");
+          confirmModal.style.display = "none";
+          transactionToDelete = null;
+          loadTransactions();
+        } catch (error) {
+          console.error("Error deleting document: ", error);
+          showAlert("Gagal menghapus transaksi: " + error.message, true);
+        }
+      }
+    });
+
+    // Load Chart.js
+    let myChart = null;
+    
+    async function loadChartJS() {
+      return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        script.onload = () => resolve();
+        document.head.appendChild(script);
+      });
+    }
+
+    // Render doughnut chart with improved colors
+    async function renderChart(pemasukan, pengeluaran) {
+      await loadChartJS();
+      
+      const ctx = document.getElementById('grafik').getContext('2d');
+      
+      if (myChart) {
+        myChart.destroy();
+      }
+      
+      myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pemasukan', 'Pengeluaran'],
+          datasets: [{
+            data: [pemasukan, pengeluaran],
+            backgroundColor: [
+              'rgba(0, 184, 148, 0.7)',  // Green for income
+              'rgba(214, 48, 49, 0.7)'   // Red for expenses
+            ],
+            borderColor: [
+              'rgba(0, 184, 148, 1)',
+              'rgba(214, 48, 49, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  return `${label}: ${formatRupiah(value)}`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Load PapaParse for CSV export
+    async function loadPapaParse() {
+      return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js';
+        script.onload = () => resolve();
+        document.head.appendChild(script);
+      });
+    }
+
+    // Export to CSV with PapaParse
+    document.getElementById("exportCSV").addEventListener("click", async function() {
+      if (transactions.length === 0) {
+        showAlert("Tidak ada data untuk diekspor", true);
+        return;
+      }
+      
+      await loadPapaParse();
+      
+      const data = transactions.map(transaction => ({
+        Tanggal: transaction.tanggal.toLocaleDateString('id-ID'),
+        Produk: transaction.produk,
+        Jumlah: transaction.jumlah,
+        'Harga Satuan': transaction.harga,
+        Total: transaction.total,
+        Jenis: transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
+        Catatan: transaction.catatan || ""
+      }));
+      
+      const csv = Papa.unparse(data);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `transaksi_femmeiacloth_${new Date().toISOString().slice(0, 10)}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    // Export to PDF with improved layout
+    document.getElementById("exportPDF").addEventListener("click", async function() {
+      if (transactions.length === 0) {
+        showAlert("Tidak ada data untuk diekspor", true);
+        return;
+      }
+      
+      // Load jsPDF library
+      const script1 = document.createElement('script');
+      script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      document.head.appendChild(script1);
+      
+      // Load jsPDF-AutoTable plugin
+      const script2 = document.createElement('script');
+      script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js';
+      document.head.appendChild(script2);
+      
+      script2.onload = function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Add title with better styling
+        doc.setFontSize(20);
+        doc.setFont(undefined, 'bold');
+        doc.setTextColor(108, 92, 231); // Accent color
+        doc.text('FemmeiaCloth Finance Tracker', 105, 20, { align: 'center' });
+        
+        // Add date
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'normal');
+        doc.setTextColor(0, 0, 0);
+        doc.text(`Laporan Transaksi - ${new Date().toLocaleDateString('id-ID')}`, 105, 30, { align: 'center' });
+        
+        // Add summary with better styling
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text('Ringkasan:', 14, 45);
+        
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'normal');
+        doc.text(`Total Pemasukan: ${document.getElementById("totalMasuk").textContent}`, 14, 55);
+        doc.text(`Total Pengeluaran: ${document.getElementById("totalKeluar").textContent}`, 14, 65);
+        
+        // Group transactions by date for the PDF
+        const groupedTransactions = groupTransactionsByDate(transactions);
+        let startY = 80;
+        
+        for (const [dateStr, dateTransactions] of Object.entries(groupedTransactions)) {
+          // Add date header
+          doc.setFontSize(12);
+          doc.setFont(undefined, 'bold');
+          doc.setTextColor(108, 92, 231); // Accent color
+          doc.text(dateStr, 14, startY);
+          startY += 10;
+          
+          // Create table for this date group
+          const tableColumn = ["Produk", "Jumlah", "Harga", "Total", "Jenis", "Catatan"];
+          const tableRows = [];
+          
+          dateTransactions.forEach(transaction => {
+            const tableRow = [
+              transaction.produk,
+              transaction.jumlah,
+              formatRupiah(transaction.harga),
+              formatRupiah(transaction.total),
+              transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
+              transaction.catatan || "-"
+            ];
+            tableRows.push(tableRow);
+          });
+          
+          doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: startY,
+            theme: 'grid',
+            styles: {
+              fontSize: 9,
+              cellPadding: 3
+            },
+            headStyles: {
+              fillColor: [108, 92, 231],
+              textColor: [255, 255, 255],
+              fontStyle: 'bold'
+            },
+            alternateRowStyles: {
+              fillColor: [245, 245, 245]
+            }
+          });
+          
+          startY = doc.lastAutoTable.finalY + 15;
+          
+          // Add new page if needed
+          if (startY > 270 && Object.entries(groupedTransactions).indexOf([dateStr, dateTransactions]) < Object.entries(groupedTransactions).length - 1) {
+            doc.addPage();
+            startY = 20;
+          }
+        }
+        
+        // Add footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+          doc.setPage(i);
+          doc.setFontSize(10);
+          doc.setTextColor(150, 150, 150);
+          doc.text(`Halaman ${i} dari ${pageCount}`, 105, 290, { align: 'center' });
+          doc.text('FemmeiaCloth © ' + new Date().getFullYear(), 105, 295, { align: 'center' });
+        }
+        
+        // Save PDF
+        doc.save(`transaksi_femmeiacloth_${new Date().toISOString().slice(0, 10)}.pdf`);
+      };
+    });
+
+    // PWA Install Button
+    let deferredPrompt;
+    const installButton = document.getElementById('installButton');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      deferredPrompt = e;
+      // Show the install button
+      installButton.style.display = 'block';
+    });
+
+    installButton.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      
+      // Show the install prompt
+      deferredPrompt.prompt();
+      
+      // Wait for the user to respond to the prompt
+      const { outcome } = await deferredPrompt.userChoice;
+      
+      // We no longer need the prompt
+      deferredPrompt = null;
+      
+      // Hide the install button
+      installButton.style.display = 'none';
+      
+      console.log(`User response to the install prompt: ${outcome}`);
+    });
+
+    window.addEventListener('appinstalled', () => {
+      // Hide the install button
+      installButton.style.display = 'none';
+      console.log('PWA was installed');
+    });
+
+    // Offline detection
+    const offlineIndicator = document.getElementById('offlineIndicator');
+    
+    function updateOnlineStatus() {
+      if (navigator.onLine) {
+        offlineIndicator.style.display = 'none';
+      } else {
+        offlineIndicator.style.display = 'block';
+      }
+    }
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
+
+    // Initialize app
+    window.addEventListener('load', function() {
+      autoLogin();
+    });
+  </script>
+</body>
+</html>
