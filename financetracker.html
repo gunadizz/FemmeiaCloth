@@ -1,114 +1,389 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FemmeiaCloth Finance Tracker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Quicksand', sans-serif;
+    :root {
+      --primary-bg: #ffffff;
+      --secondary-bg: #f9f9f9;
+      --border-color: #e0e0e0;
+      --text-color: #333333;
+      --accent-color: #6c5ce7;
+      --success-color: #00b894;
+      --danger-color: #d63031;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --radius: 8px;
+    }
+
+    * {
       margin: 0;
       padding: 0;
-      background: #f9f9f9;
-      color: #333;
-    }
-    header {
-      background: #e0e0e0;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 1rem;
-    }
-    input, select, button, textarea {
-      width: 100%;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      box-sizing: border-box;
       font-family: 'Quicksand', sans-serif;
     }
-    button {
-      background-color: #333;
-      color: white;
-      border: none;
-      cursor: pointer;
+
+    body {
+      background-color: var(--secondary-bg);
+      color: var(--text-color);
+      min-height: 100vh;
     }
-    table {
-      width: 100%;
-      margin-top: 1rem;
-      border-collapse: collapse;
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
     }
-    th, td {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
+
+    header {
+      background-color: var(--primary-bg);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
       text-align: center;
     }
-    canvas {
-      margin-top: 2rem;
+
+    h1 {
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-bottom: 10px;
     }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .card {
+      background-color: var(--primary-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      margin-bottom: 15px;
+      color: var(--accent-color);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      font-size: 16px;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+
+    .suggestions {
+      position: absolute;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      width: calc(100% - 40px);
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 10;
+      display: none;
+    }
+
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .suggestion-item:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    button {
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #5549c0;
+    }
+
+    .btn-export {
+      background-color: var(--success-color);
+      margin-right: 10px;
+    }
+
+    .btn-export:hover {
+      background-color: #00a383;
+    }
+
+    /* Summary Section */
+    .summary-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .summary-box {
+      flex: 1;
+      min-width: 150px;
+      padding: 15px;
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .income-box {
+      background-color: rgba(0, 184, 148, 0.1);
+      border: 1px solid var(--success-color);
+    }
+
+    .expense-box {
+      background-color: rgba(214, 48, 49, 0.1);
+      border: 1px solid var(--danger-color);
+    }
+
+    .summary-box h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .summary-box p {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--secondary-bg);
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: var(--secondary-bg);
+    }
+
+    /* Alert Styles */
     .alert {
-      background: #d1e7dd;
-      color: #0f5132;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-      animation: fadeIn 1s ease-in-out;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: var(--radius);
+      background-color: var(--success-color);
+      color: white;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.5s ease;
+      z-index: 1000;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+
+    .alert.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .export-buttons {
+      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Chart container */
+    .chart-container {
+      position: relative;
+      height: 250px;
+      margin-top: 20px;
+    }
+
+    /* Loading spinner */
+    .loader {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top: 4px solid var(--accent-color);
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .summary-container {
+        flex-direction: column;
+      }
+      
+      th, td {
+        padding: 8px 10px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <header>FemmeiaCloth Finance Tracker</header>
   <div class="container">
-    <div id="loginAlert" class="alert" style="display:none;">Berhasil login sebagai <strong>femmeiacloth@gmail.com</strong></div>
+    <header>
+      <h1>FemmeiaCloth Finance Tracker</h1>
+    </header>
 
-    <h2>Catat Transaksi Penjualan</h2>
-    <form id="formTransaksi">
-      <input type="text" id="produk" placeholder="Nama Produk (misal: Hijab Paris)" required />
-      <input type="number" id="jumlah" placeholder="Jumlah Barang" required />
-      <input type="number" id="harga" placeholder="Harga Satuan (Rp)" required />
-      <select id="jenis">
-        <option value="pemasukan">Pemasukan (Penjualan)</option>
-        <option value="pengeluaran">Pengeluaran (Modal/Biaya)</option>
-      </select>
-      <textarea id="catatan" placeholder="Catatan tambahan (opsional)"></textarea>
-      <button type="submit">Catat Transaksi</button>
-    </form>
+    <div class="main-content">
+      <!-- Input Form Section -->
+      <div class="card">
+        <h2>Input Transaksi</h2>
+        <form id="formTransaksi">
+          <div class="form-group">
+            <label for="produk">Nama Produk</label>
+            <input type="text" id="produk" required autocomplete="off">
+            <div id="suggestions" class="suggestions"></div>
+          </div>
+          <div class="form-group">
+            <label for="jumlah">Jumlah</label>
+            <input type="number" id="jumlah" min="1" required>
+          </div>
+          <div class="form-group">
+            <label for="harga">Harga Satuan (Rp)</label>
+            <input type="number" id="harga" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="jenis">Jenis Transaksi</label>
+            <select id="jenis" required>
+              <option value="">Pilih Jenis Transaksi</option>
+              <option value="pemasukan">Pemasukan (Penjualan)</option>
+              <option value="pengeluaran">Pengeluaran (Biaya)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="catatan">Catatan (Opsional)</label>
+            <textarea id="catatan" rows="3"></textarea>
+          </div>
+          <button type="submit">Simpan Transaksi</button>
+        </form>
+      </div>
 
-    <h3>Ringkasan</h3>
-    <p>Total Pemasukan: Rp <span id="totalMasuk">0</span></p>
-    <p>Total Pengeluaran: Rp <span id="totalKeluar">0</span></p>
-    <button onclick="downloadCSV()">Download CSV</button>
-    <button onclick="downloadPDF()">Download PDF</button>
+      <!-- Summary Section -->
+      <div class="card">
+        <h2>Ringkasan</h2>
+        <div class="summary-container">
+          <div class="summary-box income-box">
+            <h3>Total Pemasukan</h3>
+            <p id="totalMasuk">Rp 0</p>
+          </div>
+          <div class="summary-box expense-box">
+            <h3>Total Pengeluaran</h3>
+            <p id="totalKeluar">Rp 0</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="grafik"></canvas>
+        </div>
+      </div>
 
-    <canvas id="grafik"></canvas>
-
-    <h3>Riwayat Transaksi</h3>
-    <table>
-      <thead>
-        <tr><th>Tanggal</th><th>Produk</th><th>Jumlah</th><th>Harga</th><th>Jenis</th><th>Catatan</th></tr>
-      </thead>
-      <tbody id="tabelTransaksi"></tbody>
-    </table>
+      <!-- Transaction History Section -->
+      <div class="card" style="grid-column: 1 / -1;">
+        <h2>Riwayat Transaksi</h2>
+        <div class="export-buttons">
+          <button id="exportCSV" class="btn-export">Export CSV</button>
+          <button id="exportPDF" class="btn-export">Export PDF</button>
+        </div>
+        <div class="table-container">
+          <table id="tabelTransaksi">
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Produk</th>
+                <th>Jumlah</th>
+                <th>Harga Satuan</th>
+                <th>Total</th>
+                <th>Jenis</th>
+                <th>Catatan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Transaction data will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js';
-    import { getFirestore, collection, addDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js';
-    import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js';
+  <!-- Login Alert -->
+  <div id="loginAlert" class="alert">
+    Login berhasil! Selamat datang di FemmeiaCloth Finance Tracker
+  </div>
 
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import the functions you need from the SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+    // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
       authDomain: "femmeiacloth-finance.firebaseapp.com",
@@ -119,117 +394,367 @@
       measurementId: "G-K4L516Q54R"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    const form = document.getElementById('formTransaksi');
-    const tabel = document.getElementById('tabelTransaksi');
-    const totalMasuk = document.getElementById('totalMasuk');
-    const totalKeluar = document.getElementById('totalKeluar');
-    const ctx = document.getElementById('grafik').getContext('2d');
-    const alertBox = document.getElementById('loginAlert');
-    let chart;
-    let allData = [];
+    // Auto login
+    async function autoLogin() {
+      try {
+        await signInWithEmailAndPassword(auth, "femmeiacloth@gmail.com", "femmeia");
+        showAlert("Login berhasil! Selamat datang di FemmeiaCloth Finance Tracker");
+        loadTransactions();
+      } catch (error) {
+        console.error("Error during auto-login:", error);
+        showAlert("Gagal login: " + error.message, true);
+      }
+    }
 
-    function updateChart(masuk, keluar) {
-      if (chart) chart.destroy();
-      chart = new Chart(ctx, {
+    // Show alert function
+    function showAlert(message, isError = false) {
+      const alert = document.getElementById("loginAlert");
+      alert.textContent = message;
+      
+      if (isError) {
+        alert.style.backgroundColor = "var(--danger-color)";
+      } else {
+        alert.style.backgroundColor = "var(--success-color)";
+      }
+      
+      alert.classList.add("show");
+      
+      setTimeout(() => {
+        alert.classList.remove("show");
+      }, 3000);
+    }
+
+    // Format currency
+    function formatRupiah(angka) {
+      return "Rp " + new Intl.NumberFormat('id-ID').format(angka);
+    }
+
+    // Product suggestions
+    const productSuggestions = [
+      "Hijab Paris",
+      "Pashmina Kaos",
+      "Premium Inner",
+      "Hijab Segi Empat",
+      "Hijab Plisket",
+      "Ciput Ninja",
+      "Pashmina Diamond",
+      "Hijab Voal",
+      "Hijab Syari",
+      "Ciput Antem"
+    ];
+
+    const produkInput = document.getElementById("produk");
+    const suggestionsDiv = document.getElementById("suggestions");
+
+    produkInput.addEventListener("input", function() {
+      const inputValue = this.value.toLowerCase();
+      suggestionsDiv.innerHTML = "";
+      
+      if (inputValue.length < 2) {
+        suggestionsDiv.style.display = "none";
+        return;
+      }
+      
+      const filteredSuggestions = productSuggestions.filter(product => 
+        product.toLowerCase().includes(inputValue)
+      );
+      
+      if (filteredSuggestions.length > 0) {
+        suggestionsDiv.style.display = "block";
+        
+        filteredSuggestions.forEach(suggestion => {
+          const div = document.createElement("div");
+          div.className = "suggestion-item";
+          div.textContent = suggestion;
+          div.addEventListener("click", function() {
+            produkInput.value = suggestion;
+            suggestionsDiv.style.display = "none";
+          });
+          suggestionsDiv.appendChild(div);
+        });
+      } else {
+        suggestionsDiv.style.display = "none";
+      }
+    });
+
+    document.addEventListener("click", function(e) {
+      if (e.target !== produkInput && e.target !== suggestionsDiv) {
+        suggestionsDiv.style.display = "none";
+      }
+    });
+
+    // Handle form submission
+    document.getElementById("formTransaksi").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      const produk = document.getElementById("produk").value;
+      const jumlah = parseInt(document.getElementById("jumlah").value);
+      const harga = parseInt(document.getElementById("harga").value);
+      const jenis = document.getElementById("jenis").value;
+      const catatan = document.getElementById("catatan").value;
+      const tanggal = new Date();
+      const total = jumlah * harga;
+      
+      try {
+        await addDoc(collection(db, "transactions"), {
+          produk,
+          jumlah,
+          harga,
+          total,
+          jenis,
+          catatan,
+          tanggal
+        });
+        
+        showAlert("Transaksi berhasil disimpan!");
+        this.reset();
+        loadTransactions();
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        showAlert("Gagal menyimpan transaksi: " + error.message, true);
+      }
+    });
+
+    // Load transactions from Firestore
+    let transactions = [];
+    
+    async function loadTransactions() {
+      try {
+        const q = query(collection(db, "transactions"), orderBy("tanggal", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        transactions = [];
+        let totalPemasukan = 0;
+        let totalPengeluaran = 0;
+        
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          transactions.push({
+            id: doc.id,
+            ...data,
+            tanggal: data.tanggal.toDate()
+          });
+          
+          if (data.jenis === "pemasukan") {
+            totalPemasukan += data.total;
+          } else {
+            totalPengeluaran += data.total;
+          }
+        });
+        
+        // Update summary
+        document.getElementById("totalMasuk").textContent = formatRupiah(totalPemasukan);
+        document.getElementById("totalKeluar").textContent = formatRupiah(totalPengeluaran);
+        
+        // Update table
+        renderTransactionTable();
+        
+        // Update chart
+        renderChart(totalPemasukan, totalPengeluaran);
+      } catch (error) {
+        console.error("Error loading transactions: ", error);
+        showAlert("Gagal memuat transaksi: " + error.message, true);
+      }
+    }
+
+    // Render transaction table
+    function renderTransactionTable() {
+      const tbody = document.querySelector("#tabelTransaksi tbody");
+      tbody.innerHTML = "";
+      
+      if (transactions.length === 0) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="7" style="text-align: center;">Belum ada data transaksi</td>`;
+        tbody.appendChild(tr);
+        return;
+      }
+      
+      transactions.forEach(transaction => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${transaction.tanggal.toLocaleDateString('id-ID')}</td>
+          <td>${transaction.produk}</td>
+          <td>${transaction.jumlah}</td>
+          <td>${formatRupiah(transaction.harga)}</td>
+          <td>${formatRupiah(transaction.total)}</td>
+          <td>${transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
+          <td>${transaction.catatan || "-"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Export to CSV
+    document.getElementById("exportCSV").addEventListener("click", function() {
+      if (transactions.length === 0) {
+        showAlert("Tidak ada data untuk diekspor", true);
+        return;
+      }
+      
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Tanggal,Produk,Jumlah,Harga Satuan,Total,Jenis,Catatan\n";
+      
+      transactions.forEach(transaction => {
+        const row = [
+          transaction.tanggal.toLocaleDateString('id-ID'),
+          transaction.produk,
+          transaction.jumlah,
+          transaction.harga,
+          transaction.total,
+          transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
+          transaction.catatan || ""
+        ].join(",");
+        
+        csvContent += row + "\n";
+      });
+      
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `transaksi_femmeiacloth_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    // Load Chart.js
+    let myChart = null;
+    
+    async function loadChartJS() {
+      return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        script.onload = () => resolve();
+        document.head.appendChild(script);
+      });
+    }
+
+    // Render doughnut chart
+    async function renderChart(pemasukan, pengeluaran) {
+      await loadChartJS();
+      
+      const ctx = document.getElementById('grafik').getContext('2d');
+      
+      if (myChart) {
+        myChart.destroy();
+      }
+      
+      myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
           labels: ['Pemasukan', 'Pengeluaran'],
           datasets: [{
-            data: [masuk, keluar],
-            backgroundColor: ['#4caf50', '#f44336']
+            data: [pemasukan, pengeluaran],
+            backgroundColor: [
+              'rgba(0, 184, 148, 0.7)',
+              'rgba(214, 48, 49, 0.7)'
+            ],
+            borderColor: [
+              'rgba(0, 184, 148, 1)',
+              'rgba(214, 48, 49, 1)'
+            ],
+            borderWidth: 1
           }]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: {
               position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  return `${label}: ${formatRupiah(value)}`;
+                }
+              }
             }
           }
         }
       });
     }
 
-    function listenTransaksi() {
-      onSnapshot(collection(db, "transaksi"), (snapshot) => {
-        let totalIn = 0, totalOut = 0;
-        tabel.innerHTML = '';
-        allData = [];
-        snapshot.forEach(doc => {
-          const d = doc.data();
-          const row = `<tr><td>${new Date(d.tanggal).toLocaleDateString()}</td><td>${d.produk}</td><td>${d.jumlah}</td><td>Rp ${d.harga}</td><td>${d.jenis}</td><td>${d.catatan || ''}</td></tr>`;
-          tabel.innerHTML += row;
-          allData.push(d);
-          const total = d.harga * d.jumlah;
-          if (d.jenis === 'pemasukan') totalIn += total;
-          else totalOut += total;
-        });
-        totalMasuk.textContent = totalIn;
-        totalKeluar.textContent = totalOut;
-        updateChart(totalIn, totalOut);
-      });
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const data = {
-        produk: form.produk.value,
-        jumlah: Number(form.jumlah.value),
-        harga: Number(form.harga.value),
-        jenis: form.jenis.value,
-        catatan: form.catatan.value,
-        tanggal: new Date().toISOString()
-      };
-      try {
-        await addDoc(collection(db, "transaksi"), data);
-        form.reset();
-      } catch (err) {
-        console.error("Gagal simpan:", err);
+    // Export to PDF
+    document.getElementById("exportPDF").addEventListener("click", async function() {
+      if (transactions.length === 0) {
+        showAlert("Tidak ada data untuk diekspor", true);
+        return;
       }
+      
+      // Load jsPDF library
+      const script1 = document.createElement('script');
+      script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      document.head.appendChild(script1);
+      
+      // Load jsPDF-AutoTable plugin
+      const script2 = document.createElement('script');
+      script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js';
+      document.head.appendChild(script2);
+      
+      script2.onload = function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Add title
+        doc.setFontSize(18);
+        doc.text('FemmeiaCloth Finance Tracker', 14, 22);
+        
+        // Add date
+        doc.setFontSize(11);
+        doc.text(`Laporan Transaksi - ${new Date().toLocaleDateString('id-ID')}`, 14, 30);
+        
+        // Add summary
+        doc.setFontSize(12);
+        doc.text(`Total Pemasukan: ${document.getElementById("totalMasuk").textContent}`, 14, 40);
+        doc.text(`Total Pengeluaran: ${document.getElementById("totalKeluar").textContent}`, 14, 48);
+        // Create table
+        const tableColumn = ["Tanggal", "Produk", "Jumlah", "Harga", "Total", "Jenis", "Catatan"];
+        const tableRows = [];
+        
+        transactions.forEach(transaction => {
+          const tableRow = [
+            transaction.tanggal.toLocaleDateString('id-ID'),
+            transaction.produk,
+            transaction.jumlah,
+            formatRupiah(transaction.harga),
+            formatRupiah(transaction.total),
+            transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
+            transaction.catatan || "-"
+          ];
+          tableRows.push(tableRow);
+        });
+        
+        doc.autoTable({
+          head: [tableColumn],
+          body: tableRows,
+          startY: 60,
+          theme: 'grid',
+          styles: {
+            fontSize: 8,
+            cellPadding: 3
+          },
+          headStyles: {
+            fillColor: [108, 92, 231]
+          }
+        });
+        
+        // Save PDF
+        doc.save(`transaksi_femmeiacloth_${new Date().toISOString().slice(0, 10)}.pdf`);
+      };
     });
 
-    function downloadCSV() {
-      const csv = Papa.unparse(allData.map(d => ({
-        Tanggal: new Date(d.tanggal).toLocaleDateString(),
-        Produk: d.produk,
-        Jumlah: d.jumlah,
-        Harga: d.harga,
-        Jenis: d.jenis,
-        Catatan: d.catatan || ''
-      })));
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "transaksi_femmeiacloth.csv";
-      link.click();
-    }
-
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.text("Laporan Transaksi FemmeiaCloth", 10, 10);
-      let y = 20;
-      allData.forEach((d, i) => {
-        doc.text(`${i + 1}. ${new Date(d.tanggal).toLocaleDateString()} - ${d.produk} - ${d.jumlah} x Rp${d.harga} (${d.jenis})`, 10, y);
-        y += 10;
-        if (y > 270) {
-          doc.addPage();
-          y = 20;
-        }
-      });
-      doc.save("transaksi_femmeiacloth.pdf");
-    }
-
-    signInWithEmailAndPassword(auth, "femmeiacloth@gmail.com", "femmeia")
-      .then(() => {
-        alertBox.style.display = 'block';
-        listenTransaksi();
-      })
-      .catch((error) => console.error("Login gagal:", error));
+    // Initialize app
+    window.addEventListener('load', function() {
+      autoLogin();
+    });
   </script>
 </body>
 </html>
