@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=0.5">
   <title>FemmeiaCloth Finance Tracker</title>
-  <meta name="description" content="Aplikasi pencatatan keuangan untuk FemmeiaCloth">
+  <meta name="description" content="Aplikasi pencatatan keuangan untuk bisnis hijab FemmeiaCloth">
   <meta name="theme-color" content="#6c5ce7">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192x192.png">
@@ -16,7 +16,7 @@
       --border-color: #e0e0e0;
       --text-color: #333333;
       --accent-color: #6c5ce7;
-      --success-color: #00b894;
+      --success-color: #000;
       --danger-color: #d63031;
       --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       --radius: 8px;
@@ -39,6 +39,7 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
+      
     }
 
     header {
@@ -53,7 +54,7 @@
 
     h1 {
       font-weight: 700;
-      color: var(--accent-color);
+      color: #444;
       margin-bottom: 10px;
     }
 
@@ -83,7 +84,7 @@
 
     .card h2 {
       margin-bottom: 15px;
-      color: var(--accent-color);
+      color: #444;
       font-weight: 600;
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 10px;
@@ -136,7 +137,8 @@
     }
 
     button {
-      background-color: var(--accent-color);
+      background: linear-gradient(135deg, #ff7a7a, #ffb6b9);
+  box-shadow: 0 6px 20px rgba(255, 100, 100, 0.4);
       color: white;
       border: none;
       padding: 10px 15px;
@@ -153,6 +155,8 @@
     .btn-export {
       background-color: var(--success-color);
       margin-right: 10px;
+      
+      
     }
 
     .btn-export:hover {
@@ -244,6 +248,7 @@
     }
 
     .export-buttons {
+      margin-bottom: 15px;
       margin-top: 15px;
       display: flex;
       justify-content: flex-end;
@@ -253,6 +258,7 @@
     .chart-container {
       position: relative;
       height: 250px;
+ 
       margin-top: 20px;
     }
 
@@ -298,7 +304,7 @@
       font-weight: 600;
       color: var(--accent-color);
       border-radius: var(--radius) var(--radius) 0 0;
-      margin-top: 20px;
+      
     }
 
     .date-header:first-child {
@@ -558,7 +564,7 @@
       
       setTimeout(() => {
         alert.classList.remove("show");
-      }, 3000);
+      }, 1000);
     }
 
     // Format currency
@@ -590,20 +596,9 @@
     // Product suggestions - Enhanced list
     const productSuggestions = [
       "Hijab Paris",
-      "Pashmina Kaos",
-      "Premium Inner",
-      "Inner Rajut",
-      "Hijab Instan",
-      "Hijab Segi Empat",
-      "Hijab Plisket",
-      "Ciput Ninja",
-      "Pashmina Diamond",
-      "Hijab Voal",
-      "Hijab Syari",
-      "Ciput Antem",
-      "Hijab Bergo",
-      "Pashmina Ceruti",
-      "Hijab Sport"
+      "Earab Inner Ciput",
+      "Ciput",
+      "Pashmina Kaos"
     ];
 
     const produkInput = document.getElementById("produk");
