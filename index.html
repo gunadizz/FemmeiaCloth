@@ -611,7 +611,7 @@
   </div>
 
   <!-- Click animation script -->
-  <script>
+<script>
     // Circle animation on click
     !function(e, t, a) {
       function n() {
@@ -686,4 +686,126 @@
 
       var d = [];
       e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || function(e) {
-        setTj
+        setTimeout(e, 1000 / 60);
+      };
+      n();
+    }(window, document);
+
+    // Hide loading screen after fadeOut animation
+    window.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        var loading = document.querySelector('.loading-screen');
+        if (loading) loading.style.display = 'none';
+      }, 2500);
+    });
+
+    // Dark mode toggle logic
+    const darkModeBtn = document.getElementById('darkmode-toggle');
+    const iconMoon = document.getElementById('icon-moon');
+    const iconSun = document.getElementById('icon-sun');
+    function setTheme(mode) {
+      document.body.setAttribute('data-theme', mode);
+      if (mode === 'dark') {
+        iconMoon.style.display = 'none';
+        iconSun.style.display = 'inline';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        iconMoon.style.display = 'inline';
+        iconSun.style.display = 'none';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+    darkModeBtn.addEventListener('click', function() {
+      const current = document.body.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+    // On load, check theme preference
+    (function() {
+      const pref = localStorage.getItem('theme');
+      if (pref === 'dark') setTheme('dark');
+      else setTheme('light');
+    })();
+
+    // Language changer logic
+    // id = Indonesia, en = English
+    const langBtn = document.getElementById('lang-toggle');
+    const iconId = document.getElementById('icon-globe-id');
+    const iconEn = document.getElementById('icon-globe-en');
+    const texts = {
+      id: {
+        'brand-title': "FemmeiaCloth",
+        'brand-subtitle': "Premium Quality Hijab & Accessories",
+        'tagline': "Tampil Syar'i, Tetap Stylish!",
+        'info-delivery': "Pengiriman Seluruh Indonesia",
+        'info-original': "Produk Original & Terjamin",
+        'info-service': "Layanan Fast Response",
+        'btn-order': "Pesan Sekarang",
+        'btn-wa': "WhatsApp",
+        'btn-ig': "Instagram",
+        'btn-shopee': "Shopee",
+        'btn-track': "Lacak Paket",
+        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>'
+      },
+      en: {
+        'brand-title': "FemmeiaCloth",
+        'brand-subtitle': "Premium Quality Hijab & Accessories",
+        'tagline': "Look Modest, Stay Stylish!",
+        'info-delivery': "Nationwide Shipping",
+        'info-original': "100% Authentic Products",
+        'info-service': "Fast Response Service",
+        'btn-order': "Order Now",
+        'btn-wa': "WhatsApp",
+        'btn-ig': "Instagram",
+        'btn-shopee': "Shopee",
+        'btn-track': "Track Your Package",
+        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>'
+      }
+    };
+    function setLang(lang) {
+      for(const id in texts[lang]) {
+        const el = document.getElementById(id);
+        if (el) {
+          if (id === "footer") el.innerHTML = texts[lang][id];
+          else el.textContent = texts[lang][id];
+        }
+      }
+      if(lang === "id") {
+        iconId.style.display = "inline";
+        iconEn.style.display = "none";
+      } else {
+        iconId.style.display = "none";
+        iconEn.style.display = "inline";
+      }
+      document.documentElement.lang = lang;
+      localStorage.setItem("lang", lang);
+    }
+    langBtn.addEventListener('click', function() {
+      const current = localStorage.getItem("lang") || "id";
+      setLang(current === "id" ? "en" : "id");
+    });
+    // On load, set default language
+    (function() {
+      const lang = localStorage.getItem("lang") || "id";
+      setLang(lang);
+    })();
+
+  </script>
+  
+  <script>
+// Modal logic
+const modal = document.getElementById('screenshotModal');
+const openBtn = document.getElementById('openScreenshotModal');
+const closeBtn = document.getElementById('closeScreenshotModal');
+const overlay = modal.querySelector('.modal-overlay');
+
+// Open modal
+openBtn.onclick = () => { modal.classList.add('active'); };
+// Close modal
+closeBtn.onclick = overlay.onclick = () => { modal.classList.remove('active'); };
+// ESC key closes
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') modal.classList.remove('active');
+});
+</script>
+</body>
+</html>
