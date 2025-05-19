@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FemmeiaCloth</title>
   <style>
     :root {
@@ -13,20 +13,37 @@
       --bg: #f5f5f5;
       --card-bg: #fff;
       --accent: #814c26;
+      --sticky1: #e4a561;
+      --sticky2: #814c26;
       --radius: 20px;
       --shadow: 0 4px 16px rgba(0,0,0,0.10);
       --transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    }
+    [data-theme="dark"] {
+      --primary: #f5f5f5;
+      --secondary: #bbb;
+      --bg: #181818;
+      --card-bg: #232323;
+      --accent: #f5b06c;
+      --sticky1: #ae7f40;
+      --sticky2: #b58055;
+      --shadow: 0 4px 16px rgba(0,0,0,0.45);
     }
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Montserrat', sans-serif !important;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg);
     }
 
     body {
-      background-color: var(--bg);
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -46,6 +63,7 @@
       z-index: 9999;
       animation: fadeOut 0.5s ease forwards;
       animation-delay: 2s;
+      font-family: 'Montserrat', sans-serif !important;
     }
     .loading-logo {
       width: 120px;
@@ -67,20 +85,67 @@
       }
     }
 
+    /* Sticky buttons */
+    .sticky-btns {
+      position: fixed;
+      bottom: 4vw;
+      right: 4vw;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      z-index: 20000;
+      transition: opacity 0.25s, bottom 0.25s, right 0.25s;
+    }
+    .sticky-btn {
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      box-shadow: 0 4px 16px rgba(129, 76, 38, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.55rem;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.18s, color 0.25s;
+      outline: none;
+      font-family: 'Montserrat', sans-serif !important;
+      color: #fff;
+    }
+    .sticky-btn#darkmode-toggle {
+      background: #000;
+    }
+    .sticky-btn#darkmode-toggle:hover,
+    .sticky-btn#darkmode-toggle:focus {
+      background: var(--accent);
+      color: #fff;
+      transform: scale(1.09);
+    }
+    .sticky-btn#lang-toggle {
+      background: #000;
+    }
+    .sticky-btn#lang-toggle:hover,
+    .sticky-btn#lang-toggle:focus {
+      background: var(--sticky1);
+      color: #fff;
+      transform: scale(1.09);
+    }
+
     /* Main container */
     .main-content {
       max-width: 430px;
       width: 96vw;
-      margin: 48px auto 0 auto;
+      margin: 5vw auto 0 auto;
       background: var(--card-bg);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2.5rem 1.5rem 1.75rem 1.5rem;
+      padding: 2.5rem 1.2rem 1.7rem 1.2rem;
       position: relative;
       z-index: 1;
+      margin-bottom: 10vw;
     }
 
     /* Decorative elements */
@@ -88,21 +153,21 @@
       position: absolute;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.13;
-      filter: blur(1.5px);
+      opacity: 0.12;
+      filter: blur(2.5px);
     }
     .bg-shape1 {
-      width: 180px; height: 180px;
+      width: 210px; height: 210px;
       background: linear-gradient(135deg, var(--accent) 60%, var(--secondary) 100%);
       border-radius: 45% 65% 70% 30%;
-      top: -100px; left: -80px;
+      top: -100px; left: -100px;
       animation: blob1 14s infinite alternate ease-in-out;
     }
     .bg-shape2 {
-      width: 140px; height: 140px;
+      width: 150px; height: 150px;
       background: linear-gradient(135deg, var(--secondary) 50%, var(--accent) 100%);
       border-radius: 70% 30% 50% 50%;
-      bottom: -60px; right: -45px;
+      bottom: 0px; right: 10px;
       animation: blob2 19s infinite alternate ease-in-out;
     }
     @keyframes blob1 {
@@ -117,9 +182,10 @@
     /* Branding */
     .brand-logo {
       width: 100px;
-      border-radius: 14px;
+      border-radius: 16px;
       box-shadow: 0 2px 12px rgba(130,130,130,0.14);
-      margin-bottom: 1.1rem;
+      margin-bottom: 1.2rem;
+      margin-top: 0.2rem;
     }
     .brand-title {
       font-size: 2.1rem;
@@ -128,27 +194,32 @@
       color: var(--primary);
       margin-bottom: 0.4rem;
       line-height: 1.1;
+      text-shadow: 0 1px 5px rgba(129,76,38,0.10);
+      text-align: center;
     }
     .brand-subtitle {
-      font-size: 1.04rem;
+      font-size: 1.12rem;
       color: var(--secondary);
       font-weight: 500;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.15rem;
       letter-spacing: 1px;
+      text-align: center;
     }
 
     /* Tagline */
     .tagline {
       background: linear-gradient(90deg, var(--secondary) 60%, var(--accent) 100%);
       color: #fff;
-      padding: 0.45rem 1.1rem;
+      padding: 0.47rem 1.3rem;
       border-radius: 16px;
-      font-size: 1rem;
-      font-weight: 500;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 1px 8px rgba(80,80,80,0.05);
+      font-size: 1.08rem;
+      font-weight: 600;
+      margin-bottom: 1.7rem;
+      box-shadow: 0 1px 8px rgba(80,80,80,0.07);
       letter-spacing: 1px;
       display: inline-block;
+      text-align: center;
+      text-shadow: 0 1px 7px rgba(129,76,38,0.07);
     }
 
     /* Buttons */
@@ -157,14 +228,14 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      padding: 1rem;
-      margin: 0.55rem 0;
+      padding: 1.04rem;
+      margin: 0.58rem 0;
       background: linear-gradient(93deg, var(--primary) 70%, var(--secondary) 100%);
       color: white;
       border: none;
-      border-radius: 11px;
-      font-size: 1.13rem;
-      font-weight: 500;
+      border-radius: 13px;
+      font-size: 1.16rem;
+      font-weight: 600;
       cursor: pointer;
       text-decoration: none;
       box-shadow: 0 3px 14px rgba(0, 0, 0, 0.09);
@@ -173,38 +244,41 @@
       z-index: 1;
       letter-spacing: 0.5px;
       gap: 0.7em;
+      outline: none;
+      font-family: 'Montserrat', sans-serif !important;
     }
     .link-btn:hover, .link-btn:focus {
       background: linear-gradient(93deg, var(--accent) 50%, var(--secondary) 100%);
-      transform: translateY(-2px) scale(1.025);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+      color: var(--primary);
     }
     .link-btn .icon {
-      font-size: 1.17em;
+      font-size: 1.18em;
       display: inline-block;
       vertical-align: middle;
-      margin-right: 0.22em;
+      margin-right: 0.21em;
     }
 
     /* Info cards */
     .info-cards {
       display: flex;
       justify-content: center;
-      gap: 1.2rem;
-      margin: 1.7rem 0 0.7rem 0;
+      gap: 1.3rem;
+      margin: 1.9rem 0 0.8rem 0;
       width: 100%;
       flex-wrap: wrap;
       z-index: 1;
     }
     .info-card {
       flex: 1 1 130px;
-      min-width: 110px;
+      min-width: 116px;
       background: #faf7f7;
-      border-radius: 11px;
-      padding: 1rem 0.7rem;
+      border-radius: 13px;
+      padding: 1.07rem 0.8rem;
       text-align: center;
-      box-shadow: 0 2px 7px rgba(80,80,80,0.07);
-      font-size: 0.97rem;
+      box-shadow: 0 2px 7px rgba(80,80,80,0.09);
+      font-size: 0.99rem;
       color: var(--primary);
       font-weight: 500;
       margin-bottom: 0.1rem;
@@ -213,9 +287,15 @@
       flex-direction: column;
       align-items: center;
       gap: 0.3em;
+      border: 1.5px solid #f2e6e0;
+      font-family: 'Montserrat', sans-serif !important;
+    }
+    [data-theme="dark"] .info-card {
+      background: #232323;
+      border: 1.5px solid #353535;
     }
     .info-card .info-icon {
-      font-size: 1.3em;
+      font-size: 1.32em;
       margin-bottom: 0.13em;
       color: var(--accent);
     }
@@ -228,25 +308,36 @@
 
     /* Footer */
     .footer {
-      margin: 2.3rem auto 1rem auto;
+      margin: 5vw auto 2vw auto;
       text-align: center;
       color: #aaa;
-      font-size: 0.95rem;
-      letter-spacing: 0.3px;
+      font-size: 0.97rem;
+      letter-spacing: 0.28px;
       z-index: 1;
       position: relative;
+      font-family: 'Montserrat', sans-serif !important;
+    }
+    [data-theme="dark"] .footer {
+      color: #bbb;
     }
     .footer a {
       color: var(--secondary);
       text-decoration: none;
       font-weight: 500;
       margin-left: 0.4em;
+      transition: color 0.2s;
     }
-    @media (max-width: 620px) {
+    .footer a:hover, .footer a:focus {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
       .main-content {
-        margin: 22px auto 0 auto;
-        padding: 1.6rem 0.3rem 1.2rem 0.3rem;
         max-width: 99vw;
+        padding: 2.2rem 0.8rem 1.3rem 0.8rem;
+        margin: 5vw auto 0 auto;
       }
       .info-cards {
         gap: 0.7rem;
@@ -258,56 +349,103 @@
         font-size: 0.97rem;
         padding: 0.35rem 0.7rem;
       }
+      .sticky-btns {
+        right: 3vw;
+        bottom: 3vw;
+      }
+      .footer {
+        font-size: 0.93rem;
+        margin: 6vw auto 2vw auto;
+      }
+    }
+    @media (max-width: 480px) {
+      .main-content { 
+        padding: 1.1rem 2vw 0.9rem 2vw;
+        max-width: 99vw;
+        margin: 4vw auto 0 auto;
+      }
+      .sticky-btns { 
+        right: 2vw;
+        
+        bottom: 2vw;
+      }
+      .footer {
+        font-size: 0.91rem;
+        margin: 8vw auto 2vw auto;
+      }
+    }
+    @media (max-width: 340px) {
+      .main-content {
+        padding: 0.6rem 1vw 0.6rem 1vw;
+        margin: 2vw auto 0 auto;
+      }
+      .sticky-btns {
+        right: 1vw;
+        bottom: 1vw;
+      }
+      .footer {
+        font-size: 0.85rem;
+        margin: 10vw auto 2vw auto;
+      }
     }
   </style>
 </head>
-<body>
+<body data-theme="light">
   <!-- Loading screen -->
   <div class="loading-screen">
-    <img class="loading-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG-20250410-WA0040.jpg" alt="FemmeiaCloth logo loading">
+    <img class="loading-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth logo loading">
     <div class="loading-text">FemmeiaCloth</div>
   </div>
 
   <!-- Decorative background shapes -->
   <div class="bg-shape1"></div>
   <div class="bg-shape2"></div>
+  
+
+
+  <!-- Sticky Buttons -->
+  <div class="sticky-btns">
+    <button class="sticky-btn" id="darkmode-toggle" title="Dark mode"><span id="darkmode-icon">🌙</span></button>
+    <button class="sticky-btn" id="lang-toggle" title="Ganti Bahasa / Change Language"><span id="lang-icon">🇮🇩</span></button>
+  </div>
 
   <!-- Main Content -->
   <div class="main-content">
     <img class="brand-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth Logo" />
-    <div class="brand-title">FemmeiaCloth</div>
-    <div class="brand-subtitle">Premium Quality Hijab &amp; Accessories</div>
-    <div class="tagline">Tampil Syar'i, Tetap Stylish!</div>
+    <div class="brand-title" id="brand-title">FemmeiaCloth</div>
+    <div class="brand-subtitle" id="brand-subtitle">Premium Quality Hijab &amp; Accessories</div>
+    <div class="tagline" id="tagline">Tampil Syar'i, Tetap Stylish!</div>
 
     <div class="info-cards">
       <div class="info-card">
         <span class="info-icon">🚚</span>
-        <div>Pengiriman Seluruh Indonesia</div>
+        <div id="info-delivery">Pengiriman Seluruh Indonesia</div>
       </div>
       <div class="info-card">
         <span class="info-icon">✅</span>
-        <div>Produk Original &amp; Terjamin</div>
+        <div id="info-original">Produk Original &amp; Terjamin</div>
       </div>
       <div class="info-card">
         <span class="info-icon">💬</span>
-        <div>Layanan Fast Response</div>
+        <div id="info-service">Layanan Fast Response</div>
       </div>
     </div>
 
-    <a href="/order.html" class="link-btn"><span class="icon">🛒</span>Pesan Sekarang</a>
-    <a href="https://wa.me/6287777420644" class="link-btn"><span class="icon">💬</span>WhatsApp</a>
-    <a href="https://www.instagram.com/femmeia.cloth/" class="link-btn"><span class="icon">📷</span>Instagram</a>
-    <a href="https://shopee.co.id/femmeiacloth" class="link-btn"><span class="icon">🛍️</span>Shopee</a>
-    <a href="/track.html" class="link-btn"><span class="icon">📦</span>Lacak Paket</a>
+    <a href="/order.html" class="link-btn"><span class="icon">🛒</span><span id="btn-order">Pesan Sekarang</span></a>
+    <a href="https://wa.me/6287777420644" class="link-btn"><span class="icon">💬</span><span id="btn-wa">WhatsApp</span></a>
+    <a href="https://www.instagram.com/femmeia.cloth/" class="link-btn"><span class="icon">📷</span><span id="btn-ig">Instagram</span></a>
+    <a href="https://shopee.co.id/femmeiacloth" class="link-btn"><span class="icon">🛍️</span><span id="btn-shopee">Shopee</span></a>
+    <a href="/track.html" class="link-btn"><span class="icon">📦</span><span id="btn-track">Lacak Paket</span></a>
   </div>
 
-  <div class="footer">
+  <div class="footer" id="footer">
     &copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span>
-    <a href="https://www.instagram.com/gunadizz" target="_blank">@gunadizz</a>
+    <a href="https://www.instagram.com/gunadizz" target="_blank">@femmeia.cloth</a>
   </div>
 
   <!-- Click animation script -->
   <script>
+    // Circle animation on click
     !function(e, t, a) {
       function n() {
         c(`
@@ -318,6 +456,7 @@
             background: #999;
             border-radius: 50%;
             z-index: 99999;
+            font-family: 'Montserrat', sans-serif !important;
           }
         `), o(), r();
       }
@@ -392,6 +531,85 @@
         if (loading) loading.style.display = 'none';
       }, 2500);
     });
+
+    // Dark mode toggle logic
+    const darkModeBtn = document.getElementById('darkmode-toggle');
+    const darkModeIcon = document.getElementById('darkmode-icon');
+    function setTheme(mode) {
+      document.body.setAttribute('data-theme', mode);
+      if (mode === 'dark') {
+        darkModeIcon.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        darkModeIcon.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+    darkModeBtn.addEventListener('click', function() {
+      const current = document.body.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+    // On load, check theme preference
+    (function() {
+      const pref = localStorage.getItem('theme');
+      if (pref === 'dark') setTheme('dark');
+    })();
+
+    // Language changer logic
+    // id = Indonesia, en = English
+    const langBtn = document.getElementById('lang-toggle');
+    const langIcon = document.getElementById('lang-icon');
+    const texts = {
+      id: {
+        'brand-title': "FemmeiaCloth",
+        'brand-subtitle': "Premium Quality Hijab",
+        'tagline': "Tampil Syar'i, Tetap Stylish!",
+        'info-delivery': "Pengiriman Seluruh Indonesia",
+        'info-original': "Produk Original & Terjamin",
+        'info-service': "Layanan Fast Response",
+        'btn-order': "Pesan Sekarang",
+        'btn-wa': "WhatsApp",
+        'btn-ig': "Instagram",
+        'btn-shopee': "Shopee",
+        'btn-track': "Lacak Paket",
+        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/gunadizz" target="_blank">@gunadizz</a>'
+      },
+      en: {
+        'brand-title': "FemmeiaCloth",
+        'brand-subtitle': "Premium Quality Hijab",
+        'tagline': "Look Modest, Stay Stylish!",
+        'info-delivery': "Nationwide Shipping",
+        'info-original': "100% Authentic Products",
+        'info-service': "Fast Response Service",
+        'btn-order': "Order Now",
+        'btn-wa': "WhatsApp",
+        'btn-ig': "Instagram",
+        'btn-shopee': "Shopee",
+        'btn-track': "Track Your Package",
+        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>'
+      }
+    };
+    function setLang(lang) {
+      for(const id in texts[lang]) {
+        const el = document.getElementById(id);
+        if (el) {
+          if (id === "footer") el.innerHTML = texts[lang][id];
+          else el.textContent = texts[lang][id];
+        }
+      }
+      langIcon.textContent = lang === "id" ? "id" : "en";
+      document.documentElement.lang = lang;
+      localStorage.setItem("lang", lang);
+    }
+    langBtn.addEventListener('click', function() {
+      const current = localStorage.getItem("lang") || "id";
+      setLang(current === "id" ? "en" : "id");
+    });
+    // On load, set default language
+    (function() {
+      const lang = localStorage.getItem("lang") || "id";
+      setLang(lang);
+    })();
   </script>
 </body>
 </html>
