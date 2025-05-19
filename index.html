@@ -1,56 +1,65 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> <!-- Montserrat Light -->
- 	<link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
- 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FemmeiaCloth</title>
   <style>
+    :root {
+      --primary: #111;
+      --secondary: #888;
+      --bg: #f5f5f5;
+      --card-bg: #fff;
+      --accent: #814c26;
+      --radius: 20px;
+      --shadow: 0 4px 16px rgba(0,0,0,0.10);
+      --transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    }
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Montserrat';
+      font-family: 'Montserrat', sans-serif;
     }
 
     body {
-      background-color: #f5f5f5;
+      background-color: var(--bg);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      align-items: stretch;
+      justify-content: flex-start;
     }
 
+    /* Loading screen */
     .loading-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #f5f5f5;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: var(--bg);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 9999;
       animation: fadeOut 0.5s ease forwards;
       animation-delay: 2s;
     }
-
-    .loading-screen img {
-      width: 300px;
-      height: auto;
-      animation: float 0.5s ease-in-out infinite;
+    .loading-logo {
+      width: 120px;
+      border-radius: 50%;
+      margin-bottom: 1.2rem;
+      box-shadow: var(--shadow);
     }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    .loading-text {
+      font-size: 1.1rem;
+      color: var(--secondary);
+      letter-spacing: 2px;
+      margin-top: 0.6rem;
+      font-weight: 500;
     }
-
     @keyframes fadeOut {
       to {
         opacity: 0;
@@ -58,136 +67,331 @@
       }
     }
 
-    .container {
-      text-align: center;
-      padding: 2rem;
-      max-width: 480px;
-      width: 100%;
+    /* Main container */
+    .main-content {
+      max-width: 430px;
+      width: 96vw;
+      margin: 48px auto 0 auto;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1.5rem 1.75rem 1.5rem;
+      position: relative;
+      z-index: 1;
     }
 
+    /* Decorative elements */
+    .bg-shape1, .bg-shape2 {
+      position: absolute;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.13;
+      filter: blur(1.5px);
+    }
+    .bg-shape1 {
+      width: 180px; height: 180px;
+      background: linear-gradient(135deg, var(--accent) 60%, var(--secondary) 100%);
+      border-radius: 45% 65% 70% 30%;
+      top: -100px; left: -80px;
+      animation: blob1 14s infinite alternate ease-in-out;
+    }
+    .bg-shape2 {
+      width: 140px; height: 140px;
+      background: linear-gradient(135deg, var(--secondary) 50%, var(--accent) 100%);
+      border-radius: 70% 30% 50% 50%;
+      bottom: -60px; right: -45px;
+      animation: blob2 19s infinite alternate ease-in-out;
+    }
+    @keyframes blob1 {
+      0% { border-radius: 45% 65% 70% 30%; }
+      100% { border-radius: 60% 40% 30% 70%; }
+    }
+    @keyframes blob2 {
+      0% { border-radius: 70% 30% 50% 50%; }
+      100% { border-radius: 40% 60% 70% 30%; }
+    }
+
+    /* Branding */
     .brand-logo {
-      width: 100%;
-      max-width: 200px;
-      margin-bottom: 2rem;
+      width: 100px;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(130,130,130,0.14);
+      margin-bottom: 1.1rem;
+    }
+    .brand-title {
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+      line-height: 1.1;
+    }
+    .brand-subtitle {
+      font-size: 1.04rem;
+      color: var(--secondary);
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      letter-spacing: 1px;
     }
 
+    /* Tagline */
+    .tagline {
+      background: linear-gradient(90deg, var(--secondary) 60%, var(--accent) 100%);
+      color: #fff;
+      padding: 0.45rem 1.1rem;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 8px rgba(80,80,80,0.05);
+      letter-spacing: 1px;
+      display: inline-block;
+    }
+
+    /* Buttons */
     .link-btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
       padding: 1rem;
-      margin: 0.75rem 0;
-      background: linear-gradient(to right, #111, #888);
+      margin: 0.55rem 0;
+      background: linear-gradient(93deg, var(--primary) 70%, var(--secondary) 100%);
       color: white;
       border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
+      border-radius: 11px;
+      font-size: 1.13rem;
+      font-weight: 500;
       cursor: pointer;
       text-decoration: none;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.09);
+      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+      letter-spacing: 0.5px;
+      gap: 0.7em;
+    }
+    .link-btn:hover, .link-btn:focus {
+      background: linear-gradient(93deg, var(--accent) 50%, var(--secondary) 100%);
+      transform: translateY(-2px) scale(1.025);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+    .link-btn .icon {
+      font-size: 1.17em;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 0.22em;
     }
 
-    .link-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    /* Info cards */
+    .info-cards {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin: 1.7rem 0 0.7rem 0;
+      width: 100%;
+      flex-wrap: wrap;
+      z-index: 1;
+    }
+    .info-card {
+      flex: 1 1 130px;
+      min-width: 110px;
+      background: #faf7f7;
+      border-radius: 11px;
+      padding: 1rem 0.7rem;
+      text-align: center;
+      box-shadow: 0 2px 7px rgba(80,80,80,0.07);
+      font-size: 0.97rem;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 0.1rem;
+      letter-spacing: 0.1px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3em;
+    }
+    .info-card .info-icon {
+      font-size: 1.3em;
+      margin-bottom: 0.13em;
+      color: var(--accent);
+    }
+    .info-card strong {
+      display: block;
+      color: var(--accent);
+      font-size: 1.01em;
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .footer {
+      margin: 2.3rem auto 1rem auto;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+      z-index: 1;
+      position: relative;
+    }
+    .footer a {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 0.4em;
+    }
+    @media (max-width: 620px) {
+      .main-content {
+        margin: 22px auto 0 auto;
+        padding: 1.6rem 0.3rem 1.2rem 0.3rem;
+        max-width: 99vw;
+      }
+      .info-cards {
+        gap: 0.7rem;
+      }
+      .brand-title {
+        font-size: 1.4rem;
+      }
+      .tagline {
+        font-size: 0.97rem;
+        padding: 0.35rem 0.7rem;
+      }
     }
   </style>
 </head>
 <body>
-
+  <!-- Loading screen -->
   <div class="loading-screen">
-    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG-20250410-WA0040.jpg" alt="FemmeiaCloth logo loading">
+    <img class="loading-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG-20250410-WA0040.jpg" alt="FemmeiaCloth logo loading">
+    <div class="loading-text">FemmeiaCloth</div>
   </div>
 
-  
-  <div class="container">
-    <img class="brand-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth" />
-    <a href="/order.html" class="link-btn">Pesan Sekarang</a>
-    <a href="https://wa.me/6287777420644" class="link-btn">WhatsApp</a>
-    <a href="https://www.instagram.com/femmeia.cloth/" class="link-btn">Instagram</a>
-    <a href="https://shopee.co.id/femmeiacloth" class="link-btn">Shopee</a>
-    <a href="/track.html" class="link-btn">Lacak Paket</a>
+  <!-- Decorative background shapes -->
+  <div class="bg-shape1"></div>
+  <div class="bg-shape2"></div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <img class="brand-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth Logo" />
+    <div class="brand-title">FemmeiaCloth</div>
+    <div class="brand-subtitle">Premium Quality Hijab &amp; Accessories</div>
+    <div class="tagline">Tampil Syar'i, Tetap Stylish!</div>
+
+    <div class="info-cards">
+      <div class="info-card">
+        <span class="info-icon">🚚</span>
+        <div>Pengiriman Seluruh Indonesia</div>
+      </div>
+      <div class="info-card">
+        <span class="info-icon">✅</span>
+        <div>Produk Original &amp; Terjamin</div>
+      </div>
+      <div class="info-card">
+        <span class="info-icon">💬</span>
+        <div>Layanan Fast Response</div>
+      </div>
+    </div>
+
+    <a href="/order.html" class="link-btn"><span class="icon">🛒</span>Pesan Sekarang</a>
+    <a href="https://wa.me/6287777420644" class="link-btn"><span class="icon">💬</span>WhatsApp</a>
+    <a href="https://www.instagram.com/femmeia.cloth/" class="link-btn"><span class="icon">📷</span>Instagram</a>
+    <a href="https://shopee.co.id/femmeiacloth" class="link-btn"><span class="icon">🛍️</span>Shopee</a>
+    <a href="/track.html" class="link-btn"><span class="icon">📦</span>Lacak Paket</a>
   </div>
-  
+
+  <div class="footer">
+    &copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span>
+    <a href="https://www.instagram.com/gunadizz" target="_blank">@gunadizz</a>
+  </div>
+
+  <!-- Click animation script -->
   <script>
-!function(e, t, a) {
-  function n() {
-    c(`
-      .circle {
-        width: 12px;
-        height: 12px;
-        position: fixed;
-        background: #999;
-        border-radius: 50%;
-        z-index: 99999;
+    !function(e, t, a) {
+      function n() {
+        c(`
+          .circle {
+            width: 12px;
+            height: 12px;
+            position: fixed;
+            background: #999;
+            border-radius: 50%;
+            z-index: 99999;
+          }
+        `), o(), r();
       }
-    `), o(), r();
-  }
 
-  function r() {
-    for (var e = 0; e < d.length; e++) {
-      if (d[e].alpha <= 0) {
-        t.body.removeChild(d[e].el);
-        d.splice(e, 1);
-        e--;
-        continue;
+      function r() {
+        for (var e = 0; e < d.length; e++) {
+          if (d[e].alpha <= 0) {
+            t.body.removeChild(d[e].el);
+            d.splice(e, 1);
+            e--;
+            continue;
+          }
+          d[e].y--;
+          d[e].scale += 0.004;
+          d[e].alpha -= 0.013;
+          d[e].el.style.cssText = `
+            left:${d[e].x}px;
+            top:${d[e].y}px;
+            opacity:${d[e].alpha};
+            transform:scale(${d[e].scale});
+            background:#999;
+            border-radius:50%;
+            position:fixed;
+            z-index:99999;
+          `;
+        }
+        requestAnimationFrame(r);
       }
-      d[e].y--;
-      d[e].scale += 0.004;
-      d[e].alpha -= 0.013;
-      d[e].el.style.cssText = `
-        left:${d[e].x}px;
-        top:${d[e].y}px;
-        opacity:${d[e].alpha};
-        transform:scale(${d[e].scale});
-        background:#999;
-        border-radius:50%;
-        position:fixed;
-        z-index:99999;
-      `;
-    }
-    requestAnimationFrame(r);
-  }
 
-  function o() {
-    const clickHandler = "function" == typeof e.onclick && e.onclick;
-    e.onclick = function(e) {
-      clickHandler && clickHandler(), i(e);
-    }
-  }
+      function o() {
+        const clickHandler = "function" == typeof e.onclick && e.onclick;
+        e.onclick = function(e) {
+          clickHandler && clickHandler(), i(e);
+        }
+      }
 
-  function i(e) {
-    var a = t.createElement("div");
-    a.className = "circle";
-    d.push({
-      el: a,
-      x: e.clientX - 6,
-      y: e.clientY - 6,
-      scale: 1,
-      alpha: 1
+      function i(e) {
+        var a = t.createElement("div");
+        a.className = "circle";
+        d.push({
+          el: a,
+          x: e.clientX - 6,
+          y: e.clientY - 6,
+          scale: 1,
+          alpha: 1
+        });
+        t.body.appendChild(a);
+      }
+
+      function c(e) {
+        var a = t.createElement("style");
+        a.type = "text/css";
+        try {
+          a.appendChild(t.createTextNode(e));
+        } catch (t) {
+          a.styleSheet.cssText = e;
+        }
+        t.getElementsByTagName("head")[0].appendChild(a);
+      }
+
+      var d = [];
+      e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || function(e) {
+        setTimeout(e, 1000 / 60);
+      };
+      n();
+    }(window, document);
+
+    // Hide loading screen after fadeOut animation
+    window.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        var loading = document.querySelector('.loading-screen');
+        if (loading) loading.style.display = 'none';
+      }, 2500);
     });
-    t.body.appendChild(a);
-  }
-
-  function c(e) {
-    var a = t.createElement("style");
-    a.type = "text/css";
-    try {
-      a.appendChild(t.createTextNode(e));
-    } catch (t) {
-      a.styleSheet.cssText = e;
-    }
-    t.getElementsByTagName("head")[0].appendChild(a);
-  }
-
-  var d = [];
-  e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || function(e) {
-    setTimeout(e, 1000 / 60);
-  };
-  n();
-}(window, document);
-</script>
-
-
-
+  </script>
 </body>
+</html>
