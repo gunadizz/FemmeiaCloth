@@ -105,12 +105,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.55rem;
+      font-size: 1.6rem;
       cursor: pointer;
       transition: background 0.25s, transform 0.18s, color 0.25s;
       outline: none;
       font-family: 'Montserrat', sans-serif !important;
       color: #fff;
+      background: transparent;
+      padding: 0;
     }
     .sticky-btn#darkmode-toggle {
       background: #000;
@@ -129,6 +131,18 @@
       background: var(--sticky1);
       color: #fff;
       transform: scale(1.09);
+    }
+    .sticky-btn svg {
+      width: 26px;
+      height: 26px;
+      display: block;
+      pointer-events: none;
+      fill: #fff;
+      transition: fill 0.2s;
+    }
+    .sticky-btn#darkmode-toggle.active svg,
+    .sticky-btn#lang-toggle.active svg {
+      fill: var(--primary);
     }
 
     /* Main container */
@@ -357,6 +371,9 @@
         font-size: 0.93rem;
         margin: 6vw auto 2vw auto;
       }
+      .carousel-slide img {
+        height: 160px;
+      }
     }
     @media (max-width: 480px) {
       .main-content { 
@@ -366,12 +383,14 @@
       }
       .sticky-btns { 
         right: 2vw;
-        
         bottom: 2vw;
       }
       .footer {
         font-size: 0.91rem;
         margin: 8vw auto 2vw auto;
+      }
+      .carousel-slide img {
+        height: 120px;
       }
     }
     @media (max-width: 340px) {
@@ -387,7 +406,72 @@
         font-size: 0.85rem;
         margin: 10vw auto 2vw auto;
       }
+      .carousel-slide img {
+        height: 80px;
+      }
     }
+    /* Modal Styles */
+.modal-screenshot {
+  display: none;
+  position: fixed;
+  z-index: 99999;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  justify-content: center; align-items: center;
+  font-family: 'Montserrat', sans-serif;
+}
+.modal-screenshot.active { display: flex; }
+.modal-overlay {
+  position: absolute;
+  width: 100vw; height: 100vh;
+  left: 0; top: 0;
+  background: rgba(40,40,40,0.38);
+  z-index: 1;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.modal-content {
+  position: relative;
+  background: #fafafa;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(60,60,60,0.22);
+  padding: 2.1vw 2vw 2vw 2vw;
+  max-width: 95vw;
+  max-height: 90vh;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  animation: modalIn 0.25s cubic-bezier(.4,0,.2,1);
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.92);}
+  to { opacity: 1; transform: scale(1);}
+}
+.modal-img {
+  width: 92vw;
+  max-width: 540px;
+  max-height: 73vh;
+  border-radius: 14px;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 2px 14px rgba(40,40,40,0.07);
+  background: #eee;
+}
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 18px; right: 18px;
+  z-index: 11;
+  padding: 3px;
+  border-radius: 50%;
+  transition: background 0.18s;
+}
+.modal-close:hover,
+.modal-close:focus { background: #eee; }
+
+
   </style>
 </head>
 <body data-theme="light">
@@ -401,12 +485,42 @@
   <div class="bg-shape1"></div>
   <div class="bg-shape2"></div>
   
-
-
   <!-- Sticky Buttons -->
   <div class="sticky-btns">
-    <button class="sticky-btn" id="darkmode-toggle" title="Dark mode"><span id="darkmode-icon">🌙</span></button>
-    <button class="sticky-btn" id="lang-toggle" title="Ganti Bahasa / Change Language"><span id="lang-icon">🇮🇩</span></button>
+    <!-- Dark Mode Toggle SVG -->
+    <button class="sticky-btn" id="darkmode-toggle" title="Dark mode" aria-label="Toggle dark mode">
+      <!-- Moon | Sun (outline, iconic, not colored) -->
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 0 1 12.21 3a7 7 0 1 0 8.79 9.79z"></path>
+      </svg>
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+    <!-- Lang Toggle SVG -->
+    <button class="sticky-btn" id="lang-toggle" title="Ganti Bahasa / Change Language" aria-label="Toggle language">
+      <!-- Globe outline, iconic, not colored -->
+      <svg id="icon-globe-id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <ellipse cx="12" cy="12" rx="7" ry="10"></ellipse>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+      </svg>
+      <svg id="icon-globe-en" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <circle cx="12" cy="12" r="10"></circle>
+        <ellipse cx="12" cy="12" rx="7" ry="10"></ellipse>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <line x1="6" y1="2" x2="6" y2="22"></line>
+        <line x1="18" y1="2" x2="18" y2="22"></line>
+      </svg>
+    </button>
   </div>
 
   <!-- Main Content -->
@@ -416,6 +530,7 @@
     <div class="brand-subtitle" id="brand-subtitle">Premium Quality Hijab &amp; Accessories</div>
     <div class="tagline" id="tagline">Tampil Syar'i, Tetap Stylish!</div>
 
+    
     <div class="info-cards">
       <div class="info-card">
         <span class="info-icon">🚚</span>
@@ -430,6 +545,58 @@
         <div id="info-service">Layanan Fast Response</div>
       </div>
     </div>
+    
+    
+<!-- Modal Screenshot Viewer Example -->
+<!-- Trigger Button (demonstration) -->
+<button id="openScreenshotModal"
+  style="
+    margin:30px auto;
+    display:block;
+    padding:0.8em 2em;
+    font-size:1.1em;
+    border-radius:8px;
+    background:#814c26;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+    box-shadow:0 9px 20px rgba(129,76,38,0.21), 0 1.5px 7px rgba(50,22,0,0.11);
+    transition: 
+      background 0.2s cubic-bezier(.4,0,.2,1),
+      color 0.18s cubic-bezier(.4,0,.2,1),
+      box-shadow 0.36s cubic-bezier(.4,0,.2,1),
+      transform 0.28s cubic-bezier(.4,0,.2,1);
+    font-family:'Montserrat',sans-serif;
+    letter-spacing:0.04em;
+  "
+  onmouseover="this.style.background='#a35c31';
+               this.style.boxShadow='0 8px 32px rgba(129,76,38,0.33), 0 4px 14px rgba(50,22,0,0.17)';
+               this.style.transform='scale(1.045) rotate(-1.2deg)';"
+  onmouseout="this.style.background='#814c26';
+              this.style.boxShadow='0 4px 20px rgba(129,76,38,0.21), 0 1.5px 7px rgba(50,22,0,0.11)';
+              this.style.transform='scale(1) rotate(0deg)';"
+  onmousedown="this.style.transform='scale(0.965) rotate(1.3deg)';"
+  onmouseup="this.style.transform='scale(1.045) rotate(-1.2deg)';"
+>
+  Lihat Katalog
+</button>
+
+
+<!-- Modal Structure -->
+<div id="screenshotModal" class="modal-screenshot">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <button class="modal-close" id="closeScreenshotModal" aria-label="Close modal">
+      <!-- X icon -->
+      <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="#888" stroke-width="2">
+        <line x1="4" y1="4" x2="16" y2="16"/>
+        <line x1="16" y1="4" x2="4" y2="16"/>
+      </svg>
+    </button>
+    <a href="https://shopee.co.id/femmeiacloth" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Catalog Screenshot" class="modal-img" /></a>
+ </div>
+</div>
+
 
     <a href="/order.html" class="link-btn"><span class="icon">🛒</span><span id="btn-order">Pesan Sekarang</span></a>
     <a href="https://wa.me/6287777420644" class="link-btn"><span class="icon">💬</span><span id="btn-wa">WhatsApp</span></a>
@@ -519,97 +686,4 @@
 
       var d = [];
       e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || function(e) {
-        setTimeout(e, 1000 / 60);
-      };
-      n();
-    }(window, document);
-
-    // Hide loading screen after fadeOut animation
-    window.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() {
-        var loading = document.querySelector('.loading-screen');
-        if (loading) loading.style.display = 'none';
-      }, 2500);
-    });
-
-    // Dark mode toggle logic
-    const darkModeBtn = document.getElementById('darkmode-toggle');
-    const darkModeIcon = document.getElementById('darkmode-icon');
-    function setTheme(mode) {
-      document.body.setAttribute('data-theme', mode);
-      if (mode === 'dark') {
-        darkModeIcon.textContent = '☀️';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        darkModeIcon.textContent = '🌙';
-        localStorage.setItem('theme', 'light');
-      }
-    }
-    darkModeBtn.addEventListener('click', function() {
-      const current = document.body.getAttribute('data-theme');
-      setTheme(current === 'dark' ? 'light' : 'dark');
-    });
-    // On load, check theme preference
-    (function() {
-      const pref = localStorage.getItem('theme');
-      if (pref === 'dark') setTheme('dark');
-    })();
-
-    // Language changer logic
-    // id = Indonesia, en = English
-    const langBtn = document.getElementById('lang-toggle');
-    const langIcon = document.getElementById('lang-icon');
-    const texts = {
-      id: {
-        'brand-title': "FemmeiaCloth",
-        'brand-subtitle': "Premium Quality Hijab",
-        'tagline': "Tampil Syar'i, Tetap Stylish!",
-        'info-delivery': "Pengiriman Seluruh Indonesia",
-        'info-original': "Produk Original & Terjamin",
-        'info-service': "Layanan Fast Response",
-        'btn-order': "Pesan Sekarang",
-        'btn-wa': "WhatsApp",
-        'btn-ig': "Instagram",
-        'btn-shopee': "Shopee",
-        'btn-track': "Lacak Paket",
-        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/gunadizz" target="_blank">@gunadizz</a>'
-      },
-      en: {
-        'brand-title': "FemmeiaCloth",
-        'brand-subtitle': "Premium Quality Hijab",
-        'tagline': "Look Modest, Stay Stylish!",
-        'info-delivery': "Nationwide Shipping",
-        'info-original': "100% Authentic Products",
-        'info-service': "Fast Response Service",
-        'btn-order': "Order Now",
-        'btn-wa': "WhatsApp",
-        'btn-ig': "Instagram",
-        'btn-shopee': "Shopee",
-        'btn-track': "Track Your Package",
-        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>'
-      }
-    };
-    function setLang(lang) {
-      for(const id in texts[lang]) {
-        const el = document.getElementById(id);
-        if (el) {
-          if (id === "footer") el.innerHTML = texts[lang][id];
-          else el.textContent = texts[lang][id];
-        }
-      }
-      langIcon.textContent = lang === "id" ? "id" : "en";
-      document.documentElement.lang = lang;
-      localStorage.setItem("lang", lang);
-    }
-    langBtn.addEventListener('click', function() {
-      const current = localStorage.getItem("lang") || "id";
-      setLang(current === "id" ? "en" : "id");
-    });
-    // On load, set default language
-    (function() {
-      const lang = localStorage.getItem("lang") || "id";
-      setLang(lang);
-    })();
-  </script>
-</body>
-</html>
+        setTj
