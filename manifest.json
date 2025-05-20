@@ -1,0 +1,21 @@
+{
+  "name": "FemmeiaCloth",
+  "short_name": "FemmeiaCloth",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#d81b60",
+  "description": "Shop the latest trends at FemmeiaCloth.",
+  "icons": [
+    {
+      "src": "/IMG_3593.jpeg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/IMG_3593.jpeg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
