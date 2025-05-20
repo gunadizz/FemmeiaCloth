@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Metode Pembayaran | FemmeiaCloth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+  <meta name="theme-color" content="#814c26">
+  <style>
+    :root {
+      --primary: #111;
+      --secondary: #888;
+      --bg: #f5f5f5;
+      --card-bg: #fff;
+      --accent: #814c26;
+      --radius: 20px;
+      --shadow: 0 4px 16px rgba(0,0,0,0.10);
+      --btn-shadow: 0 4px 16px rgba(129,76,38,0.23), 0 1.5px 7px rgba(50,22,0,0.09); /* Femmeia brown-ish */
+      --btn-shadow-hover: 0 8px 32px rgba(129,76,38,0.32), 0 4px 14px rgba(50,22,0,0.17);
+      --qris-shadow: 0 2px 7px #814c2633;
+      --qris-shadow-hover: 0 4px 18px #814c2625;
+    }
+    html,body {
+      background: var(--bg);
+      font-family: 'Montserrat', sans-serif !important;
+      color: var(--primary);
+      margin: 0; padding: 0;
+    }
+    .main-content {
+      max-width: 450px;
+      width: 420px;
+      margin: 7vw auto 6vw auto;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.1rem 1.5rem 2.3rem 1.5rem;
+      position: relative;
+      z-index: 1;
+      transition: box-shadow 0.2s;
+    }
+    @media (max-width: 700px) {
+      .main-content { 
+        max-width: 99vw; 
+        margin: 4vw auto 5vw auto;
+        padding: 1.3rem 0.8rem 1.3rem 0.8rem; 
+      }
+    }
+    @media (max-width: 480px) {
+      .main-content { 
+        padding: 0.8rem 2vw 1.1rem 2vw; 
+        margin: 3vw auto 4vw auto;
+      }
+    }
+    .brand-logo {
+      width: 90px;
+      border-radius: 15px;
+      box-shadow: 0 2px 12px rgba(130,130,130,0.14);
+      margin-bottom: 0.7rem;
+      display: block;
+      margin-left: auto; margin-right: auto;
+    }
+    .brand-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 0.35rem;
+    }
+    .brand-subtitle {
+      font-size: 1.05rem;
+      color: var(--secondary);
+      font-weight: 500;
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+    .payment-title {
+      font-size: 1.25em;
+      font-weight: bold;
+      color: #814c26;
+      margin-bottom: 0.7em;
+      display: flex;
+      align-items: center;
+      gap: 0.47em;
+      letter-spacing: 0.5px;
+      justify-content: center;
+    }
+    .section {
+      margin-bottom: 1.17em;
+    }
+    .section strong {
+      color: #814c26;
+      font-weight: 700;
+    }
+    .section ul {
+      margin-top: 0.23em;
+      margin-bottom: 0.23em;
+      padding-left: 1.23em;
+      font-size: 1em;
+    }
+    .account {
+      font-family: monospace;
+      font-size: 1.04em;
+      color: #333;
+      background: #f8f5f2;
+      padding: 2px 8px;
+      border-radius: 7px;
+      margin-left: 0.3em
+      margin-right: 0.5em;
+      margin-top:5px;
+      position: relative;
+      display: inline-block;
+      border: 1px solid #ede7df;
+      user-select: all;
+    }
+    .qris-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6em;
+      margin-top: 0.4em;
+      margin-bottom: 0.1em;
+      font-size: 1.07em;
+    }
+    .qris-link img {
+      width: 26px; height: 26px; border-radius: 7px; margin-right: 0.35em;
+      vertical-align: middle;
+      box-shadow: var(--qris-shadow);
+      background: #fff;
+      border: 1.5px solid #ede7df;
+      transition: box-shadow 0.18s;
+    }
+    .qris-link a {
+      background: linear-gradient(93deg, #814c26 60%, #111 100%);
+      color: #fff;
+      padding: 0.45em 1.1em;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      position: relative;
+      box-shadow: var(--btn-shadow);
+      transition: background 0.18s, color 0.18s, box-shadow 0.19s, transform 0.19s;
+      border: none;
+      outline: none;
+    }
+    .qris-link a:hover, .qris-link a:focus {
+      background: linear-gradient(93deg, #111 60%, #814c26 100%);
+      color: #fff;
+      transform: scale(1.045);
+      box-shadow: var(--btn-shadow-hover);
+      text-decoration: underline;
+    }
+    .footer {
+      margin: 5vw auto 2vw auto;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.97rem;
+      letter-spacing: 0.28px;
+      z-index: 1;
+      position: relative;
+      font-family: 'Montserrat', sans-serif !important;
+    }
+    .footer a {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 0.4em;
+      transition: color 0.2s;
+    }
+    .footer a:hover, .footer a:focus {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    .back-btn {
+      display: inline-block;
+      margin: 0.2rem 0 1.3rem 0;
+      background: linear-gradient(93deg, #111 70%, #814c26 100%);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      font-size: 1.11rem;
+      font-weight: 500;
+      padding: 0.43em 1.4em;
+      text-decoration: none;
+      box-shadow: var(--btn-shadow);
+      transition: background 0.19s, color 0.17s, box-shadow 0.26s, transform 0.21s;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      outline: none;
+    }
+    .back-btn:hover, .back-btn:focus {
+      background: linear-gradient(93deg, #814c26 60%, #111 100%);
+      color: #fff;
+      transform: scale(1.04);
+      box-shadow: var(--btn-shadow-hover);
+    }
+    @media (max-width: 700px) {
+      .footer { font-size: 0.93rem; margin: 6vw auto 2vw auto; }
+    }
+    @media (max-width: 480px) {
+      .footer { font-size: 0.91rem; margin: 8vw auto 2vw auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <img class="brand-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth Logo" />
+    <div class="brand-title">FemmeiaCloth</div>
+    <div class="brand-subtitle">Premium Quality Hijab &amp; Accessories</div>
+    <a href="/index.html" class="back-btn">&larr; Kembali</a>
+    <div class="payment-title"><span style="font-size:1.13em;">💳</span> Metode Pembayaran Femmeia Cloth</div>
+    <div class="section">
+      <strong>E-Wallet:</strong>
+      <ul>
+        <li>
+          <span class="account">085341899229</span>
+          <span style="color:#aaa;font-size:0.97em;">(A/N G****i R***a)</span>
+        </li>
+      </ul>
+    </div>
+    <div class="section">
+      <strong>Transfer Bank:</strong>
+      <ul>
+        <li>
+          BCA: <span class="account">8736092285</span>
+        </li>
+        <li>
+          Bank Jago: <span class="account">104312607955</span>
+        </li>
+        <li>
+          BRI: <span class="account">040301109361507</span>
+        </li>
+        <li>
+          SeaBank: <span class="account">9013 6941 6040</span>
+        </li>
+      </ul>
+    </div>
+    <div class="section">
+      <strong>QRIS (All Payment Supported):</strong>
+      <div class="qris-link">
+        <img src="https://femmeiacloth.vercel.app/Kode%20QRIS%20FemmeiaCloth.png" alt="QRIS" />
+        <a href="https://femmeiacloth.vercel.app/Kode%20QRIS%20FemmeiaCloth.png" target="_blank" rel="noopener">
+          🔗 Klik untuk lihat QRIS
+        </a>
+      </div>
+    </div>
+    <div style="font-size:0.93em;color:#888;margin-top:1.3em;">
+      Konfirmasi pembayaran melalui WhatsApp setelah transfer untuk mempercepat proses pengiriman.
+      <br>Terima kasih telah berbelanja di FemmeiaCloth!
+    </div>
+  </div>
+  <div class="footer">
+    &copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span>
+    <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>
+  </div>
+</body>
+</html>
