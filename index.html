@@ -6,6 +6,10 @@
   <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FemmeiaCloth</title>
+  <!-- In the <head> section -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#d81b60">
+
   <style>
     :root {
       --primary: #111;
@@ -50,41 +54,39 @@
       justify-content: flex-start;
     }
 
-    /* Loading screen */
+
     .loading-screen {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background-color: var(--bg);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f5f5f5;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 9999;
       animation: fadeOut 0.5s ease forwards;
       animation-delay: 2s;
-      font-family: 'Montserrat', sans-serif !important;
     }
-    .loading-logo {
-      width: 120px;
-      border-radius: 50%;
-      margin-bottom: 1.2rem;
-      box-shadow: var(--shadow);
+
+    .loading-screen img {
+      width: 300px;
+      height: auto;
+      animation: float 0.5s ease-in-out infinite;
     }
-    .loading-text {
-      font-size: 1.1rem;
-      color: var(--secondary);
-      letter-spacing: 2px;
-      margin-top: 0.6rem;
-      font-weight: 500;
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
+
     @keyframes fadeOut {
       to {
         opacity: 0;
         visibility: hidden;
       }
     }
-
     /* Sticky buttons */
     .sticky-btns {
       position: fixed;
@@ -475,10 +477,8 @@
   </style>
 </head>
 <body data-theme="light">
-  <!-- Loading screen -->
   <div class="loading-screen">
-    <img class="loading-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth logo loading">
-    <div class="loading-text">FemmeiaCloth</div>
+    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG-20250410-WA0040.jpg" alt="FemmeiaCloth logo loading">
   </div>
 
   <!-- Decorative background shapes -->
@@ -611,7 +611,7 @@
   </div>
 
   <!-- Click animation script -->
-<script>
+  <script>
     // Circle animation on click
     !function(e, t, a) {
       function n() {
@@ -806,6 +806,13 @@ closeBtn.onclick = overlay.onclick = () => { modal.classList.remove('active'); }
 window.addEventListener('keydown', e => {
   if (e.key === 'Escape') modal.classList.remove('active');
 });
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker.register("/service-worker.js");
+    });
+  }
 </script>
 </body>
 </html>
