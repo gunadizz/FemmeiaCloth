@@ -4,7 +4,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#d81b60",
+  "theme_color": "#000",
   "description": "Shop the latest trends at FemmeiaCloth.",
   "icons": [
     {
