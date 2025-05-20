@@ -124,20 +124,31 @@
       font-size: 1.07em;
     }
     .qris-link img {
-      width: 26px; height: 26px; border-radius: 7px; margin-right: 0.35em;
+      width: 400px; height: 550px; border-radius: 7px; margin-right: 0.35em;
       vertical-align: middle;
-      box-shadow: var(--qris-shadow);
+      box-shadow: var(--qris-shadow-hover);
       background: #fff;
+      margin-top:10px;
+      text-align: center;
+      margin-left: 13.5px;
+      
+      display: block;
       border: 1.5px solid #ede7df;
       transition: box-shadow 0.18s;
     }
-    .qris-link a {
+    .qris-link img:hover{
+    	box-shadow: 10px 14px 50px #814c2625;
+    }
+    .btn-link  {
       background: linear-gradient(93deg, #814c26 60%, #111 100%);
       color: #fff;
+      margin-top: 30px;
+      margin-bottom: 10px;
       padding: 0.45em 1.1em;
       border-radius: 10px;
       text-decoration: none;
       font-weight: 500;
+      text-align: center;
       display: inline-block;
       position: relative;
       box-shadow: var(--btn-shadow);
@@ -145,7 +156,7 @@
       border: none;
       outline: none;
     }
-    .qris-link a:hover, .qris-link a:focus {
+    .btn-link:hover{
       background: linear-gradient(93deg, #111 60%, #814c26 100%);
       color: #fff;
       transform: scale(1.045);
@@ -210,7 +221,7 @@
     <div class="brand-title">FemmeiaCloth</div>
     <div class="brand-subtitle">Premium Quality Hijab &amp; Accessories</div>
     <a href="/index.html" class="back-btn">&larr; Kembali</a>
-    <div class="payment-title"><span style="font-size:1.13em;">💳</span> Metode Pembayaran Femmeia Cloth</div>
+    <div class="payment-title"><span style="font-size:1.13em;"></span> Metode Pembayaran Femmeia Cloth</div>
     <div class="section">
       <strong>E-Wallet:</strong>
       <ul>
@@ -240,13 +251,13 @@
     <div class="section">
       <strong>QRIS (All Payment Supported):</strong>
       <div class="qris-link">
-        <img src="https://femmeiacloth.vercel.app/Kode%20QRIS%20FemmeiaCloth.png" alt="QRIS" />
-        <a href="https://femmeiacloth.vercel.app/Kode%20QRIS%20FemmeiaCloth.png" target="_blank" rel="noopener">
-          🔗 — Klik untuk lihat QRIS
-        </a>
+        <img src="https://femmeiacloth.vercel.app/Kode%20QRIS%20FemmeiaCloth.png" alt="QRIS" /> 
       </div>
+      <a style="margin-left:78px; position: center;text-align: center" class="btn-link" href="https://femmeiacloth.me/Kode%20QRIS%20FemmeiaCloth.png" target="_blank" rel="noopener">
+           � Klik untuk unduh QRIS
+        </a>
     </div>
-    <div style="font-size:0.93em;color:#888;margin-top:1.3em;">
+    <div style="margin-left: 10px;font-size:0.93em;color:#888;margin-top:1.3em;">
       Konfirmasi pembayaran melalui WhatsApp setelah transfer untuk mempercepat proses pengiriman.
       <br>Terima kasih telah berbelanja di FemmeiaCloth!
     </div>
