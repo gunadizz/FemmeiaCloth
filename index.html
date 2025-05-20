@@ -33,6 +33,45 @@
       --sticky2: #b58055;
       --shadow: 0 4px 16px rgba(0,0,0,0.45);
     }
+    /* Remove default blue outline and shadow for all buttons and interactive elements */
+button,
+a,
+input,
+select,
+textarea,
+[tabindex]:not([tabindex="-1"]) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove blue tap highlight on mobile browsers (Android/Chrome) */
+button,
+a,
+input,
+select,
+textarea,
+[tabindex]:not([tabindex="-1"]) {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* Optional: Add custom focus/active states for accessibility */
+button:focus, button:active,
+a:focus, a:active,
+input:focus, input:active,
+select:focus, select:active,
+textarea:focus, textarea:active,
+[tabindex]:focus, [tabindex]:active {
+  outline: none !important;
+  box-shadow: none !important;
+  /* Optionally, add your custom style here (e.g., a soft shadow or colored border) */
+  /* border: 2px solid #814c26; */
+}
+
+/* For iOS Safari remove tap highlight */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
     * {
       margin: 0;
       padding: 0;
@@ -472,6 +511,153 @@
 }
 .modal-close:hover,
 .modal-close:focus { background: #eee; }
+.promo-modal {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(24, 18, 0, 0.13);
+  /* Add blur glass effect */
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex; align-items: center; justify-content: center; z-index: 99999;
+  animation: promoFadeInBg 0.35s cubic-bezier(.4,0,.2,1);
+  transition: background 0.23s;
+}
+@keyframes promoFadeInBg { from { opacity: 0; } to { opacity: 1; } }
+@keyframes promoFadeOutBg { from { opacity: 1; } to { opacity: 0; } }
+
+.promo-modal-content {
+  background: #f5f5f5cc; /* semi-transparent for glass look */
+  padding: 2.2em 1.4em 2em 1.4em;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(50,50,50,0.19);
+  max-width: 95vw;
+  width: 390px;
+  text-align: center;
+  position: relative;
+  border: 2.5px solid #ddd;
+  font-family: 'Montserrat', sans-serif;
+  animation: modalBounceIn 0.55s cubic-bezier(.25,1.4,.48,1.08);
+  transition: transform 0.34s cubic-bezier(.4,0,.2,1), opacity 0.24s cubic-bezier(.4,0,.2,1);
+  /* When closing: will add .closing class for animation */
+}
+@keyframes modalBounceIn {
+  0%   { transform: scale(0.8) translateY(50px); opacity: 0; }
+  70%  { transform: scale(1.06) translateY(-8px); opacity: 0.97; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.promo-modal-content.closing {
+  animation: modalBounceOut 0.36s cubic-bezier(.42,.01,.52,.94) forwards;
+}
+@keyframes modalBounceOut {
+  0% { transform: scale(1) translateY(0); opacity: 1; }
+  60% { transform: scale(0.94) translateY(12px); opacity: 0.7;}
+  100% { transform: scale(0.7) translateY(90px); opacity: 0; }
+}
+
+.promo-modal-img {
+  width: 120px;
+  height: auto;
+  border-radius: 16px;
+  margin-bottom: 1.1em;
+  box-shadow: 0 2px 16px rgba(100,100,100,0.09);
+  animation: imgPopIn 0.65s cubic-bezier(.23,1.2,.45,1.01);
+}
+@keyframes imgPopIn {
+  0% { transform: scale(0.7) rotate(-6deg); opacity: 0; }
+  70% { transform: scale(1.08) rotate(3deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg);}
+}
+
+.promo-modal-title {
+  color: #814c26;
+  font-size: 1.7em;
+  font-weight: 700;
+  margin-bottom: 0.7em;
+  margin-top: 0;
+  letter-spacing: 1px;
+  animation: titleIn 0.7s cubic-bezier(.23,1.2,.45,1.01);
+}
+@keyframes titleIn {
+  0% { opacity: 0; transform: translateY(30px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+
+.promo-modal-desc {
+  color: #444;
+  font-size: 1.09em;
+  margin-bottom: 1.15em;
+  line-height: 1.6;
+  animation: fadeInText 0.85s 0.13s backwards;
+}
+@keyframes fadeInText {
+  0% { opacity: 0; transform: translateY(20px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+
+.promo-modal-code {
+  font-family: monospace;
+  font-size: 1.13em;
+  color: #814c26;
+  background: #ede7df;
+  padding: 2px 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px #814c2622;
+  letter-spacing: 0.08em;
+  animation: codePulse 2.2s infinite alternate cubic-bezier(.45,0,.7,1);
+}
+@keyframes codePulse {
+  0% { box-shadow: 0 1px 4px #814c2622; background: #ede7df;}
+  100% { box-shadow: 0 4px 14px #814c2644; background: #f7f2ec;}
+}
+
+.promo-modal-btn {
+  background: linear-gradient(93deg, #814c26 60%, #111 100%);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-size: 1.13em;
+  font-weight: 600;
+  padding: 0.85em 2em;
+  margin-top: 0.6em;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 3px 14px rgba(129,76,38,0.13);
+  transition: background 0.18s, box-shadow 0.19s, color 0.17s, transform 0.22s;
+  display: inline-block;
+  animation: btnPopIn 1.2s 0.3s backwards cubic-bezier(.23,1.2,.45,1.01);
+}
+@keyframes btnPopIn {
+  0% { opacity: 0; transform: scale(0.7);}
+  60% { opacity: 1; transform: scale(1.18);}
+  100% { opacity: 1; transform: scale(1);}
+}
+.promo-modal-btn:hover, .promo-modal-btn:focus {
+  background: linear-gradient(93deg, #111 60%, #814c26 100%);
+  color: #fff;
+  transform: scale(1.06);
+}
+
+.promo-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.7em;
+  color: #b8b5b0;
+  position: absolute;
+  top: 0.7em;
+  right: 0.8em;
+  cursor: pointer;
+  transition: color 0.17s, background 0.17s;
+  z-index: 2;
+  border-radius: 50%;
+  width: 34px; height: 34px;
+  line-height: 34px;
+}
+.promo-modal-close:hover, .promo-modal-close:focus {
+  color: #814c26;
+  background: #ede7df;
+}
+@media (max-width: 520px) {
+  .promo-modal-content { width: 96vw; padding: 1.2em 0.2em 1em 0.2em; }
+}
 
 
   </style>
@@ -609,6 +795,19 @@
     &copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span>
     <a href="https://www.instagram.com/gunadizz" target="_blank">@femmeia.cloth</a>
   </div>
+<!-- Promo Modal -->
+<div id="promoModal" class="promo-modal" style="display:none;">
+  <div class="promo-modal-content">
+    <button id="closePromoModal" class="promo-modal-close" aria-label="Close">&times;</button>
+    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/img/IMG_20250519_192937.png" alt="Promo" class="promo-modal-img" />
+    <h2 class="promo-modal-title">Diskon Spesial!</h2>
+    <p class="promo-modal-desc">
+      Dapatkan <strong>15% OFF</strong> untuk pembelian pertama kamu!<br>
+      Gunakan kode: <span class="promo-modal-code">FEMMEIA15</span> saat checkout.
+    </p>
+    <a href="/order.html" class="promo-modal-btn">Pesan Sekarang</a>
+  </div>
+</div>
 
   <!-- Click animation script -->
   <script>
@@ -814,5 +1013,35 @@ window.addEventListener('keydown', e => {
     });
   }
 </script>
+
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+  function showModal() {
+    // Only show once per session
+    if (!sessionStorage.getItem('promoModalShown')) {
+      document.getElementById('promoModal').style.display = 'flex';
+      sessionStorage.setItem('promoModalShown', 'yes');
+    }
+  }
+
+  function closePromoModalAnimated() {
+    const modalContent = document.querySelector('.promo-modal-content');
+    modalContent.classList.add('closing');
+    setTimeout(() => {
+      document.getElementById('promoModal').style.display = 'none';
+      modalContent.classList.remove('closing');
+    }, 360);
+  }
+
+  document.getElementById('closePromoModal').onclick = closePromoModalAnimated;
+  document.getElementById('promoModal').onclick = function(e) {
+    if (e.target === this) closePromoModalAnimated();
+  };
+
+  // Delay for 4 seconds (4000ms) before showing modal
+  setTimeout(showModal, 3000);
+});
+</script>
+
 </body>
 </html>
