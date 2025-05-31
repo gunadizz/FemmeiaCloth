@@ -1,11 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Form Pemesanan Hijab - FemmeiaCloth</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -135,9 +135,9 @@ box-shadow: 0 6px 50px rgba(255, 100, 100, 0.4);
   </div>
 
   <div class="container" id="formContainer" style="display:none;">
-    <h2>Form Pemesanan Hijab FemmeiaCloth</h2>
+    <h2>Form Pemesanan | FemmeiaCloth</h2>
     <form id="orderForm">
-      <label>Nama Lengkap</label>
+      <label>Nama</label>
       <input type="text" name="nama" required>
 
       <label>No. WhatsApp Aktif</label>
@@ -172,7 +172,7 @@ box-shadow: 0 6px 50px rgba(255, 100, 100, 0.4);
   <select name="paperbag" required>
     <option value="">-- Pilih --</option>
     <option value="Tidak">Tidak</option>
-    <option value="Pakai (Rp5.000)">Pakai (Rp5.000)</option>
+    <option value="Pakai (Rp5.000)">Pakai (+ Rp5.000)</option>
   </select>
 </div>
 
@@ -180,10 +180,11 @@ box-shadow: 0 6px 50px rgba(255, 100, 100, 0.4);
       <div class="select-wrapper">
         <select name="pengiriman" required>
           <option value="">-- Pilih --</option>
-          <option value="JNE">JNE</option>
+          <option value="SPX ID">SPX ID</option>
           <option value="J&T">J&T</option>
           <option value="Gosend">Gosend</option>
-          <option value="Ambil langsung">Ambil langsung</option>
+          <option value="Antar Langsung (Khusus Area Tamalanrea)">Antar Langsung (Khusus Area Tamalanrea)</option>
+          <option value="Ambil Langsung">Ambil langsung</option>
         </select>
       </div>
 
@@ -193,6 +194,7 @@ box-shadow: 0 6px 50px rgba(255, 100, 100, 0.4);
           <option value="">-- Pilih --</option>
           <option value="Transfer Bank">Transfer Bank</option>
           <option value="COD">COD</option>
+          <option value="QRIS">QRIS</option>
           <option value="Dana / e-wallet">Dana / e-wallet</option>
         </select>
       </div>
@@ -200,7 +202,7 @@ box-shadow: 0 6px 50px rgba(255, 100, 100, 0.4);
       <label>Kode Promo (Jika Tersedia)</label>
       <input type="text" name="promo">
 
-      <label>Catatan Tambahan</label>
+      <label>Catatan Tambahan (Opsional)</label>
       <textarea name="catatan" placeholder="Contoh: packing rapi, dll."></textarea>
       
       <button type="submit">🛒 Pesan Sekarang</button>
@@ -274,7 +276,7 @@ box-shadow: 0 6px 50px rgba(255, 100, 100, 0.4);
 
       setTimeout(() => {
         const f = new FormData(this);
-        const msg = `*Form Pemesanan Hijab FemmeiaCloth:*\n` +
+        const msg = `*Form Pemesanan | FemmeiaCloth:*\n` +
           `\n` +
           `Nama: ${f.get('nama')}\n` +
           `No WA: ${f.get('wa')}\n` +
