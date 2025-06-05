@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=0.6">
+  <meta name="viewport" content="width=device-width, initial-scale=0.5">
   <title>FemmeiaCloth Finance Tracker</title>
   <meta name="description" content="Aplikasi pencatatan keuangan untuk FemmeiaCloth">
   <meta name="theme-color" content="#6c5ce7">
@@ -10,8 +10,7 @@
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-
-    :root { --primary-bg: #fff; --secondary-bg: #f9f9f9; --border-color: #e0e0e0; --text-color: #333; --accent-color: #6c5ce7; --success-color: #000; --danger-color: #d63031; --shadow: 0 4px 6px rgba(0,0,0,0.1); --radius: 8px;}
+    :root { --primary-bg: #fff; --secondary-bg: #f9f9f9; --border-color: #e0e0e0; --text-color: #333; --accent-color: #6c5ce7; --success-color: #000; --danger-color: #d63031; --shadow: 0 4px 6px rgba(0,0,0,0.09); --radius: 10px; }
     * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif;}
     body {background-color: var(--secondary-bg); color: var(--text-color); min-height: 100vh;}
     .container {max-width: 1200px; margin: 0 auto; padding: 20px;}
@@ -22,16 +21,43 @@
     .card {background-color: var(--primary-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; transition: transform 0.3s ease;}
     .card:hover {transform: translateY(-5px);}
     .card h2 {margin-bottom: 15px; color: #444; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
-    .form-group {margin-bottom: 15px;}
+    .form-group {margin-bottom: 14px;}
     label {display: block; margin-bottom: 5px; font-weight: 500;}
-    input, select, textarea {width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: var(--radius); font-size: 16px; transition: border 0.3s ease;}
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      font-size: 16px;
+      transition: border 0.3s ease;
+      box-sizing: border-box;
+      box-shadow: none !important;
+      outline: none;
+      background: #fff;
+    }
     input:focus, select:focus, textarea:focus {outline: none; border-color: var(--accent-color);}
-    .suggestions {position: absolute; background: white; border: 1px solid var(--border-color); border-radius: var(--radius); width: calc(100% - 40px); max-height: 150px; overflow-y: auto; z-index: 10; display: none;}
+    .suggestions {position: absolute; background: white; border: 1px solid var(--border-color); border-radius: var(--radius); width: calc(100% - 40px); max-height: 150px; overflow-y: auto; z-index: 10;}
     .suggestion-item {padding: 10px; cursor: pointer;}
     .suggestion-item:hover {background-color: var(--secondary-bg);}
-    button {background: linear-gradient(135deg, #ff7a7a, #ffb6b9); box-shadow: 0 6px 20px rgba(255, 100, 100, 0.4); color: white; border: none; padding: 10px 15px; border-radius: var(--radius); cursor: pointer; font-weight: 600; transition: background-color 0.3s ease;}
-    button:hover {background-color: #5549c0;}
-    .btn-export {background-color: var(--success-color); margin-right: 10px;}
+    button, .saldoawal-container button {
+      background: linear-gradient(135deg, #ff7a7a, #ffb6b9);
+      box-shadow: 0 6px 20px rgba(255, 100, 100, 0.19);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: var(--radius);
+      cursor:pointer;
+      font-weight:600;
+      transition: background 0.2s;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      margin-right: 0;
+      margin-left: 0;
+      width: 100%;
+      display: block;
+    }
+    button:hover, .saldoawal-container button:hover {background-color: #5549c0;}
+    .btn-export {background-color: var(--success-color); margin-right: 10px; width: auto;}
     .btn-export:hover {background-color: #00a383;}
     .summary-container {display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;}
     .summary-box {flex: 1; min-width: 150px; padding: 15px; border-radius: var(--radius); text-align: center; box-shadow: var(--shadow);}
@@ -44,24 +70,48 @@
     th, td {padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color);}
     th {background-color: var(--secondary-bg); font-weight: 600;}
     tr:hover {background-color: var(--secondary-bg);}
-    .alert {position: fixed; top: 20px; right: 20px; padding: 15px 20px; border-radius: var(--radius); background-color: var(--success-color); color: white; box-shadow: var(--shadow); opacity: 0; transform: translateX(100%); transition: all 0.5s ease; z-index: 1000;}
+    .alert {position: fixed; top: 20px; right: 20px; padding: 15px 20px; border-radius: var(--radius); background-color: var(--success-color); color: white; box-shadow: var(--shadow); opacity: 0; transition: opacity 0.4s, transform 0.4s; z-index: 999;}
     .alert.show {opacity: 1; transform: translateX(0);}
-    .export-buttons {margin-bottom: 15px; margin-top: 15px; display: flex; justify-content: flex-end;}
+    .export-buttons, .backup-restore, .modal-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+      margin-top: 5px;
+      justify-content: flex-end;
+    }
     .chart-container {position: relative; height: 250px; margin-top: 20px;}
     .loader {border: 4px solid rgba(0,0,0,0.1); border-radius: 50%; border-top: 4px solid var(--accent-color); width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto;}
     @keyframes spin {0% { transform: rotate(0deg);} 100% {transform: rotate(360deg);}}
-    .btn-delete {background-color: var(--danger-color); color: white; border: none; border-radius: 4px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.3s;}
+    .btn-delete {background-color: var(--danger-color); color: white; border: none; border-radius: 4px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor:pointer; margin: 0 auto;}
     .btn-delete:hover {background-color: #b52c2c;}
     .date-header {background-color: var(--secondary-bg); padding: 10px 15px; font-weight: 600; color: var(--accent-color); border-radius: var(--radius) var(--radius) 0 0;}
     .date-header:first-child {margin-top: 0;}
     .modal {display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;}
     .modal-content {background-color: var(--primary-bg); border-radius: var(--radius); padding: 20px; width: 90%; max-width: 400px; box-shadow: var(--shadow); text-align: center;}
     .modal-title {margin-bottom: 15px; color: var(--text-color); font-weight: 600;}
-    .modal-buttons {display: flex; justify-content: center; gap: 10px; margin-top: 20px;}
-    .btn-cancel {background-color: var(--border-color); color: var(--text-color);}
-    .btn-confirm {background-color: var(--danger-color);}
-    .install-button {position: absolute; top: 10px; right: 10px; background-color: var(--accent-color); color: white; border: none; padding: 8px 12px; border-radius: var(--radius); font-size: 14px; cursor: pointer; display: none;}
-    .offline-indicator {position: fixed; bottom: 20px; left: 20px; background-color: var(--danger-color); color: white; padding: 10px 15px; border-radius: var(--radius); box-shadow: var(--shadow); display: none; z-index: 1000;}
+    .install-button {position: absolute; top: 10px; right: 10px; background-color: var(--accent-color); color: white; border: none; padding: 8px 12px; border-radius: var(--radius); font-size: 14px; cursor:pointer; width: auto; margin-top: 0;}
+    .offline-indicator {position: fixed; bottom: 20px; left: 20px; background-color: var(--danger-color); color: white; padding: 10px 15px; border-radius: var(--radius); box-shadow: var(--shadow); display: none;}
+    .filter-container {display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px;}
+    .filter-container input, .filter-container select {max-width: 180px;}
+    .saldoawal-container {margin-top: 12px; margin-bottom: 4px;}
+    .user-info {margin-bottom: 12px; font-size: 14px; color: #555;}
+    .logout-btn {background: #d63031;}
+    .logout-btn:hover {background: #b52c2c;}
+    .pw-section {margin-bottom: 10px;}
+    /* Khusus untuk input "Nama Produk" agar tidak ada garis memanjang */
+    #produk {
+      border-bottom: 1px solid var(--border-color) !important;
+      box-shadow: none !important;
+      margin-bottom: 0;
+      background: #fff;
+    }
+    /* Perbaiki margin antar tombol di form */
+    #formTransaksi button, .saldoawal-container button {
+      margin-bottom: 10px;
+      margin-top: 10px;
+      width: 100%;
+    }
     @media (max-width: 600px) {.main-content {grid-template-columns: 1fr;} .summary-container {flex-direction: column;} th, td {padding: 8px 10px; font-size: 14px;}}
   </style>
 </head>
@@ -76,7 +126,7 @@
       <div class="card">
         <h2>Input Transaksi</h2>
         <form id="formTransaksi" autocomplete="off">
-          <div class="form-group">
+          <div class="form-group" style="position: relative;">
             <label for="produk">Nama Produk</label>
             <input type="text" id="produk" required autocomplete="off">
             <div id="suggestions" class="suggestions"></div>
@@ -98,11 +148,28 @@
             </select>
           </div>
           <div class="form-group">
+            <label for="kategori">Kategori</label>
+            <select id="kategori" required>
+              <option value="">Pilih Kategori</option>
+              <option value="Penjualan Online">Penjualan Online</option>
+              <option value="Penjualan Offline">Penjualan Offline</option>
+              <option value="Bahan Baku">Bahan Baku (Kain, label, aksesoris hijab)</option>
+              <option value="Operasional">Operasional</option>
+              <option value="Promosi">Promosi</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label for="catatan">Catatan (Opsional)</label>
             <textarea id="catatan" rows="3"></textarea>
           </div>
-          <button type="submit">Simpan Transaksi</button>
+          <button type="submit" style="margin-bottom:10px;">Simpan Transaksi</button>
         </form>
+        <div class="saldoawal-container">
+          <label for="saldoAwal">Saldo Awal Bulan (Rp):</label>
+          <input type="number" id="saldoAwal" min="0" placeholder="Misal: 5000000" style="margin-bottom:8px;"/>
+          <button type="button" id="simpanSaldoAwal">Simpan Saldo Awal</button>
+        </div>
       </div>
 
       <div class="card">
@@ -116,19 +183,62 @@
             <h3>Total Pengeluaran</h3>
             <p id="totalKeluar">Rp 0</p>
           </div>
+          <div class="summary-box">
+            <h3>Saldo Bersih</h3>
+            <p id="saldoBersih">Rp 0</p>
+          </div>
         </div>
         <div class="chart-container">
           <canvas id="grafik"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="grafikBulanan"></canvas>
         </div>
       </div>
 
       <div class="card" style="grid-column: 1 / -1;">
         <h2>Riwayat Transaksi</h2>
+        <div class="backup-restore">
+          <button id="backupJSON" class="btn-export">Backup JSON</button>
+          <input type="file" id="restoreJSON" accept=".json" style="display:none;">
+          <button id="restoreJSONBtn" class="btn-export">Restore JSON</button>
+        </div>
+        <div class="filter-container">
+          <input type="text" id="filterProduk" placeholder="Cari Produk/Catatan">
+          <select id="filterJenis">
+            <option value="">Semua Jenis</option>
+            <option value="pemasukan">Pemasukan</option>
+            <option value="pengeluaran">Pengeluaran</option>
+          </select>
+          <select id="filterKategori">
+            <option value="">Semua Kategori</option>
+            <option value="Penjualan Online">Penjualan Online</option>
+            <option value="Penjualan Offline">Penjualan Offline</option>
+            <option value="Bahan Baku">Bahan Baku</option>
+            <option value="Operasional">Operasional</option>
+            <option value="Promosi">Promosi</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+          <input type="date" id="filterTglMulai">
+          <span style="font-size:13px;color:#888">s/d</span>
+          <input type="date" id="filterTglAkhir">
+          <button id="btnFilter" type="button" style="width:auto;">Filter</button>
+          <button id="btnResetFilter" type="button" style="width:auto;">Reset</button>
+        </div>
         <div class="export-buttons">
           <button id="exportCSV" class="btn-export">Export CSV</button>
           <button id="exportPDF" class="btn-export">Export PDF</button>
         </div>
         <div class="table-container" id="transactionTableContainer"></div>
+      </div>
+      <div class="card" style="grid-column: 1 / -1;">
+        <h2>Manajemen Akun</h2>
+        <div class="user-info" id="userInfo"></div>
+        <div class="pw-section">
+          <input type="password" id="newPassword" placeholder="Password Baru">
+          <button id="btnChangePassword">Ganti Password</button>
+        </div>
+        <button class="logout-btn" id="btnLogout">Logout</button>
       </div>
     </div>
   </div>
@@ -138,8 +248,8 @@
     <div class="modal-content">
       <h3 class="modal-title">Yakin ingin menghapus transaksi ini?</h3>
       <div class="modal-buttons">
-        <button style="background :#000;color:#fff;box-shadow:none" id="cancelDelete" class="btn-cancel">Batal</button>
-        <button id="confirmDelete" class="btn-confirm">Hapus</button>
+        <button style="background :#000;color:#fff;box-shadow:none;width:auto;" id="cancelDelete" class="btn-cancel">Batal</button>
+        <button style="width:auto;" id="confirmDelete" class="btn-confirm">Hapus</button>
       </div>
     </div>
   </div>
@@ -147,11 +257,11 @@
     Anda sedang offline. Beberapa fitur mungkin tidak tersedia.
   </div>
 
-  <!-- Firebase SDK -->
+<!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, enableIndexedDbPersistence, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
@@ -180,7 +290,7 @@
       alert.textContent = message;
       alert.style.backgroundColor = isError ? "var(--danger-color)" : "var(--success-color)";
       alert.classList.add("show");
-      setTimeout(() => { alert.classList.remove("show"); }, 1000);
+      setTimeout(() => { alert.classList.remove("show"); }, 1200);
     }
     function formatRupiah(angka) {
       return "Rp " + new Intl.NumberFormat('id-ID').format(angka);
@@ -198,6 +308,10 @@
       });
       return grouped;
     }
+    // Kategori List
+    const kategoriList = [
+      "Penjualan Online","Penjualan Offline","Bahan Baku","Operasional","Promosi","Lainnya"
+    ];
 
     // Product Suggestion
     const productSuggestions = ["Hijab Paris","Earab Inner Ciput","Ciput","Pashmina Kaos"];
@@ -233,15 +347,73 @@
       }
     });
 
+    // Pengaturan Filter
+    const filterState = {
+      produk: "",
+      jenis: "",
+      kategori: "",
+      tglMulai: "",
+      tglAkhir: ""
+    };
+    document.getElementById("btnFilter").onclick = function() {
+      filterState.produk = document.getElementById("filterProduk").value;
+      filterState.jenis = document.getElementById("filterJenis").value;
+      filterState.kategori = document.getElementById("filterKategori").value;
+      filterState.tglMulai = document.getElementById("filterTglMulai").value;
+      filterState.tglAkhir = document.getElementById("filterTglAkhir").value;
+      renderTransactionTable();
+    };
+    document.getElementById("btnResetFilter").onclick = function() {
+      document.getElementById("filterProduk").value = "";
+      document.getElementById("filterJenis").value = "";
+      document.getElementById("filterKategori").value = "";
+      document.getElementById("filterTglMulai").value = "";
+      document.getElementById("filterTglAkhir").value = "";
+      filterState.produk = "";
+      filterState.jenis = "";
+      filterState.kategori = "";
+      filterState.tglMulai = "";
+      filterState.tglAkhir = "";
+      renderTransactionTable();
+    };
+
+    // Saldo Awal
+    let saldoAwal = 0;
+    async function loadSaldoAwal() {
+      try {
+        const now = new Date();
+        const ym = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+        const saldoDoc = await getDoc(doc(db, "saldoAwal", ym));
+        saldoAwal = saldoDoc.exists() ? saldoDoc.data().saldo : 0;
+        document.getElementById("saldoAwal").value = saldoAwal || "";
+      } catch {}
+    }
+    document.getElementById("simpanSaldoAwal").onclick = async function() {
+      const val = parseInt(document.getElementById("saldoAwal").value, 10) || 0;
+      const now = new Date();
+      const ym = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+      try {
+        await setDoc(doc(db, "saldoAwal", ym), { saldo: val });
+        saldoAwal = val;
+        renderSummary();
+        showAlert("Saldo awal disimpan!");
+      } catch (e) {
+        showAlert("Gagal simpan saldo awal", true);
+      }
+    };
+
     // Firebase Transaction Logic
     let transactions = [];
     let saldoPemasukan = 0;
+    let filteredTransactions = [];
 
     async function autoLogin() {
       try {
         await signInWithEmailAndPassword(auth, "femmeiacloth@gmail.com", "femmeia");
         showAlert("Berhasil login sebagai FemmeiaCloth");
+        loadSaldoAwal();
         loadTransactions();
+        showUserInfo();
       } catch (error) {
         console.error("Error during auto-login:", error);
         showAlert("Gagal login: " + error.message, true);
@@ -251,7 +423,6 @@
     // Hitung saldo pemasukan berjalan (pengeluaran mengurangi pemasukan)
     function computeSummaryFromList(list) {
       let pemasukan = 0, pengeluaran = 0;
-      // Sort ASC
       list.sort((a, b) => a.tanggal - b.tanggal);
       list.forEach(tx => {
         if (tx.jenis === "pemasukan") {
@@ -262,6 +433,30 @@
         }
       });
       return { pemasukan: Math.max(pemasukan, 0), pengeluaran };
+    }
+
+    // Filter
+    function filterTransactions() {
+      let list = [...transactions];
+      if (filterState.produk) {
+        const val = filterState.produk.toLowerCase();
+        list = list.filter(tx => 
+          (tx.produk && tx.produk.toLowerCase().includes(val)) ||
+          (tx.catatan && tx.catatan.toLowerCase().includes(val))
+        );
+      }
+      if (filterState.jenis) list = list.filter(tx => tx.jenis === filterState.jenis);
+      if (filterState.kategori) list = list.filter(tx => tx.kategori === filterState.kategori);
+      if (filterState.tglMulai) {
+        const tglMulai = new Date(filterState.tglMulai);
+        list = list.filter(tx => tx.tanggal >= tglMulai);
+      }
+      if (filterState.tglAkhir) {
+        const tglAkhir = new Date(filterState.tglAkhir);
+        tglAkhir.setHours(23,59,59,999);
+        list = list.filter(tx => tx.tanggal <= tglAkhir);
+      }
+      return list;
     }
 
     // Load
@@ -291,16 +486,19 @@
       saldoPemasukan = pemasukan;
       document.getElementById("totalMasuk").textContent = formatRupiah(pemasukan);
       document.getElementById("totalKeluar").textContent = formatRupiah(pengeluaran);
+      document.getElementById("saldoBersih").textContent = formatRupiah((saldoAwal||0) + pemasukan);
       renderChart(pemasukan, pengeluaran);
+      renderMonthlyChart();
     }
     function renderTransactionTable() {
+      filteredTransactions = filterTransactions();
       const container = document.getElementById("transactionTableContainer");
       container.innerHTML = "";
-      if (transactions.length === 0) {
+      if (filteredTransactions.length === 0) {
         container.innerHTML = `<p style="text-align: center; padding: 20px;">Belum ada data transaksi</p>`;
         return;
       }
-      const grouped = groupTransactionsByDate(transactions.slice().sort((a, b) => b.tanggal - a.tanggal));
+      const grouped = groupTransactionsByDate(filteredTransactions.slice().sort((a, b) => b.tanggal - a.tanggal));
       for (const [dateStr, dateTransactions] of Object.entries(grouped)) {
         const dateHeader = document.createElement("div");
         dateHeader.className = "date-header";
@@ -315,6 +513,7 @@
               <th>Harga Satuan</th>
               <th>Total</th>
               <th>Jenis</th>
+              <th>Kategori</th>
               <th>Catatan</th>
               <th>Aksi</th>
             </tr>
@@ -330,6 +529,7 @@
             <td>${formatRupiah(transaction.harga)}</td>
             <td>${formatRupiah(transaction.total)}</td>
             <td>${transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
+            <td>${transaction.kategori || "-"}</td>
             <td>${transaction.catatan || "-"}</td>
             <td>
               <button class="btn-delete" data-id="${transaction.id}">🗑️</button>
@@ -349,6 +549,7 @@
 
     // Chart
     let myChart = null;
+    let myMonthlyChart = null;
     async function loadChartJS() {
       if (window.Chart) return;
       return new Promise((resolve) => {
@@ -397,6 +598,38 @@
         }
       });
     }
+    async function renderMonthlyChart() {
+      await loadChartJS();
+      const ctx = document.getElementById('grafikBulanan').getContext('2d');
+      if (myMonthlyChart) myMonthlyChart.destroy();
+      // Hitung pemasukan & pengeluaran per bulan
+      const monthly = {};
+      transactions.forEach(tx => {
+        const ym = `${tx.tanggal.getFullYear()}-${String(tx.tanggal.getMonth()+1).padStart(2,"0")}`;
+        if (!monthly[ym]) monthly[ym] = { pemasukan: 0, pengeluaran: 0 };
+        if (tx.jenis === "pemasukan") monthly[ym].pemasukan += tx.total;
+        else monthly[ym].pengeluaran += tx.total;
+      });
+      const labels = Object.keys(monthly).sort();
+      const pemasukanData = labels.map(l => monthly[l].pemasukan);
+      const pengeluaranData = labels.map(l => monthly[l].pengeluaran);
+      myMonthlyChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            { label: 'Pemasukan', data: pemasukanData, backgroundColor: 'rgba(0,184,148,0.7)' },
+            { label: 'Pengeluaran', data: pengeluaranData, backgroundColor: 'rgba(214,48,49,0.7)' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } },
+          scales: { y: { beginAtZero: true, ticks: { callback: v=>formatRupiah(v) } } }
+        }
+      });
+    }
 
     // Form submit
     document.getElementById("formTransaksi").addEventListener("submit", async function(e) {
@@ -405,10 +638,11 @@
       const jumlah = parseInt(document.getElementById("jumlah").value, 10);
       const harga = parseInt(document.getElementById("harga").value, 10);
       const jenis = document.getElementById("jenis").value;
+      const kategori = document.getElementById("kategori").value;
       const catatan = document.getElementById("catatan").value.trim();
       const tanggal = new Date();
       const total = jumlah * harga;
-      if (!produk || !jumlah || !harga || !jenis) {
+      if (!produk || !jumlah || !harga || !jenis || !kategori) {
         showAlert("Pastikan semua data terisi.", true);
         return;
       }
@@ -420,7 +654,7 @@
       }
       try {
         await addDoc(collection(db, "transactions"), {
-          produk, jumlah, harga, total, jenis, catatan, tanggal
+          produk, jumlah, harga, total, jenis, kategori, catatan, tanggal
         });
         showAlert("Transaksi berhasil disimpan!");
         this.reset();
@@ -455,9 +689,23 @@
       }
     };
 
-    // CSV Export
+    // Export CSV/PDF Periode
+    function getExportData() {
+      return filterTransactions().map(transaction => ({
+        Tanggal: transaction.tanggal.toLocaleDateString('id-ID'),
+        Produk: transaction.produk,
+        Jumlah: transaction.jumlah,
+        'Harga Satuan': transaction.harga,
+        Total: transaction.total,
+        Jenis: transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
+        Kategori: transaction.kategori || "",
+        Catatan: transaction.catatan || ""
+      }));
+    }
+
     document.getElementById("exportCSV").addEventListener("click", async function() {
-      if (transactions.length === 0) {
+      const data = getExportData();
+      if (data.length === 0) {
         showAlert("Tidak ada data untuk diekspor", true);
         return;
       }
@@ -469,15 +717,6 @@
           document.head.appendChild(script);
         });
       }
-      const data = transactions.map(transaction => ({
-        Tanggal: transaction.tanggal.toLocaleDateString('id-ID'),
-        Produk: transaction.produk,
-        Jumlah: transaction.jumlah,
-        'Harga Satuan': transaction.harga,
-        Total: transaction.total,
-        Jenis: transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
-        Catatan: transaction.catatan || ""
-      }));
       const csv = Papa.unparse(data);
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -490,9 +729,9 @@
       document.body.removeChild(link);
     });
 
-    // PDF Export
     document.getElementById("exportPDF").addEventListener("click", async function() {
-      if (transactions.length === 0) {
+      const data = getExportData();
+      if (data.length === 0) {
         showAlert("Tidak ada data untuk diekspor", true);
         return;
       }
@@ -516,7 +755,7 @@
           document.head.appendChild(script);
         });
       }
-      const { pemasukan, pengeluaran } = computeSummaryFromList([...transactions]);
+      const { pemasukan, pengeluaran } = computeSummaryFromList([...filteredTransactions]);
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       doc.setFontSize(20);
@@ -531,17 +770,19 @@
       doc.setFont(undefined, 'bold');
       doc.text('Ringkasan:', 14, 45);
       doc.setFontSize(12); doc.setFont(undefined, 'normal');
-      doc.text(`Total Pemasukan: ${formatRupiah(pemasukan)}`, 14, 55);
-      doc.text(`Total Pengeluaran: ${formatRupiah(pengeluaran)}`, 14, 65);
+      doc.text(`Saldo Awal: ${formatRupiah(saldoAwal||0)}`, 14, 52);
+      doc.text(`Total Pemasukan: ${formatRupiah(pemasukan)}`, 14, 59);
+      doc.text(`Total Pengeluaran: ${formatRupiah(pengeluaran)}`, 14, 66);
+      doc.text(`Saldo Akhir: ${formatRupiah((saldoAwal||0)+pemasukan)}`, 14, 73);
 
-      const grouped = groupTransactionsByDate(transactions.slice().sort((a, b) => b.tanggal - a.tanggal));
-      let startY = 80;
+      const grouped = groupTransactionsByDate(filteredTransactions.slice().sort((a, b) => b.tanggal - a.tanggal));
+      let startY = 85;
       for (const [dateStr, dateTransactions] of Object.entries(grouped)) {
         doc.setFontSize(12); doc.setFont(undefined, 'bold');
         doc.setTextColor(108, 92, 231);
         doc.text(dateStr, 14, startY);
         startY += 7;
-        const tableColumn = ["Produk", "Jumlah", "Harga", "Total", "Jenis", "Catatan"];
+        const tableColumn = ["Produk", "Jumlah", "Harga", "Total", "Jenis", "Kategori", "Catatan"];
         const tableRows = [];
         dateTransactions.forEach(transaction => {
           const tableRow = [
@@ -550,6 +791,7 @@
             formatRupiah(transaction.harga),
             formatRupiah(transaction.total),
             transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
+            transaction.kategori || "-",
             transaction.catatan || "-"
           ];
           tableRows.push(tableRow);
@@ -566,6 +808,69 @@
       }
       doc.save(`transaksi_femmeiacloth_${new Date().toISOString().slice(0, 10)}.pdf`);
     });
+
+    // Backup/Restore JSON
+    document.getElementById("backupJSON").onclick = function() {
+      const blob = new Blob([JSON.stringify(transactions)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = "backup_femmeiacloth.json";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+    document.getElementById("restoreJSONBtn").onclick = function() {
+      document.getElementById("restoreJSON").click();
+    };
+    document.getElementById("restoreJSON").onchange = async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (!confirm("Data lama akan tertimpa. Lanjutkan?")) return;
+      try {
+        const arr = JSON.parse(await file.text());
+        for (const tx of arr) {
+          // Simpan ulang ke Firestore dengan data asli
+          await addDoc(collection(db, "transactions"), {
+            produk: tx.produk, jumlah: tx.jumlah, harga: tx.harga, total: tx.total,
+            jenis: tx.jenis, kategori: tx.kategori, catatan: tx.catatan,
+            tanggal: new Date(tx.tanggal)
+          });
+        }
+        showAlert("Restore JSON berhasil!");
+        loadTransactions();
+      } catch (e) {
+        showAlert("Restore gagal", true);
+      }
+    };
+
+    // User Info & Manajemen Akun
+    function showUserInfo() {
+      const user = auth.currentUser;
+      document.getElementById("userInfo").textContent = user ? `Login sebagai: ${user.email}` : "";
+    }
+    document.getElementById("btnLogout").onclick = async function() {
+      try {
+        await signOut(auth);
+        location.reload();
+      } catch {
+        showAlert("Logout gagal", true);
+      }
+    };
+    document.getElementById("btnChangePassword").onclick = async function() {
+      const newPw = document.getElementById("newPassword").value;
+      if (!newPw || newPw.length < 6) {
+        showAlert("Minimal 6 karakter.", true);
+        return;
+      }
+      try {
+        await updatePassword(auth.currentUser, newPw);
+        showAlert("Password diganti!");
+        document.getElementById("newPassword").value = "";
+      } catch (e) {
+        showAlert("Gagal ganti password: "+(e.message||""), true);
+      }
+    };
 
     window.addEventListener('offline', () => {
       document.getElementById("offlineIndicator").style.display = "block";
@@ -594,6 +899,6 @@
 
     // Start
     autoLogin();
-  </script>
+    </script>
 </body>
 </html>
