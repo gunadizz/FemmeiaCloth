@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Survey Berhadiah - Femmeia Cloth - Batch 1</title>
- <meta name="theme-color" content="#000000">
-  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
- <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Quicksand', sans-serif;
@@ -94,26 +92,26 @@
       display: inline-block;
       margin-left: 5px;
     }
+    #quotaInfo {
+      color: #bb0000;
+      font-weight: bold;
+      margin-bottom: 16px;
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <h2>Survey Berhadiah Batch 1 - Femmeia Cloth</h2>
+  <h2>Survey Berhadiah - Femmeia Cloth</h2>
   <div class="note">
     🎁 <strong>Catatan:</strong> Hadiah sebesar <strong>Rp1.000 – Rp5.000</strong> akan diberikan berdasarkan kualitas jawaban Anda.<br>
     Hadiah hanya dapat dikirim melalui <strong>e-wallet (OVO, DANA, GoPay, dll)</strong>.<br>
     🧾 <strong>Syarat:</strong> Wajib follow Instagram <a href="https://instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a> dan isi username IG Anda.<br>
     Bagi Anda yang belum pernah berbelanja di kami, silakan melihat-lihat produk kami terlebih dahulu di Instagram atau platform lain.
   </div>
-<div style="background:#fff8dc; padding:15px; border:1px solid #f0c36d; border-radius:8px; font-family: 'Quicksand', sans-serif; font-size:14px; margin-bottom:20px;">
-  <strong>Perhatian:</strong><br>
-  Data yang Anda berikan dalam survey ini akan digunakan untuk pengembangan produk dan layanan FemmeiaCloth agar lebih sesuai dengan kebutuhan pelanggan. Kami menjamin data Anda akan kami jaga kerahasiaannya dan tidak akan disebarkan kepada pihak ketiga.<br><br>
-  Mohon lengkapi data dengan jujur dan ikuti syarat yang berlaku untuk mendapatkan hadiah menarik dari kami. Terima kasih atas partisipasi Anda!
-</div>
-
+  <div id="quotaInfo"></div>
   <div class="progress">
     <div class="progress-bar" id="progressBar"></div>
   </div>
-
   <form id="surveyForm" novalidate>
     <!-- Step 1: Data Diri -->
     <div class="form-step active">
@@ -129,7 +127,7 @@
       <label for="whatsapp">No. WhatsApp:</label>
       <input type="text" id="whatsapp" name="whatsapp" required />
       
-      <label for="whatsapp">No. E-Wallet (Gopay/Dana/Dll):</label>
+      <label for="ewallet">No. E-Wallet (Gopay/Dana/Dll):</label>
       <input type="text" id="ewallet" name="ewallet" required />
 
       <label for="email">Email:</label>
@@ -189,7 +187,6 @@
         <input type="checkbox" id="idea3" value="Aksesoris Hijab" class="productIdea" />
         <label for="idea3">Aksesoris Hijab</label>
       </div>
-
       <label for="otherIdea">Ide lain (jika ada):</label>
       <input type="text" id="otherIdea" name="otherIdea" />
     </div>
@@ -202,6 +199,8 @@
 
     <!-- Step 6: Persetujuan & Kirim -->
     <div class="form-step">
+    	<label for="jenisewallet">Konfirmasi Jenis E-Wallet yang anda gunakan (Contoh: Gopay/DANA/DLL</label>
+      <input type="text" id="jenisewallet" name="jenisewallet" required />
       <div>
         <input type="checkbox" id="agreeFollow" required />
         <label for="agreeFollow">Saya sudah follow Instagram <a href="https://instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a></label>
@@ -223,10 +222,33 @@
     </div>
   </form>
 
+  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, runTransaction, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+    // EmailJS
     emailjs.init('EgQN926d2p5Tl7keS');
 
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
+      authDomain: "femmeiacloth-finance.firebaseapp.com",
+      projectId: "femmeiacloth-finance",
+      storageBucket: "femmeiacloth-finance.appspot.com",
+      messagingSenderId: "517478386163",
+      appId: "1:517478386163:web:51028f5841baa311126a86",
+      measurementId: "G-K4L516Q54R"
+    };
+
+    // Inisialisasi Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Stepper logic
     const steps = document.querySelectorAll('.form-step');
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
@@ -273,7 +295,42 @@
       }
     });
 
-    document.getElementById('surveyForm').addEventListener('submit', function(event) {
+    // Cek stok survey saat page load
+    const quotaDocRef = doc(db, "survey_control", "quota");
+    const quotaInfo = document.getElementById("quotaInfo");
+    const surveyForm = document.getElementById('surveyForm');
+    let quotaCount = null;
+
+    async function checkQuotaAndToggleForm() {
+      try {
+        const docSnap = await getDoc(quotaDocRef);
+        if (docSnap.exists()) {
+          quotaCount = docSnap.data().count;
+          if (quotaCount <= 0) {
+            quotaInfo.innerText = "Stok survey sudah habis. Terima kasih atas antusiasmenya!";
+            quotaInfo.style.display = "block";
+            surveyForm.style.display = "none";
+          } else {
+            quotaInfo.innerText = `Sisa kuota survey: ${quotaCount}`;
+            quotaInfo.style.display = "block";
+            surveyForm.style.display = "block";
+          }
+        } else {
+          quotaInfo.innerText = "Quota belum diinisialisasi di Firestore!";
+          quotaInfo.style.display = "block";
+          surveyForm.style.display = "none";
+        }
+      } catch (err) {
+        quotaInfo.innerText = "Gagal memuat quota survey.";
+        quotaInfo.style.display = "block";
+        surveyForm.style.display = "none";
+      }
+    }
+
+    checkQuotaAndToggleForm();
+
+    // SUBMIT: simpan ke Firestore (dan kurangi quota), baru EmailJS
+    surveyForm.addEventListener('submit', async function(event) {
       event.preventDefault();
 
       if (!validateStep(currentStep)) {
@@ -281,18 +338,16 @@
         return;
       }
 
-      // Ambil checkbox ide produk
-      const ideas = Array.from(document.querySelectorAll('.productIdea:checked'))
-        .map(cb => cb.value)
-        .join(', ');
-
-      const templateParams = {
+      // Data survey
+      const ideas = Array.from(document.querySelectorAll('.productIdea:checked')).map(cb => cb.value).join(', ');
+      const surveyData = {
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,
         age: document.getElementById('age').value,
         city: document.getElementById('city').value,
         whatsapp: document.getElementById('whatsapp').value,
         ewallet: document.getElementById('ewallet').value,
+        jenisewallet: document.getElementById('jenisewallet').value,
         instagram: document.getElementById('instagram').value,
         productType: document.getElementById('productType').value,
         favoriteColor: document.getElementById('favoriteColor').value,
@@ -302,19 +357,43 @@
         feedback: document.getElementById('feedback').value,
         productIdeas: ideas,
         otherIdea: document.getElementById('otherIdea').value,
-        suggestion: document.getElementById('suggestion').value
+        suggestion: document.getElementById('suggestion').value,
+        timestamp: new Date()
       };
 
-      emailjs.send('service_00xj2ta', 'template_4i1ue1g', templateParams)
-        .then(() => {
-          alert('Terima kasih! Survey berhasil dikirim.');
-          this.reset();
-          currentStep = 0;
-          showStep(currentStep);
-        }, (error) => {
-          alert('Maaf, pengiriman gagal. Silakan coba lagi.');
-          console.error(error);
+      // Run Firestore transaction: cek quota, simpan survey, lalu update quota
+      try {
+        await runTransaction(db, async (transaction) => {
+          const quotaDoc = await transaction.get(quotaDocRef);
+          if (!quotaDoc.exists()) throw "Quota tidak ditemukan!";
+          let count = quotaDoc.data().count;
+          if (count <= 0) throw "Stok survey sudah habis!";
+          // simpan survey
+          const surveysCol = collection(db, "surveys");
+          await addDoc(surveysCol, surveyData);
+          // kurangi quota
+          transaction.update(quotaDocRef, { count: count - 1 });
         });
+
+        // Setelah sukses simpan Firestore, kirim EmailJS (opsional, bisa dihapus jika tidak ingin email)
+        emailjs.send('service_00xj2ta', 'template_4i1ue1g', surveyData)
+          .then(() => {
+            alert('Terima kasih! Survey berhasil dikirim.');
+            surveyForm.reset();
+            currentStep = 0;
+            showStep(currentStep);
+            checkQuotaAndToggleForm();
+          }, (error) => {
+            alert('Survey masuk, tapi pengiriman email gagal.');
+            console.error(error);
+            checkQuotaAndToggleForm();
+          });
+
+      } catch (e) {
+        alert(e === "Stok survey sudah habis!" ? e : "Gagal submit. Silakan coba lagi.");
+        console.error(e);
+        checkQuotaAndToggleForm();
+      }
     });
 
     showStep(currentStep);
