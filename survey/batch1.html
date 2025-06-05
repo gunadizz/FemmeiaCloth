@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Survey Berhadiah - Femmeia Cloth - Batch 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #f8f8f8;
+      margin: 0;
+      padding: 20px;
+    }
+    .form-step {
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .form-step.active {
+      display: block;
+    }
+    .btn-group {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: #888;
+      color: white;
+      cursor: pointer;
+      min-width: 100px;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .progress {
+      height: 10px;
+      background: #ddd;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 10px;
+      background: #4caf50;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .note {
+      background: #fff8dc;
+      padding: 15px;
+      border: 1px solid #f0c36d;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 14px;
+      resize: vertical;
+    }
+    textarea {
+      min-height: 80px;
+    }
+    .checkbox-group {
+      margin-top: 10px;
+    }
+    .checkbox-group label {
+      font-weight: normal;
+      display: inline-block;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Survey Berhadiah - Femmeia Cloth</h2>
+  <div class="note">
+    🎁 <strong>Catatan:</strong> Hadiah sebesar <strong>Rp1.000 – Rp5.000</strong> akan diberikan berdasarkan kualitas jawaban Anda.<br>
+    Hadiah hanya dapat dikirim melalui <strong>e-wallet (OVO, DANA, GoPay, dll)</strong>.<br>
+    🧾 <strong>Syarat:</strong> Wajib follow Instagram <a href="https://instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a> dan isi username IG Anda.<br>
+    Bagi Anda yang belum pernah berbelanja di kami, silakan melihat-lihat produk kami terlebih dahulu di Instagram atau platform lain.
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <form id="surveyForm" novalidate>
+    <!-- Step 1: Data Diri -->
+    <div class="form-step active">
+      <label for="name">Nama:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="age">Umur:</label>
+      <input type="number" id="age" name="age" min="1" required />
+
+      <label for="city">Kota:</label>
+      <input type="text" id="city" name="city" required />
+
+      <label for="whatsapp">No. WhatsApp:</label>
+      <input type="text" id="whatsapp" name="whatsapp" required />
+      
+      <label for="whatsapp">No. E-Wallet (Gopay/Dana/Dll):</label>
+      <input type="text" id="ewallet" name="ewallet" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="instagram">Username Instagram:</label>
+      <input type="text" id="instagram" name="instagram" required />
+    </div>
+
+    <!-- Step 2: Preferensi Produk -->
+    <div class="form-step">
+      <label for="productType">Jenis hijab favorit:</label>
+      <select id="productType" name="productType" required>
+        <option value="">-- Pilih --</option>
+        <option value="Paris">Paris</option>
+        <option value="Pashmina">Pashmina</option>
+        <option value="Inner">Inner</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+
+      <label for="favoriteColor">Warna yang paling disukai:</label>
+      <input type="text" id="favoriteColor" name="favoriteColor" required />
+
+      <label for="priceRange">Kisaran harga nyaman:</label>
+      <select id="priceRange" name="priceRange" required>
+        <option value="">-- Pilih --</option>
+        <option value="<30k">&lt; Rp30.000</option>
+        <option value="30-50k">Rp30.000 – Rp50.000</option>
+        <option value=">50k">&gt; Rp50.000</option>
+      </select>
+    </div>
+
+    <!-- Step 3: Kepuasan Pelanggan -->
+    <div class="form-step">
+      <label for="hasPurchased">Pernah membeli di Femmeia?</label>
+      <select id="hasPurchased" name="hasPurchased" required>
+        <option value="">-- Pilih --</option>
+        <option value="Tidak">Tidak</option>
+        <option value="Ya">Ya</option>
+      </select>
+
+      <label for="rating">Rating pengalaman (1–5):</label>
+      <input type="number" id="rating" name="rating" min="1" max="5" />
+
+      <label for="feedback">Komentar tentang layanan kami:</label>
+      <textarea id="feedback" name="feedback"></textarea>
+    </div>
+
+    <!-- Step 4: Ide Produk Baru -->
+    <div class="form-step">
+      <label>Produk baru apa yang kamu inginkan?</label>
+      <div class="checkbox-group">
+        <input type="checkbox" id="idea1" value="Hijab Motif" class="productIdea" />
+        <label for="idea1">Hijab Motif</label><br />
+        <input type="checkbox" id="idea2" value="Inner Instan" class="productIdea" />
+        <label for="idea2">Inner Instan</label><br />
+        <input type="checkbox" id="idea3" value="Aksesoris Hijab" class="productIdea" />
+        <label for="idea3">Aksesoris Hijab</label>
+      </div>
+
+      <label for="otherIdea">Ide lain (jika ada):</label>
+      <input type="text" id="otherIdea" name="otherIdea" />
+    </div>
+
+    <!-- Step 5: Testimoni / Komentar -->
+    <div class="form-step">
+      <label for="suggestion">Testimoni atau saran untuk kami:</label>
+      <textarea id="suggestion" name="suggestion" required></textarea>
+    </div>
+
+    <!-- Step 6: Persetujuan & Kirim -->
+    <div class="form-step">
+      <div>
+        <input type="checkbox" id="agreeFollow" required />
+        <label for="agreeFollow">Saya sudah follow Instagram <a href="https://instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a></label>
+      </div>
+      <div>
+        <input type="checkbox" id="agree1" required />
+        <label for="agree1">Saya bersedia datanya digunakan untuk pengembangan Femmeia Cloth</label>
+      </div>
+      <div>
+        <input type="checkbox" id="agree2" required />
+        <label for="agree2">Saya setuju mengikuti undian berhadiah</label>
+      </div>
+      <button type="submit">Kirim</button>
+    </div>
+
+    <div class="btn-group">
+      <button type="button" id="prevBtn" disabled>Sebelumnya</button>
+      <button type="button" id="nextBtn">Selanjutnya</button>
+    </div>
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init('EgQN926d2p5Tl7keS');
+
+    const steps = document.querySelectorAll('.form-step');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const progressBar = document.getElementById('progressBar');
+    let currentStep = 0;
+
+    function showStep(n) {
+      steps.forEach((step, i) => step.classList.toggle('active', i === n));
+      progressBar.style.width = ((n + 1) / steps.length) * 100 + '%';
+
+      prevBtn.disabled = n === 0;
+      nextBtn.style.display = n === steps.length - 1 ? 'none' : 'inline-block';
+    }
+
+    function validateStep(n) {
+      const step = steps[n];
+      const inputs = step.querySelectorAll('input, select, textarea');
+      for (const input of inputs) {
+        if (input.hasAttribute('required') && !input.value) {
+          return false;
+        }
+        if (input.type === 'checkbox' && input.hasAttribute('required') && !input.checked) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (!validateStep(currentStep)) {
+        alert('Harap lengkapi semua data yang wajib diisi pada halaman ini.');
+        return;
+      }
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    });
+
+    document.getElementById('surveyForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      if (!validateStep(currentStep)) {
+        alert('Harap lengkapi semua data yang wajib diisi.');
+        return;
+      }
+
+      // Ambil checkbox ide produk
+      const ideas = Array.from(document.querySelectorAll('.productIdea:checked'))
+        .map(cb => cb.value)
+        .join(', ');
+
+      const templateParams = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        age: document.getElementById('age').value,
+        city: document.getElementById('city').value,
+        whatsapp: document.getElementById('whatsapp').value,
+        ewallet: document.getElementById('ewallet').value,
+        instagram: document.getElementById('instagram').value,
+        productType: document.getElementById('productType').value,
+        favoriteColor: document.getElementById('favoriteColor').value,
+        priceRange: document.getElementById('priceRange').value,
+        hasPurchased: document.getElementById('hasPurchased').value,
+        rating: document.getElementById('rating').value,
+        feedback: document.getElementById('feedback').value,
+        productIdeas: ideas,
+        otherIdea: document.getElementById('otherIdea').value,
+        suggestion: document.getElementById('suggestion').value
+      };
+
+      emailjs.send('service_00xj2ta', 'template_4i1ue1g', templateParams)
+        .then(() => {
+          alert('Terima kasih! Survey berhasil dikirim.');
+          this.reset();
+          currentStep = 0;
+          showStep(currentStep);
+        }, (error) => {
+          alert('Maaf, pengiriman gagal. Silakan coba lagi.');
+          console.error(error);
+        });
+    });
+
+    showStep(currentStep);
+  </script>
+</body>
+  </html>
+  
