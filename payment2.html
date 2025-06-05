@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Metode Pembayaran | FemmeiaCloth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+  <meta name="theme-color" content="#151515">
+  <style>
+    :root {
+      --primary: #fff;
+      --secondary: #b4b8c0;
+      --bg: #181c23;
+      --accent: #f98d2a;
+      --radius: 22px;
+      --glow: 0 0 36px 0 #3ad8fe33, 0 0 2px 0 #fff2, 0 0 0.5px #fff4;
+    }
+    html, body {
+      background: var(--bg);
+      font-family: 'Quicksand', sans-serif !important;
+      color: var(--primary);
+      margin: 0; padding: 0;
+      min-height: 100vh;
+    }
+    .main-content {
+      max-width: 1020px;
+      margin: 5vw auto 6vw auto;
+      padding: 1.5rem 0.5rem 2.3rem 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .brand-logo {
+      width: 80px;
+      border-radius: 15px;
+      box-shadow: 0 2px 16px #8dfafd2d;
+      margin-bottom: 0.7rem;
+      display: block;
+      margin-left: auto; margin-right: auto;
+      filter: brightness(1.12) drop-shadow(0 0 10px #44f3ff36);
+    }
+    .brand-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 0.18rem;
+      text-shadow: 0 0.5px 8px #21e6fd1c;
+    }
+    .brand-subtitle {
+      font-size: 1.01rem;
+      color: #7c879e;
+      font-weight: 500;
+      margin-bottom: 0.7rem;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+    .back-btn {
+      display: inline-block;
+      margin: 0.2rem 0 1.3rem 0;
+      background: linear-gradient(93deg, #282b36 60%, #2a1e11 100%);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      font-size: 1.07rem;
+      font-weight: 500;
+      padding: 0.43em 1.3em;
+      text-decoration: none;
+      box-shadow: 0 4px 16px #232b3f33, 0 1.5px 7px #181c23;
+      letter-spacing: 0.02em;
+      outline: none;
+      transition: background 0.19s, color 0.17s, box-shadow 0.26s, transform 0.21s;
+      cursor: pointer;
+    }
+    .back-btn:hover, .back-btn:focus {
+      background: linear-gradient(93deg, #2a1e11 60%, #282b36 100%);
+      color: #fff;
+      transform: scale(1.04);
+      box-shadow: 0 10px 50px #f98d2a1c, 0 2px 7px #232b3f3d;
+    }
+
+    /* Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.18em;
+      margin: 1.8em 0;
+    }
+    @media (max-width: 900px) {
+      .bento-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 650px) {
+      .bento-grid { grid-template-columns: 1fr; }
+    }
+    .bento-card {
+      background: linear-gradient(120deg, #21242c 85%, #282b36 100%);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 60px 0 #1b222cba, 0 2px 7px #232b3f3c;
+      padding: 1.7em 1.2em 1.7em 1.2em;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      position: relative;
+      transition: box-shadow 0.18s, transform 0.13s;
+      border: 1.8px solid #21242e;
+      overflow: hidden;
+      z-index: 2;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .bento-card:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      background: linear-gradient(140deg,#3ad8fe18 0%,#f98d2a0e 100%);
+      z-index: 0;
+      opacity: 0.95;
+      pointer-events: none;
+    }
+    .bento-card:hover {
+      box-shadow: 0 10px 70px 0 #2affff40, 0 2px 7px #f98d2a25;
+      transform: translateY(-2px) scale(1.015);
+      border-color: #3ad8fe7a;
+    }
+    .bento-title {
+      font-size: 1.09em;
+      font-weight: bold;
+      color: #f98d2a;
+      margin-bottom: 0.7em;
+      display: flex;
+      align-items: center;
+      gap: 0.47em;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 1px 6px #3ad8fe2a;
+    }
+    .bento-card ul {
+      margin: 0.23em 0 0.23em 1.1em;
+      font-size: 1em;
+      padding: 0;
+      color: #c7c9d2;
+      position: relative;
+      z-index: 1;
+    }
+    .bento-card strong {
+      color: #f98d2a;
+      font-weight: 700;
+    }
+    .account {
+      font-family: monospace;
+      font-size: 1.04em;
+      color: #fff;
+      background: #232836f5;
+      padding: 2px 10px;
+      border-radius: 7px;
+      margin-left: 0.3em;
+      margin-right: 0.5em;
+      margin-top: 5px;
+      position: relative;
+      display: inline-block;
+      border: 1px solid #373a48;
+      user-select: all;
+      box-shadow: 0 0 8px #3ad8fe22;
+    }
+    .qris-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7em;
+      margin-top: 0.1em;
+      margin-bottom: 0.1em;
+      font-size: 0.98em;
+      z-index: 1;
+    }
+    .qris-link img {
+      width: 100%;
+      max-width: 210px;
+      height: auto;
+      border-radius: 13px;
+      vertical-align: middle;
+      box-shadow: 0 6px 32px #3ad8fe44, 0 2px 7px #191c23;
+      background: #202430;
+      margin-top: 0.5em;
+      border: 1.5px solid #22252f;
+      transition: box-shadow 0.18s;
+      text-align: center;
+      display: block;
+      opacity: 0.97;
+    }
+    .qris-link img:hover {
+      box-shadow: 0 12px 48px #f98d2a3c, 0 2px 7px #3ad8fe40;
+    }
+    .btn-link {
+      background: linear-gradient(93deg, #3ad8fe 30%, #f98d2a 100%);
+      color: #fff;
+      margin-top: 17px;
+      margin-bottom: 4px;
+      padding: 0.45em 1.1em;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      text-align: center;
+      display: inline-block;
+      position: relative;
+      font-size: 1em;
+      border: none;
+      outline: none;
+      box-shadow: 0 4px 16px #3ad8fe33, 0 1.5px 7px #f98d2a3d;
+      transition: background 0.18s, color 0.18s, box-shadow 0.19s, transform 0.19s;
+      z-index: 1;
+    }
+    .btn-link:hover {
+      background: linear-gradient(93deg, #f98d2a 60%, #3ad8fe 100%);
+      color: #fff;
+      transform: scale(1.045);
+      box-shadow: 0 8px 32px #f98d2a33, 0 4px 14px #3ad8fe1c;
+      text-decoration: underline;
+    }
+    .info-box {
+      margin: 2.2em auto 0 auto;
+      padding: 1.18em 1.1em 0.97em 1.1em;
+      background: linear-gradient(120deg,#23283a 70%,#21242c 100%);
+      border-radius: 17px;
+      box-shadow: 0 2px 12px #3ad8fe14;
+      color: #b4b8c0;
+      font-size: 0.95em;
+      text-align: center;
+      max-width: 530px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1.2px solid #2a2f3a;
+    }
+    .footer {
+      margin: 5vw auto 2vw auto;
+      text-align: center;
+      color: #7b879c;
+      font-size: 0.97rem;
+      letter-spacing: 0.28px;
+      z-index: 1;
+      position: relative;
+      font-family: 'Quicksand', sans-serif !important;
+    }
+    .footer a {
+      color: #9fc2ed;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 0.4em;
+      transition: color 0.2s;
+    }
+    .footer a:hover, .footer a:focus {
+      color: #3ad8fe;
+      text-decoration: underline;
+    }
+    @media (max-width: 1200px) {
+      .main-content { max-width: 99vw; }
+    }
+    @media (max-width: 900px) {
+      .main-content { padding-left: 1vw; padding-right: 1vw; }
+    }
+    @media (max-width: 650px) {
+      .main-content { padding: 0.7rem 2vw 1.1rem 2vw; margin: 3vw auto 4vw auto; }
+      .footer { font-size: 0.91rem; margin: 8vw auto 2vw auto; }
+      .bento-card { padding: 1.15em 0.9em 1.1em 0.9em; }
+    }
+    /* Icon style for each card */
+    .bento-icon {
+      width: 54px;
+      height: 54px;
+      margin-bottom: 1.1em;
+      margin-top: 0.1em;
+      border-radius: 16px;
+      background: linear-gradient(135deg,#3ad8fe33 40%,#f98d2a22 100%);
+      box-shadow: 0 0 32px #3ad8fe22, 0 2px 4px #f98d2a14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.1em;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+      border: 1.5px solid #282b36;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+    .bento-icon img {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: cover;
+      filter: brightness(1.13) drop-shadow(0 0 6px #3ad8fe40);
+    }
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <img class="brand-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth Logo" />
+    <div class="brand-title">FemmeiaCloth</div>
+    <div class="brand-subtitle">Premium Quality Hijab &amp; Accessories</div>
+    <a href="/" class="back-btn">&larr; Kembali</a>
+    <div class="bento-grid">
+      <!-- E-wallet -->
+      <div class="bento-card">
+        <div class="bento-icon">
+          <img src="https://img.icons8.com/color/96/000000/wallet--v2.png" alt="Wallet Icon" />
+        </div>
+        <div class="bento-title">E-Wallet</div>
+        <ul>
+          <li>
+            Dana / GoPay / OVO / ShopeePay: <span class="account">085341899229</span>
+            <span style="color:#8e97ad;font-size:0.97em;">(A/N G****i R***a)</span>
+          </li>
+        </ul>
+      </div>
+      <!-- Transfer Bank -->
+      <div class="bento-card">
+        <div class="bento-icon">
+          <img src="https://img.icons8.com/fluency/96/bank-building.png" alt="Bank Icon" />
+        </div>
+        <div class="bento-title">Transfer Bank</div>
+        <ul>
+          <li>BCA: <span class="account">8736092285</span></li>
+          <li>Bank Jago: <span class="account">104312607955</span></li>
+          <li>BRI: <span class="account">040301109361507</span></li>
+          <li>SeaBank: <span class="account">901369416040</span></li>
+        </ul>
+      </div>
+      <!-- QRIS -->
+      <div class="bento-card" style="align-items: center;">
+        <div class="bento-icon">
+          <img src="https://img.icons8.com/color/96/qr-code.png" alt="QRIS Icon" />
+        </div>
+        <div class="bento-title">QRIS / All Payment</div>
+        <div class="qris-link">
+          <img src="https://femmeiacloth.vercel.app/Kode%20QRIS%20FemmeiaCloth.png" alt="QRIS" /> 
+        </div>
+        <a class="btn-link" href="https://femmeiacloth.me/Kode%20QRIS%20FemmeiaCloth.png" target="_blank" rel="noopener">
+          🔗 — Klik untuk unduh QRIS
+        </a>
+      </div>
+    </div>
+    <div class="info-box">
+      Konfirmasi pembayaran melalui WhatsApp setelah transfer untuk mempercepat proses pengiriman.<br>
+      Terima kasih telah berbelanja di FemmeiaCloth!
+    </div>
+  </div>
+  <div class="footer">
+    &copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#3ad8fe;font-size:1.1em;">&#10084;</span>
+    <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>
+  </div>
+</body>
+</html>
