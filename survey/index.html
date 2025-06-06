@@ -1101,18 +1101,11 @@
       </div>
     </div>
   </div>
-<!-- Modal pop up -->
-<div class="modal-overlay" id="modalOverlay" style="display:none;">
-  <div class="modal">
-    <div class="modal-content" id="modalContent"></div>
-    <button class="modal-btn" onclick="closeModal()">Tutup</button>
-  </div>
-</div>
+
 
   <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+
 <script src="survey-firebase.js"></script>
   <!-- Firebase SDK -->
   <script type="module">
@@ -1881,112 +1874,15 @@ function generateImprovedConclusion(data, scores) {
     // Initialize
     showStep(currentStep);
   </script>
-  <script>
-
-
-
-
-// --- FingerprintJS & IP detection ---
-let deviceId = null;
-let userIp = null;
-
-// Load FingerprintJS
-function loadFingerprintAndIP() {
-  // FingerprintJS
-  const fpPromise = import('https://openfpcdn.io/fingerprintjs/v4').then(FingerprintJS => FingerprintJS.load());
-  // IPify
-  const ipPromise = fetch('https://api.ipify.org?format=json').then(res => res.json()).then(res => res.ip);
-
-  return Promise.all([fpPromise, ipPromise]).then(async ([fp, ip]) => {
-    const result = await fp.get();
-    deviceId = result.visitorId;
-    userIp = ip;
+ <script>
+  document.getElementById('surveyForm').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      if (event.target.tagName !== 'TEXTAREA') {
+        event.preventDefault();
+      }
+    }
   });
-}
-loadFingerprintAndIP();
+</script>
 
-// --- Modal logic ---
-function showModal(msg) {
-  let overlay = document.getElementById('modalOverlay');
-  let content = document.getElementById('modalContent');
-  overlay.classList.add('active');
-  content.innerHTML = msg;
-}
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('active');
-}
-
-// --- Cek sudah submit saat halaman dibuka ---
-function checkAlreadySubmitted() {
-  if (localStorage.getItem('hasSubmittedSurvey') === 'true') {
-    showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>Anda hanya dapat mengisi survey 1x saja.</p>');
-    document.getElementById('surveyForm').classList.add('form-hidden');
-  }
-}
-document.addEventListener('DOMContentLoaded', checkAlreadySubmitted);
-
-// --- Submit survey ---
-async function submitSurvey(formData) {
-  // Tunggu fingerprint & IP tersedia
-  if (!deviceId || !userIp) {
-    showModal('Sedang mendeteksi perangkat dan IP, mohon tunggu beberapa detik lalu submit ulang...');
-    return;
-  }
-
-  const email = formData.email.trim().toLowerCase();
-  const wa = formData.whatsapp.trim().replace(/\D/g,'');
-  const ig = formData.instagram.trim().toLowerCase();
-  const ewallet = formData.ewallet.trim().replace(/\D/g,'');
-
-  // Cek duplikat di Firestore
-  // Email
-  const emailSnap = await db.collection('surveys').where('email', '==', email).limit(1).get();
-  if (!emailSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>Email sudah pernah digunakan.</p>'); return; }
-  // WhatsApp
-  const waSnap = await db.collection('surveys').where('whatsapp', '==', wa).limit(1).get();
-  if (!waSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>Nomor WhatsApp sudah pernah digunakan.</p>'); return; }
-  // Instagram
-  const igSnap = await db.collection('surveys').where('instagram', '==', ig).limit(1).get();
-  if (!igSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>Instagram sudah pernah digunakan.</p>'); return; }
-  // E-Wallet
-  const ewSnap = await db.collection('surveys').where('ewallet', '==', ewallet).limit(1).get();
-  if (!ewSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>No. e-wallet sudah pernah digunakan.</p>'); return; }
-  // Device
-  const devSnap = await db.collection('surveys').where('deviceId', '==', deviceId).limit(1).get();
-  if (!devSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>Perangkat ini sudah pernah digunakan untuk submit survey.</p>'); return; }
-  // IP Address
-  const ipSnap = await db.collection('surveys').where('ip', '==', userIp).limit(1).get();
-  if (!ipSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>IP Address ini sudah pernah digunakan untuk submit survey.</p>'); return; }
-
-  // Simpan data survey + info device dan IP
-  await db.collection('surveys').add({
-    ...formData,
-    email,
-    whatsapp: wa,
-    instagram: ig,
-    ewallet,
-    deviceId,
-    ip: userIp,
-    submittedAt: new Date()
-  });
-  localStorage.setItem('hasSubmittedSurvey', 'true');
-  showModal('<h3>Terima Kasih!</h3><p>Survey Anda berhasil dikirim.</p>');
-  document.getElementById('surveyForm').classList.add('form-hidden');
-}
-
-// --- Tangani submit form ---
-document.getElementById('surveyForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  // Ambil data dari field form
-  const formData = {
-    email: document.getElementById('email').value,
-    whatsapp: document.getElementById('whatsapp').value,
-    instagram: document.getElementById('instagram').value,
-    ewallet: document.getElementById('ewallet').value,
-    // Tambahkan field lain sesuai kebutuhan form kamu!
-  };
-  submitSurvey(formData);
-});
-  </script>
 </body>
 </html>
