@@ -4,244 +4,421 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Form Pemesanan Hijab - FemmeiaCloth</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/IMG_3593.jpeg" type="image/x-icon">
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Quicksand', sans-serif;
+    :root {
+      --bento-bg: #f6f7fb;
+      --bento-blur: rgba(255,255,255,0.85);
+      --soft-pink: #fbeff3;
+      --soft-purple: #f7f3fa;
+      --border: rgba(220,220,233,0.38);
+      --accent: #d7bce4;
+      --main-text: #48434f;
+      --secondary-text: #8e88a7;
+      --button: #f4f1fa;
+      --shadow: 0 4px 20px 0 rgba(206, 209, 219, 0.11), 0 1px 8px 0 rgba(160, 113, 206, 0.03);
+      --profile-shadow: 0 6px 26px 0 #e0c2ee0f, 0 1.5px 8px 0 #baa3e80a;
+      --header-grad: linear-gradient(90deg, #fbeff3 0%, #f7f3fa 100%);
     }
     body {
       margin: 0;
-      background-color: #fff8f5;
-    }
-    .loader-screen {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #ffdede;
+      background: var(--bento-bg);
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
       flex-direction: column;
-      animation: fadeOut 1s ease forwards;
+      align-items: center;
     }
-    .loader {
-      border: 6px solid #ffe2e2;
-      border-top: 6px solid #e07b7b;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 0.5s linear infinite;
-      margin-bottom: 20px;
+    * { box-sizing: border-box; font-family: 'Quicksand',sans-serif; color: var(--main-text);}
+    /* Loader */
+    .page-loader-bg {
+      position: fixed; z-index: 2002; top:0; left:0; width:100vw; height:100vh;
+      background: rgba(252,251,254,0.93); display: flex; flex-direction: column; align-items: center; justify-content: center;
+      backdrop-filter: blur(15px);
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .spinner { position: relative; width: 60px; height: 60px; border-radius: 50%; border: 6px solid #ede8f1; border-top: 7px solid #ecb5ca; border-bottom: 7px solid #b9cbe8; animation: spin 1.1s linear infinite, pulseShadow 1.4s infinite alternate; margin-bottom: 23px; background: rgba(255,255,255,0.67); box-shadow: 0 0 24px 0 #d3bff7a0; backdrop-filter: blur(9px);}
+    .spinner::after { content: ''; position: absolute; left: 22px; top: 22px; width: 15px; height: 15px; background: #fff6; border-radius: 50%; box-shadow: 0 0 8px #b9cbe8b9;}
+    @keyframes spin { to {transform:rotate(360deg);}}
+    @keyframes pulseShadow { 0% {box-shadow: 0 0 24px 0 #d3bff7a0;} 100% {box-shadow: 0 0 34px 0 #ecb5ca60;}}
+    .page-loader-bg span { color: #b594a7; font-size: 1.14em; letter-spacing: .08em; opacity: .85; margin-top: 10px; text-shadow: 0 2px 14px #f1eaff50;}
+    /* Profile Card */
+    .profile-card { display: flex; align-items: center; gap: 18px; background: var(--bento-blur); border-radius: 32px; box-shadow: var(--profile-shadow); border: 1.2px solid var(--border); margin-bottom: 22px; margin-top: 36px; padding: 17px 26px 15px 17px;}
+    .profile-avatar { width: 62px; height: 62px; border-radius: 50%; object-fit: cover; border: 3px solid #fbeff3; box-shadow: 0 2px 10px #e0c2ee18; background: #fff;}
+    .profile-info { flex: 1; }
+    .profile-title { font-size: 1.11em; font-weight: 700; color: #ad7dc7; margin-bottom: 2px; letter-spacing: .6px;}
+    .profile-desc { font-size: .98em; color: #7d6c91; margin-bottom: 3px; font-weight: 500;}
+    .profile-highlight { background: #ffeef4; color: #c45d7c; font-weight: 600; border-radius: 7px; font-size: .97em; padding: 3.5px 10px; display: inline-block; margin-bottom: 3px; margin-top: 1px;}
+    .profile-links { margin-top: 7px; display: flex; gap: 10px;}
+    .profile-link { color: #b594a7; background: #faf6fb; border-radius: 7px; padding: 4px 10px; font-size: .95em; text-decoration: none; font-weight: 600; border: 1px solid #eee2f7; box-shadow: 0 2px 4px #e0c2ee0a; display: flex; align-items: center; gap: 5px;}
+    .profile-link:hover{ background: var(--soft-purple); color: #ad7dc7;}
+    @media (max-width: 600px) {
+      .profile-card { padding: 13px 7px 11px 8px; gap: 9px; margin-bottom: 13px;}
+      .profile-avatar { width: 48px; height: 48px;}
     }
-    @keyframes fadeOut {
-      0% { opacity: 0.5s visibility: visible; }
-      100% { opacity: 0; visibility: hidden; }
-    }
-    
-
-    .container {
-  width: 95%;
-  max-width: 460px;
-  background: #fff;
-  border-radius: 20px;
- 
-  padding: 30px 28px;
-  backdrop-filter: blur(14px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  border: 1px solid rgba(255, 192, 203, 0.2);
-  margin: 80px auto;
-}
-    h2 {
-      text-align: center;
-      color: #d26767;
-      margin-bottom: 24px;
-    }
-    label {
-      font-weight: 600;
-      margin-top: 15px;
-      display: block;
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      appearance: none;
-      background-color: #fff;
-      transition: 0.3s ease;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: #e07b7b;
-      box-shadow: 0 0 6px rgba(224, 123, 123, 0.5);
-    }
-    .select-wrapper {
+    /* Testimoni Carousel */
+    .mini-carousel {
+      width: 100%; max-width: 540px; min-height: 98px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bento-blur);
+      border-radius: 17px;
+      box-shadow: 0 1px 6px #baa3e80a;
+      border: 1px solid var(--border);
+      overflow: hidden;
       position: relative;
+      margin-bottom: 22px;
+      z-index: 1;
     }
-    .select-wrapper::after {
-      content: "▼";
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      color: #999;
+    .mini-carousel-inner {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      transition: transform .55s cubic-bezier(.77,0,.175,1);
     }
-    .color-preview {
-      margin-top: 10px;
-      height: 30px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+    .testi-item {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 18px 12px 15px;
+      background: none;
+      position: relative;
+      user-select: none;
+      transition: background .18s;
     }
-    button {
-  margin-top: 28px;
-  padding: 14px;
-  background: linear-gradient(135deg, #ff7a7a, #ffb6b9);
-  box-shadow: 0 6px 20px rgba(255, 100, 100, 0.4);
-  color: #fff;
-  font-weight: bold;
-  font-size: 1rem;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  width: 100%;
- 
-  transition: all 0.3s;
-}
-button:hover {
-background: linear-gradient(135deg, #ff9a9e, #fecfef);
-box-shadow: 0 6px 50px rgba(255, 100, 100, 0.4);
-}   
-
- .loading {
-      display: none;
-      text-align: center;
-      margin-top: 15px;
-      color: #c45d5d;
+    .testi-avatar { width: 44px; height: 44px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; position: relative;}
+    .testi-avatar svg { width: 44px; height: 44px; display: block; color: #d7bce4; background: #fff; border-radius: 50%;}
+    .testi-blur { position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; background: rgba(211,211,211,0.13); z-index: 2; box-shadow: 0 0 0 2px #fff8; pointer-events:none; backdrop-filter: blur(1.5px);}
+    .testi-info { flex: 1; }
+    .testi-name { font-weight: 600; color: #ad7dc7; font-size: .98em; margin-bottom: 1px; letter-spacing: .04em; filter: blur(0.4px);}
+    .testi-text { font-size: .97em; color: #7d6c91; margin-bottom: 2px; line-height: 1.32;}
+    .testi-stars { color: #ffd700; font-size: .98em; letter-spacing: 1px; margin-bottom: 2px;}
+    /* Bento Tiles, Form, Modal, Toast, Scroll To Top, ... (keep as before) */
+    .bento-container { margin: 0 0 24px 0; display: grid; grid-template-columns: 1fr; gap: 34px; width: 98vw; max-width: 540px; padding: 0 2vw; position: relative;}
+    .bento-grid { display: grid; grid-template-columns: 1fr; gap: 16px;}
+    .bento-tile { background: var(--bento-blur); border-radius: 24px; box-shadow: var(--shadow); border: 1.5px solid var(--border); padding: 18px 14px 10px 14px; min-width: 0; min-height: 0; position: relative; overflow: hidden;}
+    .bento-header { margin-bottom: 10px; font-size: 1.13rem; font-weight: 600; letter-spacing: 1px; color: #b49bd1; background: var(--header-grad); border-radius: 11px; padding: 7px 0 7px 15px; box-shadow: 0 2px 8px 0 #e6dbe719; border-left: 4px solid #e0c2ee;}
+    label { font-weight: 600; margin-top: 9px; margin-bottom: 3px; display: block; color: var(--secondary-text); letter-spacing: .5px; font-size: .97em;}
+    input, textarea, select { width: 100%; padding: 11px 10px; margin-top: 2px; margin-bottom: 8px; border-radius: 15px; border: 1.5px solid var(--border); background: #fff; font-size: .97rem; outline: none; box-shadow: 0 2px 8px 0 rgba(206, 209, 219, 0.07);}
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); background: #faf6fb; box-shadow: 0 0 8px 0 #e0c2ee60;}
+    textarea { min-height: 46px; resize: vertical;}
+    .select-wrapper { position: relative;}
+    .select-wrapper::after { content: "▼"; position: absolute; right: 13px; top: 53%; transform: translateY(-50%); pointer-events: none; color: #b3b5bc; font-size: .97em; opacity:.8;}
+    .color-preview { margin-top: 5px; height: 30px; border-radius: 10px; border: 1.5px solid var(--border); box-shadow: 0 1px 5px 0 #e4cff51d; display: flex; align-items: center; gap: 5px; padding: 0 4px; min-height: 30px;}
+    .color-dot { display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 1.1px solid #fff; box-shadow: 0 1px 4px 0 #e4cff526; margin-right: 2px; margin-top: 1.5px; cursor: pointer;}
+    .color-dot.selected { border: 2px solid #b49bd1; box-shadow: 0 0 0 1.5px #e6dbe7aa;}
+    .color-label { font-size: .92em; color: #7d6c91; margin-left: 1px; margin-right: 5px; font-weight: 500; letter-spacing: 0.4px;}
+    .bento-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px;}
+    @media (max-width: 600px) {
+      .bento-container { max-width:100vw; }
+      .mini-carousel { padding: 0 0 0 0;}
+      .bento-row { grid-template-columns: 1fr; gap: 8px; }
+      .bento-tile { padding: 10px 3vw 7px 3vw;}
     }
+    .total-harga { font-weight: 600; font-size: 1em; text-align: right; color: #b594a7; background: var(--soft-purple); border-radius: 8px; padding: 6px 0 5px 0; margin: 6px 0 2px 0; box-shadow: 0 1px 5px 0 #f3cddf14;}
+    .loading { display: none; text-align: center; margin: 14px 0 0 0; color: #b594a7; font-size: .95em; font-weight: 600; letter-spacing: .03em;}
+    .notif { color: #b594a7; font-weight: bold; margin: 6px 0 0 0; text-align: center;}
+    button { margin-top: 13px; padding: 10px; background: var(--button); color: #b594a7; font-weight: bold; font-size: 1.01rem; border: none; border-radius: 13px; cursor: pointer; width: 100%; box-shadow: 0 2px 10px 0 #e2c6f818, 0 1px 5px #baa3e80d; transition: box-shadow .19s, color .22s, transform .18s;}
+    button:hover, button:focus { color: #9b6ca1; box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816; transform: scale(1.035) translateY(-1.5px) rotate(-.5deg);}
+    button:active { transform: scale(0.98);}
+    .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(230, 225, 236, 0.33); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(7px);}
+    .modal-content { background: #fff; border-radius: 16px; padding: 17px 13px; max-width: 340px; min-width: 220px; width: 98vw; box-shadow: 0 8px 22px 0 #e0c2ee1a; border: 1.5px solid var(--border);}
+    .modal-content h3 { font-size: 1.01em; color: #af83b7; margin-bottom: 8px;}
+    .modal-content ul { padding-left: 12px; margin-bottom: 7px;}
+    .modal-content li { margin-bottom: 1px;}
+    .modal-content button { margin: 0 0 7px 0; width: 100%; font-size: .96em;}
+    .modal-content .total-harga { margin: 0 0 7px 0;}
+    #scrollToTopBtn { position: fixed; right: 22px; bottom: 30px; z-index: 1500; width: 42px; height: 42px; background: var(--bento-blur); border-radius: 50%; border: 1.2px solid var(--border); box-shadow: 0 2px 10px 0 #baa3e80a; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .33s, box-shadow .18s, background .18s;}
+    #scrollToTopBtn svg { width: 22px; height: 22px; color: #b49bd1;}
+    #scrollToTopBtn.active { opacity: 1; pointer-events: auto;}
+    .toast { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); min-width: 160px; max-width: 88vw; background: var(--bento-blur); color: #8e88a7; border-radius: 10px; box-shadow: 0 8px 32px #baa3e81a, 0 1px 4px #baa3e80d; padding: 9px 13px 9px 13px; text-align: center; font-size: .97em; font-weight: 600; letter-spacing: .03em; opacity: 0; pointer-events: none; z-index: 1700; transition: opacity .3s;}
+    .toast.show { opacity: 1; pointer-events: auto;}
+    .toast.hide { opacity: 0; pointer-events: none;}
+    /* FAQ mini (footer, mini, paling belakang) */
+    footer { margin: 0 auto 0 auto; max-width: 540px; width: 100%; padding: 0; position: relative; z-index: 0;}
+    .faq-mini {
+      margin: 32px auto 0 auto; background: var(--bento-blur); border-radius: 13px; box-shadow: 0 1px 5px #baa3e80a; border: 1.2px solid var(--border);
+      padding: 7px 12px 6px 12px; max-width: 360px; margin-bottom: 12px; font-size: .93em; z-index: 0;
+    }
+    .faq-title { font-weight: 700; font-size: .95em; color: #b49bd1; margin-bottom: 5px; letter-spacing: .3px;}
+    .faq-item { margin-bottom: 7px; border-radius: 7px; background: #f7f3fa70; box-shadow: 0 1px 3px #baa3e808; transition: box-shadow .19s, background .20s; padding: 6px 10px 6px 10px; cursor: pointer; font-size: .93em; position: relative; overflow: hidden;}
+    .faq-item:before, .faq-item:after { content: ''; position: absolute; left: 0; right: 0; height: 2.5px; border-radius: 6px; background: linear-gradient(90deg, #fbeff3 0%, #d7bce4 100%); opacity: 0; pointer-events: none; transition: opacity .22s, transform .24s; transform: scaleX(.85);}
+    .faq-item:before { top: 0; transform-origin: left;}
+    .faq-item:after { bottom: 0; transform-origin: right;}
+    .faq-item:hover:before, .faq-item:hover:after,
+    .faq-item.open:before, .faq-item.open:after { opacity: .36; transform: scaleX(1);}
+    .faq-q { font-weight: 600; color: #7d6c91; margin-bottom: 1px; font-size: .95em;}
+    .faq-a { color: #8e88a7; font-size: .91em; margin-top: 0; display: none;}
+    .faq-item.open .faq-a { display: block; animation: fadeInUp .5s .01s backwards;}
   </style>
 </head>
 <body>
-
-  <div class="loader-screen" id="loaderScreen">
-    <div class="loader"></div>
+  <!-- Loader -->
+  <div class="page-loader-bg" id="pageLoader">
+    <div class="spinner"></div>
     <span>Memuat Form Pemesanan...</span>
   </div>
-
-  <div class="container" id="formContainer" style="display:none;">
-    <h2>Form Pemesanan | FemmeiaCloth</h2>
-    <form id="orderForm">
-      <label>Nama</label>
-      <input type="text" name="nama" required>
-
-      <label>No. WhatsApp Aktif</label>
-      <input type="tel" name="wa" required>
-
-      <label>Alamat Lengkap</label>
-      <textarea name="alamat" required></textarea>
-
-      <label>Jenis Produk</label>
-      <div class="select-wrapper">
-        <select id="productType" name="produk" required>
-          <option value="">-- Pilih Produk --</option>
-          <option value="Paris Jadul - 35.000">Paris Jadul – Rp35.000</option>
-          <option value="Pashmina Kaos - 55.000">Pashmina Kaos – Rp55.000</option>
-          <option value="Premium Inner - 25.000">Premium Inner – Rp25.000</option>
-        </select>
+  <div class="bento-container">
+    <!-- Profile Card -->
+    <div class="profile-card">
+      <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/IMG_3593.jpeg" alt="Logo FemmeiaCloth" class="profile-avatar">
+      <div class="profile-info">
+        <div class="profile-title">FemmeiaCloth</div>
+        <div class="profile-desc">Toko hijab & aksesoris wanita | Ready stok, harga terjangkau, pengiriman cepat 💌</div>
+        <div class="profile-highlight">Promo: Gunakan kode <b>femmmeia10</b> untuk diskon 10%!</div>
+        <div class="profile-links">
+          <a href="https://instagram.com/femmeia.cloth" target="_blank" class="profile-link" title="Instagram">
+            <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect width="17" height="17" x="3.5" y="3.5" rx="5" stroke-linecap="round"/><circle cx="12" cy="12" r="4.5" /><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>
+            Instagram
+          </a>
+          <a href="https://wa.me/6287777420644" target="_blank" class="profile-link" title="Chat WhatsApp">
+            <svg fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M20.52 20.52 17.2 17.2m1.32-5.7a8.52 8.52 0 1 1-17.04 0 8.52 8.52 0 0 1 17.04 0Z"/><path d="M9.82 9.82c.28-.28.74-.28 1.02 0l1.34 1.34a.72.72 0 0 1 0 1.02l-.44.44a.72.72 0 0 1-1.02 0l-1.34-1.34a.72.72 0 0 1 0-1.02l.44-.44Z"/></svg>
+            WhatsApp
+          </a>
+        </div>
       </div>
-
-      <label>Warna</label>
-      <div class="select-wrapper">
-        <select id="warna" name="warna" required>
-          <option value="">-- Pilih Warna --</option>
-        </select>
+    </div>
+    <!-- Testimoni Mini Carousel -->
+    <div class="mini-carousel" id="testiCarousel">
+      <div class="mini-carousel-inner" id="testiInner">
+        <div class="testi-item">
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
+          <div class="testi-info"><span class="testi-name">Nxxxx Pxxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Hijabnya lembut, harga juga super ramah! Packing rapi banget dan dikirim cepat. Recomended seller!</span></div>
+        </div>
+        <div class="testi-item">
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
+          <div class="testi-info"><span class="testi-name">Sxxx Rxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Warna real pict, sesuai display. Admin fast response! Sudah repeat order dua kali, mantul pokoknya 💕</span></div>
+        </div>
+        <div class="testi-item">
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
+          <div class="testi-info"><span class="testi-name">Rxxx Axxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Innernya adem, cocok buat aktivitas seharian. Next order lagi deh di FemmeiaCloth!</span></div>
+        </div>
+        <div class="testi-item">
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
+          <div class="testi-info"><span class="testi-name">Dxxx Sxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Produk cepat sampai, packing aman, dan dapat bonus paperbag! Terima kasih FemmeiaCloth.</span></div>
+        </div>
+        <div class="testi-item">
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
+          <div class="testi-info"><span class="testi-name">Fxxx Mxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Pelayanan sangat ramah dan sabar. Produk sesuai ekspektasi, recommended banget!</span></div>
+        </div>
+        <div class="testi-item">
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
+          <div class="testi-info"><span class="testi-name">Ixxx Hxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Order untuk kado, dikasi greeting card juga. Sukses terus FemmeiaCloth!</span></div>
+        </div>
       </div>
-      <div class="color-preview" id="colorPreview"></div>
-
-      <label>Jumlah</label>
-      <input type="number" name="jumlah" min="1" required>
-
-<label>Pakai Paper Bag</label>
-<div class="select-wrapper">
-  <select name="paperbag" required>
-    <option value="">-- Pilih --</option>
-    <option value="Tidak">Tidak</option>
-    <option value="Pakai (Rp5.000)">Pakai (+ Rp5.000)</option>
-  </select>
-</div>
-
-      <label>Metode Pengiriman</label>
-      <div class="select-wrapper">
-        <select name="pengiriman" required>
-          <option value="">-- Pilih --</option>
-          <option value="SPX ID">SPX ID</option>
-          <option value="J&T">J&T</option>
-          <option value="Gosend">Gosend</option>
-          <option value="Antar Langsung (Khusus Area Tamalanrea)">Antar Langsung (Khusus Area Tamalanrea)</option>
-          <option value="Ambil Langsung">Ambil langsung</option>
-        </select>
+    </div>
+    <!-- Modal Ringkasan -->
+    <div class="modal-bg" id="modalBg">
+      <div class="modal-content" id="modalContent">
+        <h3>Ringkasan Pesanan</h3>
+        <ul id="ringkasanList"></ul>
+        <div class="total-harga" id="ringkasanHarga"></div>
+        <button type="button" id="lanjutWA">Lanjut ke WhatsApp</button>
+        <button type="button" id="batalModal" style="background:#f6f7fb;color:#b594a7;">Cek Ulang</button>
       </div>
-
-      <label>Metode Pembayaran</label>
-      <div class="select-wrapper">
-        <select name="pembayaran" required>
-          <option value="">-- Pilih --</option>
-          <option value="Transfer Bank">Transfer Bank</option>
-          <option value="COD">COD</option>
-          <option value="QRIS">QRIS</option>
-          <option value="Dana / e-wallet">Dana / e-wallet</option>
-        </select>
+    </div>
+    <form id="orderForm" autocomplete="off">
+      <div class="bento-grid">
+        <div class="bento-tile">
+          <div class="bento-header">Identitas Pembeli</div>
+          <label>Nama</label>
+          <input type="text" name="nama" required placeholder="Contoh: Putri Maharani" autocomplete="name">
+          <label>No. WhatsApp Aktif</label>
+          <input type="tel" name="wa" required inputmode="numeric" pattern="[0-9]+" minlength="10" maxlength="15" placeholder="08xxxxxxxxxx" autocomplete="tel">
+          <label>Alamat Lengkap</label>
+          <textarea name="alamat" required rows="3" placeholder="Contoh: Jl. Melati No. 99, RT 01 RW 02, Tamalanrea, Makassar" autocomplete="street-address"></textarea>
+        </div>
+        <div class="bento-tile">
+          <div class="bento-header">Detail Produk</div>
+          <div class="bento-row">
+            <div>
+              <label>Jenis Produk</label>
+              <div class="select-wrapper">
+                <select id="productType" name="produk" required>
+                  <option value="">-- Pilih Produk --</option>
+                  <option value="Paris Jadul - 35.000">Paris Jadul – Rp35.000</option>
+                  <option value="Pashmina Kaos - 55.000">Pashmina Kaos – Rp55.000</option>
+                  <option value="Premium Inner - 25.000">Premium Inner – Rp25.000</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label>Jumlah</label>
+              <input type="number" name="jumlah" min="1" max="20" required value="1" placeholder="1">
+            </div>
+          </div>
+          <div>
+            <label>Warna</label>
+            <div class="color-preview" id="colorPreview"></div>
+            <div class="select-wrapper" style="margin-top:7px;">
+              <select id="warna" name="warna" required>
+                <option value="">-- Pilih Warna --</option>
+              </select>
+            </div>
+          </div>
+          <label>Pakai Paper Bag</label>
+          <div class="select-wrapper">
+            <select name="paperbag" id="paperbag" required>
+              <option value="">-- Pilih --</option>
+              <option value="Tidak">Tidak</option>
+              <option value="Pakai (Rp5.000)">Pakai (+ Rp5.000)</option>
+            </select>
+          </div>
+        </div>
+        <div class="bento-tile">
+          <div class="bento-header">Pengiriman & Pembayaran</div>
+          <div class="bento-row">
+            <div>
+              <label>Metode Pengiriman</label>
+              <div class="select-wrapper">
+                <select name="pengiriman" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="SPX ID">SPX ID</option>
+                  <option value="J&T">J&T</option>
+                  <option value="Gosend">Gosend</option>
+                  <option value="Antar Langsung (Khusus Area Tamalanrea)">Antar Langsung (Khusus Area Tamalanrea)</option>
+                  <option value="Ambil Langsung">Ambil langsung</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label>Metode Pembayaran</label>
+              <div class="select-wrapper">
+                <select name="pembayaran" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Transfer Bank">Transfer Bank</option>
+                  <option value="COD">COD</option>
+                  <option value="QRIS">QRIS</option>
+                  <option value="Dana / e-wallet">Dana / e-wallet</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-tile">
+          <div class="bento-header">Catatan & Promo</div>
+          <label>Kode Promo (Jika Tersedia)</label>
+          <input type="text" name="promo" id="promoInput" placeholder="Opsional">
+          <label>Catatan Tambahan (Opsional)</label>
+          <textarea name="catatan" placeholder="Contoh: packing rapi, dll."></textarea>
+        </div>
+        <div class="bento-tile">
+          <div class="total-harga" id="totalHarga">Total: Rp0</div>
+          <button type="submit" id="pesanBtn">🛒 Pesan Sekarang</button>
+          <div class="loading" id="loadingText">⏳ Menyiapkan Pesanan...</div>
+          <div class="notif" id="notif"></div>
+        </div>
       </div>
-
-      <label>Kode Promo (Jika Tersedia)</label>
-      <input type="text" name="promo">
-
-      <label>Catatan Tambahan (Opsional)</label>
-      <textarea name="catatan" placeholder="Contoh: packing rapi, dll."></textarea>
-      
-      <button type="submit">🛒 Pesan Sekarang</button>
-      <div class="loading" id="loadingText">⏳ Menyiapkan Pesanan...</div>
     </form>
   </div>
-
+  <!-- Scroll To Top Button -->
+  <button id="scrollToTopBtn" aria-label="Kembali ke Atas" title="Kembali ke Atas" style="z-index:999;">
+    <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M10 18l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+  <!-- FAQ FOOTER mini, z-index -1 -->
+  <footer>
+    <div class="faq-mini" id="faqMini" style="z-index:-1;">
+      <div class="faq-title">FAQ</div>
+      <div class="faq-item"><div class="faq-q">Bisa bayar COD?</div><div class="faq-a">Bisa! Pilih metode pembayaran COD pada form.</div></div>
+      <div class="faq-item"><div class="faq-q">Kapan pesanan dikirim?</div><div class="faq-a">Pesanan dikirim maksimal H+1 setelah pembayaran/konfirmasi diterima.</div></div>
+      <div class="faq-item"><div class="faq-q">Stok ready?</div><div class="faq-a">Semua produk ready stok. Jika habis, admin akan menghubungi via WhatsApp.</div></div>
+      <div class="faq-item"><div class="faq-q">Klaim promo?</div><div class="faq-a">Masukkan kode <b>femmmeia10</b> di kolom "Kode Promo".</div></div>
+    </div>
+    <div style="text-align:center;font-size:.90em;color:#b49bd1;margin-bottom:13px;margin-top:4px;opacity:.82;">
+      &copy; 2025 FemmeiaCloth. All Rights Reserved.
+    </div>
+  </footer>
   <script>
-   
-    window.addEventListener('load', function () {
+    // Loader
+    window.addEventListener('DOMContentLoaded', function () {
       setTimeout(() => {
-        document.getElementById('loaderScreen').style.display = 'none';
-        document.getElementById('formContainer').style.display = 'block';
-      }, 1500);
+        document.getElementById('pageLoader').style.display = 'none';
+        document.querySelectorAll('.bento-tile').forEach(tile => {
+          tile.style.opacity = '';
+          tile.style.transform = '';
+        });
+      }, 1200);
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.addEventListener('click', function() {
+          document.querySelectorAll('.faq-item').forEach(i => { if(i!==item) i.classList.remove('open'); });
+          item.classList.toggle('open');
+        });
+      });
+
+      // Testi Carousel
+      const testiInner = document.getElementById('testiInner');
+      const testiCount = testiInner.children.length;
+      let testiIndex = 0;
+      setInterval(() => {
+        testiIndex = (testiIndex + 1) % testiCount;
+        testiInner.style.transform = `translateX(-${testiIndex * 100}%)`;
+      }, 4100);
     });
 
+    // Warna real swatch
+    const colorHexMap = {
+      "Hitam": "#191919", "Stone": "#b8b6b1", "Abu Ash": "#a7a6a6", "Soft Latte": "#e5ceb8",
+      "Cream": "#fff6cf", "Vanilla": "#fbe7a2", "Biskuit": "#e2c39a", "Dusty Rose": "#e4aeb1",
+      "Dark Blue": "#222e50", "Dark Choco": "#513c29", "Burgundy": "#7d2636", "Maroon": "#781f29",
+      "Dark Grey": "#44474b", "Silver": "#c0c0c0", "Khaky": "#bdb76b", "Oat": "#e5d1b8",
+      "BW": "#f8f8f8", "Khaky Putty": "#cabfa0", "Navy": "#2a3759"
+    };
     const warnaOptions = {
       "Paris Jadul - 35.000": ["Hitam", "Stone", "Abu Ash", "Soft Latte", "Cream", "Vanilla", "Biskuit", "Dusty Rose", "Dark Blue", "Dark Choco", "Burgundy", "Maroon"],
       "Pashmina Kaos - 55.000": ["Hitam", "Dark Grey", "Khaky Putty", "Navy"],
       "Premium Inner - 25.000": ["BW", "Oat", "Hitam", "Silver", "Dark Grey", "Khaky"]
     };
-
-    const colorHexMap = {
-      "Hitam": "#000", "Stone": "#b8b6b1", "Abu Ash": "#a9a9a9",
-      "Soft Latte": "#c8b6a6", "Cream": "#fffdd0", "Vanilla": "#f3e5ab",
-      "Biskuit": "#eed2a6", "Dusty Rose": "#dca6a6", "Dark Blue": "#00008b",
-      "Dark Choco": "#654321", "Burgundy": "#800020", "Maroon": "#800000",
-      "Dark Grey": "#4d4d4d", "Silver": "#c0c0c0", "Khaky": "#bdb76b",
-      "Oat": "#eee1c6", "BW": "#fefefe", "Khaky Putty": "#cabfa0", "Navy": "#000080"
+    const hargaProduk = {
+      "Paris Jadul - 35.000": 35000,
+      "Pashmina Kaos - 55.000": 55000,
+      "Premium Inner - 25.000": 25000
     };
-
+    const PROMO_CODE = "femmmeia10";
+    const PROMO_DISKON = 0.10;
     const productType = document.getElementById('productType');
     const warna = document.getElementById('warna');
     const colorPreview = document.getElementById('colorPreview');
-   
-
+    const jumlah = document.querySelector('input[name="jumlah"]');
+    const paperbag = document.getElementById('paperbag');
+    const totalHarga = document.getElementById('totalHarga');
+    const notif = document.getElementById('notif');
+    const pesanBtn = document.getElementById('pesanBtn');
+    const promoInput = document.getElementById('promoInput');
+    const toast = document.getElementById('toast');
+    // Modal animation helpers
+    const modalBg = document.getElementById('modalBg');
+    const modalContent = document.getElementById('modalContent');
+    function openModal() {
+      modalBg.style.display = 'flex';
+      modalContent.style.opacity = '0';
+      modalContent.style.transform = 'scale(.96) translateY(32px)';
+      setTimeout(() => {
+        modalContent.style.opacity = '1';
+        modalContent.style.transform = 'scale(1) translateY(0)';
+      }, 15);
+    }
+    function closeModal() {
+      modalContent.style.opacity = '1';
+      modalContent.style.transform = 'scale(1) translateY(0)';
+      setTimeout(() => {
+        modalContent.style.opacity = '0';
+        modalContent.style.transform = 'scale(.98) translateY(32px)';
+      }, 10);
+      setTimeout(() => {
+        modalBg.style.display = 'none';
+      }, 300);
+    }
+    // Warna custom select sync
     productType.addEventListener('change', function () {
       const selected = this.value;
       warna.innerHTML = '<option value="">-- Pilih Warna --</option>';
+      colorPreview.innerHTML = '';
       if (warnaOptions[selected]) {
         warnaOptions[selected].forEach(w => {
           let opt = document.createElement('option');
@@ -249,55 +426,146 @@ box-shadow: 0 6px 50px rgba(255, 100, 100, 0.4);
           opt.textContent = w;
           warna.appendChild(opt);
         });
+        updateColorPreview(selected, warna.value);
       }
+      hitungTotal();
     });
-
     warna.addEventListener('focus', function () {
       if (!productType.value) {
         alert("Silakan pilih jenis produk terlebih dahulu.");
         productType.focus();
       }
     });
-
+    function updateColorPreview(prod, selectedWarna) {
+      colorPreview.innerHTML = '';
+      if (warnaOptions[prod]) {
+        warnaOptions[prod].forEach(w => {
+          const hex = colorHexMap[w] || '#fff';
+          const dot = document.createElement('span');
+          dot.className = 'color-dot' + (w === selectedWarna ? ' selected' : '');
+          dot.style.background = hex;
+          dot.title = w;
+          dot.onclick = function() {
+            warna.value = w;
+            updateColorPreview(prod, w);
+          };
+          colorPreview.appendChild(dot);
+        });
+        if (selectedWarna) {
+          const label = document.createElement('span');
+          label.className = 'color-label';
+          label.innerText = selectedWarna;
+          colorPreview.appendChild(label);
+        }
+      }
+    }
     warna.addEventListener('change', function () {
-  const selectedColor = this.value;
-  const hex = colorHexMap[selectedColor] || '#fff';
-  colorPreview.style.background = hex;
-  const wrapper = document.getElementById('colorPreview');
-  wrapper.style.boxShadow = `0 10px 30px  ${hex}`;
-  wrapper.style.transition = 'box-shadow 1s ease';
-  wrapper.style.border = `none`;
-});
-
+      updateColorPreview(productType.value, warna.value);
+    });
+    jumlah.addEventListener('input', hitungTotal);
+    productType.addEventListener('change', hitungTotal);
+    paperbag.addEventListener('change', hitungTotal);
+    promoInput.addEventListener('input', hitungTotal);
+    function hitungTotal() {
+      const prod = productType.value;
+      let qty = parseInt(jumlah.value) || 1;
+      if (qty < 1) qty = 1;
+      let harga = hargaProduk[prod] ? hargaProduk[prod] * qty : 0;
+      if (paperbag.value.startsWith('Pakai')) harga += 5000;
+      let promoValid = false;
+      let promoValue = promoInput.value.trim().toLowerCase();
+      if (promoValue === PROMO_CODE) {
+        promoValid = true;
+        harga = Math.floor(harga * (1 - PROMO_DISKON));
+        promoInput.style.borderColor = "#82ca9c";
+      } else if (promoValue.length > 0) {
+        promoInput.style.borderColor = "#d16a6a";
+      } else {
+        promoInput.style.borderColor = "";
+      }
+      totalHarga.innerText = `Total: Rp${harga.toLocaleString('id-ID')}` + (promoValid ? " (promo -10%)" : "");
+      return harga;
+    }
+    function resetNotif() { notif.innerText = ''; }
+    // Toast notification
+    function showToast(msg, duration=2100) {
+      toast.innerText = msg;
+      toast.className = "toast show";
+      setTimeout(() => { toast.className = "toast hide"; }, duration);
+    }
     document.getElementById('orderForm').addEventListener('submit', function (e) {
       e.preventDefault();
-      const loadingText = document.getElementById('loadingText');
-      loadingText.style.display = 'block';
-
+      resetNotif();
+      const waVal = this.wa.value.trim();
+      if (!/^[0-9]{10,15}$/.test(waVal)) {
+        notif.innerText = 'Nomor WhatsApp tidak valid!';
+        this.wa.focus();
+        return;
+      }
+      let promoValue = promoInput.value.trim().toLowerCase();
+      if (promoValue.length > 0 && promoValue !== PROMO_CODE) {
+        notif.innerText = 'Kode promo tidak valid! Masukkan: femmmeia10';
+        promoInput.focus();
+        promoInput.style.borderColor = "#d16a6a";
+        showToast('Kode promo salah. Gunakan femmmeia10');
+        return;
+      }
+      pesanBtn.disabled = true;
+      document.getElementById('loadingText').style.display = 'block';
       setTimeout(() => {
-        const f = new FormData(this);
-        const msg = `*Form Pemesanan | FemmeiaCloth:*\n` +
-          `\n` +
-          `Nama: ${f.get('nama')}\n` +
-          `No WA: ${f.get('wa')}\n` +
-          `Alamat: ${f.get('alamat')}\n` +
-          `Produk: ${f.get('produk')}\n` +
-          `Warna: ${f.get('warna')}\n` +
-          `Jumlah: ${f.get('jumlah')}\n` +
-          `Paper Bag: ${f.get('paperbag')}\n` + 
-          `Pengiriman: ${f.get('pengiriman')}\n` +
-          `Pembayaran: ${f.get('pembayaran')}\n` +
-          `Kode Promo: ${f.get('promo')}\n` +
-          `Catatan: ${f.get('catatan')}`;
-
-        const waNumber = "6287777420644"; 
-        const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
-        loadingText.style.display = 'none';
-        window.open(url, "_blank");
-      }, 1000);
+        document.getElementById('loadingText').style.display = 'none';
+        pesanBtn.disabled = false;
+        const form = new FormData(this);
+        const pesan = [
+          ["Nama", form.get('nama')],
+          ["No WA", form.get('wa')],
+          ["Alamat", form.get('alamat')],
+          ["Produk", form.get('produk')],
+          ["Warna", form.get('warna')],
+          ["Jumlah", form.get('jumlah')],
+          ["Paperbag", form.get('paperbag')],
+          ["Pengiriman", form.get('pengiriman')],
+          ["Pembayaran", form.get('pembayaran')],
+          ["Kode Promo", form.get('promo')],
+          ["Catatan", form.get('catatan')],
+        ];
+        const harga = hitungTotal();
+        const ringkasanList = document.getElementById('ringkasanList');
+        ringkasanList.innerHTML = '';
+        pesan.forEach(([k,v]) => { if (v) ringkasanList.innerHTML += `<li><strong>${k}:</strong> ${v}</li>`; });
+        document.getElementById('ringkasanHarga').innerText = `Total: Rp${harga.toLocaleString('id-ID')}` + (promoValue === PROMO_CODE ? " (promo -10%)" : "");
+        openModal();
+        window._ringkasanMsg = `*Form Pemesanan | FemmeiaCloth:*\n\n` +
+          pesan.map(([k,v]) => `${k}: ${v}`).join('\n') +
+          `\nTotal: Rp${harga.toLocaleString('id-ID')}` + (promoValue === PROMO_CODE ? " (promo -10%)" : "");
+      }, 650);
+    });
+    document.getElementById('lanjutWA').onclick = function() {
+      closeModal();
+      pesanBtn.disabled = false;
+      const waNumber = "6287777420644";
+      const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(window._ringkasanMsg)}`;
+      window.open(url, "_blank");
+      showToast('Pesanan diarahkan ke WhatsApp!');
+      notif.innerText = '';
+    };
+    document.getElementById('batalModal').onclick = function() {
+      closeModal();
+      pesanBtn.disabled = false;
+    };
+    productType.dispatchEvent(new Event('change'));
+    // Scroll To Top Button
+    const scrollBtn = document.getElementById('scrollToTopBtn');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 240) {
+        scrollBtn.classList.add('active');
+      } else {
+        scrollBtn.classList.remove('active');
+      }
+    });
+    scrollBtn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>
-  <script>! function(e, t, a) {function n() {c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), o(), r()}function r() {for (var e = 0; e < d.length; e++) d[e].alpha <= 0 ? (t.body.removeChild(d[e].el), d.splice(e, 1)) : (d[e].y--, d[e].scale += .004, d[e].alpha -= .013, d[e].el.style.cssText = "left:" + d[e].x + "px;top:" + d[e].y + "px;opacity:" + d[e].alpha + ";transform:scale(" + d[e].scale + "," + d[e].scale + ") rotate(45deg);background:" + d[e].color + ";z-index:99999");requestAnimationFrame(r)}function o() {var t = "function" == typeof e.onclick && e.onclick;e.onclick = function(e) {t && t(), i(e)}}function i(e) {var a = t.createElement("div");a.className = "heart", d.push({el: a,x: e.clientX - 5,y: e.clientY - 5,scale: 1,alpha: 1,color: s()}), t.body.appendChild(a)}function c(e) {var a = t.createElement("style");a.type = "text/css";try {a.appendChild(t.createTextNode(e))} catch (t) {a.styleSheet.cssText = e}t.getElementsByTagName("head")[0].appendChild(a)}function s() {return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"}var d = [];e.requestAnimationFrame = function() {return e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function(e) {setTimeout(e, 1e3 / 60)}}(), n()}(window, document);</script>
-  
 </body>
 </html>
