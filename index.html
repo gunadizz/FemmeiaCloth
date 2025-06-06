@@ -2,1068 +2,1944 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>FemmeiaCloth | Hijab Premium Brand Lokal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
-
-  <!-- SEO & Social Preview -->
-  <meta name="description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth.">
-  <meta property="og:title" content="FemmeiaCloth | Hijab Premium Brand Lokal">
-  <meta property="og:description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth">
-  <meta property="og:image" content="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
-  <meta property="og:url" content="https://femmeiacloth.me">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="FemmeiaCloth | Hijab Premium Brand Lokal">
-  <meta name="twitter:description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth">
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
-  <!-- In the <head> section -->
-  <meta name="google-adsense-account" content="ca-pub-3270682405009922">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#000000">
-
+  <title>Survey Berhadiah - Femmeia Cloth - Batch 1</title>
+  <meta name="description" content="Isi survey dan dapatkan hadiah!">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #111;
-      --secondary: #888;
-      --bg: #f5f5f5;
-      --card-bg: #fff;
-      --accent: #814c26;
-      --sticky1: #e4a561;
-      --sticky2: #814c26;
-      --radius: 20px;
-      --shadow: 0 4px 16px rgba(0,0,0,0.10);
-      --transition: all 0.25s cubic-bezier(.4,0,.2,1);
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-card: rgba(255, 255, 255, 0.05);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.1);
+      --border-focus: rgba(255, 255, 255, 0.3);
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent: #ec4899;
+      --accent-secondary: #8b5cf6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
     }
-    [data-theme="dark"] {
-      --primary: #f5f5f5;
-      --secondary: #bbb;
-      --bg: #181818;
-      --card-bg: #232323;
-      --accent: #f5b06c;
-      --sticky1: #ae7f40;
-      --sticky2: #b58055;
-      --shadow: 0 4px 16px rgba(0,0,0,0.45);
-    }
-    /* Remove default blue outline and shadow for all buttons and interactive elements */
-button,
-a,
-input,
-select,
-textarea,
-[tabindex]:not([tabindex="-1"]) {
-  outline: none !important;
-  box-shadow: none !important;
-}
 
-/* Remove blue tap highlight on mobile browsers (Android/Chrome) */
-button,
-a,
-input,
-select,
-textarea,
-[tabindex]:not([tabindex="-1"]) {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  tap-highlight-color: rgba(0,0,0,0);
-}
-
-/* Optional: Add custom focus/active states for accessibility */
-button:focus, button:active,
-a:focus, a:active,
-input:focus, input:active,
-select:focus, select:active,
-textarea:focus, textarea:active,
-[tabindex]:focus, [tabindex]:active {
-  outline: none !important;
-  box-shadow: none !important;
-  /* Optionally, add your custom style here (e.g., a soft shadow or colored border) */
-  /* border: 2px solid #814c26; */
-}
-
-/* For iOS Safari remove tap highlight */
-* {
-  -webkit-tap-highlight-color: transparent;
-}
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Quicksand', sans-serif !important;
-      transition: background 0.3s, color 0.3s, border-color 0.3s;
-    }
-
-    html, body {
-      width: 100%;
-      min-height: 100vh;
-      background-color: var(--bg);
     }
 
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
+      font-family: 'Quicksand', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-
-    .loading-screen {
+    /* Background Effects */
+    body::before {
+      content: '';
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #f5f5f5;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .header .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Bento Grid Layout */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .bento-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-focus), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .bento-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+
+    .bento-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Alert Cards */
+    .alert-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .alert-card .icon {
+      display: inline-block;
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    /* Progress Card */
+    .progress-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, var(--glass-bg), rgba(16, 185, 129, 0.05));
+    }
+
+    .progress-bar-container {
+      background: rgba(255, 255, 255, 0.1);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+      border-radius: 4px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-info {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      animation: fadeOut 0.5s ease forwards;
-      animation-delay: 2s;
+      margin-bottom: 1rem;
     }
 
-    .loading-screen img {
-      width: 300px;
-      height: auto;
-      animation: float 0.5s ease-in-out infinite;
+    .step-indicator {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
     }
 
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        visibility: hidden;
+    .step-dot.active {
+      background: var(--accent);
+      transform: scale(1.2);
+    }
+
+    .step-dot.completed {
+      background: var(--success);
+    }
+
+    /* Form Styles */
+    .form-step {
+      display: none;
+      grid-column: 1 / -1;
+      min-height: 400px;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .required {
+      color: var(--accent);
+    }
+
+    input, select, textarea {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.875rem 1rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Checkbox Styles */
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .checkbox-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--border-focus);
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    .checkbox-item label {
+      margin: 0;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+
+    /* Button Styles */
+    .button-group {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    button {
+      padding: 0.875rem 2rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;font-family:"Quicksand";
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--border-focus);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: white; box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+      border: 1px solid transparent;font-family:"Quicksand";
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 40px rgba(236, 72, 153, 0.3);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    /* Error Styles */
+    .error {
+      color: var(--error);
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+    }
+
+    .error-border {
+      border-color: var(--error) !important;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .bento-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .bento-card {
+        padding: 1.5rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
       }
     }
-    /* Sticky buttons */
-    .sticky-btns {
-      position: fixed;
-      bottom: 4vw;
-      right: 4vw;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-      z-index: 20000;
-      transition: opacity 0.25s, bottom 0.25s, right 0.25s;
-    }
-    .sticky-btn {
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      box-shadow: 0 4px 16px rgba(129, 76, 38, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      cursor: pointer;
-      transition: background 0.25s, transform 0.18s, color 0.25s;
-      outline: none;
-      font-family: 'Quicksand', sans-serif !important;
-      color: #fff;
-      background: transparent;
-      padding: 0;
-    }
-    .sticky-btn#darkmode-toggle {
-      background: #000;
-    }
-    .sticky-btn#darkmode-toggle:hover,
-    .sticky-btn#darkmode-toggle:focus {
-      background: var(--accent);
-      color: #fff;
-      transform: scale(1.09);
-    }
-    .sticky-btn#lang-toggle {
-      background: #000;
-    }
-    .sticky-btn#lang-toggle:hover,
-    .sticky-btn#lang-toggle:focus {
-      background: var(--sticky1);
-      color: #fff;
-      transform: scale(1.09);
-    }
-    .sticky-btn svg {
-      width: 26px;
-      height: 26px;
-      display: block;
-      pointer-events: none;
-      fill: #fff;
-      transition: fill 0.2s;
-    }
-    .sticky-btn#darkmode-toggle.active svg,
-    .sticky-btn#lang-toggle.active svg {
-      fill: var(--primary);
+
+    @media (max-width: 480px) {
+      .bento-card {
+        padding: 1rem;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+      }
     }
 
-    /* Main container */
-    .main-content {
-      max-width: 430px;
-      width: 96vw;
-      margin: 5vw auto 0 auto;
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2.5rem 1.2rem 1.7rem 1.2rem;
-      position: relative;
-      z-index: 1;
-      margin-bottom: 10vw;
-    }
-
-    /* Decorative elements */
-    .bg-shape1, .bg-shape2 {
-      position: absolute;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.12;
-      filter: blur(2.5px);
-    }
-    .bg-shape1 {
-      width: 210px; height: 210px;
-      background: linear-gradient(135deg, var(--accent) 60%, var(--secondary) 100%);
-      border-radius: 45% 65% 70% 30%;
-      top: -100px; left: -100px;
-      animation: blob1 14s infinite alternate ease-in-out;
-    }
-    .bg-shape2 {
-      width: 150px; height: 150px;
-      background: linear-gradient(135deg, var(--secondary) 50%, var(--accent) 100%);
-      border-radius: 70% 30% 50% 50%;
-      bottom: -200px; right: 0px;
-      animation: blob2 19s infinite alternate ease-in-out;
-    }
-    @keyframes blob1 {
-      0% { border-radius: 45% 65% 70% 30%; }
-      100% { border-radius: 60% 40% 30% 70%; }
-    }
-    @keyframes blob2 {
-      0% { border-radius: 70% 30% 50% 50%; }
-      100% { border-radius: 40% 60% 70% 30%; }
-    }
-
-    /* Branding */
-    .brand-logo {
-      width: 100px;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(130,130,130,0.14);
-      margin-bottom: 1.2rem;
-      margin-top: 0.2rem;
-    }
-    .brand-title {
-      font-size: 2.1rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--primary);
-      margin-bottom: 0.4rem;
-      line-height: 1.1;
-      text-shadow: 0 1px 5px rgba(129,76,38,0.10);
-      text-align: center;
-    }
-    .brand-subtitle {
-      font-size: 1.12rem;
-      color: var(--secondary);
-      font-weight: 500;
-      margin-bottom: 1.15rem;
-      letter-spacing: 1px;
-      text-align: center;
-    }
-
-    /* Tagline */
-    .tagline {
-      background: linear-gradient(90deg, var(--secondary) 60%, var(--accent) 100%);
-      color: #fff;
-      padding: 0.47rem 1.3rem;
-      border-radius: 16px;
-      font-size: 1.08rem;
-      font-weight: 600;
-      margin-bottom: 1.7rem;
-      box-shadow: 0 1px 8px rgba(80,80,80,0.07);
-      letter-spacing: 1px;
+    /* Loading Animation */
+    .loading {
       display: inline-block;
-      text-align: center;
-      text-shadow: 0 1px 7px rgba(129,76,38,0.07);
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 0.5rem;
     }
 
-    /* Buttons */
-    .link-btn {
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Quota Info */
+    .quota-info {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      color: var(--success);
+      padding: 1rem;
+      border-radius: 0.75rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .quota-info.empty {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+      border-color: rgba(239, 68, 68, 0.2);
+      color: var(--error);
+    }
+
+    /* Hide form when quota is empty */
+    .form-hidden {
+      display: none !important;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
-      padding: 1.04rem;
-      margin: 0.58rem 0;
-      background: linear-gradient(93deg, var(--primary) 70%, var(--secondary) 100%);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-focus);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .modal::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+    }
+
+    .modal-spinner {
+      margin: 0 auto 1.5rem;
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: modal-spin 1s ease-in-out infinite;
+    }
+
+    @keyframes modal-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .modal-content {
+      margin-bottom: 1rem;
+    }
+
+    .modal h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .modal p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .modal-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      margin-bottom: 1rem;
+    }
+
+    .modal-status.success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .modal-status.error {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--error);
+    }
+
+    .modal-btn {
+      padding: 0.75rem 2rem;
+      border-radius: 0.75rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
       color: white;
       border: none;
-      border-radius: 13px;
-      font-size: 1.16rem;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.09);
-      transition: var(--transition);
-      position: relative;
-      z-index: 1;
-      letter-spacing: 0.5px;
-      gap: 0.7em;
-      outline: none;
-      font-family: 'Quicksand', sans-serif !important;
-    }
-    .link-btn:hover, .link-btn:focus {
-      background: linear-gradient(93deg, var(--accent) 50%, var(--secondary) 100%);
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.16);
-      color: var(--primary);
-    }
-    .link-btn .icon {
-      font-size: 1.18em;
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 0.21em;
+      transition: all 0.3s ease;
     }
 
-    /* Info cards */
-    .info-cards {
-      display: flex;
-      justify-content: center;
-      gap: 1.3rem;
-      margin: 1.9rem 0 0.8rem 0;
-      width: 100%;
-      flex-wrap: wrap;
-      z-index: 1;
-    }
-    .info-card {
-      flex: 1 1 130px;
-      min-width: 116px;
-      background: #faf7f7;
-      border-radius: 13px;
-      padding: 1.07rem 0.8rem;
-      text-align: center;
-      box-shadow: 0 2px 7px rgba(80,80,80,0.09);
-      font-size: 0.99rem;
-      color: var(--primary);
-      font-weight: 500;
-      margin-bottom: 0.1rem;
-      letter-spacing: 0.1px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3em;
-      border: 1.5px solid #f2e6e0;
-      font-family: 'Quicksand', sans-serif !important;
-    }
-    [data-theme="dark"] .info-card {
-      background: #232323;
-      border: 1.5px solid #353535;
-    }
-    .info-card .info-icon {
-      font-size: 1.32em;
-      margin-bottom: 0.13em;
-      color: var(--accent);
-    }
-    .info-card strong {
-      display: block;
-      color: var(--accent);
-      font-size: 1.01em;
-      font-weight: 700;
+    .modal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
     }
 
-    /* Footer */
-    .footer {
-      margin: 5vw auto 2vw auto;
-      text-align: center;
-      color: #aaa;
-      font-size: 0.97rem;
-      letter-spacing: 0.28px;
-      z-index: 1;
-      position: relative;
-      font-family: 'Quicksand', sans-serif !important;
-    }
-    [data-theme="dark"] .footer {
-      color: #bbb;
-    }
-    .footer a {
-      color: var(--secondary);
-      text-decoration: none;
-      font-weight: 500;
-      margin-left: 0.4em;
-      transition: color 0.2s;
-    }
-    .footer a:hover, .footer a:focus {
-      color: var(--accent);
-      text-decoration: underline;
+    /* Pulse animation for loading text */
+    .pulse {
+      animation: pulse 1.5s infinite;
     }
 
-    /* Responsive */
-    @media (max-width: 700px) {
-      .main-content {
-        max-width: 99vw;
-        padding: 2.2rem 0.8rem 1.3rem 0.8rem;
-        margin: 5vw auto 0 auto;
-      }
-      .info-cards {
-        gap: 0.7rem;
-      }
-      .brand-title {
-        font-size: 1.4rem;
-      }
-      .tagline {
-        font-size: 0.97rem;
-        padding: 0.35rem 0.7rem;
-      }
-      .sticky-btns {
-        right: 3vw;
-        bottom: 3vw;
-      }
-      .footer {
-        font-size: 0.93rem;
-        margin: 6vw auto 2vw auto;
-      }
-      .carousel-slide img {
-        height: 160px;
-      }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
     }
-    @media (max-width: 480px) {
-      .main-content { 
-        padding: 1.1rem 2vw 0.9rem 2vw;
-        max-width: 99vw;
-        margin: 4vw auto 0 auto;
-      }
-      .sticky-btns { 
-        right: 2vw;
-        bottom: 2vw;
-      }
-      .footer {
-        font-size: 0.91rem;
-        margin: 8vw auto 2vw auto;
-      }
-      .carousel-slide img {
-        height: 120px;
-      }
-    }
-    @media (max-width: 340px) {
-      .main-content {
-        padding: 0.6rem 1vw 0.6rem 1vw;
-        margin: 2vw auto 0 auto;
-      }
-      .sticky-btns {
-        right: 1vw;
-        bottom: 1vw;
-      }
-      .footer {
-        font-size: 0.85rem;
-        margin: 10vw auto 2vw auto;
-      }
-      .carousel-slide img {
-        height: 80px;
-      }
-    }
-    /* Modal Styles */
-.modal-screenshot {
-  display: none;
-  position: fixed;
-  z-index: 99999;
-  left: 0; top: 0; width: 100vw; height: 100vh;
-  justify-content: center; align-items: center;
-  font-family: 'Quicksand', sans-serif;
-}
-.modal-screenshot.active { display: flex; }
-.modal-overlay {
-  position: absolute;
-  width: 100vw; height: 100vh;
-  left: 0; top: 0;
-  background: rgba(40,40,40,0.38);
-  z-index: 1;
-  cursor: pointer;
-  transition: background 0.18s;
-}
-.modal-content {
-  position: relative;
-  background: #fafafa;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(60,60,60,0.22);
-  padding: 2.1vw 2vw 2vw 2vw;
-  max-width: 95vw;
-  max-height: 90vh;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  animation: modalIn 0.25s cubic-bezier(.4,0,.2,1);
-}
-@keyframes modalIn {
-  from { opacity: 0; transform: scale(0.92);}
-  to { opacity: 1; transform: scale(1);}
-}
-.modal-img {
-  width: 92vw;
-  max-width: 540px;
-  max-height: 73vh;
-  border-radius: 14px;
-  margin: 0 auto;
-  display: block;
-  box-shadow: 0 2px 14px rgba(40,40,40,0.07);
-  background: #eee;
-}
-.modal-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  position: absolute;
-  top: 18px; right: 18px;
-  z-index: 11;
-  padding: 3px;
-  border-radius: 50%;
-  transition: background 0.18s;
-}
-.modal-close:hover,
-.modal-close:focus { background: #eee; }
-.promo-modal {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(24, 18, 0, 0.13);
-  /* Add blur glass effect */
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(20px);
-  display: flex; align-items: center; justify-content: center; z-index: 99999;
-  animation: promoFadeInBg 0.35s cubic-bezier(.4,0,.2,1);
-  transition: background 0.23s;
-}
-@keyframes promoFadeInBg { from { opacity: 0; } to { opacity: 1; } }
-@keyframes promoFadeOutBg { from { opacity: 1; } to { opacity: 0; } }
-
-.promo-modal-content {
-  background: #f5f5f5cc; /* semi-transparent for glass look */
-  padding: 2.2em 1.4em 2em 1.4em;
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(50,50,50,0.19);
-  max-width: 95vw;
-  width: 390px;
-  text-align: center;
-  position: relative;
-  border: 2.5px solid #ddd;
-  font-family: 'Quicksand', sans-serif;
-  animation: modalBounceIn 0.55s cubic-bezier(.25,1.4,.48,1.08);
-  transition: transform 0.34s cubic-bezier(.4,0,.2,1), opacity 0.24s cubic-bezier(.4,0,.2,1);
-  /* When closing: will add .closing class for animation */
-}
-@keyframes modalBounceIn {
-  0%   { transform: scale(0.8) translateY(50px); opacity: 0; }
-  70%  { transform: scale(1.06) translateY(-8px); opacity: 0.97; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
-}
-.promo-modal-content.closing {
-  animation: modalBounceOut 0.36s cubic-bezier(.42,.01,.52,.94) forwards;
-}
-@keyframes modalBounceOut {
-  0% { transform: scale(1) translateY(0); opacity: 1; }
-  60% { transform: scale(0.94) translateY(12px); opacity: 0.7;}
-  100% { transform: scale(0.7) translateY(90px); opacity: 0; }
-}
-
-.promo-modal-img {
-  width: 120px;
-  height: auto;
-  border-radius: 16px;
-  margin-bottom: 1.1em;
-  box-shadow: 0 2px 16px rgba(100,100,100,0.09);
-  animation: imgPopIn 0.65s cubic-bezier(.23,1.2,.45,1.01);
-}
-@keyframes imgPopIn {
-  0% { transform: scale(0.7) rotate(-6deg); opacity: 0; }
-  70% { transform: scale(1.08) rotate(3deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0deg);}
-}
-
-.promo-modal-title {
-  color: #814c26;
-  font-size: 1.7em;
-  font-weight: 700;
-  margin-bottom: 0.7em;
-  margin-top: 0;
-  letter-spacing: 1px;
-  animation: titleIn 0.7s cubic-bezier(.23,1.2,.45,1.01);
-}
-@keyframes titleIn {
-  0% { opacity: 0; transform: translateY(30px);}
-  100% { opacity: 1; transform: translateY(0);}
-}
-
-.promo-modal-desc {
-  color: #444;
-  font-size: 1.09em;
-  margin-bottom: 1.15em;
-  line-height: 1.6;
-  animation: fadeInText 0.85s 0.13s backwards;
-}
-@keyframes fadeInText {
-  0% { opacity: 0; transform: translateY(20px);}
-  100% { opacity: 1; transform: translateY(0);}
-}
-
-.promo-modal-code {
-  font-family: monospace;
-  font-size: 1.13em;
-  color: #814c26;
-  background: #ede7df;
-  padding: 2px 10px;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px #814c2622;
-  letter-spacing: 0.08em;
-  animation: codePulse 2.2s infinite alternate cubic-bezier(.45,0,.7,1);
-}
-@keyframes codePulse {
-  0% { box-shadow: 0 1px 4px #814c2622; background: #ede7df;}
-  100% { box-shadow: 0 4px 14px #814c2644; background: #f7f2ec;}
-}
-
-.promo-modal-btn {
-  background: linear-gradient(93deg, #814c26 60%, #111 100%);
-  color: #fff;
-  border: none;
-  border-radius: 13px;
-  font-size: 1.13em;
-  font-weight: 600;
-  padding: 0.85em 2em;
-  margin-top: 0.6em;
-  text-decoration: none;
-  cursor: pointer;
-  box-shadow: 0 3px 14px rgba(129,76,38,0.13);
-  transition: background 0.18s, box-shadow 0.19s, color 0.17s, transform 0.22s;
-  display: inline-block;
-  animation: btnPopIn 1.2s 0.3s backwards cubic-bezier(.23,1.2,.45,1.01);
-}
-@keyframes btnPopIn {
-  0% { opacity: 0; transform: scale(0.7);}
-  60% { opacity: 1; transform: scale(1.18);}
-  100% { opacity: 1; transform: scale(1);}
-}
-.promo-modal-btn:hover, .promo-modal-btn:focus {
-  background: linear-gradient(93deg, #111 60%, #814c26 100%);
-  color: #fff;
-  transform: scale(1.06);
-}
-
-.promo-modal-close {
-  background: none;
-  border: none;
-  font-size: 1.7em;
-  color: #b8b5b0;
-  position: absolute;
-  top: 0.7em;
-  right: 0.8em;
-  cursor: pointer;
-  transition: color 0.17s, background 0.17s;
-  z-index: 2;
-  border-radius: 50%;
-  width: 34px; height: 34px;
-  line-height: 34px;
-}
-.promo-modal-close:hover, .promo-modal-close:focus {
-  color: #814c26;
-  background: #ede7df;
-}
-@media (max-width: 520px) {
-  .promo-modal-content { width: 96vw; padding: 1.2em 0.2em 1em 0.2em; }
-}
-
-      </style>
+  </style>
 </head>
-<body data-theme="light">
-  <div class="loading-screen">
-    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG-20250410-WA0040.jpg" alt="FemmeiaCloth logo loading">
-  </div>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Survey Berhadiah</h1>
+      <p class="subtitle">Femmeia Cloth - Batch 1</p>
+    </div>
 
-  <!-- Decorative background shapes -->
-  <div class="bg-shape1"></div>
-  <div class="bg-shape2"></div>
-  
-  <!-- Sticky Buttons -->
-  <div style="display: none" class="sticky-btns">
-    <!-- Dark Mode Toggle SVG -->
-    <button class="sticky-btn" id="darkmode-toggle" title="Dark mode" aria-label="Toggle dark mode">
-      <!-- Moon | Sun (outline, iconic, not colored) -->
-      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 12.79A9 9 0 0 1 12.21 3a7 7 0 1 0 8.79 9.79z"></path>
-      </svg>
-      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-    </button>
-    <!-- Lang Toggle SVG -->
-    <button class="sticky-btn" id="lang-toggle" title="Ganti Bahasa / Change Language" aria-label="Toggle language">
-      <!-- Globe outline, iconic, not colored -->
-      <svg id="icon-globe-id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <ellipse cx="12" cy="12" rx="7" ry="10"></ellipse>
-        <line x1="2" y1="12" x2="22" y2="12"></line>
-      </svg>
-      <svg id="icon-globe-en" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-        <circle cx="12" cy="12" r="10"></circle>
-        <ellipse cx="12" cy="12" rx="7" ry="10"></ellipse>
-        <line x1="2" y1="12" x2="22" y2="12"></line>
-        <line x1="6" y1="2" x2="6" y2="22"></line>
-        <line x1="18" y1="2" x2="18" y2="22"></line>
-      </svg>
-    </button>
-  </div>
-
-  <!-- Main Content -->
-  <div class="main-content">
-    <img class="brand-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth Logo" />
-    <div class="brand-title" id="brand-title">FemmeiaCloth</div>
-    <div class="brand-subtitle" id="brand-subtitle">Premium Quality Hijab</div>
-    <div class="tagline" id="tagline">Tampil Syar'i, Tetap Stylish!</div>
-
-    
-    <div class="info-cards">
-      <div class="info-card">
-        <span class="info-icon">🚚</span>
-        <div id="info-delivery">Pengiriman Seluruh Indonesia</div>
+    <div class="bento-grid">
+      <!-- Alert Card -->
+      <div class="bento-card alert-card">
+        <span class="icon">🎁</span>
+        <strong>Hadiah Rp1.000 – Rp5.000</strong> berdasarkan kualitas jawaban Anda.<br>
+        Hadiah hanya dapat dikirim melalui <strong>e-wallet (OVO, DANA, GoPay, dll)
+</strong>.<br>
+        <span class="icon">🧾</span> <strong>Syarat:</strong> Wajib follow Instagram 
+        <a href="https://instagram.com/femmeia.cloth" target="_blank" style="color: var(--accent);">@femmeia.cloth</a> 
+        dan isi username IG Anda.
       </div>
-      <div class="info-card">
-        <span class="info-icon">✅</span>
-        <div id="info-original">Produk Original &amp; Terjamin</div>
+
+      <!-- Privacy Notice -->
+      <div class="bento-card alert-card">
+        <strong>Perhatian:</strong><br>
+        Data yang Anda berikan akan digunakan untuk pengembangan produk dan layanan FemmeiaCloth. 
+        Kami menjamin kerahasiaan data Anda dan tidak akan disebarkan kepada pihak ketiga.<br><br>
+        Mohon lengkapi data dengan jujur untuk mendapatkan hadiah menarik. 
+        Kami akan merespon dalam 1x24 jam.
       </div>
-      <div class="info-card">
-        <span class="info-icon">💬</span>
-        <div id="info-service">Layanan Fast Response</div>
+
+      <!-- Quota Info -->
+      <div id="quotaInfo" class="quota-info" style="display: none;"></div>
+
+      <!-- Progress Card -->
+      <div class="bento-card progress-card">
+        <div class="progress-info">
+          <span id="stepTitle">Data Diri</span>
+          <span id="progressText">1 / 6</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progressBar" style="width: 16.67%"></div>
+        </div>
+        <div class="step-indicator" id="stepIndicator">
+          <div class="step-dot active"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
+        </div>
+      </div>
+
+      <!-- Form Steps -->
+<form id="surveyForm" novalidate>
+  <!-- Step 1: Informasi Pribadi -->
+  <div class="form-step active bento-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="name">Nama lengkap <span class="required">*</span></label>
+        <input type="text" id="name" name="name" required />
+        <div class="error" id="nameError"></div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" required />
+        <div class="error" id="emailError"></div>
+      </div>
+      <div class="form-group">
+        <label for="gender">Jenis kelamin <span class="required">*</span></label>
+        <select id="gender" name="gender" required>
+          <option value="">-- Pilih --</option>
+          <option value="Pria">Pria</option>
+          <option value="Wanita">Wanita</option>
+        </select>
+        <div class="error" id="genderError"></div>
+      </div>
+      <div class="form-group">
+        <label for="age">Usia <span class="required">*</span></label>
+        <input type="number" id="age" name="age" min="1" required />
+        <div class="error" id="ageError"></div>
+      </div>
+      <div class="form-group">
+        <label for="city">Kota domisili <span class="required">*</span></label>
+        <input type="text" id="city" name="city" required />
+        <div class="error" id="cityError"></div>
+      </div>
+      <div class="form-group">
+        <label for="job">Status pekerjaan <span class="required">*</span></label>
+        <select id="job" name="job" required>
+          <option value="">-- Pilih --</option>
+          <option value="Pelajar">Pelajar</option>
+          <option value="Mahasiswa">Mahasiswa</option>
+          <option value="Bekerja">Bekerja</option>
+          <option value="Tidak bekerja">Tidak bekerja</option>
+        </select>
+        <div class="error" id="jobError"></div>
+      </div>
+      <div class="form-group">
+        <label for="income">Penghasilan bulanan <span class="required">*</span></label>
+        <select id="income" name="income" required>
+          <option value="">-- Pilih --</option>
+          <option value="<1jt">&lt; 1jt</option>
+          <option value="1-3jt">1-3jt</option>
+          <option value=">3jt">&gt; 3jt</option>
+          <option value="(Memilih Untuk Tidak Menjawab)">Memilih Untuk Tidak Menjawab</option>
+        </select>
+        <div class="error" id="incomeError"></div>
+      </div>
+      <div class="form-group">
+        <label for="marital">Status pernikahan <span class="required">*</span></label>
+        <select id="marital" name="marital" required>
+          <option value="">-- Pilih --</option>
+          <option value="Belum menikah">Belum menikah</option>
+          <option value="Menikah">Menikah</option>
+          <option value="(Memilih Untuk Tidak Menjawab)">Memilih Untuk Tidak Menjawab</option>
+        </select>
+        <div class="error" id="maritalError"></div>
+      </div>
+      <div class="form-group">
+        <label for="whatsapp">Nomor WhatsApp <span class="required">*</span></label>
+        <input type="tel" id="whatsapp" name="whatsapp" placeholder="Contoh: 08123456789" required />
+        <div class="error" id="whatsappError"></div>
+      </div>
+      <div class="form-group">
+        <label for="ewallet">Nomor E-Wallet <span class="required">*</span></label>
+        <input type="tel" id="ewallet" name="ewallet" placeholder="Contoh: 08123456789" required />
+        <div class="error" id="ewalletError"></div>
+      </div>
+      <div class="form-group">
+        <label for="jenisewallet">Jenis E-Wallet <span class="required">*</span></label>
+        <select id="jenisewallet" name="jenisewallet" required>
+          <option value="">-- Pilih --</option>
+          <option value="Dana">Dana</option>
+          <option value="OVO">OVO</option>
+          <option value="Gopay">Gopay</option>
+          <option value="Shopeepay">ShopeePay</option>
+        </select>
+        <div class="error" id="jenisewalletError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="instagram">Username Instagram <span class="required">*</span></label>
+        <input type="text" id="instagram" name="instagram" placeholder="@username" required />
+        <div class="error" id="instagramError"></div>
       </div>
     </div>
-    
-    
-<!-- Modal Screenshot Viewer Example -->
-<!-- Trigger Button (demonstration) -->
-<button id="openScreenshotModal"
-  style="
-    margin:30px auto;
-    display:block;
-    padding:0.8em 2em;
-    font-size:1.1em;
-    border-radius:8px;
-    background:#814c26;
-    color:#fff;
-    border:none;
-    cursor:pointer;
-    box-shadow:0 9px 20px rgba(129,76,38,0.21), 0 1.5px 7px rgba(50,22,0,0.11);
-    transition: 
-      background 0.2s cubic-bezier(.4,0,.2,1),
-      color 0.18s cubic-bezier(.4,0,.2,1),
-      box-shadow 0.36s cubic-bezier(.4,0,.2,1),
-      transform 0.28s cubic-bezier(.4,0,.2,1);
-    font-family:'Quicksand',sans-serif;
-    letter-spacing:0.04em;
-  "
-  onmouseover="this.style.background='#a35c31';
-               this.style.boxShadow='0 8px 32px rgba(129,76,38,0.33), 0 4px 14px rgba(50,22,0,0.17)';
-               this.style.transform='scale(1.045) rotate(-1.2deg)';"
-  onmouseout="this.style.background='#814c26';
-              this.style.boxShadow='0 4px 20px rgba(129,76,38,0.21), 0 1.5px 7px rgba(50,22,0,0.11)';
-              this.style.transform='scale(1) rotate(0deg)';"
-  onmousedown="this.style.transform='scale(0.965) rotate(1.3deg)';"
-  onmouseup="this.style.transform='scale(1.045) rotate(-1.2deg)';"
->
-  Lihat Katalog
-</button>
+  </div>
 
+  <!-- Step 2: Preferensi Produk Hijab -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="productType">Jenis hijab favorit <span class="required">*</span></label>
+        <select id="productType" name="productType" required>
+          <option value="">-- Pilih --</option>
+          <option value="Paris">Paris</option>
+          <option value="Pashmina">Pashmina</option>
+          <option value="Inner">Inner</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div class="error" id="productTypeError"></div>
+      </div>
+      <div class="form-group">
+        <label for="favoriteColor">Warna favorit hijab <span class="required">*</span></label>
+          <input type="text" id="favoriteColor" name="favoriteColor" required />
+        <div class="error" id="favoriteColorError"></div>
+      </div>
+      <div class="form-group">
+        <label for="size">Ukuran hijab biasa dipakai <span class="required">*</span></label>
+        <select id="size" name="size" required>
+          <option value="">-- Pilih --</option>
+          <option value="110x110">110x110</option>
+          <option value="115x115">115x115</option>
+          <option value="165x55">165x55</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div class="error" id="sizeError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="priceRange">Kisaran harga nyaman <span class="required">*</span></label>
+        <select id="priceRange" name="priceRange" required>
+          <option value="">-- Pilih --</option>
+          <option value="30rb-50rb">30rb-50rb</option>
+          <option value="50rb-100rb">50rb-100rb</option>
+          <option value=">100rb">&gt; 100rb</option>
+        </select>
+        <div class="error" id="priceRangeError"></div>
+      </div>
+    </div>
+  </div>
 
-<!-- Modal Structure -->
-<div id="screenshotModal" class="modal-screenshot">
-  <div class="modal-overlay"></div>
-  <div class="modal-content">
-    <button class="modal-close" id="closeScreenshotModal" aria-label="Close modal">
-      <!-- X icon -->
-      <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="#888" stroke-width="2">
-        <line x1="4" y1="4" x2="16" y2="16"/>
-        <line x1="16" y1="4" x2="4" y2="16"/>
-      </svg>
+  <!-- Step 3: Perilaku Belanja Hijab -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="shoppingPlace">Sering beli hijab di <span class="required">*</span></label>
+        <select id="shoppingPlace" name="shoppingPlace" required>
+          <option value="">-- Pilih --</option>
+          <option value="Online">Online (Misal. Tokopedia, Shopee, Tiktok, dan lainnya)</option>
+          <option value="Offline">Offline</option>
+          <option value="Keduanya">Keduanya</option>
+        </select>
+        <div class="error" id="shoppingPlaceError"></div>
+      </div>
+      <div class="form-group">
+        <label for="favoriteBrand">Brand hijab favorit <span class="required">*</span></label>
+        <input type="text" id="favoriteBrand" name="favoriteBrand" required />
+        <div class="error" id="favoriteBrandError"></div>
+      </div>
+      <div class="form-group">
+        <label for="shopFrequency">Frekuensi beli hijab per tahun <span class="required">*</span></label>
+        <select id="shopFrequency" name="shopFrequency" required>
+          <option value="">-- Pilih --</option>
+          <option value="1-2x">1-2x</option>
+          <option value="3-5x">3-5x</option>
+          <option value=">6x">&gt; 6x</option>
+          <option value="jarang">jarang</option>
+        </select>
+        <div class="error" id="shopFrequencyError"></div>
+      </div>
+      <div class="form-group">
+        <label for="reasonBuy">Alasan utama membeli hijab <span class="required">*</span></label>
+        <select id="reasonBuy" name="reasonBuy" required>
+          <option value="">-- Pilih --</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Fungsional">Fungsional</option>
+          <option value="Agama">Agama</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div class="error" id="reasonBuyError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="buyMoment">Momen biasa membeli hijab</label>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="moment1" value="Ramadan" class="buyMoment" />
+            <label for="moment1">Ramadan</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="moment2" value="Lebaran" class="buyMoment" />
+            <label for="moment2">Lebaran</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="moment3" value="Harian" class="buyMoment" />
+            <label for="moment3">Harian</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group full-width">
+        <label for="infoSource">Sumber info produk hijab</label>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="source1" value="Instagram" class="infoSource" />
+            <label for="source1">Instagram</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="source2" value="TikTok" class="infoSource" />
+            <label for="source2">TikTok</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="source3" value="Teman" class="infoSource" />
+            <label for="source3">Teman</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="limitedEdition">Tertarik produk limited edition? <span class="required">*</span></label>
+        <div style="margin-top: 0.5rem;">
+          <label style="display: inline-flex; align-items: center; margin-right: 1rem;">
+            <input type="radio" id="limitedYes" name="limitedEdition" value="Ya" style="margin-right: 0.5rem;" required />
+            Ya
+          </label>
+          <label style="display: inline-flex; align-items: center;">
+            <input type="radio" id="limitedNo" name="limitedEdition" value="Tidak" style="margin-right: 0.5rem;" required />
+            Tidak
+          </label>
+        </div>
+        <div class="error" id="limitedEditionError"></div>
+      </div>
+      <div class="form-group">
+        <label for="favPayment">Metode pembayaran favorit <span class="required">*</span></label>
+        <select id="favPayment" name="favPayment" required>
+          <option value="">-- Pilih --</option>
+          <option value="Transfer Bank">Transfer Bank</option>
+          <option value="E-Wallet">E-Wallet</option>
+          <option value="COD">COD</option>
+          <option value="Ambil Langsung/Diantarkan Langsung">Ambil Langsung/Diantarkan Langsung</option>
+          <option value="Qris">Qris</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div class="error" id="favPaymentError"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Kepuasan Pelanggan -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label for="hasPurchased">Pernah beli di Femmeia? <span class="required">*</span></label>
+        <div style="margin-top: 0.5rem;">
+          <label style="display: inline-flex; align-items: center; margin-right: 1rem;">
+            <input type="radio" id="purchasedYes" name="hasPurchased" value="Ya" style="margin-right: 0.5rem;" />
+            Ya
+          </label>
+          <label style="display: inline-flex; align-items: center;">
+            <input type="radio" id="purchasedNo" name="hasPurchased" value="Tidak" style="margin-right: 0.5rem;" />
+            Tidak
+          </label>
+        </div>
+        <div class="error" id="hasPurchasedError"></div>
+      </div>
+      <div class="form-group" id="ratingGroup" style="display: none;">
+        <label for="rating">Rating pengalaman belanja (1–5)</label>
+        <select id="rating" name="rating">
+          <option value="">-- Pilih Rating --</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="form-group" id="qualityGroup" style="display: none;">
+        <label for="quality">Kualitas hijab Femmeia</label>
+        <select id="quality" name="quality">
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+      </div>
+      <div class="form-group" id="materialQualityGroup" style="display: none;">
+        <label for="materialQuality">Kualitas bahan</label>
+        <select id="materialQuality" name="materialQuality">
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+      </div>
+      <div class="form-group" id="serviceQualityGroup" style="display: none;">
+        <label for="serviceQuality">Kualitas pelayanan</label>
+        <select id="serviceQuality" name="serviceQuality">
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+      </div>
+      <div class="form-group full-width">
+        <label for="shopExp">Pengalaman belanja online umum <span class="required">*</span></label>
+        <textarea id="shopExp" name="shopExp" placeholder="Ceritakan pengalaman belanja online Anda secara umum..." required></textarea>
+        <div class="error" id="shopExpError"></div>
+      </div>
+      <div class="form-group full-width" id="feedbackGroup" style="display: none;">
+        <label for="feedback">Komentar tentang layanan kami</label>
+        <textarea id="feedback" name="feedback" placeholder="Berikan komentar tentang layanan Femmeia..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5: Branding & Visual -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="logoImpression">Penilaian terhadap logo <span class="required">*</span></label>
+        <select id="logoImpression" name="logoImpression" required>
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+        <div class="error" id="logoImpressionError"></div>
+      </div>
+      <div class="form-group">
+        <label for="designAesthetic">Kesan desain produk & identitas visual <span class="required">*</span></label>
+        <select id="designAesthetic" name="designAesthetic" required>
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+        <div class="error" id="designAestheticError"></div>
+      </div>
+      <div class="form-group">
+        <label for="instagramQuality">Kualitas feed Instagram <span class="required">*</span></label>
+        <select id="instagramQuality" name="instagramQuality" required>
+          <option value="">-- Pilih --</option>
+          <option value="Sangat baik">Sangat baik</option>
+          <option value="Baik">Baik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang baik">Kurang baik</option>
+        </select>
+        <div class="error" id="instagramQualityError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="brandingSuggestion">Saran terkait logo/sosmed <span class="required">*</span></label>
+        <textarea id="brandingSuggestion" name="brandingSuggestion" placeholder="Berikan saran untuk perbaikan logo atau media sosial..." required></textarea>
+        <div class="error" id="brandingSuggestionError"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 6: Ide Produk & Layanan -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label>Ide produk baru yang diminati</label>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="idea1" value="Hijab Motif" class="productIdeas" />
+            <label for="idea1">Hijab Motif</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="idea2" value="Inner Instan" class="productIdeas" />
+            <label for="idea2">Inner Instan</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="idea3" value="Aksesoris Hijab" class="productIdeas" />
+            <label for="idea3">Aksesoris Hijab</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group full-width">
+        <label for="otherIdea">Ide lainnya (jika ada) <span class="required">*</span></label>
+        <textarea id="otherIdea" name="otherIdea" placeholder="Tuliskan ide produk lainnya..." required></textarea>
+        <div class="error" id="otherIdeaError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="serviceIdea">Saran layanan selain produk <span class="required">*</span></label>
+        <textarea id="serviceIdea" name="serviceIdea" placeholder="Berikan saran layanan yang diinginkan selain produk hijab..." required></textarea>
+        <div class="error" id="serviceIdeaError"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 7: Masukan Umum & Testimoni -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label for="suggestion">Testimoni atau saran umum <span class="required">*</span></label>
+        <textarea id="suggestion" name="suggestion" placeholder="Bagikan testimoni, saran, atau masukan Anda untuk Femmeia Cloth..." required></textarea>
+        <div class="error" id="suggestionError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="mainProblem">Masalah utama saat beli hijab online <span class="required">*</span></label>
+        <textarea id="mainProblem" name="mainProblem" placeholder="Ceritakan masalah yang sering Anda hadapi saat berbelanja hijab online..." required></textarea>
+        <div class="error" id="mainProblemError"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 8: Persetujuan -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="agreeFollow" required />
+            <label for="agreeFollow">Follow Instagram Femmeia <span class="required">*</span><br>
+              <small>Saya sudah follow Instagram 
+              <a href="https://instagram.com/femmeia.cloth" target="_blank" style="color: var(--accent);">@femmeia.cloth</a></small>
+            </label>
+          </div>
+          <div class="error" id="agreeFollowError"></div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="agree1" required />
+            <label for="agree1">Bersedia datanya digunakan <span class="required">*</span><br>
+              <small>Saya bersedia data yang saya berikan digunakan untuk pengembangan Femmeia Cloth</small>
+            </label>
+          </div>
+          <div class="error" id="agree1Error"></div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="agree2" required />
+            <label for="agree2">Setuju ikut undian reward <span class="required">*</span><br>
+              <small>Saya setuju mengikuti undian berhadiah dari Femmeia Cloth</small>
+            </label>
+          </div>
+          <div class="error" id="agree2Error"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="button-group">
+    <button type="button" id="prevBtn" class="btn-secondary" disabled>
+      ← Sebelumnya
     </button>
-    <a href="https://shopee.co.id/femmeiacloth" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Catalog Screenshot" class="modal-img" /></a>
- </div>
-</div>
-
-
-    <a href="/order.html" class="link-btn"><span class="icon">🛒</span><span id="btn-order">Pesan Sekarang</span></a>
-    <a href="https://wa.me/6287777420644" class="link-btn"><span class="icon">💬</span><span id="btn-wa">WhatsApp</span></a>
-    <a href="https://www.instagram.com/femmeia.cloth/" class="link-btn"><span class="icon">📷</span><span id="btn-ig">Instagram</span></a>
-    <a href="https://shopee.co.id/femmeiacloth" class="link-btn"><span class="icon">🛍️</span><span id="btn-shopee">Shopee</span></a>
-    <a href="/track.html" class="link-btn"><span class="icon">📦</span><span id="btn-track">Lacak Paket</span></a>
-    <a href="/payment2.html" class="link-btn"><span class="icon">💳</span><span id="btn-payment">Metode Pembayaran</span></a>
-
-
+    <button type="button" id="nextBtn" class="btn-primary">
+      Selanjutnya →
+    </button>
+    <button type="submit" id="submitBtn" class="btn-primary" style="display: none;">
+      <span id="submitText">Kirim Survey</span>
+    </button>
+  </div>
+</form>
+    </div>
   </div>
 
-  <div class="footer" id="footer">
-    &copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span>
-    <a href="https://www.instagram.com/gunadizz" target="_blank">@femmeia.cloth</a>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div id="modalContent">
+        <!-- Content will be dynamically inserted here -->
+      </div>
+    </div>
   </div>
-<!-- Promo Modal -->
-<div id="promoModal" class="promo-modal" style="display:none;">
-  <div class="promo-modal-content">
-    <button id="closePromoModal" class="promo-modal-close" aria-label="Close">&times;</button>
-    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/img/IMG_20250519_192937.png" alt="Promo" class="promo-modal-img" />
-    <h2 class="promo-modal-title">Diskon Spesial!</h2>
-    <p class="promo-modal-desc">
-      Dapatkan <strong>10% OFF</strong> untuk pembelian pertama kamu!<br>
-      Gunakan kode: <span class="promo-modal-code">FEMMEIA10</span> saat checkout (via wa/web only).
-    </p>
-    <a href="/order.html" class="promo-modal-btn">Pesan Sekarang</a>
+<!-- Modal pop up -->
+<div class="modal-overlay" id="modalOverlay" style="display:none;">
+  <div class="modal">
+    <div class="modal-content" id="modalContent"></div>
+    <button class="modal-btn" onclick="closeModal()">Tutup</button>
   </div>
 </div>
 
-  <!-- Click animation script -->
-  <script>
-    // Circle animation on click
-    !function(e, t, a) {
-      function n() {
-        c(`
-          .circle {
-            width: 12px;
-            height: 12px;
-            position: fixed;
-            background: #999;
-            border-radius: 50%;
-            z-index: 99999;
-            font-family: 'Montserrat', sans-serif !important;
-          }
-        `), o(), r();
-      }
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+<script src="survey-firebase.js"></script>
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, runTransaction, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+    
+    // EmailJS
+    emailjs.init('EgQN926d2p5Tl7keS');
 
-      function r() {
-        for (var e = 0; e < d.length; e++) {
-          if (d[e].alpha <= 0) {
-            t.body.removeChild(d[e].el);
-            d.splice(e, 1);
-            e--;
-            continue;
-          }
-          d[e].y--;
-          d[e].scale += 0.004;
-          d[e].alpha -= 0.013;
-          d[e].el.style.cssText = `
-            left:${d[e].x}px;
-            top:${d[e].y}px;
-            opacity:${d[e].alpha};
-            transform:scale(${d[e].scale});
-            background:#999;
-            border-radius:50%;
-            position:fixed;
-            z-index:99999;
-          `;
-        }
-        requestAnimationFrame(r);
-      }
 
-      function o() {
-        const clickHandler = "function" == typeof e.onclick && e.onclick;
-        e.onclick = function(e) {
-          clickHandler && clickHandler(), i(e);
-        }
-      }
-
-      function i(e) {
-        var a = t.createElement("div");
-        a.className = "circle";
-        d.push({
-          el: a,
-          x: e.clientX - 6,
-          y: e.clientY - 6,
-          scale: 1,
-          alpha: 1
-        });
-        t.body.appendChild(a);
-      }
-
-      function c(e) {
-        var a = t.createElement("style");
-        a.type = "text/css";
-        try {
-          a.appendChild(t.createTextNode(e));
-        } catch (t) {
-          a.styleSheet.cssText = e;
-        }
-        t.getElementsByTagName("head")[0].appendChild(a);
-      }
-
-      var d = [];
-      e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || function(e) {
-        setTimeout(e, 1000 / 60);
-      };
-      n();
-    }(window, document);
-
-    // Hide loading screen after fadeOut animation
-    window.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() {
-        var loading = document.querySelector('.loading-screen');
-        if (loading) loading.style.display = 'none';
-      }, 2500);
-    });
-
-    // Dark mode toggle logic
-    const darkModeBtn = document.getElementById('darkmode-toggle');
-    const iconMoon = document.getElementById('icon-moon');
-    const iconSun = document.getElementById('icon-sun');
-    function setTheme(mode) {
-      document.body.setAttribute('data-theme', mode);
-      if (mode === 'dark') {
-        iconMoon.style.display = 'none';
-        iconSun.style.display = 'inline';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        iconMoon.style.display = 'inline';
-        iconSun.style.display = 'none';
-        localStorage.setItem('theme', 'light');
-      }
-    }
-    darkModeBtn.addEventListener('click', function() {
-      const current = document.body.getAttribute('data-theme');
-      setTheme(current === 'dark' ? 'light' : 'dark');
-    });
-    // On load, check theme preference
-    (function() {
-      const pref = localStorage.getItem('theme');
-      if (pref === 'dark') setTheme('dark');
-      else setTheme('light');
-    })();
-
-    // Language changer logic
-    // id = Indonesia, en = English
-    const langBtn = document.getElementById('lang-toggle');
-    const iconId = document.getElementById('icon-globe-id');
-    const iconEn = document.getElementById('icon-globe-en');
-    const texts = {
-      id: {
-        'brand-title': "FemmeiaCloth",
-        'brand-subtitle': "Premium Quality Hijab",
-        'tagline': "Tampil Syar'i, Tetap Stylish!",
-        'info-delivery': "Pengiriman Seluruh Indonesia",
-        'info-original': "Produk Original & Terjamin",
-        'info-service': "Layanan Fast Response",
-        'btn-order': "Pesan Sekarang",
-        'btn-wa': "WhatsApp",
-        'btn-ig': "Instagram",
-        'btn-shopee': "Shopee",
-        'btn-payment': "Metode Pembayaran",
-        'openScreenshotModal': "Lihat Katalog",
-        'btn-track': "Lacak Paket",
-        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>'
-      },
-      en: {
-        'brand-title': "FemmeiaCloth",
-        'brand-subtitle': "Premium Quality Hijab",
-        'tagline': "Look Modest, Stay Stylish!",
-        'info-delivery': "Nationwide Shipping",
-        'info-original': "100% Authentic Products",
-        'info-service': "Fast Response Service",
-        'btn-order': "Order Now",
-        'btn-wa': "WhatsApp",
-        'btn-ig': "Instagram",
-        'btn-payment': "Payment Method",
-        'btn-shopee': "Shopee",
-        'openScreenshotModal': "Show Catalog",
-        'btn-track': "Track Your Package",
-        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>'
-      }
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
+      authDomain: "femmeiacloth-finance.firebaseapp.com",
+      projectId: "femmeiacloth-finance",
+      storageBucket: "femmeiacloth-finance.appspot.com",
+      messagingSenderId: "517478386163",
+      appId: "1:517478386163:web:51028f5841baa311126a86",
+      measurementId: "G-K4L516Q54R"
     };
-    function setLang(lang) {
-      for(const id in texts[lang]) {
-        const el = document.getElementById(id);
-        if (el) {
-          if (id === "footer") el.innerHTML = texts[lang][id];
-          else el.textContent = texts[lang][id];
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // DOM Elements
+    const steps = document.querySelectorAll('.form-step');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressBar = document.getElementById('progressBar');
+    const stepIndicator = document.getElementById('stepIndicator');
+    const stepTitle = document.getElementById('stepTitle');
+    const progressText = document.getElementById('progressText');
+    const quotaInfo = document.getElementById('quotaInfo');
+    const surveyForm = document.getElementById('surveyForm');
+    const hasPurchased = document.getElementById('hasPurchased');
+    const ratingGroup = document.getElementById('ratingGroup');
+    const feedbackGroup = document.getElementById('feedbackGroup');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalContent = document.getElementById('modalContent');
+
+    let currentStep = 0;
+    const totalSteps = steps.length;
+    let quotaCount = null;
+
+    const stepTitles = [
+  'Informasi Pribadi',
+  'Preferensi Produk Hijab',
+  'Perilaku Belanja Hijab', 
+  'Kepuasan Pelanggan',
+  'Branding & Visual',
+  'Ide Produk & Layanan',
+  'Masukan Umum & Testimoni',
+  'Persetujuan'
+];
+
+
+    // Modal functions
+    function showModal(type, title, message) {
+      let content = '';
+      
+      if (type === 'loading') {
+        content = `
+          <div class="modal-spinner"></div>
+          <h3>${title}</h3>
+          <p class="pulse">${message}</p>
+        `;
+      } else if (type === 'success') {
+        content = `
+          <div class="modal-status success">✅ Berhasil</div>
+          <h3>${title}</h3>
+          <p>${message}</p>
+          <button class="modal-btn" onclick="document.getElementById('modalOverlay').classList.remove('active')">
+            Tutup
+          </button>
+        `;
+      } else if (type === 'error') {
+        content = `
+          <div class="modal-status error">❌ Gagal</div>
+          <h3>${title}</h3>
+          <p>${message}</p>
+          <button class="modal-btn" onclick="document.getElementById('modalOverlay').classList.remove('active')">
+            Tutup
+          </button>
+        `;
+      }
+      
+      modalContent.innerHTML = content;
+      modalOverlay.classList.add('active');
+    }
+
+    function hideModal() {
+      modalOverlay.classList.remove('active');
+    }
+
+    // Show/hide customer satisfaction fields based on purchase history
+document.addEventListener('change', function(e) {
+  if (e.target.name === 'hasPurchased') {
+    const ratingGroup = document.getElementById('ratingGroup');
+    const qualityGroup = document.getElementById('qualityGroup');
+    const materialQualityGroup = document.getElementById('materialQualityGroup');
+    const serviceQualityGroup = document.getElementById('serviceQualityGroup');
+    const feedbackGroup = document.getElementById('feedbackGroup');
+    
+    if (e.target.value === 'Ya') {
+      ratingGroup.style.display = 'block';
+      qualityGroup.style.display = 'block';
+      materialQualityGroup.style.display = 'block';
+      serviceQualityGroup.style.display = 'block';
+      feedbackGroup.style.display = 'block';
+    } else {
+      ratingGroup.style.display = 'none';
+      qualityGroup.style.display = 'none';
+      materialQualityGroup.style.display = 'none';
+      serviceQualityGroup.style.display = 'none';
+      feedbackGroup.style.display = 'none';
+      // Clear values
+      document.getElementById('rating').value = '';
+      document.getElementById('quality').value = '';
+      document.getElementById('materialQuality').value = '';
+      document.getElementById('serviceQuality').value = '';
+      document.getElementById('feedback').value = '';
+    }
+  }
+});
+
+    function updateProgress() {
+      const progress = ((currentStep + 1) / totalSteps) * 100;
+      progressBar.style.width = progress + '%';
+      stepTitle.textContent = stepTitles[currentStep];
+      progressText.textContent = `${currentStep + 1} / 8`;
+
+      // Update step indicators
+      const dots = stepIndicator.querySelectorAll('.step-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.remove('active', 'completed');
+        if (index < currentStep) {
+          dot.classList.add('completed');
+        } else if (index === currentStep) {
+          dot.classList.add('active');
+        }
+      });
+    }
+
+    function showStep(n) {
+      steps.forEach((step, i) => {
+        step.classList.toggle('active', i === n);
+      });
+
+      prevBtn.disabled = n === 0;
+      
+      if (n === totalSteps - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-block';
+      } else {
+        nextBtn.style.display = 'inline-block';
+        submitBtn.style.display = 'none';
+      }
+
+      updateProgress();
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.error').forEach(error => error.textContent = '');
+      document.querySelectorAll('input, select, textarea').forEach(input => {
+        input.classList.remove('error-border');
+      });
+    }
+
+    function showError(fieldId, message) {
+      const errorElement = document.getElementById(fieldId + 'Error');
+      const inputElement = document.getElementById(fieldId);
+      if (errorElement) errorElement.textContent = message;
+      if (inputElement) inputElement.classList.add('error-border');
+    }
+
+    function validateStep(n) {
+      clearErrors();
+      let isValid = true;
+
+  switch (n) {
+    case 0:
+      const step0Fields = ['name', 'email', 'gender', 'age', 'city', 'job', 'income', 'marital', 'whatsapp', 'ewallet', 'jenisewallet', 'instagram'];
+      step0Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      
+      // Add phone validation after the existing required field checks
+      if (document.getElementById('whatsapp').value && !/^[0-9+\-\s()]+$/.test(document.getElementById('whatsapp').value)) {
+        showError('whatsapp', 'Format nomor WhatsApp tidak valid');
+        isValid = false;
+      }
+      if (document.getElementById('ewallet').value && !/^[0-9+\-\s()]+$/.test(document.getElementById('ewallet').value)) {
+        showError('ewallet', 'Format nomor E-Wallet tidak valid');
+        isValid = false;
+      }
+      break;
+
+    case 1:
+      const step1Fields = ['productType', 'favoriteColor', 'size', 'priceRange'];
+      step1Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      break;
+
+    case 2:
+      const step2Fields = ['shoppingPlace', 'favoriteBrand', 'shopFrequency', 'reasonBuy', 'favPayment'];
+      step2Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      
+      // Check radio button for limitedEdition
+      if (!document.querySelector('input[name="limitedEdition"]:checked')) {
+        showError('limitedEdition', 'Pilihan wajib dipilih');
+        isValid = false;
+      }
+      break;
+
+    case 3:
+      if (!document.querySelector('input[name="hasPurchased"]:checked')) {
+        showError('hasPurchased', 'Pilihan wajib dipilih');
+        isValid = false;
+      }
+      if (!document.getElementById('shopExp').value.trim()) {
+        showError('shopExp', 'Field ini wajib diisi');
+        isValid = false;
+      }
+      break;
+
+    case 4:
+      const step4Fields = ['logoImpression', 'designAesthetic', 'instagramQuality', 'brandingSuggestion'];
+      step4Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      break;
+
+    case 5:
+      const step5Fields = ['otherIdea', 'serviceIdea'];
+      step5Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      break;
+
+    case 6:
+      const step6Fields = ['suggestion', 'mainProblem'];
+      step6Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      break;
+
+    case 7:
+      if (!document.getElementById('agreeFollow').checked) {
+        showError('agreeFollow', 'Wajib follow Instagram @femmeia.cloth');
+        isValid = false;
+      }
+      if (!document.getElementById('agree1').checked) {
+        showError('agree1', 'Persetujuan penggunaan data wajib dicentang');
+        isValid = false;
+      }
+      if (!document.getElementById('agree2').checked) {
+        showError('agree2', 'Persetujuan undian berhadiah wajib dicentang');
+        isValid = false;
+      }
+      break;
+  }
+
+  return isValid;
+}
+
+    nextBtn.addEventListener('click', () => {
+      if (validateStep(currentStep)) {
+        if (currentStep < totalSteps - 1) {
+          currentStep++;
+          showStep(currentStep);
         }
       }
-      if(lang === "id") {
-        iconId.style.display = "inline";
-        iconEn.style.display = "none";
-      } else {
-        iconId.style.display = "none";
-        iconEn.style.display = "inline";
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
       }
-      document.documentElement.lang = lang;
-      localStorage.setItem("lang", lang);
-    }
-    langBtn.addEventListener('click', function() {
-      const current = localStorage.getItem("lang") || "id";
-      setLang(current === "id" ? "en" : "id");
     });
-    // On load, set default language
-    (function() {
-      const lang = localStorage.getItem("lang") || "id";
-      setLang(lang);
-    })();
 
-  </script>
-  
-  <script>
-// Modal logic
-const modal = document.getElementById('screenshotModal');
-const openBtn = document.getElementById('openScreenshotModal');
-const closeBtn = document.getElementById('closeScreenshotModal');
-const overlay = modal.querySelector('.modal-overlay');
-
-// Open modal
-openBtn.onclick = () => { modal.classList.add('active'); };
-// Close modal
-closeBtn.onclick = overlay.onclick = () => { modal.classList.remove('active'); };
-// ESC key closes
-window.addEventListener('keydown', e => {
-  if (e.key === 'Escape') modal.classList.remove('active');
-});
-</script>
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function() {
-      navigator.serviceWorker.register("/service-worker.js");
+    // Close modal when clicking outside
+    modalOverlay.addEventListener('click', function(e) {
+      if (e.target === modalOverlay) {
+        // Only close if it's not a loading modal
+        if (!modalContent.querySelector('.modal-spinner')) {
+          hideModal();
+        }
+      }
     });
-  }
-</script>
 
-<script>
-window.addEventListener('DOMContentLoaded', function() {
-  function showModal() {
-    // Only show once per session
-    if (!sessionStorage.getItem('promoModalShown')) {
-      document.getElementById('promoModal').style.display = 'flex';
-      sessionStorage.setItem('promoModalShown', 'yes');
+    // Check quota
+    const quotaDocRef = doc(db, "survey_control", "quota");
+
+    async function checkQuotaAndToggleForm() {
+      try {
+        const docSnap = await getDoc(quotaDocRef);
+        if (docSnap.exists()) {
+          quotaCount = docSnap.data().count;
+          if (quotaCount <= 0) {
+            quotaInfo.innerHTML = "🚫 Stok survey sudah habis. Terima kasih atas antusiasmenya!";
+            quotaInfo.className = "quota-info empty";
+            quotaInfo.style.display = "block";
+            surveyForm.classList.add('form-hidden');
+          } else {
+            quotaInfo.innerHTML = `✅ Sisa kuota survey: <strong>${quotaCount}</strong>`;
+            quotaInfo.className = "quota-info";
+            quotaInfo.style.display = "block";
+            surveyForm.classList.remove('form-hidden');
+          }
+        } else {
+          quotaInfo.innerHTML = "⚠️ Quota belum diinisialisasi di Firestore!";
+          quotaInfo.className = "quota-info empty";
+          quotaInfo.style.display = "block";
+          surveyForm.classList.add('form-hidden');
+        }
+      } catch (err) {
+        quotaInfo.innerHTML = "❌ Gagal memuat quota survey.";
+        quotaInfo.className = "quota-info empty";
+        quotaInfo.style.display = "block";
+        surveyForm.classList.add('form-hidden');
+      }
     }
+
+    checkQuotaAndToggleForm();
+
+    // Form submission
+surveyForm.addEventListener('submit', async function(event) {
+  event.preventDefault();
+
+  if (!validateStep(currentStep)) {
+    return;
   }
 
-  function closePromoModalAnimated() {
-    const modalContent = document.querySelector('.promo-modal-content');
-    modalContent.classList.add('closing');
-    setTimeout(() => {
-      document.getElementById('promoModal').style.display = 'none';
-      modalContent.classList.remove('closing');
-    }, 360);
-  }
+  // Show loading modal
+  showModal('loading', 'Mengirim Survey', 'Mohon tunggu sebentar, survey Anda sedang diproses...');
 
-  document.getElementById('closePromoModal').onclick = closePromoModalAnimated;
-  document.getElementById('promoModal').onclick = function(e) {
-    if (e.target === this) closePromoModalAnimated();
+  // Collect form data
+  const ideas = Array.from(document.querySelectorAll('.productIdeas:checked')).map(cb => cb.value).join(', ');
+
+  // Survey Data Object
+  const surveyData = {
+    // Step 1: Informasi Pribadi
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    gender: document.getElementById('gender').value,
+    age: document.getElementById('age').value,
+    city: document.getElementById('city').value,
+    job: document.getElementById('job').value,
+    income: document.getElementById('income')?.value || '',
+    marital: document.getElementById('marital')?.value || '',
+    whatsapp: document.getElementById('whatsapp').value,
+    ewallet: document.getElementById('ewallet').value,
+    jenisewallet: document.getElementById('jenisewallet').value,
+    instagram: document.getElementById('instagram').value,
+
+    // Step 2: Preferensi Produk Hijab
+    productType: document.getElementById('productType').value,
+    favoriteColor: document.getElementById('favoriteColor').value,
+    size: document.getElementById('size').value,
+    priceRange: document.getElementById('priceRange').value,
+
+    // Step 3: Perilaku Belanja Hijab
+    shoppingPlace: document.getElementById('shoppingPlace').value,
+    favoriteBrand: document.getElementById('favoriteBrand').value,
+    shopFrequency: document.getElementById('shopFrequency').value,
+    reasonBuy: document.getElementById('reasonBuy').value,
+    buyMoment: Array.from(document.querySelectorAll('.buyMoment:checked')).map(cb => cb.value).join(', '),
+    infoSource: Array.from(document.querySelectorAll('.infoSource:checked')).map(cb => cb.value).join(', '),
+    limitedEdition: document.querySelector('input[name="limitedEdition"]:checked')?.value || '',
+    favPayment: document.getElementById('favPayment').value,
+
+    // Step 4: Kepuasan Pelanggan
+    hasPurchased: document.querySelector('input[name="hasPurchased"]:checked')?.value || '',
+    rating: document.getElementById('rating').value,
+    quality: document.getElementById('quality').value,
+    materialQuality: document.getElementById('materialQuality').value,
+    serviceQuality: document.getElementById('serviceQuality').value,
+    shopExp: document.getElementById('shopExp').value,
+    feedback: document.getElementById('feedback').value,
+
+    // Step 5: Branding & Visual
+    logoImpression: document.getElementById('logoImpression').value,
+    designAesthetic: document.getElementById('designAesthetic').value,
+    instagramQuality: document.getElementById('instagramQuality').value,
+    brandingSuggestion: document.getElementById('brandingSuggestion').value,
+
+    // Step 6: Ide Produk & Layanan
+    productIdeas: ideas,
+    otherIdea: document.getElementById('otherIdea').value,
+    serviceIdea: document.getElementById('serviceIdea').value,
+
+    // Step 7: Masukan Umum & Testimoni
+    suggestion: document.getElementById('suggestion').value,
+    mainProblem: document.getElementById('mainProblem').value,
+
+    // Step 8: Timestamp
+    timestamp: new Date()
   };
 
-  // Delay for 4 seconds (4000ms) before showing modal
-  setTimeout(showModal, 3000);
+  // Calculate prize and conclusion
+  const { prizeAmount, conclusion } = calculatePrizeAndConclusion(surveyData);
+  surveyData.prizeAmount = prizeAmount;
+  surveyData.conclusion = conclusion;
+
+  try {
+    await runTransaction(db, async (transaction) => {
+      const quotaDoc = await transaction.get(quotaDocRef);
+      if (!quotaDoc.exists()) throw "Quota tidak ditemukan!";
+      let count = quotaDoc.data().count;
+      if (count <= 0) throw "Stok survey sudah habis!";
+      
+      // Save survey
+      const surveysCol = collection(db, "surveys");
+      await addDoc(surveysCol, surveyData);
+      
+      // Update quota
+      transaction.update(quotaDocRef, { count: count - 1 });
+    });
+
+    // Send email
+    emailjs.send('service_00xj2ta', 'template_4i1ue1g', surveyData)
+      .then(() => {
+        // Show success modal
+        showModal(
+          'success', 
+          'Survey Berhasil Dikirim', 
+          `Terima kasih atas partisipasi Anda! Hadiah Rp${prizeAmount} akan dikirimkan dalam 1x24 jam ke e-wallet yang telah Anda cantumkan.`
+        );
+        surveyForm.reset();
+        currentStep = 0;
+        showStep(currentStep);
+        checkQuotaAndToggleForm();
+      }, (error) => {
+        // Show partial success modal
+        showModal(
+          'success', 
+          'Survey Berhasil Disimpan', 
+          `Survey Anda telah berhasil disimpan dengan hadiah Rp${prizeAmount}, namun pengiriman email notifikasi gagal. Kami tetap akan memproses hadiah Anda.`
+        );
+        console.error(error);
+        checkQuotaAndToggleForm();
+      });
+
+  } catch (e) {
+    // Show error modal
+    if (e === "Stok survey sudah habis!") {
+      showModal(
+        'error', 
+        'Kuota Survey Habis', 
+        'Mohon maaf, kuota survey sudah habis. Terima kasih atas antusiasme Anda!'
+      );
+    } else {
+      showModal(
+        'error', 
+        'Gagal Mengirim Survey', 
+        'Terjadi kesalahan saat mengirim survey. Silakan coba lagi dalam beberapa saat.'
+      );
+    }
+    console.error(e);
+    checkQuotaAndToggleForm();
+  }
 });
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3270682405009922"
-     crossorigin="anonymous">
+
+// Improved Prize calculation function with better accuracy
+function calculatePrizeAndConclusion(surveyData) {
+  // Initialize base prize
+  let prize = 1000; // Start with minimum 1000
+  let profileScore = 0;
+  let engagementScore = 0;
+  let qualityScore = 0;
+  let brandLoyaltyScore = 0;
+  let innovationScore = 0;
+
+  // 1. Profile Completeness Score (max 300 points)
+  const requiredFields = ['name', 'email', 'whatsapp', 'instagram', 'city', 'gender', 'age'];
+  const optionalFields = ['job', 'income', 'marital'];
   
-     </script>
+  // Required fields completion
+  const completedRequired = requiredFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+  profileScore += (completedRequired / requiredFields.length) * 200;
+  
+  // Optional fields bonus
+  const completedOptional = optionalFields.filter(field => 
+    surveyData[field] && surveyData[field].trim() && 
+    !surveyData[field].includes('Tidak Menjawab')
+  ).length;
+  profileScore += (completedOptional / optionalFields.length) * 100;
+
+  // 2. Engagement Quality Score (max 600 points)
+  const textFields = [
+    { field: "shopExp", weight: 1.2, minLength: 50 },
+    { field: "brandingSuggestion", weight: 1.5, minLength: 30 },
+    { field: "otherIdea", weight: 1.3, minLength: 20 },
+    { field: "serviceIdea", weight: 1.3, minLength: 20 },
+    { field: "suggestion", weight: 1.4, minLength: 30 },
+    { field: "mainProblem", weight: 1.2, minLength: 30 },
+    { field: "feedback", weight: 1.1, minLength: 20 }
+  ];
+
+  textFields.forEach(({ field, weight, minLength }) => {
+    if (surveyData[field] && surveyData[field].trim()) {
+      const text = surveyData[field].trim();
+      let fieldScore = 0;
+      
+      if (text.length >= minLength) {
+        // Base score for meeting minimum
+        fieldScore = 30;
+        
+        // Length bonus (diminishing returns)
+        if (text.length > 100) fieldScore += 40;
+        else if (text.length > 50) fieldScore += 20;
+        
+        // Quality indicators bonus
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 10).length;
+        if (sentences >= 3) fieldScore += 20;
+        
+        // Specific keyword bonus for valuable feedback
+        const valuableKeywords = ['saran', 'sebaiknya', 'bisa', 'perlu', 'harap', 'mungkin', 'lebih baik', 'kualitas', 'pelayanan'];
+        const keywordCount = valuableKeywords.filter(keyword => 
+          text.toLowerCase().includes(keyword)
+        ).length;
+        fieldScore += Math.min(keywordCount * 5, 20);
+      }
+      
+      engagementScore += fieldScore * weight;
+    }
+  });
+
+  // 3. Brand Loyalty & Experience Score (max 400 points)
+  if (surveyData.hasPurchased === 'Ya') {
+    brandLoyaltyScore += 150; // Base loyalty bonus
+    
+    // Rating quality bonus
+    if (surveyData.rating) {
+      const rating = parseInt(surveyData.rating);
+      if (rating >= 4) brandLoyaltyScore += 100;
+      else if (rating >= 3) brandLoyaltyScore += 50;
+      else brandLoyaltyScore += 25; // Even negative feedback is valuable
+    }
+    
+    // Detailed experience bonus
+    if (surveyData.quality && surveyData.materialQuality && surveyData.serviceQuality) {
+      brandLoyaltyScore += 75;
+    }
+    
+    // Constructive feedback bonus
+    if (surveyData.feedback && surveyData.feedback.length > 30) {
+      brandLoyaltyScore += 75;
+    }
+  } else {
+    // Potential customer bonus (still valuable)
+    brandLoyaltyScore += 50;
+  }
+
+  // 4. Market Research Value Score (max 300 points)
+  let marketResearchScore = 0;
+  
+  // Shopping behavior completeness
+  const behaviorFields = ['shoppingPlace', 'favoriteBrand', 'shopFrequency', 'reasonBuy', 'favPayment'];
+  const completedBehavior = behaviorFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+  marketResearchScore += (completedBehavior / behaviorFields.length) * 100;
+  
+  // Preference completeness
+  const preferenceFields = ['productType', 'favoriteColor', 'size', 'priceRange'];
+  const completedPreferences = preferenceFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+  marketResearchScore += (completedPreferences / preferenceFields.length) * 100;
+  
+  // Additional insights (checkboxes)
+  if (surveyData.buyMoment && surveyData.buyMoment.length > 0) marketResearchScore += 25;
+  if (surveyData.infoSource && surveyData.infoSource.length > 0) marketResearchScore += 25;
+  if (surveyData.productIdeas && surveyData.productIdeas.length > 0) marketResearchScore += 25;
+  if (surveyData.limitedEdition) marketResearchScore += 25;
+
+  // 5. Innovation & Branding Feedback Score (max 400 points)
+  const brandingFields = ['logoImpression', 'designAesthetic', 'instagramQuality'];
+  const completedBranding = brandingFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+  innovationScore += (completedBranding / brandingFields.length) * 150;
+  
+  // Constructive branding feedback
+  if (surveyData.brandingSuggestion && surveyData.brandingSuggestion.length > 50) {
+    innovationScore += 100;
+  }
+  
+  // Product innovation ideas
+  if (surveyData.otherIdea && surveyData.otherIdea.length > 30) {
+    innovationScore += 75;
+  }
+  
+  if (surveyData.serviceIdea && surveyData.serviceIdea.length > 30) {
+    innovationScore += 75;
+  }
+
+  // Calculate total score and final prize
+  const totalScore = profileScore + engagementScore + brandLoyaltyScore + marketResearchScore + innovationScore;
+  
+  // Progressive prize calculation with better distribution
+  if (totalScore >= 1500) prize = 5000;
+  else if (totalScore >= 1200) prize = 4000;
+  else if (totalScore >= 1000) prize = 3000;
+  else if (totalScore >= 800) prize = 2500;
+  else if (totalScore >= 600) prize = 2000;
+  else if (totalScore >= 400) prize = 1500;
+  else if (totalScore >= 250) prize = 1000;
+  else if (totalScore >= 150) prize = 500;
+  else prize = 1000;
+
+  // Generate improved conclusion
+  const conclusion = generateImprovedConclusion(surveyData, {
+    profileScore,
+    engagementScore,
+    brandLoyaltyScore,
+    marketResearchScore,
+    innovationScore,
+    totalScore
+  });
+
+  return {
+    prizeAmount: prize,
+    conclusion: conclusion
+  };
+}
+
+// Improved conclusion generation function
+function generateImprovedConclusion(data, scores) {
+  const conclusions = [];
+
+  // 1. Demographic Profile
+  let profileConclusion = `Responden ${data.name} (${data.gender.toLowerCase()}, ${data.age} tahun) dari ${data.city}`;
+  
+  if (data.job && !data.job.includes('Tidak Menjawab')) {
+    profileConclusion += ` dengan status ${data.job.toLowerCase()}`;
+  }
+  
+  if (data.income && !data.income.includes('Tidak Menjawab')) {
+    const incomeText = data.income === '<1jt' ? 'di bawah 1 juta' : 
+                      data.income === '1-3jt' ? 'antara 1-3 juta' : 'di atas 3 juta';
+    profileConclusion += ` dan penghasilan bulanan ${incomeText}`;
+  }
+  
+  profileConclusion += '.';
+  conclusions.push(profileConclusion);
+
+  // 2. Product Preferences & Shopping Behavior
+  if (data.productType && data.favoriteColor) {
+    let preferenceConclusion = `Memiliki preferensi hijab jenis ${data.productType.toLowerCase()}`;
+    if (data.favoriteColor) preferenceConclusion += ` dengan warna ${data.favoriteColor.toLowerCase()}`;
+    if (data.size) preferenceConclusion += `, ukuran ${data.size}`;
+    if (data.priceRange) {
+      const priceText = data.priceRange === '<50rb' ? 'ekonomis (di bawah 50rb)' :
+                       data.priceRange === '50rb-100rb' ? 'menengah (50-100rb)' : 'premium (di atas 100rb)';
+      preferenceConclusion += ` dengan budget ${priceText}`;
+    }
+    preferenceConclusion += '.';
+    conclusions.push(preferenceConclusion);
+  }
+
+  // 3. Shopping Behavior Analysis
+  if (data.shoppingPlace && data.shopFrequency) {
+    let behaviorConclusion = `Berbelanja hijab secara ${data.shoppingPlace.toLowerCase()}`;
+    
+    const frequencyText = data.shopFrequency === '1-2x' ? 'jarang (1-2x/tahun)' :
+                         data.shopFrequency === '3-5x' ? 'sedang (3-5x/tahun)' :
+                         data.shopFrequency === '>6x' ? 'sering (>6x/tahun)' : 'tidak teratur';
+    behaviorConclusion += ` dengan frekuensi ${frequencyText}`;
+    
+    if (data.favPayment) {
+      behaviorConclusion += ` dan lebih suka pembayaran ${data.favPayment.toLowerCase()}`;
+    }
+    
+    if (data.reasonBuy) {
+      behaviorConclusion += `. Motivasi utama pembelian adalah ${data.reasonBuy.toLowerCase()}`;
+    }
+    
+    behaviorConclusion += '.';
+    conclusions.push(behaviorConclusion);
+  }
+
+  // 4. Brand Relationship
+  if (data.hasPurchased === 'Ya') {
+    let brandConclusion = 'Merupakan pelanggan existing Femmeia';
+    if (data.rating) {
+      const ratingText = parseInt(data.rating) >= 4 ? 'sangat puas' :
+                        parseInt(data.rating) >= 3 ? 'cukup puas' : 'kurang puas';
+      brandConclusion += ` dengan tingkat kepuasan ${ratingText} (${data.rating}/5)`;
+    }
+    
+    if (data.quality && data.materialQuality && data.serviceQuality) {
+      brandConclusion += `. Menilai kualitas produk ${data.quality.toLowerCase()}, bahan ${data.materialQuality.toLowerCase()}, dan pelayanan ${data.serviceQuality.toLowerCase()}`;
+    }
+    
+    brandConclusion += '.';
+    conclusions.push(brandConclusion);
+  } else {
+    conclusions.push('Merupakan calon pelanggan potensial yang belum pernah berbelanja di Femmeia.');
+  }
+
+  // 5. Brand Perception
+  if (data.logoImpression && data.designAesthetic) {
+    const logoText = data.logoImpression.toLowerCase();
+    const designText = data.designAesthetic.toLowerCase();
+    conclusions.push(`Persepsi terhadap brand: logo dinilai ${logoText} dan desain produk ${designText}.`);
+  }
+
+  // 6. Engagement Quality Assessment
+  let engagementConclusion = '';
+  if (scores.totalScore >= 1200) {
+    engagementConclusion = 'Memberikan feedback yang sangat komprehensif dan detail, menunjukkan engagement tinggi terhadap brand.';
+  } else if (scores.totalScore >= 800) {
+    engagementConclusion = 'Memberikan feedback yang baik dan konstruktif dengan insight yang berharga.';
+  } else if (scores.totalScore >= 400) {
+    engagementConclusion = 'Memberikan feedback dasar yang cukup membantu untuk pengembangan brand.';
+  } else {
+    engagementConclusion = 'Memberikan feedback minimal namun tetap berkontribusi pada riset pasar.';
+  }
+  conclusions.push(engagementConclusion);
+
+  // 7. Market Segment Classification
+  let segmentConclusion = 'Termasuk dalam segmen ';
+  if (data.shopFrequency === '>6x' && data.priceRange === '>100rb') {
+    segmentConclusion += 'premium loyal customer dengan daya beli tinggi.';
+  } else if (data.shopFrequency === '3-5x' || data.shopFrequency === '>6x') {
+    segmentConclusion += 'active customer dengan potensi repeat purchase yang baik.';
+  } else if (data.reasonBuy === 'Fashion' && data.limitedEdition === 'Ya') {
+    segmentConclusion += 'fashion-conscious customer yang tertarik produk eksklusif.';
+  } else if (data.priceRange === '30rb-50rb') {
+    segmentConclusion += 'price-sensitive customer yang mengutamakan value for money.';
+  } else {
+    segmentConclusion += 'mainstream customer dengan perilaku belanja standar.';
+  }
+  conclusions.push(segmentConclusion);
+
+  return conclusions.join(' ');
+}
+
+    // Initialize
+    showStep(currentStep);
+  </script>
+  <script>
+
+
+  // --- Modal logic ---
+  function showModal(msg) {
+    let overlay = document.getElementById('modalOverlay');
+    let content = document.getElementById('modalContent');
+    overlay.classList.add('active');
+    content.innerHTML = msg;
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+  }
+
+  // --- Cek sudah submit saat halaman dibuka ---
+  function checkAlreadySubmitted() {
+    if (localStorage.getItem('hasSubmittedSurvey') === 'true') {
+      showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>Anda hanya dapat mengisi survey 1x saja.</p>');
+      document.getElementById('surveyForm').classList.add('form-hidden');
+    }
+  }
+  document.addEventListener('DOMContentLoaded', checkAlreadySubmitted);
+
+  // --- Submit survey ---
+  async function submitSurvey(formData) {
+    const email = formData.email.trim().toLowerCase();
+    const wa = formData.whatsapp.trim();
+    const ig = formData.instagram.trim().toLowerCase();
+    const ewallet = formData.ewallet.trim();
+    // Cek duplikat di Firestore
+    const emailSnap = await db.collection('surveys').where('email', '==', email).limit(1).get();
+    if (!emailSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>Email sudah pernah digunakan.</p>'); return; }
+    const waSnap = await db.collection('surveys').where('whatsapp', '==', wa).limit(1).get();
+    if (!waSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>Nomor WhatsApp sudah pernah digunakan.</p>'); return; }
+    const igSnap = await db.collection('surveys').where('instagram', '==', ig).limit(1).get();
+    if (!igSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>Instagram sudah pernah digunakan.</p>'); return; }
+    const ewSnap = await db.collection('surveys').where('ewallet', '==', ewallet).limit(1).get();
+    if (!ewSnap.empty) { showModal('<h3>Survey Sudah Pernah Dikirim</h3><p>No. e-wallet sudah pernah digunakan.</p>'); return; }
+
+    // Simpan data survey
+    await db.collection('surveys').add(formData);
+    localStorage.setItem('hasSubmittedSurvey', 'true');
+    showModal('<h3>Terima Kasih!</h3><p>Survey Anda berhasil dikirim.</p>');
+    document.getElementById('surveyForm').classList.add('form-hidden');
+  }
+
+  // --- Tangani submit form ---
+  document.getElementById('surveyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Ambil data dari field form
+    const formData = {
+      email: document.getElementById('email').value,
+      whatsapp: document.getElementById('whatsapp').value,
+      instagram: document.getElementById('instagram').value,
+      ewallet: document.getElementById('ewallet').value,
+      // Tambahkan field lain sesuai kebutuhan form kamu!
+    };
+    submitSurvey(formData);
+  });
+  </script>
 </body>
 </html>
