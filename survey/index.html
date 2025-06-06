@@ -1730,13 +1730,13 @@ function calculatePrizeAndConclusion(surveyData) {
   
   // Progressive prize calculation with better distribution
   if (totalScore >= 1500) prize = 5000;
-  else if (totalScore >= 1200) prize = 4500;
-  else if (totalScore >= 1000) prize = 4000;
-  else if (totalScore >= 800) prize = 3500;
-  else if (totalScore >= 600) prize = 3000;
-  else if (totalScore >= 400) prize = 2500;
-  else if (totalScore >= 250) prize = 2000;
-  else if (totalScore >= 150) prize = 1500;
+  else if (totalScore >= 1200) prize = 4000;
+  else if (totalScore >= 1000) prize = 3000;
+  else if (totalScore >= 800) prize = 2500;
+  else if (totalScore >= 600) prize = 2000;
+  else if (totalScore >= 400) prize = 1500;
+  else if (totalScore >= 250) prize = 1000;
+  else if (totalScore >= 150) prize = 500;
   else prize = 1000;
 
   // Generate improved conclusion
