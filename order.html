@@ -20,6 +20,7 @@
       --shadow: 0 4px 20px 0 rgba(206, 209, 219, 0.11), 0 1px 8px 0 rgba(160, 113, 206, 0.03);
       --profile-shadow: 0 6px 26px 0 #e0c2ee0f, 0 1.5px 8px 0 #baa3e80a;
       --header-grad: linear-gradient(90deg, #fbeff3 0%, #f7f3fa 100%);
+      --card-shadow: 0 10px 70px 0 rgba(180, 155, 209, 0.10), 0 1px 4px 0 rgba(160, 113, 206, 0.04);
     }
     body {
       margin: 0;
@@ -54,104 +55,200 @@
     @media (max-width: 600px) {
       .profile-card { padding: 13px 7px 11px 8px; gap: 9px; margin-bottom: 13px;}
       .profile-avatar { width: 48px; height: 48px;}
+    }    
+/* Profile Card */
+    .profile-card {
+      display: flex; align-items: center; gap: 18px;
+      background: var(--bento-blur);
+      border-radius: 32px;
+      box-shadow: var(--profile-shadow), var(--card-shadow);
+      border: 1.2px solid var(--border);
+      margin-bottom: 5px;
+      padding: 17px 16px 12px 14px;
+      margin-top: 18px;
+    }
+    .profile-avatar { width: 62px; height: 62px; border-radius: 50%; object-fit: cover; border: 3px solid #fbeff3; box-shadow: 0 2px 10px #e0c2ee18; background: #fff;}
+    .profile-info { flex: 1; }
+    .profile-title { font-size: 1.11em; font-weight: 700; color: #ad7dc7; margin-bottom: 2px; letter-spacing: .6px;}
+    .profile-desc { font-size: .98em; color: #7d6c91; margin-bottom: 3px; font-weight: 500;}
+    .profile-highlight { background: #ffeef4; color: #c45d7c; font-weight: 600; border-radius: 7px; font-size: .97em; padding: 3.5px 10px; display: inline-block; margin-bottom: 3px; margin-top: 1px;}
+    .profile-links { margin-top: 7px; display: flex; gap: 10px;}
+    .profile-link {
+      display: flex; align-items: center; gap: 7px;
+      color: #b594a7; background: #faf6fb; border-radius: 7px; padding: 4px 13px 4px 8px;
+      font-size: .98em; text-decoration: none; font-weight: 600; border: 1px solid #eee2f7;
+      box-shadow: 0 2px 8px #baa3e808; transition:.14s;
+      min-width: 38px;
+    }
+    .profile-link svg {
+      width: 20px; height: 20px; display: inline-block; vertical-align: middle;
+      color: #b594a7; background: none; border-radius: 50%;
+      transition:.14s;
+    }
+    .profile-link:hover{ background: var(--soft-purple); color: #ad7dc7;}
+    .profile-link:hover svg {color: #ad7dc7;}
+    @media (max-width: 600px) {
+      .profile-card { padding: 13px 7px 11px 8px; gap: 9px; margin-bottom: 5px; margin-top: 11px;}
+      .profile-avatar { width: 48px; height: 48px;}
+      .profile-link {padding: 4px 8px 4px 6px;}
+      .profile-link svg {width: 18px; height: 18px;}
     }
     /* Testimoni Carousel */
+    .testi-title {
+      font-weight: 700;
+      font-size: 1.07em;
+      color: #b49bd1;
+      margin-bottom: 8px;
+      letter-spacing: 0.7px;
+      text-align: center;
+      background: var(--header-grad);
+      border-radius: 9px 9px 0 0;
+      padding: 7px 0 6px 0;
+      box-shadow: 0 1px 4px #e0c2ee13;
+    }
     .mini-carousel {
-      width: 100%; max-width: 540px; min-height: 98px;
-      display: flex; align-items: center; justify-content: center;
+      width: 100%; max-width: 540px;
       background: var(--bento-blur);
       border-radius: 17px;
-      box-shadow: 0 1px 6px #baa3e80a;
+      box-shadow: var(--card-shadow);
       border: 1px solid var(--border);
       overflow: hidden;
       position: relative;
-      margin-bottom: 22px;
+      margin-bottom: 10px;
       z-index: 1;
+      flex-direction: column;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     .mini-carousel-inner {
       width: 100%;
       display: flex;
-      align-items: center;
+      align-items: stretch;
       justify-content: flex-start;
       transition: transform .55s cubic-bezier(.77,0,.175,1);
+      min-height: 110px;
     }
     .testi-item {
       box-sizing: border-box;
       width: 100%;
       min-width: 100%;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
-      padding: 15px 18px 12px 15px;
+      padding: 16px 18px 14px 18px;
       background: none;
       position: relative;
       user-select: none;
       transition: background .18s;
+      flex-direction: row;
     }
-    .testi-avatar { width: 44px; height: 44px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; position: relative;}
-    .testi-avatar svg { width: 44px; height: 44px; display: block; color: #d7bce4; background: #fff; border-radius: 50%;}
-    .testi-blur { position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; background: rgba(211,211,211,0.13); z-index: 2; box-shadow: 0 0 0 2px #fff8; pointer-events:none; backdrop-filter: blur(1.5px);}
-    .testi-info { flex: 1; }
-    .testi-name { font-weight: 600; color: #ad7dc7; font-size: .98em; margin-bottom: 1px; letter-spacing: .04em; filter: blur(0.4px);}
-    .testi-text { font-size: .97em; color: #7d6c91; margin-bottom: 2px; line-height: 1.32;}
-    .testi-stars { color: #ffd700; font-size: .98em; letter-spacing: 1px; margin-bottom: 2px;}
-    /* Bento Tiles, Form, Modal, Toast, Scroll To Top, ... (keep as before) */
-    .bento-container { margin: 0 0 24px 0; display: grid; grid-template-columns: 1fr; gap: 34px; width: 98vw; max-width: 540px; padding: 0 2vw; position: relative;}
+    .testi-avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center; 
+      border: 2px solid #fbeff3;
+      margin-top: 3px;
+      box-shadow: 0 1px 7px #e0c2ee19;
+      flex-shrink: 0;
+    }
+    .testi-avatar svg {
+      width: 38px; height: 38px; display: block; color: #d7bce4; background: #fff; border-radius: 50%;
+    }
+    .testi-info { flex: 1; min-width: 0;}
+    .testi-name { display: block; font-weight: 600; color: #ad7dc7; font-size: .98em; margin-bottom: 2px; letter-spacing: .04em;}
+    .testi-product { font-size: .93em; color: #9d7fb7; font-weight: 600; margin-bottom: 2px; letter-spacing: 0.2px;}
+    .testi-stars { color: #ffd700; font-size: .96em; letter-spacing: 1px; margin-bottom: 2px; display: inline-block;}
+    .testi-text { font-size: .97em; color: #7d6c91; margin-bottom: 0; line-height: 1.38; display: block; word-break: break-word;}
+    @media (max-width: 600px) {
+      .mini-carousel {padding: 0;}
+      .testi-item {padding: 13px 5vw 10px 5vw;}
+    }
+    /* --- rest of style keep as before (form, modal, faq, etc) --- */
+    .bento-container { margin: 0 0 24px 0; display: grid; grid-template-columns: 1fr; gap: 20px; width: 98vw; max-width: 540px; padding: 0 2vw; position: relative;}
     .bento-grid { display: grid; grid-template-columns: 1fr; gap: 16px;}
-    .bento-tile { background: var(--bento-blur); border-radius: 24px; box-shadow: var(--shadow); border: 1.5px solid var(--border); padding: 18px 14px 10px 14px; min-width: 0; min-height: 0; position: relative; overflow: hidden;}
-    .bento-header { margin-bottom: 10px; font-size: 1.13rem; font-weight: 600; letter-spacing: 1px; color: #b49bd1; background: var(--header-grad); border-radius: 11px; padding: 7px 0 7px 15px; box-shadow: 0 2px 8px 0 #e6dbe719; border-left: 4px solid #e0c2ee;}
+    .bento-tile { background: var(--bento-blur); border-radius: 24px; box-shadow: var(--card-shadow); border: 1.5px solid var(--border); padding: 18px 14px 10px 14px; min-width: 0; min-height: 0; position:relative;}
+    .bento-header { margin-bottom: 10px; font-size: 1.13rem; font-weight: 600; letter-spacing: 1px; color: #b49bd1; background: var(--header-grad); border-radius: 11px; padding: 7px 0 7px 15px; box-shadow: 0 1px 4px #e0c2ee13;}
     label { font-weight: 600; margin-top: 9px; margin-bottom: 3px; display: block; color: var(--secondary-text); letter-spacing: .5px; font-size: .97em;}
-    input, textarea, select { width: 100%; padding: 11px 10px; margin-top: 2px; margin-bottom: 8px; border-radius: 15px; border: 1.5px solid var(--border); background: #fff; font-size: .97rem; outline: none; box-shadow: 0 2px 8px 0 rgba(206, 209, 219, 0.07);}
+    input, textarea, select { width: 100%; padding: 11px 10px; margin-top: 2px; margin-bottom: 8px; border-radius: 15px; border: 1.5px solid var(--border); background: #fff; font-size: .97rem; outline: none; transition: border-color .16s, box-shadow .16s;}
     input:focus, select:focus, textarea:focus { border-color: var(--accent); background: #faf6fb; box-shadow: 0 0 8px 0 #e0c2ee60;}
     textarea { min-height: 46px; resize: vertical;}
     .select-wrapper { position: relative;}
-    .select-wrapper::after { content: "▼"; position: absolute; right: 13px; top: 53%; transform: translateY(-50%); pointer-events: none; color: #b3b5bc; font-size: .97em; opacity:.8;}
-    .color-preview { margin-top: 5px; height: 30px; border-radius: 10px; border: 1.5px solid var(--border); box-shadow: 0 1px 5px 0 #e4cff51d; display: flex; align-items: center; gap: 5px; padding: 0 4px; min-height: 30px;}
+    .select-wrapper::after { content: ""; position: absolute; right: 13px; top: 53%; transform: translateY(-50%); pointer-events: none; color: #b3b5bc; font-size: .97em; opacity:.8;}
+    .color-preview { margin-top: 5px; height: 30px; border-radius: 10px; border: 1.5px solid var(--border); box-shadow: 0 1px 5px 0 #e4cff51d; display: flex; align-items: center; gap: 5px; padding: 0 7px;}
     .color-dot { display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 1.1px solid #fff; box-shadow: 0 1px 4px 0 #e4cff526; margin-right: 2px; margin-top: 1.5px; cursor: pointer;}
     .color-dot.selected { border: 2px solid #b49bd1; box-shadow: 0 0 0 1.5px #e6dbe7aa;}
     .color-label { font-size: .92em; color: #7d6c91; margin-left: 1px; margin-right: 5px; font-weight: 500; letter-spacing: 0.4px;}
     .bento-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px;}
     @media (max-width: 600px) {
       .bento-container { max-width:100vw; }
-      .mini-carousel { padding: 0 0 0 0;}
       .bento-row { grid-template-columns: 1fr; gap: 8px; }
       .bento-tile { padding: 10px 3vw 7px 3vw;}
     }
-    .total-harga { font-weight: 600; font-size: 1em; text-align: right; color: #b594a7; background: var(--soft-purple); border-radius: 8px; padding: 6px 0 5px 0; margin: 6px 0 2px 0; box-shadow: 0 1px 5px 0 #f3cddf14;}
+    .total-harga { font-weight: 600; font-size: 1em; text-align: right; color: #b594a7; background: var(--soft-purple); border-radius: 8px; padding: 6px 0 5px 0; margin: 6px 0 2px 0; box-shadow: 0 1px 4px 0 #e0c2ee13;}
     .loading { display: none; text-align: center; margin: 14px 0 0 0; color: #b594a7; font-size: .95em; font-weight: 600; letter-spacing: .03em;}
     .notif { color: #b594a7; font-weight: bold; margin: 6px 0 0 0; text-align: center;}
-    button { margin-top: 13px; padding: 10px; background: var(--button); color: #b594a7; font-weight: bold; font-size: 1.01rem; border: none; border-radius: 13px; cursor: pointer; width: 100%; box-shadow: 0 2px 10px 0 #e2c6f818, 0 1px 5px #baa3e80d; transition: box-shadow .19s, color .22s, transform .18s;}
+    button { margin-top: 13px; padding: 10px; background: var(--button); color: #b594a7; font-weight: bold; font-size: 1.01rem; border: none; border-radius: 13px; cursor: pointer; width: 100%; box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816; transition: transform .19s, box-shadow .19s;}
     button:hover, button:focus { color: #9b6ca1; box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816; transform: scale(1.035) translateY(-1.5px) rotate(-.5deg);}
     button:active { transform: scale(0.98);}
-    .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(230, 225, 236, 0.33); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(7px);}
-    .modal-content { background: #fff; border-radius: 16px; padding: 17px 13px; max-width: 340px; min-width: 220px; width: 98vw; box-shadow: 0 8px 22px 0 #e0c2ee1a; border: 1.5px solid var(--border);}
+    /* Modal & FAQ animation keep as before, modal with show/hide animation */
+    .modal-bg {
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(230, 225, 236, 0.33); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(9px);
+    }
+    .modal-bg.open {
+      display: flex;
+      animation: modalFadeInBg .28s cubic-bezier(.67,0,.25,1);
+    }
+    @keyframes modalFadeInBg {
+      from { background: rgba(230, 225, 236, 0.0);}
+      to { background: rgba(230, 225, 236, 0.33);}
+    }
+    .modal-content {
+      background: #fff; border-radius: 16px; padding: 17px 13px; max-width: 340px; min-width: 220px; width: 98vw; box-shadow: 0 8px 22px 0 #e0c2ee1a; border: 1.5px solid var(--border);
+      opacity: 0;
+      transform: scale(.95) translateY(35px);
+      transition: opacity .27s cubic-bezier(.67,0,.25,1), transform .27s cubic-bezier(.67,0,.25,1);
+    }
+    .modal-bg.open .modal-content {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: .06s;
+    }
+    .modal-bg.closing .modal-content {
+      opacity: 0;
+      transform: scale(.97) translateY(40px);
+      transition: opacity .24s cubic-bezier(.67,0,.25,1), transform .24s cubic-bezier(.67,0,.25,1);
+    }
     .modal-content h3 { font-size: 1.01em; color: #af83b7; margin-bottom: 8px;}
     .modal-content ul { padding-left: 12px; margin-bottom: 7px;}
     .modal-content li { margin-bottom: 1px;}
     .modal-content button { margin: 0 0 7px 0; width: 100%; font-size: .96em;}
     .modal-content .total-harga { margin: 0 0 7px 0;}
-    #scrollToTopBtn { position: fixed; right: 22px; bottom: 30px; z-index: 1500; width: 42px; height: 42px; background: var(--bento-blur); border-radius: 50%; border: 1.2px solid var(--border); box-shadow: 0 2px 10px 0 #baa3e80a; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .33s, box-shadow .18s, background .18s;}
+    #scrollToTopBtn { position: fixed; right: 22px; bottom: 30px; z-index: 1500; width: 42px; height: 42px; background: var(--bento-blur); border-radius: 50%; border: 1.2px solid var(--border); box-shadow: 0 1px 5px #baa3e80a; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .21s;}
     #scrollToTopBtn svg { width: 22px; height: 22px; color: #b49bd1;}
     #scrollToTopBtn.active { opacity: 1; pointer-events: auto;}
-    .toast { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); min-width: 160px; max-width: 88vw; background: var(--bento-blur); color: #8e88a7; border-radius: 10px; box-shadow: 0 8px 32px #baa3e81a, 0 1px 4px #baa3e80d; padding: 9px 13px 9px 13px; text-align: center; font-size: .97em; font-weight: 600; letter-spacing: .03em; opacity: 0; pointer-events: none; z-index: 1700; transition: opacity .3s;}
+    .toast { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); min-width: 160px; max-width: 88vw; background: var(--bento-blur); color: #8e88a7; border-radius: 10px; box-shadow: 0 1px 8px #baa3e80f; padding: 12px 19px; font-size: .98em; opacity: 0; pointer-events: none; transition: opacity .29s;}
     .toast.show { opacity: 1; pointer-events: auto;}
     .toast.hide { opacity: 0; pointer-events: none;}
     /* FAQ mini (footer, mini, paling belakang) */
     footer { margin: 0 auto 0 auto; max-width: 540px; width: 100%; padding: 0; position: relative; z-index: 0;}
     .faq-mini {
-      margin: 32px auto 0 auto; background: var(--bento-blur); border-radius: 13px; box-shadow: 0 1px 5px #baa3e80a; border: 1.2px solid var(--border);
-      padding: 7px 12px 6px 12px; max-width: 360px; margin-bottom: 12px; font-size: .93em; z-index: 0;
+      margin: -20px auto 0 auto; background: var(--bento-blur); border-radius: 13px; box-shadow: var(--card-shadow); border: 1.2px solid var(--border);
+      padding: 7px 12px 6px 12px; max-width: 300px; margin-bottom: 12px; font-size: .93em; z-index: 0;
+      transition: box-shadow .19s;
     }
     .faq-title { font-weight: 700; font-size: .95em; color: #b49bd1; margin-bottom: 5px; letter-spacing: .3px;}
-    .faq-item { margin-bottom: 7px; border-radius: 7px; background: #f7f3fa70; box-shadow: 0 1px 3px #baa3e808; transition: box-shadow .19s, background .20s; padding: 6px 10px 6px 10px; cursor: pointer; font-size: .93em; position: relative; overflow: hidden;}
-    .faq-item:before, .faq-item:after { content: ''; position: absolute; left: 0; right: 0; height: 2.5px; border-radius: 6px; background: linear-gradient(90deg, #fbeff3 0%, #d7bce4 100%); opacity: 0; pointer-events: none; transition: opacity .22s, transform .24s; transform: scaleX(.85);}
+    .faq-item { margin-bottom: 7px; border-radius: 7px; background: #f7f3fa70; box-shadow: 0 1px 3px #baa3e808; transition: box-shadow .19s, background .20s; padding: 6px 10px 6px 10px; cursor: pointer; position: relative; overflow: hidden;}
+    .faq-item:before, .faq-item:after { content: ''; position: absolute; left: 0; right: 0; height: 2.5px; border-radius: 6px; background: linear-gradient(90deg, #fbeff3 0%, #d7bce4 100%); opacity: 0; transform: scaleX(.7); transition: opacity .16s, transform .24s;}
     .faq-item:before { top: 0; transform-origin: left;}
     .faq-item:after { bottom: 0; transform-origin: right;}
     .faq-item:hover:before, .faq-item:hover:after,
     .faq-item.open:before, .faq-item.open:after { opacity: .36; transform: scaleX(1);}
     .faq-q { font-weight: 600; color: #7d6c91; margin-bottom: 1px; font-size: .95em;}
-    .faq-a { color: #8e88a7; font-size: .91em; margin-top: 0; display: none;}
-    .faq-item.open .faq-a { display: block; animation: fadeInUp .5s .01s backwards;}
+    .faq-a { color: #8e88a7; font-size: .91em; margin-top: 0; display: block; max-height: 0; overflow: hidden; padding: 0 2px; opacity: 0; transition: max-height .44s cubic-bezier(.77,0,.175,1), opacity .29s, padding .32s;}
+    .faq-item.open .faq-a { display: block; max-height: 220px; opacity: 1; animation: fadeInUp .5s .01s backwards; padding: 5px 2px 7px 2px;}
+    .faq-item:not(.open) .faq-a { max-height: 0; opacity: 0; padding: 0 2px;}
+    @keyframes fadeInUp { from {opacity:0; transform:translateY(14px);} to {opacity:1; transform:translateY(0);} }
   </style>
 </head>
 <body>
@@ -167,14 +264,14 @@
       <div class="profile-info">
         <div class="profile-title">FemmeiaCloth</div>
         <div class="profile-desc">Toko hijab & aksesoris wanita | Ready stok, harga terjangkau, pengiriman cepat 💌</div>
-        <div class="profile-highlight">Promo: Gunakan kode <b>femmmeia10</b> untuk diskon 10%!</div>
+        <div class="profile-highlight">Promo: Gunakan kode <b>femmeia10</b> untuk diskon 10%!</div>
         <div class="profile-links">
-          <a href="https://instagram.com/femmeia.cloth" target="_blank" class="profile-link" title="Instagram">
-            <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect width="17" height="17" x="3.5" y="3.5" rx="5" stroke-linecap="round"/><circle cx="12" cy="12" r="4.5" /><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>
+          <a href="https://instagram.com/femmeia.cloth" target="_blank" class="profile-link" title="Instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none"><rect width="17" height="17" x="3.5" y="3.5" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
             Instagram
           </a>
-          <a href="https://wa.me/6287777420644" target="_blank" class="profile-link" title="Chat WhatsApp">
-            <svg fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M20.52 20.52 17.2 17.2m1.32-5.7a8.52 8.52 0 1 1-17.04 0 8.52 8.52 0 0 1 17.04 0Z"/><path d="M9.82 9.82c.28-.28.74-.28 1.02 0l1.34 1.34a.72.72 0 0 1 0 1.02l-.44.44a.72.72 0 0 1-1.02 0l-1.34-1.34a.72.72 0 0 1 0-1.02l.44-.44Z"/></svg>
+          <a href="https://wa.me/6287777420644" target="_blank" class="profile-link" title="Chat WhatsApp" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7"/><path d="M16.4 14.1c-.2-.1-1.2-.6-1.4-.7-.2-.1-.4-.2-.5.1-.1.2-.5.7-.6.8-.1.1-.2.2-.4.1-.2-.1-.7-.3-1.3-.8-.5-.5-.8-1-1-1.1-.1-.2 0-.3.1-.4.1-.1.2-.3.4-.4.1-.2.1-.3.2-.4 0-.1 0-.2 0-.3 0-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4-.1 0-.3 0-.5 0-.2 0-.4.1-.6.3-.2.2-.7.7-.7 1.7 0 1 .7 2 1.2 2.5.7.8 1.8 1.5 2.8 1.6.4 0 .8 0 1.1-.2.3-.2.7-.5.8-.9.1-.4.1-.7.1-.8 0-.1-.2-.1-.4-.2z" fill="currentColor"/></svg>
             WhatsApp
           </a>
         </div>
@@ -182,30 +279,61 @@
     </div>
     <!-- Testimoni Mini Carousel -->
     <div class="mini-carousel" id="testiCarousel">
+      <div class="testi-title">Testimoni & Review Pelanggan</div>
       <div class="mini-carousel-inner" id="testiInner">
         <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
-          <div class="testi-info"><span class="testi-name">Nxxxx Pxxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Hijabnya lembut, harga juga super ramah! Packing rapi banget dan dikirim cepat. Recomended seller!</span></div>
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
+          <div class="testi-info">
+            <span class="testi-name">Nxxxx Pxxxxx</span>
+            <span class="testi-product">Paris Jadul</span>
+            <span class="testi-stars">★★★★★</span>
+            <span class="testi-text">"Paris Jadul super lembut dan adem. Warna hitamnya pekat banget, cocok buat semua acara. Packing rapi, harga ramah kantong! Pasti repeat order."</span>
+          </div>
         </div>
         <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
-          <div class="testi-info"><span class="testi-name">Sxxx Rxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Warna real pict, sesuai display. Admin fast response! Sudah repeat order dua kali, mantul pokoknya 💕</span></div>
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
+          <div class="testi-info">
+            <span class="testi-name">Sxxx Rxxxx</span>
+            <span class="testi-product">Pashmina Kaos</span>
+            <span class="testi-stars">★★★★★</span>
+            <span class="testi-text">"Pashmina Kaos-nya nyaman dipakai, bahan stretch dan ringan. Warna navy real pict persis seperti di foto. Admin fast response. Makasih FemmeiaCloth!"</span>
+          </div>
         </div>
         <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
-          <div class="testi-info"><span class="testi-name">Rxxx Axxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Innernya adem, cocok buat aktivitas seharian. Next order lagi deh di FemmeiaCloth!</span></div>
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
+          <div class="testi-info">
+            <span class="testi-name">Rxxx Axxxx</span>
+            <span class="testi-product">Premium Inner</span>
+            <span class="testi-stars">★★★★★</span>
+            <span class="testi-text">"Premium Inner nyaman banget dipakai seharian, nggak bikin gerah. Cocok dipadukan sama hijab favorit. Next order pasti nambah lagi!"</span>
+          </div>
         </div>
         <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
-          <div class="testi-info"><span class="testi-name">Dxxx Sxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Produk cepat sampai, packing aman, dan dapat bonus paperbag! Terima kasih FemmeiaCloth.</span></div>
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
+          <div class="testi-info">
+            <span class="testi-name">Dxxx Sxxxx</span>
+            <span class="testi-product">Paris Jadul</span>
+            <span class="testi-stars">★★★★★</span>
+            <span class="testi-text">"Pesan Paris Jadul, kirimannya super cepat, packing aman, dapat bonus paper bag juga. Recommended seller!"</span>
+          </div>
         </div>
         <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
-          <div class="testi-info"><span class="testi-name">Fxxx Mxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Pelayanan sangat ramah dan sabar. Produk sesuai ekspektasi, recommended banget!</span></div>
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
+          <div class="testi-info">
+            <span class="testi-name">Fxxx Mxxxx</span>
+            <span class="testi-product">Pashmina Kaos</span>
+            <span class="testi-stars">★★★★★</span>
+            <span class="testi-text">"Pelayanan ramah dan sabar, Pashmina Kaos-nya halus banget. Produk sesuai ekspektasi, pasti order lagi!"</span>
+          </div>
         </div>
         <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/><ellipse cx="32" cy="50" rx="17" ry="10" fill="#fbeff3"/><ellipse cx="32" cy="26" rx="7.5" ry="8" fill="#fff"/><ellipse cx="29" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><ellipse cx="35" cy="25" rx="1.3" ry="2" fill="#ad7dc7"/><path d="M30 29c.8.7 3.2.7 4 0" stroke="#ad7dc7" stroke-width="1.3" stroke-linecap="round"/></svg><span class="testi-blur"></span></span>
-          <div class="testi-info"><span class="testi-name">Ixxx Hxxxx</span><span class="testi-stars">★★★★★</span><span class="testi-text">Order untuk kado, dikasi greeting card juga. Sukses terus FemmeiaCloth!</span></div>
+          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
+          <div class="testi-info">
+            <span class="testi-name">Ixxx Hxxxx</span>
+            <span class="testi-product">Premium Inner</span>
+            <span class="testi-stars">★★★★★</span>
+            <span class="testi-text">"Order Premium Inner buat kado, dapat greeting card lucu juga. Sukses terus FemmeiaCloth, pasti rekomendasi ke teman!"</span>
+          </div>
         </div>
       </div>
     </div>
@@ -326,7 +454,7 @@
       <div class="faq-item"><div class="faq-q">Bisa bayar COD?</div><div class="faq-a">Bisa! Pilih metode pembayaran COD pada form.</div></div>
       <div class="faq-item"><div class="faq-q">Kapan pesanan dikirim?</div><div class="faq-a">Pesanan dikirim maksimal H+1 setelah pembayaran/konfirmasi diterima.</div></div>
       <div class="faq-item"><div class="faq-q">Stok ready?</div><div class="faq-a">Semua produk ready stok. Jika habis, admin akan menghubungi via WhatsApp.</div></div>
-      <div class="faq-item"><div class="faq-q">Klaim promo?</div><div class="faq-a">Masukkan kode <b>femmmeia10</b> di kolom "Kode Promo".</div></div>
+      <div class="faq-item"><div class="faq-q">Klaim promo?</div><div class="faq-a">Masukkan kode <b>femmeia10</b> di kolom "Kode Promo".</div></div>
     </div>
     <div style="text-align:center;font-size:.90em;color:#b49bd1;margin-bottom:13px;margin-top:4px;opacity:.82;">
       &copy; 2025 FemmeiaCloth. All Rights Reserved.
@@ -341,9 +469,9 @@
           tile.style.opacity = '';
           tile.style.transform = '';
         });
-      }, 1200);
+      }, 3000);
 
-      // FAQ Accordion
+      // FAQ Accordion + Animasi
       document.querySelectorAll('.faq-item').forEach(item => {
         item.addEventListener('click', function() {
           document.querySelectorAll('.faq-item').forEach(i => { if(i!==item) i.classList.remove('open'); });
@@ -379,7 +507,7 @@
       "Pashmina Kaos - 55.000": 55000,
       "Premium Inner - 25.000": 25000
     };
-    const PROMO_CODE = "femmmeia10";
+    const PROMO_CODE = "femmeia10";
     const PROMO_DISKON = 0.10;
     const productType = document.getElementById('productType');
     const warna = document.getElementById('warna');
@@ -391,28 +519,23 @@
     const pesanBtn = document.getElementById('pesanBtn');
     const promoInput = document.getElementById('promoInput');
     const toast = document.getElementById('toast');
+
     // Modal animation helpers
     const modalBg = document.getElementById('modalBg');
     const modalContent = document.getElementById('modalContent');
     function openModal() {
-      modalBg.style.display = 'flex';
-      modalContent.style.opacity = '0';
-      modalContent.style.transform = 'scale(.96) translateY(32px)';
+      modalBg.classList.add('open');
+      modalBg.classList.remove('closing');
       setTimeout(() => {
-        modalContent.style.opacity = '1';
-        modalContent.style.transform = 'scale(1) translateY(0)';
-      }, 15);
+        modalContent.scrollTop = 0;
+      }, 30);
     }
     function closeModal() {
-      modalContent.style.opacity = '1';
-      modalContent.style.transform = 'scale(1) translateY(0)';
+      modalBg.classList.add('closing');
+      modalBg.classList.remove('open');
       setTimeout(() => {
-        modalContent.style.opacity = '0';
-        modalContent.style.transform = 'scale(.98) translateY(32px)';
-      }, 10);
-      setTimeout(() => {
-        modalBg.style.display = 'none';
-      }, 300);
+        modalBg.classList.remove('closing');
+      }, 250);
     }
     // Warna custom select sync
     productType.addEventListener('change', function () {
@@ -504,10 +627,10 @@
       }
       let promoValue = promoInput.value.trim().toLowerCase();
       if (promoValue.length > 0 && promoValue !== PROMO_CODE) {
-        notif.innerText = 'Kode promo tidak valid! Masukkan: femmmeia10';
+        notif.innerText = 'Kode promo tidak valid! Masukkan: femmeia10';
         promoInput.focus();
         promoInput.style.borderColor = "#d16a6a";
-        showToast('Kode promo salah. Gunakan femmmeia10');
+        showToast('Kode promo salah. Gunakan femmeia10');
         return;
       }
       pesanBtn.disabled = true;
