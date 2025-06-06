@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FemmeiaCloth - Hijab & Aksesoris Fashion Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff6b9d;
+            --primary-dark: #c44569;
+            --background: #0f0f23;
+            --background-light: #1a1a2e;
+            --background-lighter: #16213e;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --blur-strength: 20px;
+            --transition-speed: 0.3s;
+            
+            /* Checkout form colors */
+            --bento-bg: #f6f7fb;
+            --bento-blur: rgba(255,255,255,0.85);
+            --soft-pink: #fbeff3;
+            --soft-purple: #f7f3fa;
+            --checkout-border: rgba(220,220,233,0.38);
+            --accent: #d7bce4;
+            --main-text: #48434f;
+            --secondary-text: #8e88a7;
+            --button: #f4f1fa;
+            --shadow: 0 4px 20px 0 rgba(206, 209, 219, 0.11), 0 1px 8px 0 rgba(160, 113, 206, 0.03);
+            --profile-shadow: 0 6px 26px 0 #e0c2ee0f, 0 1.5px 8px 0 #baa3e80a;
+            --header-grad: linear-gradient(90deg, #fbeff3 0%, #f7f3fa 100%);
+            --card-shadow: 0 10px 70px 0 rgba(180, 155, 209, 0.10), 0 1px 4px 0 rgba(160, 113, 206, 0.04);
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 50%, var(--background-lighter) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .navbar:hover {
+            background: rgba(15, 15, 35, 0.9);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: all var(--transition-speed) ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover:before {
+            width: 80%;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 107, 157, 0.1);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .cart-badge {
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .mobile-menu-btn:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        /* Page Sections */
+        .page-section {
+            display: none;
+            padding-top: 100px;
+            min-height: 100vh;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* Auth Forms */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            background: radial-gradient(circle at center, rgba(255, 107, 157, 0.1) 0%, transparent 70%);
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 107, 157, 0.3);
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .auth-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at bottom right, rgba(255, 107, 157, 0.1), transparent 70%);
+            z-index: -1;
+        }
+
+        .auth-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s infinite;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #cbd5e1;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: 'Quicksand', sans-serif;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group input:focus + label {
+            color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 157, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        .auth-switch {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        .auth-switch a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+        }
+
+        .auth-switch a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+
+        .auth-switch a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Bento Grid Layout */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .bento-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 107, 157, 0.3);
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .bento-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .bento-card h3::after {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width var(--transition-speed) ease;
+        }
+
+        .bento-card:hover h3::after {
+            width: 50%;
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 107, 157, 0.3);
+        }
+
+        .product-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .product-card:hover::after {
+            opacity: 1;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #f1f5f9;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .product-card:hover .product-name {
+            color: var(--primary);
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .product-card:hover .product-price {
+            transform: scale(1.05);
+        }
+
+        .product-colors {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.2);
+            border-color: var(--primary);
+        }
+
+        /* Profile Section */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            margin-bottom: 1rem;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-upload {
+            display: none;
+        }
+
+        .upload-btn {
+            background: rgba(255, 107, 157, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            margin-bottom: 1rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .upload-btn:hover {
+            background: rgba(255, 107, 157, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Cart */
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: all var(--transition-speed) ease;
+            border: 1px solid var(--border);
+        }
+
+        .cart-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 107, 157, 0.2);
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .cart-item:hover .cart-item-image {
+            transform: scale(1.05);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quantity-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .quantity-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 10px rgba(255, 107, 157, 0.3);
+        }
+
+        .cart-total {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 2rem 0;
+            text-shadow: 0 2px 10px rgba(255, 107, 157, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+            z-index: -1;
+        }
+
+        .filter-btn:hover::before,
+        .filter-btn.active::before {
+            opacity: 1;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .whatsapp-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        /* Checkout Section Styles */
+        .checkout-container {
+            background: var(--bento-bg);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .checkout-wrapper {
+            max-width: 540px;
+            margin: 0 auto;
+            padding: 0 2vw;
+        }
+
+        .checkout-auth-warning {
+            background: rgba(255, 107, 157, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .checkout-auth-warning h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .checkout-auth-warning p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Bento Form Styles */
+        .bento-container {
+            margin: 0 0 24px 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 98vw;
+            max-width: 540px;
+            padding: 0 2vw;
+            position: relative;
+        }
+
+        .bento-grid-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .bento-tile {
+            background: var(--bento-blur);
+            border-radius: 24px;
+            box-shadow: var(--card-shadow);
+            border: 1.5px solid var(--checkout-border);
+            padding: 18px 14px 10px 14px;
+            min-width: 0;
+            min-height: 0;
+            position: relative;
+        }
+
+        .bento-header {
+            margin-bottom: 10px;
+            font-size: 1.13rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #b49bd1;
+            background: var(--header-grad);
+            border-radius: 11px;
+            padding: 7px 0 7px 15px;
+            box-shadow: 0 1px 4px #e0c2ee13;
+        }
+
+        .bento-tile label {
+            font-weight: 600;
+            margin-top: 9px;
+            margin-bottom: 3px;
+            display: block;
+            color: var(--secondary-text);
+            letter-spacing: .5px;
+            font-size: .97em;
+        }
+
+        .bento-tile input,
+        .bento-tile textarea,
+        .bento-tile select {
+            width: 100%;
+            padding: 11px 10px;
+            margin-top: 2px;
+            margin-bottom: 8px;
+            border-radius: 15px;
+            border: 1.5px solid var(--checkout-border);
+            background: #fff;
+            font-size: .97rem;
+            outline: none;
+            transition: border-color .16s, box-shadow .16s;
+            color: var(--main-text);
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .bento-tile input:focus,
+        .bento-tile select:focus,
+        .bento-tile textarea:focus {
+            border-color: var(--accent);
+            background: #faf6fb;
+            box-shadow: 0 0 8px 0 #e0c2ee60;
+        }
+
+        .bento-tile textarea {
+            min-height: 46px;
+            resize: vertical;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .color-preview {
+            margin-top: 5px;
+            height: 30px;
+            border-radius: 10px;
+            border: 1.5px solid var(--checkout-border);
+            box-shadow: 0 1px 5px 0 #e4cff51d;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0 7px;
+        }
+
+        .color-dot {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.1px solid #fff;
+            box-shadow: 0 1px 4px 0 #e4cff526;
+            margin-right: 2px;
+            margin-top: 1.5px;
+            cursor: pointer;
+        }
+
+        .color-dot.selected {
+            border: 2px solid #b49bd1;
+            box-shadow: 0 0 0 1.5px #e6dbe7aa;
+        }
+
+        .color-label {
+            font-size: .92em;
+            color: #7d6c91;
+            margin-left: 1px;
+            margin-right: 5px;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+        }
+
+        .bento-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+        }
+
+        .total-harga {
+            font-weight: 600;
+            font-size: 1em;
+            text-align: right;
+            color: #b594a7;
+            background: var(--soft-purple);
+            border-radius: 8px;
+            padding: 6px 0 5px 0;
+            margin: 6px 0 2px 0;
+            box-shadow: 0 1px 4px 0 #e0c2ee13;
+        }
+
+        .checkout-btn {
+            margin-top: 13px;
+            padding: 10px;
+            background: var(--button);
+            color: #b594a7;
+            font-weight: bold;
+            font-size: 1.01rem;
+            border: none;
+            border-radius: 13px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816;
+            transition: transform .19s, box-shadow .19s;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .checkout-btn:hover,
+        .checkout-btn:focus {
+            color: #9b6ca1;
+            box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816;
+            transform: scale(1.035) translateY(-1.5px) rotate(-.5deg);
+        }
+
+        .checkout-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Modal Styles */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(230, 225, 236, 0.33);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(9px);
+        }
+
+        .modal-bg.open {
+            display: flex;
+            animation: modalFadeInBg .28s cubic-bezier(.67,0,.25,1);
+        }
+
+        @keyframes modalFadeInBg {
+            from { background: rgba(230, 225, 236, 0.0); }
+            to { background: rgba(230, 225, 236, 0.33); }
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            padding: 17px 13px;
+            max-width: 340px;
+            min-width: 220px;
+            width: 98vw;
+            box-shadow: 0 8px 22px 0 #e0c2ee1a;
+            border: 1.5px solid var(--checkout-border);
+            opacity: 0;
+            transform: scale(.95) translateY(35px);
+            transition: opacity .27s cubic-bezier(.67,0,.25,1), transform .27s cubic-bezier(.67,0,.25,1);
+        }
+
+        .modal-bg.open .modal-content {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            transition-delay: .06s;
+        }
+
+        .modal-bg.closing .modal-content {
+            opacity: 0;
+            transform: scale(.97) translateY(40px);
+            transition: opacity .24s cubic-bezier(.67,0,.25,1), transform .24s cubic-bezier(.67,0,.25,1);
+        }
+
+        .modal-content h3 {
+            font-size: 1.01em;
+            color: #af83b7;
+            margin-bottom: 8px;
+        }
+
+        .modal-content ul {
+            padding-left: 12px;
+            margin-bottom: 7px;
+        }
+
+        .modal-content li {
+            margin-bottom: 1px;
+            color: var(--main-text);
+        }
+
+        .modal-content button {
+            margin: 0 0 7px 0;
+            width: 100%;
+            font-size: .96em;
+        }
+
+        .modal-content .total-harga {
+            margin: 0 0 7px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(15, 15, 35, 0.95);
+                backdrop-filter: blur(var(--blur-strength));
+                -webkit-backdrop-filter: blur(var(--blur-strength));
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0.5rem;
+                transform: translateY(-150%);
+                transition: transform var(--transition-speed) ease;
+                z-index: 999;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .bento-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .auth-card {
+                padding: 2rem;
+            }
+            
+            .filters {
+                justify-content: center;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .quantity-controls {
+                justify-content: center;
+                margin-top: 1rem;
+            }
+
+            .bento-container {
+                max-width: 100vw;
+            }
+
+            .bento-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .bento-tile {
+                padding: 10px 3vw 7px 3vw;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { text-shadow: 0 0 5px rgba(255, 107, 157, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(255, 107, 157, 0.5); }
+            100% { text-shadow: 0 0 5px rgba(255, 107, 157, 0.3); }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 1;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(196, 69, 105, 0.1));
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Product Detail Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content-product {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            position: relative;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .product-detail-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: all var(--transition-speed) ease;
+            border: 1px solid var(--border);
+        }
+
+        .product-detail-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-detail-info h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .product-detail-info h2::after {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width var(--transition-speed) ease;
+        }
+
+        .product-detail-info:hover h2::after {
+            width: 50%;
+        }
+
+        .product-detail-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            text-shadow: 0 2px 10px rgba(255, 107, 157, 0.3);
+        }
+
+        .product-detail-colors {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .color-select {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .color-select select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            font-family: 'Quicksand', sans-serif;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .color-select select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            z-index: 1001;
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Glowing elements */
+        .glow {
+            position: relative;
+        }
+
+        .glow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            box-shadow: 0 0 20px 5px rgba(255, 107, 157, 0.3);
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+            z-index: -1;
+        }
+
+        .glow:hover::after {
+            opacity: 1;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 14px 0 0 0;
+            color: #b594a7;
+            font-size: .95em;
+            font-weight: 600;
+            letter-spacing: .03em;
+        }
+
+        .notif {
+            color: #b594a7;
+            font-weight: bold;
+            margin: 6px 0 0 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">FemmeiaCloth</div>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+                <ul class="nav-links" id="navLinks">
+                    <!-- Navigation links will be loaded dynamically based on auth state -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Section -->
+    <section id="authSection" class="page-section active">
+        <div class="auth-container">
+            <div class="auth-card glow">
+                <div id="loginForm">
+                    <h2 class="auth-title">Selamat Datang Kembali</h2>
+                    <form onsubmit="login(event)">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Kata Sandi</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn">Masuk</button>
+                    </form>
+                    <div class="auth-switch">
+                        Belum punya akun? <a href="#" onclick="showRegister()">Daftar</a>
+                    </div>
+                </div>
+
+                <div id="registerForm" style="display: none;">
+                    <h2 class="auth-title">Bergabung dengan FemmeiaCloth</h2>
+                    <form onsubmit="register(event)">
+                        <div class="form-group">
+                            <label>Nama Pengguna</label>
+                            <input type="text" id="registerUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Kata Sandi</label>
+                            <input type="password" id="registerPassword" required>
+                        </div>
+                        <button type="submit" class="btn">Daftar</button>
+                    </form>
+                    <div class="auth-switch">
+                        Sudah punya akun? <a href="#" onclick="showLogin()">Masuk</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Home Section -->
+    <section id="homeSection" class="page-section">
+        <div class="container">
+            <div class="hero fade-in">
+                <h1 class="float">Hijab & Fashion Premium</h1>
+                <p>Temukan koleksi hijab dan aksesoris cantik berkualitas tinggi yang dirancang untuk wanita modern. Kualitas, variasi, dan harga terjangkau.</p>
+            </div>
+
+            <div class="bento-grid">
+                <div class="bento-card float">
+                    <h3>Koleksi Unggulan</h3>
+                    <p>Jelajahi desain hijab terbaru kami yang dibuat dengan bahan premium dan perhatian terhadap detail.</p>
+                </div>
+                <div class="bento-card float" style="animation-delay: 0.2s">
+                    <h3>Jaminan Kualitas</h3>
+                    <p>Setiap produk dipilih dengan hati-hati untuk memastikan kenyamanan, daya tahan, dan gaya yang bertahan lama.</p>
+                </div>
+                <div class="bento-card float" style="animation-delay: 0.4s">
+                    <h3>Kemewahan Terjangkau</h3>
+                    <p>Fashion yang indah tidak harus mahal. Temukan harga kompetitif kami.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="productsSection" class="page-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--primary);">Produk Kami</h2>
+            
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterProducts('all')">Semua</button>
+                <button class="filter-btn" onclick="filterProducts('hijab')">Hijab</button>
+                <button class="filter-btn" onclick="filterProducts('inner')">Inner</button>
+                <button class="filter-btn" onclick="filterProducts('pashmina')">Pashmina</button>
+            </div>
+
+            <div class="bento-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section id="cartSection" class="page-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--primary);">Keranjang Belanja</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal">Total: Rp 0</div>
+            <div style="text-align: center;">
+                <button class="btn" onclick="showSection('checkout')" style="max-width: 300px;">Lanjut ke Checkout</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout Section -->
+    <section id="checkoutSection" class="page-section">
+        <div class="checkout-container">
+            <div class="checkout-wrapper">
+                <!-- Auth Warning for Non-logged Users -->
+                <div id="checkoutAuthWarning" class="checkout-auth-warning" style="display: none;">
+                    <h3>Silakan Masuk Terlebih Dahulu</h3>
+                    <p>Untuk melakukan pemesanan, Anda perlu masuk ke akun terlebih dahulu.</p>
+                    <button class="btn" onclick="document.getElementById('authSection').classList.add('active'); document.getElementById('checkoutSection').classList.remove('active');">Masuk Sekarang</button>
+                </div>
+
+                <!-- Checkout Form -->
+                <div id="checkoutForm" style="display: none;">
+                    <div class="bento-container">
+                        <!-- Modal Ringkasan -->
+                        <div class="modal-bg" id="modalBg">
+                            <div class="modal-content" id="modalContent">
+                                <h3>Ringkasan Pesanan</h3>
+                                <ul id="ringkasanList"></ul>
+                                <div class="total-harga" id="ringkasanHarga"></div>
+                                <button type="button" id="lanjutWA" class="checkout-btn">Lanjut ke WhatsApp</button>
+                                <button type="button" id="batalModal" class="checkout-btn" style="background:#f6f7fb;color:#b594a7;">Cek Ulang</button>
+                            </div>
+                        </div>
+
+                        <form id="orderForm" autocomplete="off">
+                            <div class="bento-grid-form">
+                                <div class="bento-tile">
+                                    <div class="bento-header">Identitas Pembeli</div>
+                                    <label>Nama</label>
+                                    <input type="text" name="nama" required placeholder="Contoh: Putri Maharani" autocomplete="name">
+                                    <label>No. WhatsApp Aktif</label>
+                                    <input type="tel" name="wa" required inputmode="numeric" pattern="[0-9]+" minlength="10" maxlength="15" placeholder="08xxxxxxxxxx" autocomplete="tel">
+                                    <label>Alamat Lengkap</label>
+                                    <textarea name="alamat" required rows="3" placeholder="Contoh: Jl. Melati No. 99, RT 01 RW 02, Tamalanrea, Makassar" autocomplete="street-address"></textarea>
+                                </div>
+
+                                <div class="bento-tile">
+                                    <div class="bento-header">Detail Produk</div>
+                                    <div class="bento-row">
+                                        <div>
+                                            <label>Jenis Produk</label>
+                                            <div class="select-wrapper">
+                                                <select id="productType" name="produk" required>
+                                                    <option value="">-- Pilih Produk --</option>
+                                                    <option value="Hijab Paris - 35.000">Hijab Paris – Rp35.000</option>
+                                                    <option value="Pashmina Kaos - 55.000">Pashmina Kaos – Rp55.000</option>
+                                                    <option value="Premium Inner Ninja - 25.000">Premium Inner Ninja – Rp25.000</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label>Jumlah</label>
+                                            <input type="number" name="jumlah" min="1" max="20" required value="1" placeholder="1">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>Warna</label>
+                                        <div class="color-preview" id="colorPreview"></div>
+                                        <div class="select-wrapper" style="margin-top:7px;">
+                                            <select id="warna" name="warna" required>
+                                                <option value="">-- Pilih Warna --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <label>Pakai Paper Bag</label>
+                                    <div class="select-wrapper">
+                                        <select name="paperbag" id="paperbag" required>
+                                            <option value="">-- Pilih --</option>
+                                            <option value="Tidak">Tidak</option>
+                                            <option value="Pakai (Rp5.000)">Pakai (+ Rp5.000)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="bento-tile">
+                                    <div class="bento-header">Pengiriman & Pembayaran</div>
+                                    <div class="bento-row">
+                                        <div>
+                                            <label>Metode Pengiriman</label>
+                                            <div class="select-wrapper">
+                                                <select name="pengiriman" required>
+                                                    <option value="">-- Pilih --</option>
+                                                    <option value="SPX ID">SPX ID</option>
+                                                    <option value="J&T">J&T</option>
+                                                    <option value="Gosend">Gosend</option>
+                                                    <option value="Antar Langsung (Khusus Area Tamalanrea)">Antar Langsung (Khusus Area Tamalanrea)</option>
+                                                    <option value="Ambil Langsung">Ambil langsung</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label>Metode Pembayaran</label>
+                                            <div class="select-wrapper">
+                                                <select name="pembayaran" required>
+                                                    <option value="">-- Pilih --</option>
+                                                    <option value="Transfer Bank">Transfer Bank</option>
+                                                    <option value="COD">COD</option>
+                                                    <option value="QRIS">QRIS</option>
+                                                    <option value="Dana / e-wallet">Dana / e-wallet</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bento-tile">
+                                    <div class="bento-header">Catatan & Promo</div>
+                                    <label>Kode Promo (Jika Tersedia)</label>
+                                    <input type="text" name="promo" id="promoInput" placeholder="Opsional">
+                                    <label>Catatan Tambahan (Opsional)</label>
+                                    <textarea name="catatan" placeholder="Contoh: packing rapi, dll."></textarea>
+                                </div>
+
+                                <div class="bento-tile">
+                                    <div class="total-harga" id="totalHarga">Total: Rp0</div>
+                                    <button type="submit" id="pesanBtn" class="checkout-btn">🛒 Pesan Sekarang</button>
+                                    <div class="loading" id="loadingText">⏳ Menyiapkan Pesanan...</div>
+                                    <div class="notif" id="notif"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profileSection" class="page-section">
+        <div class="container">
+            <div class="profile-header">
+                <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="Profile" class="profile-avatar" id="profileAvatar">
+                <input type="file" class="profile-upload" id="profileUpload" accept="image/*" onchange="uploadProfilePhoto(event)">
+                <br>
+                <button class="upload-btn" onclick="document.getElementById('profileUpload').click()">Ganti Foto</button>
+                <h2 id="profileUsername">Nama Pengguna</h2>
+                <p id="profileEmail">email@example.com</p>
+            </div>
+
+            <div class="bento-card glow" style="max-width: 500px; margin: 0 auto;">
+                <h3>Edit Profil</h3>
+                <form onsubmit="updateProfile(event)">
+                    <div class="form-group">
+                        <label>Nama Pengguna</label>
+                        <input type="text" id="editUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="editEmail" required>
+                    </div>
+                    <button type="submit" class="btn">Perbarui Profil</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content-product">
+            <button class="close-modal" onclick="closeProductModal()">×</button>
+            <div class="product-detail" id="productDetail">
+                <!-- Product detail will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
+            authDomain: "femmeiacloth-finance.firebaseapp.com",
+            projectId: "femmeiacloth-finance",
+            storageBucket: "femmeiacloth-finance.appspot.com",
+            messagingSenderId: "517478386163",
+            appId: "1:517478386163:web:51028f5841baa311126a86",
+            measurementId: "G-K4L516Q54R"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Sample products data based on the provided image
+        const products = [
+            {
+                id: 1,
+                name: "Hijab Paris",
+                price: 35000,
+                category: "hijab",
+                image: "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg",
+                colors: ["Hitam", "Putih", "Abu-abu", "Navy", "Pink", "Cream"],
+                colorCodes: {
+                    "Hitam": "#000000",
+                    "Putih": "#FFFFFF",
+                    "Abu-abu": "#808080",
+                    "Navy": "#000080",
+                    "Pink": "#FFC0CB",
+                    "Cream": "#FFFDD0"
+                },
+                description: "Hijab ringan, mudah dibentuk, cocok untuk sehari-hari."
+            },
+            {
+                id: 2,
+                name: "Pashmina Kaos",
+                price: 55000,
+                category: "pashmina",
+                image: "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg",
+                colors: ["Hitam", "Coklat", "Beige", "Mauve", "Lilac", "Hijau", "Olive"],
+                colorCodes: {
+                    "Hitam": "#000000",
+                    "Coklat": "#964B00",
+                    "Beige": "#F5F5DC",
+                    "Mauve": "#E0B0FF",
+                    "Lilac": "#C8A2C8",
+                    "Hijau": "#00FF00",
+                    "Olive": "#808000"
+                },
+                description: "Pashmina bahan kaos premium, nyaman dipakai."
+            },
+            {
+                id: 3,
+                name: "Premium Inner Ninja",
+                price: 25000,
+                category: "inner",
+                image: "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg",
+                colors: ["Hitam", "Putih", "Cream", "Mocha", "Abu-abu"],
+                colorCodes: {
+                    "Hitam": "#000000",
+                    "Putih": "#FFFFFF",
+                    "Cream": "#FFFDD0",
+                    "Mocha": "#A38068",
+                    "Abu-abu": "#808080"
+                },
+                description: "Inner Ninja premium, adem, nyaman dipakai seharian."
+            }
+        ];
+
+        // Checkout form color options and prices
+        const colorHexMap = {
+            "Hitam": "#191919", "Stone": "#b8b6b1", "Abu Ash": "#a7a6a6", "Soft Latte": "#e5ceb8",
+            "Cream": "#fff6cf", "Vanilla": "#fbe7a2", "Biskuit": "#e2c39a", "Dusty Rose": "#e4aeb1",
+            "Dark Blue": "#222e50", "Dark Choco": "#513c29", "Burgundy": "#7d2636", "Maroon": "#781f29",
+            "Dark Grey": "#44474b", "Silver": "#c0c0c0", "Khaky": "#bdb76b", "Oat": "#e5d1b8",
+            "BW": "#f8f8f8", "Khaky Putty": "#cabfa0", "Navy": "#2a3759",
+            "Putih": "#FFFFFF", "Abu-abu": "#808080", "Pink": "#FFC0CB", "Coklat": "#964B00",
+            "Beige": "#F5F5DC", "Mauve": "#E0B0FF", "Lilac": "#C8A2C8", "Hijau": "#00FF00", "Olive": "#808000",
+            "Mocha": "#A38068"
+        };
+
+        const warnaOptions = {
+            "Hijab Paris - 35.000": ["Hitam", "Putih", "Abu-abu", "Navy", "Pink", "Cream"],
+            "Pashmina Kaos - 55.000": ["Hitam", "Coklat", "Beige", "Mauve", "Lilac", "Hijau", "Olive"],
+            "Premium Inner Ninja - 25.000": ["Hitam", "Putih", "Cream", "Mocha", "Abu-abu"]
+        };
+
+        const hargaProduk = {
+            "Hijab Paris - 35.000": 35000,
+            "Pashmina Kaos - 55.000": 55000,
+            "Premium Inner Ninja - 25.000": 25000
+        };
+
+        const PROMO_CODE = "femmeia10";
+        const PROMO_DISKON = 0.10;
+
+        // Global state
+        let currentUser = null;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let currentFilter = 'all';
+        let selectedProduct = null;
+        let selectedColor = null;
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadProducts();
+            updateCartBadge();
+            initializeCheckoutForm();
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Authentication functions
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        async function login(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Save user to Firebase
+                try {
+                    await db.collection('users').doc(user.id.toString()).set({
+                        username: user.username,
+                        email: user.email,
+                        avatar: user.avatar,
+                        lastLogin: new Date()
+                    });
+                } catch (error) {
+                    console.log('Firebase save error:', error);
+                }
+                
+                showMainApp();
+                showSection('home');
+                showNotification('Berhasil masuk! Selamat datang kembali.');
+            } else {
+                showNotification('Email atau kata sandi tidak valid', true);
+            }
+        }
+
+        async function register(event) {
+            event.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            if (users.find(u => u.email === email)) {
+                showNotification('Email sudah terdaftar', true);
+                return;
+            }
+
+            const newUser = {
+                id: Date.now(),
+                username,
+                email,
+                password,
+                avatar: 'https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg'
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            
+            // Save user to Firebase
+            try {
+                await db.collection('users').doc(newUser.id.toString()).set({
+                    username: newUser.username,
+                    email: newUser.email,
+                    avatar: newUser.avatar,
+                    createdAt: new Date()
+                });
+            } catch (error) {
+                console.log('Firebase save error:', error);
+            }
+            
+            showMainApp();
+            showSection('home');
+            showNotification('Akun berhasil dibuat! Selamat datang.');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('authSection').classList.add('active');
+            document.querySelectorAll('.page-section:not(#authSection)').forEach(section => {
+                section.classList.remove('active');
+            });
+            updateNavLinks();
+            showNotification('Anda telah keluar dari akun');
+        }
+
+        function checkAuth() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainApp();
+                showSection('home');
+            }
+            updateNavLinks();
+        }
+
+        function showMainApp() {
+            document.getElementById('authSection').classList.remove('active');
+            loadProfile();
+            updateNavLinks();
+        }
+
+        // Update navigation links based on authentication state
+        function updateNavLinks() {
+            const navLinks = document.getElementById('navLinks');
+            
+            if (currentUser) {
+                // User is logged in
+                navLinks.innerHTML = `
+                    <li><a href="#" onclick="showSection('home')">Beranda</a></li>
+                    <li><a href="#" onclick="showSection('products')">Produk</a></li>
+                    <li><a href="#" onclick="showSection('cart')">Keranjang <span class="cart-badge" id="cartBadge">0</span></a></li>
+                    <li><a href="#" onclick="showSection('profile')">Profil</a></li>
+                    <li><a href="#" onclick="logout()">Keluar</a></li>
+                `;
+            } else {
+                // User is not logged in
+                navLinks.innerHTML = `
+                    <li><a href="#" onclick="showSection('home')">Beranda</a></li>
+                    <li><a href="#" onclick="showSection('products')">Produk</a></li>
+                    <li><a href="#" onclick="showSection('cart')">Keranjang <span class="cart-badge" id="cartBadge">0</span></a></li>
+                    <li><a href="#" onclick="document.getElementById('authSection').classList.add('active')">Masuk</a></li>
+                `;
+            }
+            
+            updateCartBadge();
+        }
+
+        // Navigation
+        function showSection(sectionName) {
+            // Check if user is trying to access profile or checkout without being logged in
+            if ((sectionName === 'profile' || sectionName === 'checkout') && !currentUser) {
+                document.getElementById('authSection').classList.add('active');
+                showNotification('Silakan masuk terlebih dahulu', true);
+                return;
+            }
+            
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionName + 'Section').classList.add('active');
+
+            // Close mobile menu when navigating
+            document.getElementById('navLinks').classList.remove('active');
+
+            if (sectionName === 'cart') {
+                loadCart();
+            } else if (sectionName === 'checkout') {
+                loadCheckout();
+            }
+        }
+
+        // Products
+        function loadProducts() {
+            const grid = document.getElementById('productsGrid');
+            const filteredProducts = currentFilter === 'all' 
+                ? products 
+                : products.filter(p => p.category === currentFilter);
+
+            grid.innerHTML = filteredProducts.map((product, index) => `
+                <div class="product-card fade-in" 
+                     onclick="showProductDetail(${product.id})"
+                     style="animation-delay: ${index * 0.1}s">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price">Rp ${formatPrice(product.price)}</div>
+                        <div class="product-colors">
+                            ${product.colors.map(color => `
+                                <div class="color-option" 
+                                    style="background-color: ${product.colorCodes[color]}" 
+                                    title="${color}">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">${product.description}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadProducts();
+        }
+
+        // Format price with thousand separator
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        // Product Detail Modal
+        function showProductDetail(productId) {
+            selectedProduct = products.find(p => p.id === productId);
+            selectedColor = selectedProduct.colors[0];
+            
+            const modal = document.getElementById('productModal');
+            const productDetail = document.getElementById('productDetail');
+            
+            productDetail.innerHTML = `
+                <div>
+                    <img src="${selectedProduct.image}" alt="${selectedProduct.name}" class="product-detail-image">
+                </div>
+                <div class="product-detail-info">
+                    <h2>${selectedProduct.name}</h2>
+                    <div class="product-detail-price">Rp ${formatPrice(selectedProduct.price)}</div>
+                    <p>${selectedProduct.description}</p>
+                    <div class="color-select">
+                        <label>Pilih Warna:</label>
+                        <select id="colorSelect" onchange="updateSelectedColor()">
+                            ${selectedProduct.colors.map(color => `
+                                <option value="${color}">${color}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div class="product-detail-colors">
+                        ${selectedProduct.colors.map(color => `
+                            <div class="color-option" 
+                                style="background-color: ${selectedProduct.colorCodes[color]}" 
+                                title="${color}"
+                                onclick="selectColor('${color}')">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="btn" onclick="addToCart(${selectedProduct.id})">
+                        Tambahkan ke Keranjang
+                    </button>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        function updateSelectedColor() {
+            selectedColor = document.getElementById('colorSelect').value;
+        }
+
+        function selectColor(color) {
+            selectedColor = color;
+            document.getElementById('colorSelect').value = color;
+        }
+
+        // Cart functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const color = selectedColor || product.colors[0];
+            
+            const existingItemIndex = cart.findIndex(item => 
+                item.id === productId && item.selectedColor === color
+            );
+
+            if (existingItemIndex !== -1) {
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                cart.push({ 
+                    ...product, 
+                    quantity: 1,
+                    selectedColor: color
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+            
+            // Show feedback
+            showNotification(`${product.name} (${color}) ditambahkan ke keranjang!`);
+            
+            // Close modal if open
+            closeProductModal();
+        }
+
+        function updateCartBadge() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartBadge = document.getElementById('cartBadge');
+            if (cartBadge) {
+                cartBadge.textContent = totalItems;
+                
+                // Add animation
+                cartBadge.classList.remove('pulse');
+                void cartBadge.offsetWidth; // Trigger reflow
+                cartBadge.classList.add('pulse');
+            }
+        }
+
+        function loadCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; color: #94a3b8;">Keranjang belanja Anda kosong</p>';
+                cartTotal.textContent = 'Total: Rp 0';
+                return;
+            }
+
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="cart-item fade-in" style="animation-delay: ${index * 0.1}s">
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p>Rp ${formatPrice(item.price)}</p>
+                        <p>Warna: ${item.selectedColor}</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, '${item.selectedColor}', -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, '${item.selectedColor}', 1)">+</button>
+                    </div>
+                    <button class="quantity-btn" onclick="removeFromCart(${item.id}, '${item.selectedColor}')" style="background: #e74c3c;">×</button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotal.textContent = `Total: Rp ${formatPrice(total)}`;
+        }
+
+        function updateQuantity(productId, color, change) {
+            const itemIndex = cart.findIndex(item => item.id === productId && item.selectedColor === color);
+            
+            if (itemIndex !== -1) {
+                cart[itemIndex].quantity += change;
+                if (cart[itemIndex].quantity <= 0) {
+                    removeFromCart(productId, color);
+                } else {
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    loadCart();
+                    updateCartBadge();
+                }
+            }
+        }
+
+        function removeFromCart(productId, color) {
+            const itemToRemove = cart.find(item => item.id === productId && item.selectedColor === color);
+            const itemName = itemToRemove ? `${itemToRemove.name} (${itemToRemove.selectedColor})` : '';
+            
+            cart = cart.filter(item => !(item.id === productId && item.selectedColor === color));
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+            updateCartBadge();
+            
+            showNotification(`${itemName} dihapus dari keranjang`);
+        }
+
+        // Checkout functions
+        function loadCheckout() {
+            const authWarning = document.getElementById('checkoutAuthWarning');
+            const checkoutForm = document.getElementById('checkoutForm');
+            
+            if (!currentUser) {
+                authWarning.style.display = 'block';
+                checkoutForm.style.display = 'none';
+            } else {
+                authWarning.style.display = 'none';
+                checkoutForm.style.display = 'block';
+                
+                // Pre-fill user data
+                if (currentUser) {
+                    const nameInput = document.querySelector('input[name="nama"]');
+                    if (nameInput && !nameInput.value) {
+                        nameInput.value = currentUser.username;
+                    }
+                }
+            }
+        }
+
+        // Initialize checkout form
+        function initializeCheckoutForm() {
+            const productType = document.getElementById('productType');
+            const warna = document.getElementById('warna');
+            const colorPreview = document.getElementById('colorPreview');
+            const jumlah = document.querySelector('input[name="jumlah"]');
+            const paperbag = document.getElementById('paperbag');
+            const totalHarga = document.getElementById('totalHarga');
+            const notif = document.getElementById('notif');
+            const pesanBtn = document.getElementById('pesanBtn');
+            const promoInput = document.getElementById('promoInput');
+
+            if (!productType) return; // Exit if elements don't exist yet
+
+            // Modal animation helpers
+            const modalBg = document.getElementById('modalBg');
+            const modalContent = document.getElementById('modalContent');
+            
+            function openModal() {
+                modalBg.classList.add('open');
+                modalBg.classList.remove('closing');
+                setTimeout(() => {
+                    modalContent.scrollTop = 0;
+                }, 30);
+            }
+            
+            function closeModal() {
+                modalBg.classList.add('closing');
+                modalBg.classList.remove('open');
+                setTimeout(() => {
+                    modalBg.classList.remove('closing');
+                }, 250);
+            }
+
+            // Warna custom select sync
+            productType.addEventListener('change', function () {
+                const selected = this.value;
+                warna.innerHTML = '<option value="">-- Pilih Warna --</option>';
+                colorPreview.innerHTML = '';
+                if (warnaOptions[selected]) {
+                    warnaOptions[selected].forEach(w => {
+                        let opt = document.createElement('option');
+                        opt.value = w;
+                        opt.textContent = w;
+                        warna.appendChild(opt);
+                    });
+                    updateColorPreview(selected, warna.value);
+                }
+                hitungTotal();
+            });
+
+            warna.addEventListener('focus', function () {
+                if (!productType.value) {
+                    alert("Silakan pilih jenis produk terlebih dahulu.");
+                    productType.focus();
+                }
+            });
+
+            function updateColorPreview(prod, selectedWarna) {
+                colorPreview.innerHTML = '';
+                if (warnaOptions[prod]) {
+                    warnaOptions[prod].forEach(w => {
+                        const hex = colorHexMap[w] || '#fff';
+                        const dot = document.createElement('span');
+                        dot.className = 'color-dot' + (w === selectedWarna ? ' selected' : '');
+                        dot.style.background = hex;
+                        dot.title = w;
+                        dot.onclick = function() {
+                            warna.value = w;
+                            updateColorPreview(prod, w);
+                        };
+                        colorPreview.appendChild(dot);
+                    });
+                    if (selectedWarna) {
+                        const label = document.createElement('span');
+                        label.className = 'color-label';
+                        label.innerText = selectedWarna;
+                        colorPreview.appendChild(label);
+                    }
+                }
+            }
+
+            warna.addEventListener('change', function () {
+                updateColorPreview(productType.value, warna.value);
+            });
+
+            jumlah.addEventListener('input', hitungTotal);
+            productType.addEventListener('change', hitungTotal);
+            paperbag.addEventListener('change', hitungTotal);
+            promoInput.addEventListener('input', hitungTotal);
+
+            function hitungTotal() {
+                const prod = productType.value;
+                let qty = parseInt(jumlah.value) || 1;
+                if (qty < 1) qty = 1;
+                let harga = hargaProduk[prod] ? hargaProduk[prod] * qty : 0;
+                if (paperbag.value.startsWith('Pakai')) harga += 5000;
+                let promoValid = false;
+                let promoValue = promoInput.value.trim().toLowerCase();
+                if (promoValue === PROMO_CODE) {
+                    promoValid = true;
+                    harga = Math.floor(harga * (1 - PROMO_DISKON));
+                    promoInput.style.borderColor = "#82ca9c";
+                } else if (promoValue.length > 0) {
+                    promoInput.style.borderColor = "#d16a6a";
+                } else {
+                    promoInput.style.borderColor = "";
+                }
+                totalHarga.innerText = `Total: Rp${harga.toLocaleString('id-ID')}` + (promoValid ? " (promo -10%)" : "");
+                return harga;
+            }
+
+            function resetNotif() { 
+                if (notif) notif.innerText = ''; 
+            }
+
+            // Order form submission
+            document.getElementById('orderForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                resetNotif();
+                
+                if (!currentUser) {
+                    showNotification('Silakan masuk terlebih dahulu', true);
+                    return;
+                }
+                
+                const waVal = this.wa.value.trim();
+                if (!/^[0-9]{10,15}$/.test(waVal)) {
+                    notif.innerText = 'Nomor WhatsApp tidak valid!';
+                    this.wa.focus();
+                    return;
+                }
+                
+                let promoValue = promoInput.value.trim().toLowerCase();
+                if (promoValue.length > 0 && promoValue !== PROMO_CODE) {
+                    notif.innerText = 'Kode promo tidak valid! Masukkan: femmeia10';
+                    promoInput.focus();
+                    promoInput.style.borderColor = "#d16a6a";
+                    showNotification('Kode promo salah. Gunakan femmeia10');
+                    return;
+                }
+                
+                pesanBtn.disabled = true;
+                document.getElementById('loadingText').style.display = 'block';
+                
+                setTimeout(async () => {
+                    document.getElementById('loadingText').style.display = 'none';
+                    pesanBtn.disabled = false;
+                    
+                    const form = new FormData(this);
+                    const pesan = [
+                        ["Nama", form.get('nama')],
+                        ["No WA", form.get('wa')],
+                        ["Alamat", form.get('alamat')],
+                        ["Produk", form.get('produk')],
+                        ["Warna", form.get('warna')],
+                        ["Jumlah", form.get('jumlah')],
+                        ["Paperbag", form.get('paperbag')],
+                        ["Pengiriman", form.get('pengiriman')],
+                        ["Pembayaran", form.get('pembayaran')],
+                        ["Kode Promo", form.get('promo')],
+                        ["Catatan", form.get('catatan')],
+                    ];
+                    
+                    const harga = hitungTotal();
+                    
+                    // Save order to Firebase
+                    try {
+                        const orderData = {
+                            userId: currentUser.id,
+                            customerName: form.get('nama'),
+                            whatsapp: form.get('wa'),
+                            address: form.get('alamat'),
+                            product: form.get('produk'),
+                            color: form.get('warna'),
+                            quantity: parseInt(form.get('jumlah')),
+                            paperBag: form.get('paperbag'),
+                            shipping: form.get('pengiriman'),
+                            payment: form.get('pembayaran'),
+                            promoCode: form.get('promo'),
+                            notes: form.get('catatan'),
+                            total: harga,
+                            createdAt: new Date(),
+                            status: 'pending'
+                        };
+                        
+                        await db.collection('orders').add(orderData);
+                        console.log('Order saved to Firebase');
+                    } catch (error) {
+                        console.log('Firebase save error:', error);
+                    }
+                    
+                    const ringkasanList = document.getElementById('ringkasanList');
+                    ringkasanList.innerHTML = '';
+                    pesan.forEach(([k,v]) => { 
+                        if (v) ringkasanList.innerHTML += `<li><strong>${k}:</strong> ${v}</li>`; 
+                    });
+                    document.getElementById('ringkasanHarga').innerText = `Total: Rp${harga.toLocaleString('id-ID')}` + (promoValue === PROMO_CODE ? " (promo -10%)" : "");
+                    
+                    openModal();
+                    window._ringkasanMsg = `*Form Pemesanan | FemmeiaCloth:*\n\n` +
+                        pesan.map(([k,v]) => `${k}: ${v}`).join('\n') +
+                        `\nTotal: Rp${harga.toLocaleString('id-ID')}` + (promoValue === PROMO_CODE ? " (promo -10%)" : "");
+                }, 650);
+            });
+
+            document.getElementById('lanjutWA').onclick = function() {
+                closeModal();
+                pesanBtn.disabled = false;
+                const waNumber = "6287777420644";
+                const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(window._ringkasanMsg)}`;
+                window.open(url, "_blank");
+                showNotification('Pesanan diarahkan ke WhatsApp!');
+                notif.innerText = '';
+            };
+
+            document.getElementById('batalModal').onclick = function() {
+                closeModal();
+                pesanBtn.disabled = false;
+            };
+
+            productType.dispatchEvent(new Event('change'));
+        }
+
+        // Profile functions
+        function loadProfile() {
+            if (currentUser) {
+                document.getElementById('profileUsername').textContent = currentUser.username;
+                document.getElementById('profileEmail').textContent = currentUser.email;
+                document.getElementById('profileAvatar').src = currentUser.avatar || 'https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg';
+                document.getElementById('editUsername').value = currentUser.username;
+                document.getElementById('editEmail').value = currentUser.email;
+            }
+        }
+
+        function uploadProfilePhoto(event) {
+            if (!currentUser) {
+                showNotification('Silakan masuk terlebih dahulu', true);
+                return;
+            }
+            
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUser.avatar = e.target.result;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    // Update users array
+                    const users = JSON.parse(localStorage.getItem('users')) || [];
+                    const userIndex = users.findIndex(u => u.id === currentUser.id);
+                    if (userIndex !== -1) {
+                        users[userIndex] = currentUser;
+                        localStorage.setItem('users', JSON.stringify(users));
+                    }
+                    
+                    loadProfile();
+                    showNotification('Foto profil berhasil diperbarui');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function updateProfile(event) {
+            event.preventDefault();
+            
+            if (!currentUser) {
+                showNotification('Silakan masuk terlebih dahulu', true);
+                return;
+            }
+            
+            const username = document.getElementById('editUsername').value;
+            const email = document.getElementById('editEmail').value;
+
+            currentUser.username = username;
+            currentUser.email = email;
+            
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Update users array
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            // Update Firebase
+            try {
+                await db.collection('users').doc(currentUser.id.toString()).update({
+                    username: username,
+                    email: email,
+                    updatedAt: new Date()
+                });
+            } catch (error) {
+                console.log('Firebase update error:', error);
+            }
+            
+            loadProfile();
+            showNotification('Profil berhasil diperbarui!');
+        }
+
+        // Notification system
+        function showNotification(message, isError = false) {
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            // Create new notification
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            
+            if (isError) {
+                notification.style.background = '#e74c3c';
+            }
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target == modal) {
+                closeProductModal();
+            }
+        }
+    </script>
+</body>
+</html>
