@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Survey Berhadiah - Femmeia Cloth - Batch 1</title>
-  <meta name="description" content="Isi survey dan dapatkan hadiah!.">
+  <meta name="description" content="Isi survey dan dapatkan hadiah!">
   <meta name="theme-color" content="#000000">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -613,7 +613,7 @@
         Data yang Anda berikan akan digunakan untuk pengembangan produk dan layanan FemmeiaCloth. 
         Kami menjamin kerahasiaan data Anda dan tidak akan disebarkan kepada pihak ketiga.<br><br>
         Mohon lengkapi data dengan jujur untuk mendapatkan hadiah menarik. 
-        Kami akan merespon dalam 3x24 jam.
+        Kami akan merespon dalam 1x24 jam.
       </div>
 
       <!-- Quota Info -->
@@ -635,197 +635,461 @@
           <div class="step-dot"></div>
           <div class="step-dot"></div>
           <div class="step-dot"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
         </div>
       </div>
 
       <!-- Form Steps -->
-      <form id="surveyForm" novalidate>
-        <!-- Step 1: Data Diri -->
-        <div class="form-step active bento-card">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="name">Nama <span class="required">*</span></label>
-              <input type="text" id="name" name="name" required />
-              <div class="error" id="nameError"></div>
-            </div>
-            <div class="form-group">
-              <label for="age">Umur <span class="required">*</span></label>
-              <input type="number" id="age" name="age" min="1" required />
-              <div class="error" id="ageError"></div>
-            </div>
-            <div class="form-group full-width">
-              <label for="city">Kota <span class="required">*</span></label>
-              <input type="text" id="city" name="city" required />
-              <div class="error" id="cityError"></div>
-            </div>
-            <div class="form-group">
-              <label for="whatsapp">No. WhatsApp <span class="required">*</span></label>
-              <input type="text" id="whatsapp" name="whatsapp" required />
-              <div class="error" id="whatsappError"></div>
-            </div>
-            <div class="form-group">
-              <label for="ewallet">No. E-Wallet <span class="required">*</span></label>
-              <input type="text" id="ewallet" name="ewallet" required />
-              <div class="error" id="ewalletError"></div>
-            </div>
-            <div class="form-group full-width">
-              <label for="email">Email <span class="required">*</span></label>
-              <input type="email" id="email" name="email" required />
-              <div class="error" id="emailError"></div>
-            </div>
-            <div class="form-group full-width">
-              <label for="instagram">Username Instagram <span class="required">*</span></label>
-              <input type="text" id="instagram" name="instagram" placeholder="@username" required />
-              <div class="error" id="instagramError"></div>
-            </div>
+<form id="surveyForm" novalidate>
+  <!-- Step 1: Informasi Pribadi -->
+  <div class="form-step active bento-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="name">Nama lengkap <span class="required">*</span></label>
+        <input type="text" id="name" name="name" required />
+        <div class="error" id="nameError"></div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" required />
+        <div class="error" id="emailError"></div>
+      </div>
+      <div class="form-group">
+        <label for="gender">Jenis kelamin <span class="required">*</span></label>
+        <select id="gender" name="gender" required>
+          <option value="">-- Pilih --</option>
+          <option value="Pria">Pria</option>
+          <option value="Wanita">Wanita</option>
+        </select>
+        <div class="error" id="genderError"></div>
+      </div>
+      <div class="form-group">
+        <label for="age">Usia <span class="required">*</span></label>
+        <input type="number" id="age" name="age" min="1" required />
+        <div class="error" id="ageError"></div>
+      </div>
+      <div class="form-group">
+        <label for="city">Kota domisili <span class="required">*</span></label>
+        <input type="text" id="city" name="city" required />
+        <div class="error" id="cityError"></div>
+      </div>
+      <div class="form-group">
+        <label for="job">Status pekerjaan <span class="required">*</span></label>
+        <select id="job" name="job" required>
+          <option value="">-- Pilih --</option>
+          <option value="Pelajar">Pelajar</option>
+          <option value="Mahasiswa">Mahasiswa</option>
+          <option value="Bekerja">Bekerja</option>
+          <option value="Tidak bekerja">Tidak bekerja</option>
+        </select>
+        <div class="error" id="jobError"></div>
+      </div>
+      <div class="form-group">
+        <label for="income">Penghasilan bulanan <span class="required">*</span></label>
+        <select id="income" name="income" required>
+          <option value="">-- Pilih --</option>
+          <option value="<1jt">&lt; 1jt</option>
+          <option value="1-3jt">1-3jt</option>
+          <option value=">3jt">&gt; 3jt</option>
+          <option value="(Memilih Untuk Tidak Menjawab)">Memilih Untuk Tidak Menjawab</option>
+        </select>
+        <div class="error" id="incomeError"></div>
+      </div>
+      <div class="form-group">
+        <label for="marital">Status pernikahan <span class="required">*</span></label>
+        <select id="marital" name="marital" required>
+          <option value="">-- Pilih --</option>
+          <option value="Belum menikah">Belum menikah</option>
+          <option value="Menikah">Menikah</option>
+          <option value="(Memilih Untuk Tidak Menjawab)">Memilih Untuk Tidak Menjawab</option>
+        </select>
+        <div class="error" id="maritalError"></div>
+      </div>
+      <div class="form-group">
+        <label for="whatsapp">Nomor WhatsApp <span class="required">*</span></label>
+        <input type="tel" id="whatsapp" name="whatsapp" placeholder="Contoh: 08123456789" required />
+        <div class="error" id="whatsappError"></div>
+      </div>
+      <div class="form-group">
+        <label for="ewallet">Nomor E-Wallet <span class="required">*</span></label>
+        <input type="tel" id="ewallet" name="ewallet" placeholder="Contoh: 08123456789" required />
+        <div class="error" id="ewalletError"></div>
+      </div>
+      <div class="form-group">
+        <label for="jenisewallet">Jenis E-Wallet <span class="required">*</span></label>
+        <select id="jenisewallet" name="jenisewallet" required>
+          <option value="">-- Pilih --</option>
+          <option value="Dana">Dana</option>
+          <option value="OVO">OVO</option>
+          <option value="Gopay">Gopay</option>
+          <option value="Shopeepay">ShopeePay</option>
+        </select>
+        <div class="error" id="jenisewalletError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="instagram">Username Instagram <span class="required">*</span></label>
+        <input type="text" id="instagram" name="instagram" placeholder="@username" required />
+        <div class="error" id="instagramError"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Preferensi Produk Hijab -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="productType">Jenis hijab favorit <span class="required">*</span></label>
+        <select id="productType" name="productType" required>
+          <option value="">-- Pilih --</option>
+          <option value="Paris">Paris</option>
+          <option value="Pashmina">Pashmina</option>
+          <option value="Inner">Inner</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div class="error" id="productTypeError"></div>
+      </div>
+      <div class="form-group">
+        <label for="favoriteColor">Warna favorit hijab <span class="required">*</span></label>
+          <input type="text" id="favoriteColor" name="favoriteColor" required />
+        <div class="error" id="favoriteColorError"></div>
+      </div>
+      <div class="form-group">
+        <label for="size">Ukuran hijab biasa dipakai <span class="required">*</span></label>
+        <select id="size" name="size" required>
+          <option value="">-- Pilih --</option>
+          <option value="110x110">110x110</option>
+          <option value="115x115">115x115</option>
+          <option value="165x55">165x55</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div class="error" id="sizeError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="priceRange">Kisaran harga nyaman <span class="required">*</span></label>
+        <select id="priceRange" name="priceRange" required>
+          <option value="">-- Pilih --</option>
+          <option value="30rb-50rb">30rb-50rb</option>
+          <option value="50rb-100rb">50rb-100rb</option>
+          <option value=">100rb">&gt; 100rb</option>
+        </select>
+        <div class="error" id="priceRangeError"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Perilaku Belanja Hijab -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="shoppingPlace">Sering beli hijab di <span class="required">*</span></label>
+        <select id="shoppingPlace" name="shoppingPlace" required>
+          <option value="">-- Pilih --</option>
+          <option value="Online">Online (Misal. Tokopedia, Shopee, Tiktok, dan lainnya)</option>
+          <option value="Offline">Offline</option>
+          <option value="Keduanya">Keduanya</option>
+        </select>
+        <div class="error" id="shoppingPlaceError"></div>
+      </div>
+      <div class="form-group">
+        <label for="favoriteBrand">Brand hijab favorit <span class="required">*</span></label>
+        <input type="text" id="favoriteBrand" name="favoriteBrand" required />
+        <div class="error" id="favoriteBrandError"></div>
+      </div>
+      <div class="form-group">
+        <label for="shopFrequency">Frekuensi beli hijab per tahun <span class="required">*</span></label>
+        <select id="shopFrequency" name="shopFrequency" required>
+          <option value="">-- Pilih --</option>
+          <option value="1-2x">1-2x</option>
+          <option value="3-5x">3-5x</option>
+          <option value=">6x">&gt; 6x</option>
+          <option value="jarang">jarang</option>
+        </select>
+        <div class="error" id="shopFrequencyError"></div>
+      </div>
+      <div class="form-group">
+        <label for="reasonBuy">Alasan utama membeli hijab <span class="required">*</span></label>
+        <select id="reasonBuy" name="reasonBuy" required>
+          <option value="">-- Pilih --</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Fungsional">Fungsional</option>
+          <option value="Agama">Agama</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div class="error" id="reasonBuyError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="buyMoment">Momen biasa membeli hijab</label>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="moment1" value="Ramadan" class="buyMoment" />
+            <label for="moment1">Ramadan</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="moment2" value="Lebaran" class="buyMoment" />
+            <label for="moment2">Lebaran</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="moment3" value="Harian" class="buyMoment" />
+            <label for="moment3">Harian</label>
           </div>
         </div>
-
-        <!-- Step 2: Preferensi Produk -->
-        <div class="form-step bento-card">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="productType">Jenis hijab favorit <span class="required">*</span></label>
-              <select id="productType" name="productType" required>
-                <option value="">-- Pilih --</option>
-                <option value="Paris">Paris</option>
-                <option value="Pashmina">Pashmina</option>
-                <option value="Inner">Inner</option>
-                <option value="Lainnya">Lainnya</option>
-              </select>
-              <div class="error" id="productTypeError"></div>
-            </div>
-            <div class="form-group">
-              <label for="favoriteColor">Warna yang paling disukai <span class="required">*</span></label>
-              <input type="text" id="favoriteColor" name="favoriteColor" placeholder="Contoh: Hitam, Putih, Navy" required />
-              <div class="error" id="favoriteColorError"></div>
-            </div>
-            <div class="form-group full-width">
-              <label for="priceRange">Kisaran harga nyaman <span class="required">*</span></label>
-              <select id="priceRange" name="priceRange" required>
-                <option value="">-- Pilih --</option>
-                <option value="<30k">&lt; Rp30.000</option>
-                <option value="30-50k">Rp30.000 – Rp50.000</option>
-                <option value=">50k">&gt; Rp50.000</option>
-              </select>
-              <div class="error" id="priceRangeError"></div>
-            </div>
+      </div>
+      <div class="form-group full-width">
+        <label for="infoSource">Sumber info produk hijab</label>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="source1" value="Instagram" class="infoSource" />
+            <label for="source1">Instagram</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="source2" value="TikTok" class="infoSource" />
+            <label for="source2">TikTok</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="source3" value="Teman" class="infoSource" />
+            <label for="source3">Teman</label>
           </div>
         </div>
+      </div>
+      <div class="form-group">
+        <label for="limitedEdition">Tertarik produk limited edition? <span class="required">*</span></label>
+        <div style="margin-top: 0.5rem;">
+          <label style="display: inline-flex; align-items: center; margin-right: 1rem;">
+            <input type="radio" id="limitedYes" name="limitedEdition" value="Ya" style="margin-right: 0.5rem;" required />
+            Ya
+          </label>
+          <label style="display: inline-flex; align-items: center;">
+            <input type="radio" id="limitedNo" name="limitedEdition" value="Tidak" style="margin-right: 0.5rem;" required />
+            Tidak
+          </label>
+        </div>
+        <div class="error" id="limitedEditionError"></div>
+      </div>
+      <div class="form-group">
+        <label for="favPayment">Metode pembayaran favorit <span class="required">*</span></label>
+        <select id="favPayment" name="favPayment" required>
+          <option value="">-- Pilih --</option>
+          <option value="Transfer Bank">Transfer Bank</option>
+          <option value="E-Wallet">E-Wallet</option>
+          <option value="COD">COD</option>
+          <option value="Ambil Langsung/Diantarkan Langsung">Ambil Langsung/Diantarkan Langsung</option>
+          <option value="Qris">Qris</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div class="error" id="favPaymentError"></div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Step 3: Kepuasan Pelanggan -->
-        <div class="form-step bento-card">
-          <div class="form-grid">
-            <div class="form-group full-width">
-              <label for="hasPurchased">Pernah membeli di Femmeia? <span class="required">*</span></label>
-              <select id="hasPurchased" name="hasPurchased" required>
-                <option value="">-- Pilih --</option>
-                <option value="Tidak">Tidak</option>
-                <option value="Ya">Ya</option>
-              </select>
-              <div class="error" id="hasPurchasedError"></div>
-            </div>
-            <div class="form-group" id="ratingGroup" style="display: none;">
-              <label for="rating">Rating pengalaman (1–5)</label>
-              <select id="rating" name="rating">
-                <option value="">-- Pilih Rating --</option>
-                <option value="1">1 - Sangat Tidak Puas</option>
-                <option value="2">2 - Tidak Puas</option>
-                <option value="3">3 - Cukup</option>
-                <option value="4">4 - Puas</option>
-                <option value="5">5 - Sangat Puas</option>
-              </select>
-            </div>
-            <div class="form-group full-width" id="feedbackGroup" style="display: none;">
-              <label for="feedback">Komentar tentang layanan kami</label>
-              <textarea id="feedback" name="feedback" placeholder="Ceritakan pengalaman Anda berbelanja di Femmeia..."></textarea>
-            </div>
+  <!-- Step 4: Kepuasan Pelanggan -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label for="hasPurchased">Pernah beli di Femmeia? <span class="required">*</span></label>
+        <div style="margin-top: 0.5rem;">
+          <label style="display: inline-flex; align-items: center; margin-right: 1rem;">
+            <input type="radio" id="purchasedYes" name="hasPurchased" value="Ya" style="margin-right: 0.5rem;" />
+            Ya
+          </label>
+          <label style="display: inline-flex; align-items: center;">
+            <input type="radio" id="purchasedNo" name="hasPurchased" value="Tidak" style="margin-right: 0.5rem;" />
+            Tidak
+          </label>
+        </div>
+        <div class="error" id="hasPurchasedError"></div>
+      </div>
+      <div class="form-group" id="ratingGroup" style="display: none;">
+        <label for="rating">Rating pengalaman belanja (1–5)</label>
+        <select id="rating" name="rating">
+          <option value="">-- Pilih Rating --</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="form-group" id="qualityGroup" style="display: none;">
+        <label for="quality">Kualitas hijab Femmeia</label>
+        <select id="quality" name="quality">
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+      </div>
+      <div class="form-group" id="materialQualityGroup" style="display: none;">
+        <label for="materialQuality">Kualitas bahan</label>
+        <select id="materialQuality" name="materialQuality">
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+      </div>
+      <div class="form-group" id="serviceQualityGroup" style="display: none;">
+        <label for="serviceQuality">Kualitas pelayanan</label>
+        <select id="serviceQuality" name="serviceQuality">
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+      </div>
+      <div class="form-group full-width">
+        <label for="shopExp">Pengalaman belanja online umum <span class="required">*</span></label>
+        <textarea id="shopExp" name="shopExp" placeholder="Ceritakan pengalaman belanja online Anda secara umum..." required></textarea>
+        <div class="error" id="shopExpError"></div>
+      </div>
+      <div class="form-group full-width" id="feedbackGroup" style="display: none;">
+        <label for="feedback">Komentar tentang layanan kami</label>
+        <textarea id="feedback" name="feedback" placeholder="Berikan komentar tentang layanan Femmeia..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5: Branding & Visual -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="logoImpression">Penilaian terhadap logo <span class="required">*</span></label>
+        <select id="logoImpression" name="logoImpression" required>
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+        <div class="error" id="logoImpressionError"></div>
+      </div>
+      <div class="form-group">
+        <label for="designAesthetic">Kesan desain produk & identitas visual <span class="required">*</span></label>
+        <select id="designAesthetic" name="designAesthetic" required>
+          <option value="">-- Pilih --</option>
+          <option value="Sangat menarik">Sangat menarik</option>
+          <option value="Menarik">Menarik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang menarik">Kurang menarik</option>
+        </select>
+        <div class="error" id="designAestheticError"></div>
+      </div>
+      <div class="form-group">
+        <label for="instagramQuality">Kualitas feed Instagram <span class="required">*</span></label>
+        <select id="instagramQuality" name="instagramQuality" required>
+          <option value="">-- Pilih --</option>
+          <option value="Sangat baik">Sangat baik</option>
+          <option value="Baik">Baik</option>
+          <option value="Biasa saja">Biasa saja</option>
+          <option value="Kurang baik">Kurang baik</option>
+        </select>
+        <div class="error" id="instagramQualityError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="brandingSuggestion">Saran terkait logo/sosmed <span class="required">*</span></label>
+        <textarea id="brandingSuggestion" name="brandingSuggestion" placeholder="Berikan saran untuk perbaikan logo atau media sosial..." required></textarea>
+        <div class="error" id="brandingSuggestionError"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 6: Ide Produk & Layanan -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label>Ide produk baru yang diminati</label>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="idea1" value="Hijab Motif" class="productIdeas" />
+            <label for="idea1">Hijab Motif</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="idea2" value="Inner Instan" class="productIdeas" />
+            <label for="idea2">Inner Instan</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="idea3" value="Aksesoris Hijab" class="productIdeas" />
+            <label for="idea3">Aksesoris Hijab</label>
           </div>
         </div>
+      </div>
+      <div class="form-group full-width">
+        <label for="otherIdea">Ide lainnya (jika ada) <span class="required">*</span></label>
+        <textarea id="otherIdea" name="otherIdea" placeholder="Tuliskan ide produk lainnya..." required></textarea>
+        <div class="error" id="otherIdeaError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="serviceIdea">Saran layanan selain produk <span class="required">*</span></label>
+        <textarea id="serviceIdea" name="serviceIdea" placeholder="Berikan saran layanan yang diinginkan selain produk hijab..." required></textarea>
+        <div class="error" id="serviceIdeaError"></div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Step 4: Ide Produk Baru -->
-        <div class="form-step bento-card">
-          <div class="form-grid">
-            <div class="form-group full-width">
-              <label>Produk baru apa yang kamu inginkan?</label>
-              <div class="checkbox-group">
-                <div class="checkbox-item">
-                  <input type="checkbox" id="idea1" value="Hijab Motif" class="productIdea" />
-                  <label for="idea1">Hijab Motif</label>
-                </div>
-                <div class="checkbox-item">
-                  <input type="checkbox" id="idea2" value="Inner Instan" class="productIdea" />
-                  <label for="idea2">Inner Instan</label>
-                </div>
-                <div class="checkbox-item">
-                  <input type="checkbox" id="idea3" value="Aksesoris Hijab" class="productIdea" />
-                  <label for="idea3">Aksesoris Hijab</label>
-                </div>
-              </div>
-            </div>
-            <div class="form-group full-width">
-              <label for="otherIdea">Ide lain (jika ada)</label>
-              <input type="text" id="otherIdea" name="otherIdea" placeholder="Tuliskan ide produk lainnya..." />
-            </div>
+  <!-- Step 7: Masukan Umum & Testimoni -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <label for="suggestion">Testimoni atau saran umum <span class="required">*</span></label>
+        <textarea id="suggestion" name="suggestion" placeholder="Bagikan testimoni, saran, atau masukan Anda untuk Femmeia Cloth..." required></textarea>
+        <div class="error" id="suggestionError"></div>
+      </div>
+      <div class="form-group full-width">
+        <label for="mainProblem">Masalah utama saat beli hijab online <span class="required">*</span></label>
+        <textarea id="mainProblem" name="mainProblem" placeholder="Ceritakan masalah yang sering Anda hadapi saat berbelanja hijab online..." required></textarea>
+        <div class="error" id="mainProblemError"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 8: Persetujuan -->
+  <div class="form-step bento-card">
+    <div class="form-grid">
+      <div class="form-group full-width">
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="agreeFollow" required />
+            <label for="agreeFollow">Follow Instagram Femmeia <span class="required">*</span><br>
+              <small>Saya sudah follow Instagram 
+              <a href="https://instagram.com/femmeia.cloth" target="_blank" style="color: var(--accent);">@femmeia.cloth</a></small>
+            </label>
           </div>
-        </div>
-
-        <!-- Step 5: Testimoni / Komentar -->
-        <div class="form-step bento-card">
-          <div class="form-grid">
-            <div class="form-group full-width">
-              <label for="suggestion">Testimoni atau saran untuk kami <span class="required">*</span></label>
-              <textarea id="suggestion" name="suggestion" placeholder="Bagikan testimoni, saran, atau masukan Anda untuk Femmeia Cloth..." required></textarea>
-              <div class="error" id="suggestionError"></div>
-            </div>
+          <div class="error" id="agreeFollowError"></div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="agree1" required />
+            <label for="agree1">Bersedia datanya digunakan <span class="required">*</span><br>
+              <small>Saya bersedia data yang saya berikan digunakan untuk pengembangan Femmeia Cloth</small>
+            </label>
           </div>
-        </div>
-
-        <!-- Step 6: Persetujuan & Kirim -->
-        <div class="form-step bento-card">
-          <div class="form-grid">
-            <div class="form-group full-width">
-              <label for="jenisewallet">Konfirmasi Jenis E-Wallet <span class="required">*</span></label>
-              <input type="text" id="jenisewallet" name="jenisewallet" placeholder="Contoh: GoPay, DANA, OVO, dll" required />
-              <div class="error" id="jenisewalletError"></div>
-            </div>
-            <div class="form-group full-width">
-              <div class="checkbox-group">
-                <div class="checkbox-item">
-                  <input type="checkbox" id="agreeFollow" required />
-                  <label for="agreeFollow">Saya sudah follow Instagram 
-                    <a href="https://instagram.com/femmeia.cloth" target="_blank" style="color: var(--accent);">@femmeia.cloth</a>
-                  </label>
-                </div>
-                <div class="error" id="agreeFollowError"></div>
-                <div class="checkbox-item">
-                  <input type="checkbox" id="agree1" required />
-                  <label for="agree1">Saya bersedia datanya digunakan untuk pengembangan Femmeia Cloth</label>
-                </div>
-                <div class="error" id="agree1Error"></div>
-                <div class="checkbox-item">
-                  <input type="checkbox" id="agree2" required />
-                  <label for="agree2">Saya setuju mengikuti undian berhadiah</label>
-                </div>
-                <div class="error" id="agree2Error"></div>
-              </div>
-            </div>
+          <div class="error" id="agree1Error"></div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="agree2" required />
+            <label for="agree2">Setuju ikut undian reward <span class="required">*</span><br>
+              <small>Saya setuju mengikuti undian berhadiah dari Femmeia Cloth</small>
+            </label>
           </div>
+          <div class="error" id="agree2Error"></div>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Navigation Buttons -->
-        <div class="button-group">
-          <button type="button" id="prevBtn" class="btn-secondary" disabled>
-            ← Sebelumnya
-          </button>
-          <button type="button" id="nextBtn" class="btn-primary">
-            Selanjutnya →
-          </button>
-          <button type="submit" id="submitBtn" class="btn-primary" style="display: none;">
-            <span id="submitText">Kirim Survey</span>
-          </button>
-        </div>
-      </form>
+  <!-- Navigation Buttons -->
+  <div class="button-group">
+    <button type="button" id="prevBtn" class="btn-secondary" disabled>
+      ← Sebelumnya
+    </button>
+    <button type="button" id="nextBtn" class="btn-primary">
+      Selanjutnya →
+    </button>
+    <button type="submit" id="submitBtn" class="btn-primary" style="display: none;">
+      <span id="submitText">Kirim Survey</span>
+    </button>
+  </div>
+</form>
     </div>
   </div>
 
@@ -887,13 +1151,15 @@
     let quotaCount = null;
 
     const stepTitles = [
-      'Data Diri',
-      'Preferensi Produk', 
-      'Kepuasan Pelanggan',
-      'Ide Produk Baru',
-      'Testimoni & Saran',
-      'Konfirmasi & Kirim'
-    ];
+  'Informasi Pribadi',
+  'Preferensi Produk Hijab',
+  'Perilaku Belanja Hijab', 
+  'Kepuasan Pelanggan',
+  'Branding & Visual',
+  'Ide Produk & Layanan',
+  'Masukan Umum & Testimoni',
+  'Persetujuan'
+];
 
     // Modal functions
     function showModal(type, title, message) {
@@ -933,24 +1199,42 @@
       modalOverlay.classList.remove('active');
     }
 
-    // Show/hide rating and feedback based on purchase history
-    hasPurchased.addEventListener('change', function() {
-      if (this.value === 'Ya') {
-        ratingGroup.style.display = 'block';
-        feedbackGroup.style.display = 'block';
-      } else {
-        ratingGroup.style.display = 'none';
-        feedbackGroup.style.display = 'none';
-        document.getElementById('rating').value = '';
-        document.getElementById('feedback').value = '';
-      }
-    });
+    // Show/hide customer satisfaction fields based on purchase history
+document.addEventListener('change', function(e) {
+  if (e.target.name === 'hasPurchased') {
+    const ratingGroup = document.getElementById('ratingGroup');
+    const qualityGroup = document.getElementById('qualityGroup');
+    const materialQualityGroup = document.getElementById('materialQualityGroup');
+    const serviceQualityGroup = document.getElementById('serviceQualityGroup');
+    const feedbackGroup = document.getElementById('feedbackGroup');
+    
+    if (e.target.value === 'Ya') {
+      ratingGroup.style.display = 'block';
+      qualityGroup.style.display = 'block';
+      materialQualityGroup.style.display = 'block';
+      serviceQualityGroup.style.display = 'block';
+      feedbackGroup.style.display = 'block';
+    } else {
+      ratingGroup.style.display = 'none';
+      qualityGroup.style.display = 'none';
+      materialQualityGroup.style.display = 'none';
+      serviceQualityGroup.style.display = 'none';
+      feedbackGroup.style.display = 'none';
+      // Clear values
+      document.getElementById('rating').value = '';
+      document.getElementById('quality').value = '';
+      document.getElementById('materialQuality').value = '';
+      document.getElementById('serviceQuality').value = '';
+      document.getElementById('feedback').value = '';
+    }
+  }
+});
 
     function updateProgress() {
       const progress = ((currentStep + 1) / totalSteps) * 100;
       progressBar.style.width = progress + '%';
       stepTitle.textContent = stepTitles[currentStep];
-      progressText.textContent = `${currentStep + 1} / ${totalSteps}`;
+      progressText.textContent = `${currentStep + 1} / 8`;
 
       // Update step indicators
       const dots = stepIndicator.querySelectorAll('.step-dot');
@@ -1000,69 +1284,118 @@
       clearErrors();
       let isValid = true;
 
-      switch (n) {
-        case 0:
-          const requiredFields = ['name', 'age', 'city', 'whatsapp', 'ewallet', 'email', 'instagram'];
-          requiredFields.forEach(field => {
-            const input = document.getElementById(field);
-            if (!input.value.trim()) {
-              showError(field, 'Field ini wajib diisi');
-              isValid = false;
-            }
-          });
-          break;
-
-        case 1:
-          if (!document.getElementById('productType').value) {
-            showError('productType', 'Jenis hijab favorit wajib dipilih');
-            isValid = false;
-          }
-          if (!document.getElementById('favoriteColor').value.trim()) {
-            showError('favoriteColor', 'Warna favorit wajib diisi');
-            isValid = false;
-          }
-          if (!document.getElementById('priceRange').value) {
-            showError('priceRange', 'Kisaran harga wajib dipilih');
-            isValid = false;
-          }
-          break;
-
-        case 2:
-          if (!document.getElementById('hasPurchased').value) {
-            showError('hasPurchased', 'Pilihan wajib dipilih');
-            isValid = false;
-          }
-          break;
-
-        case 4:
-          if (!document.getElementById('suggestion').value.trim()) {
-            showError('suggestion', 'Testimoni atau saran wajib diisi');
-            isValid = false;
-          }
-          break;
-
-        case 5:
-          if (!document.getElementById('jenisewallet').value.trim()) {
-            showError('jenisewallet', 'Jenis E-Wallet wajib diisi');
-            isValid = false;
-          }
-          if (!document.getElementById('agreeFollow').checked) {
-            showError('agreeFollow', 'Wajib follow Instagram @femmeia.cloth');
-            isValid = false;
-          }
-          if (!document.getElementById('agree1').checked) {
-            showError('agree1', 'Persetujuan penggunaan data wajib dicentang');
-            isValid = false;
-          }
-          if (!document.getElementById('agree2').checked) {
-            showError('agree2', 'Persetujuan undian berhadiah wajib dicentang');
-            isValid = false;
-          }
-          break;
+  switch (n) {
+    case 0:
+      const step0Fields = ['name', 'email', 'gender', 'age', 'city', 'job', 'income', 'marital', 'whatsapp', 'ewallet', 'jenisewallet', 'instagram'];
+      step0Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      
+      // Add phone validation after the existing required field checks
+      if (document.getElementById('whatsapp').value && !/^[0-9+\-\s()]+$/.test(document.getElementById('whatsapp').value)) {
+        showError('whatsapp', 'Format nomor WhatsApp tidak valid');
+        isValid = false;
       }
+      if (document.getElementById('ewallet').value && !/^[0-9+\-\s()]+$/.test(document.getElementById('ewallet').value)) {
+        showError('ewallet', 'Format nomor E-Wallet tidak valid');
+        isValid = false;
+      }
+      break;
 
-      return isValid;
-    }
+    case 1:
+      const step1Fields = ['productType', 'favoriteColor', 'size', 'priceRange'];
+      step1Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      break;
+
+    case 2:
+      const step2Fields = ['shoppingPlace', 'favoriteBrand', 'shopFrequency', 'reasonBuy', 'favPayment'];
+      step2Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      
+      // Check radio button for limitedEdition
+      if (!document.querySelector('input[name="limitedEdition"]:checked')) {
+        showError('limitedEdition', 'Pilihan wajib dipilih');
+        isValid = false;
+      }
+      break;
+
+    case 3:
+      if (!document.querySelector('input[name="hasPurchased"]:checked')) {
+        showError('hasPurchased', 'Pilihan wajib dipilih');
+        isValid = false;
+      }
+      if (!document.getElementById('shopExp').value.trim()) {
+        showError('shopExp', 'Field ini wajib diisi');
+        isValid = false;
+      }
+      break;
+
+    case 4:
+      const step4Fields = ['logoImpression', 'designAesthetic', 'instagramQuality', 'brandingSuggestion'];
+      step4Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      break;
+
+    case 5:
+      const step5Fields = ['otherIdea', 'serviceIdea'];
+      step5Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      break;
+
+    case 6:
+      const step6Fields = ['suggestion', 'mainProblem'];
+      step6Fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value.trim()) {
+          showError(field, 'Field ini wajib diisi');
+          isValid = false;
+        }
+      });
+      break;
+
+    case 7:
+      if (!document.getElementById('agreeFollow').checked) {
+        showError('agreeFollow', 'Wajib follow Instagram @femmeia.cloth');
+        isValid = false;
+      }
+      if (!document.getElementById('agree1').checked) {
+        showError('agree1', 'Persetujuan penggunaan data wajib dicentang');
+        isValid = false;
+      }
+      if (!document.getElementById('agree2').checked) {
+        showError('agree2', 'Persetujuan undian berhadiah wajib dicentang');
+        isValid = false;
+      }
+      break;
+  }
+
+  return isValid;
+}
 
     nextBtn.addEventListener('click', () => {
       if (validateStep(currentStep)) {
@@ -1126,97 +1459,413 @@
     checkQuotaAndToggleForm();
 
     // Form submission
-    surveyForm.addEventListener('submit', async function(event) {
-      event.preventDefault();
+surveyForm.addEventListener('submit', async function(event) {
+  event.preventDefault();
 
-      if (!validateStep(currentStep)) {
-        return;
-      }
+  if (!validateStep(currentStep)) {
+    return;
+  }
 
-      // Show loading modal
-      showModal('loading', 'Mengirim Survey', 'Mohon tunggu sebentar, survey Anda sedang diproses...');
+  // Show loading modal
+  showModal('loading', 'Mengirim Survey', 'Mohon tunggu sebentar, survey Anda sedang diproses...');
 
-      // Collect form data
-      const ideas = Array.from(document.querySelectorAll('.productIdea:checked')).map(cb => cb.value).join(', ');
-      const surveyData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        age: document.getElementById('age').value,
-        city: document.getElementById('city').value,
-        whatsapp: document.getElementById('whatsapp').value,
-        ewallet: document.getElementById('ewallet').value,
-        jenisewallet: document.getElementById('jenisewallet').value,
-        instagram: document.getElementById('instagram').value,
-        productType: document.getElementById('productType').value,
-        favoriteColor: document.getElementById('favoriteColor').value,
-        priceRange: document.getElementById('priceRange').value,
-        hasPurchased: document.getElementById('hasPurchased').value,
-        rating: document.getElementById('rating').value,
-        feedback: document.getElementById('feedback').value,
-        productIdeas: ideas,
-        otherIdea: document.getElementById('otherIdea').value,
-        suggestion: document.getElementById('suggestion').value,
-        timestamp: new Date()
-      };
+  // Collect form data
+  const ideas = Array.from(document.querySelectorAll('.productIdeas:checked')).map(cb => cb.value).join(', ');
 
-      try {
-        await runTransaction(db, async (transaction) => {
-          const quotaDoc = await transaction.get(quotaDocRef);
-          if (!quotaDoc.exists()) throw "Quota tidak ditemukan!";
-          let count = quotaDoc.data().count;
-          if (count <= 0) throw "Stok survey sudah habis!";
-          
-          // Save survey
-          const surveysCol = collection(db, "surveys");
-          await addDoc(surveysCol, surveyData);
-          
-          // Update quota
-          transaction.update(quotaDocRef, { count: count - 1 });
-        });
+  // Survey Data Object
+  const surveyData = {
+    // Step 1: Informasi Pribadi
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    gender: document.getElementById('gender').value,
+    age: document.getElementById('age').value,
+    city: document.getElementById('city').value,
+    job: document.getElementById('job').value,
+    income: document.getElementById('income')?.value || '',
+    marital: document.getElementById('marital')?.value || '',
+    whatsapp: document.getElementById('whatsapp').value,
+    ewallet: document.getElementById('ewallet').value,
+    jenisewallet: document.getElementById('jenisewallet').value,
+    instagram: document.getElementById('instagram').value,
 
-        // Send email
-        emailjs.send('service_00xj2ta', 'template_4i1ue1g', surveyData)
-          .then(() => {
-            // Show success modal
-            showModal(
-              'success', 
-              'Survey Berhasil Dikirim', 
-              'Terima kasih atas partisipasi Anda! Hadiah akan dikirimkan dalam 3x24 jam ke e-wallet yang telah Anda cantumkan.'
-            );
-            surveyForm.reset();
-            currentStep = 0;
-            showStep(currentStep);
-            checkQuotaAndToggleForm();
-          }, (error) => {
-            // Show partial success modal
-            showModal(
-              'success', 
-              'Survey Berhasil Disimpan', 
-              'Survey Anda telah berhasil disimpan, namun pengiriman email notifikasi gagal. Kami tetap akan memproses hadiah Anda.'
-            );
-            console.error(error);
-            checkQuotaAndToggleForm();
-          });
+    // Step 2: Preferensi Produk Hijab
+    productType: document.getElementById('productType').value,
+    favoriteColor: document.getElementById('favoriteColor').value,
+    size: document.getElementById('size').value,
+    priceRange: document.getElementById('priceRange').value,
 
-      } catch (e) {
-        // Show error modal
-        if (e === "Stok survey sudah habis!") {
-          showModal(
-            'error', 
-            'Kuota Survey Habis', 
-            'Mohon maaf, kuota survey sudah habis. Terima kasih atas antusiasme Anda!'
-          );
-        } else {
-          showModal(
-            'error', 
-            'Gagal Mengirim Survey', 
-            'Terjadi kesalahan saat mengirim survey. Silakan coba lagi dalam beberapa saat.'
-          );
-        }
-        console.error(e);
-        checkQuotaAndToggleForm();
-      }
+    // Step 3: Perilaku Belanja Hijab
+    shoppingPlace: document.getElementById('shoppingPlace').value,
+    favoriteBrand: document.getElementById('favoriteBrand').value,
+    shopFrequency: document.getElementById('shopFrequency').value,
+    reasonBuy: document.getElementById('reasonBuy').value,
+    buyMoment: Array.from(document.querySelectorAll('.buyMoment:checked')).map(cb => cb.value).join(', '),
+    infoSource: Array.from(document.querySelectorAll('.infoSource:checked')).map(cb => cb.value).join(', '),
+    limitedEdition: document.querySelector('input[name="limitedEdition"]:checked')?.value || '',
+    favPayment: document.getElementById('favPayment').value,
+
+    // Step 4: Kepuasan Pelanggan
+    hasPurchased: document.querySelector('input[name="hasPurchased"]:checked')?.value || '',
+    rating: document.getElementById('rating').value,
+    quality: document.getElementById('quality').value,
+    materialQuality: document.getElementById('materialQuality').value,
+    serviceQuality: document.getElementById('serviceQuality').value,
+    shopExp: document.getElementById('shopExp').value,
+    feedback: document.getElementById('feedback').value,
+
+    // Step 5: Branding & Visual
+    logoImpression: document.getElementById('logoImpression').value,
+    designAesthetic: document.getElementById('designAesthetic').value,
+    instagramQuality: document.getElementById('instagramQuality').value,
+    brandingSuggestion: document.getElementById('brandingSuggestion').value,
+
+    // Step 6: Ide Produk & Layanan
+    productIdeas: ideas,
+    otherIdea: document.getElementById('otherIdea').value,
+    serviceIdea: document.getElementById('serviceIdea').value,
+
+    // Step 7: Masukan Umum & Testimoni
+    suggestion: document.getElementById('suggestion').value,
+    mainProblem: document.getElementById('mainProblem').value,
+
+    // Step 8: Timestamp
+    timestamp: new Date()
+  };
+
+  // Calculate prize and conclusion
+  const { prizeAmount, conclusion } = calculatePrizeAndConclusion(surveyData);
+  surveyData.prizeAmount = prizeAmount;
+  surveyData.conclusion = conclusion;
+
+  try {
+    await runTransaction(db, async (transaction) => {
+      const quotaDoc = await transaction.get(quotaDocRef);
+      if (!quotaDoc.exists()) throw "Quota tidak ditemukan!";
+      let count = quotaDoc.data().count;
+      if (count <= 0) throw "Stok survey sudah habis!";
+      
+      // Save survey
+      const surveysCol = collection(db, "surveys");
+      await addDoc(surveysCol, surveyData);
+      
+      // Update quota
+      transaction.update(quotaDocRef, { count: count - 1 });
     });
+
+    // Send email
+    emailjs.send('service_00xj2ta', 'template_4i1ue1g', surveyData)
+      .then(() => {
+        // Show success modal
+        showModal(
+          'success', 
+          'Survey Berhasil Dikirim', 
+          `Terima kasih atas partisipasi Anda! Hadiah Rp${prizeAmount} akan dikirimkan dalam 1x24 jam ke e-wallet yang telah Anda cantumkan.`
+        );
+        surveyForm.reset();
+        currentStep = 0;
+        showStep(currentStep);
+        checkQuotaAndToggleForm();
+      }, (error) => {
+        // Show partial success modal
+        showModal(
+          'success', 
+          'Survey Berhasil Disimpan', 
+          `Survey Anda telah berhasil disimpan dengan hadiah Rp${prizeAmount}, namun pengiriman email notifikasi gagal. Kami tetap akan memproses hadiah Anda.`
+        );
+        console.error(error);
+        checkQuotaAndToggleForm();
+      });
+
+  } catch (e) {
+    // Show error modal
+    if (e === "Stok survey sudah habis!") {
+      showModal(
+        'error', 
+        'Kuota Survey Habis', 
+        'Mohon maaf, kuota survey sudah habis. Terima kasih atas antusiasme Anda!'
+      );
+    } else {
+      showModal(
+        'error', 
+        'Gagal Mengirim Survey', 
+        'Terjadi kesalahan saat mengirim survey. Silakan coba lagi dalam beberapa saat.'
+      );
+    }
+    console.error(e);
+    checkQuotaAndToggleForm();
+  }
+});
+
+// Improved Prize calculation function with better accuracy
+function calculatePrizeAndConclusion(surveyData) {
+  // Initialize base prize
+  let prize = 1000; // Start with minimum 1000
+  let profileScore = 0;
+  let engagementScore = 0;
+  let qualityScore = 0;
+  let brandLoyaltyScore = 0;
+  let innovationScore = 0;
+
+  // 1. Profile Completeness Score (max 300 points)
+  const requiredFields = ['name', 'email', 'whatsapp', 'instagram', 'city', 'gender', 'age'];
+  const optionalFields = ['job', 'income', 'marital'];
+  
+  // Required fields completion
+  const completedRequired = requiredFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+  profileScore += (completedRequired / requiredFields.length) * 200;
+  
+  // Optional fields bonus
+  const completedOptional = optionalFields.filter(field => 
+    surveyData[field] && surveyData[field].trim() && 
+    !surveyData[field].includes('Tidak Menjawab')
+  ).length;
+  profileScore += (completedOptional / optionalFields.length) * 100;
+
+  // 2. Engagement Quality Score (max 600 points)
+  const textFields = [
+    { field: "shopExp", weight: 1.2, minLength: 50 },
+    { field: "brandingSuggestion", weight: 1.5, minLength: 30 },
+    { field: "otherIdea", weight: 1.3, minLength: 20 },
+    { field: "serviceIdea", weight: 1.3, minLength: 20 },
+    { field: "suggestion", weight: 1.4, minLength: 30 },
+    { field: "mainProblem", weight: 1.2, minLength: 30 },
+    { field: "feedback", weight: 1.1, minLength: 20 }
+  ];
+
+  textFields.forEach(({ field, weight, minLength }) => {
+    if (surveyData[field] && surveyData[field].trim()) {
+      const text = surveyData[field].trim();
+      let fieldScore = 0;
+      
+      if (text.length >= minLength) {
+        // Base score for meeting minimum
+        fieldScore = 30;
+        
+        // Length bonus (diminishing returns)
+        if (text.length > 100) fieldScore += 40;
+        else if (text.length > 50) fieldScore += 20;
+        
+        // Quality indicators bonus
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 10).length;
+        if (sentences >= 3) fieldScore += 20;
+        
+        // Specific keyword bonus for valuable feedback
+        const valuableKeywords = ['saran', 'sebaiknya', 'bisa', 'perlu', 'harap', 'mungkin', 'lebih baik', 'kualitas', 'pelayanan'];
+        const keywordCount = valuableKeywords.filter(keyword => 
+          text.toLowerCase().includes(keyword)
+        ).length;
+        fieldScore += Math.min(keywordCount * 5, 20);
+      }
+      
+      engagementScore += fieldScore * weight;
+    }
+  });
+
+  // 3. Brand Loyalty & Experience Score (max 400 points)
+  if (surveyData.hasPurchased === 'Ya') {
+    brandLoyaltyScore += 150; // Base loyalty bonus
+    
+    // Rating quality bonus
+    if (surveyData.rating) {
+      const rating = parseInt(surveyData.rating);
+      if (rating >= 4) brandLoyaltyScore += 100;
+      else if (rating >= 3) brandLoyaltyScore += 50;
+      else brandLoyaltyScore += 25; // Even negative feedback is valuable
+    }
+    
+    // Detailed experience bonus
+    if (surveyData.quality && surveyData.materialQuality && surveyData.serviceQuality) {
+      brandLoyaltyScore += 75;
+    }
+    
+    // Constructive feedback bonus
+    if (surveyData.feedback && surveyData.feedback.length > 30) {
+      brandLoyaltyScore += 75;
+    }
+  } else {
+    // Potential customer bonus (still valuable)
+    brandLoyaltyScore += 50;
+  }
+
+  // 4. Market Research Value Score (max 300 points)
+  let marketResearchScore = 0;
+  
+  // Shopping behavior completeness
+  const behaviorFields = ['shoppingPlace', 'favoriteBrand', 'shopFrequency', 'reasonBuy', 'favPayment'];
+  const completedBehavior = behaviorFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+  marketResearchScore += (completedBehavior / behaviorFields.length) * 100;
+  
+  // Preference completeness
+  const preferenceFields = ['productType', 'favoriteColor', 'size', 'priceRange'];
+  const completedPreferences = preferenceFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+  marketResearchScore += (completedPreferences / preferenceFields.length) * 100;
+  
+  // Additional insights (checkboxes)
+  if (surveyData.buyMoment && surveyData.buyMoment.length > 0) marketResearchScore += 25;
+  if (surveyData.infoSource && surveyData.infoSource.length > 0) marketResearchScore += 25;
+  if (surveyData.productIdeas && surveyData.productIdeas.length > 0) marketResearchScore += 25;
+  if (surveyData.limitedEdition) marketResearchScore += 25;
+
+  // 5. Innovation & Branding Feedback Score (max 400 points)
+  const brandingFields = ['logoImpression', 'designAesthetic', 'instagramQuality'];
+  const completedBranding = brandingFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+  innovationScore += (completedBranding / brandingFields.length) * 150;
+  
+  // Constructive branding feedback
+  if (surveyData.brandingSuggestion && surveyData.brandingSuggestion.length > 50) {
+    innovationScore += 100;
+  }
+  
+  // Product innovation ideas
+  if (surveyData.otherIdea && surveyData.otherIdea.length > 30) {
+    innovationScore += 75;
+  }
+  
+  if (surveyData.serviceIdea && surveyData.serviceIdea.length > 30) {
+    innovationScore += 75;
+  }
+
+  // Calculate total score and final prize
+  const totalScore = profileScore + engagementScore + brandLoyaltyScore + marketResearchScore + innovationScore;
+  
+  // Progressive prize calculation with better distribution
+  if (totalScore >= 1500) prize = 5000;
+  else if (totalScore >= 1200) prize = 4500;
+  else if (totalScore >= 1000) prize = 4000;
+  else if (totalScore >= 800) prize = 3500;
+  else if (totalScore >= 600) prize = 3000;
+  else if (totalScore >= 400) prize = 2500;
+  else if (totalScore >= 250) prize = 2000;
+  else if (totalScore >= 150) prize = 1500;
+  else prize = 1000;
+
+  // Generate improved conclusion
+  const conclusion = generateImprovedConclusion(surveyData, {
+    profileScore,
+    engagementScore,
+    brandLoyaltyScore,
+    marketResearchScore,
+    innovationScore,
+    totalScore
+  });
+
+  return {
+    prizeAmount: prize,
+    conclusion: conclusion
+  };
+}
+
+// Improved conclusion generation function
+function generateImprovedConclusion(data, scores) {
+  const conclusions = [];
+
+  // 1. Demographic Profile
+  let profileConclusion = `Responden ${data.name} (${data.gender.toLowerCase()}, ${data.age} tahun) dari ${data.city}`;
+  
+  if (data.job && !data.job.includes('Tidak Menjawab')) {
+    profileConclusion += ` dengan status ${data.job.toLowerCase()}`;
+  }
+  
+  if (data.income && !data.income.includes('Tidak Menjawab')) {
+    const incomeText = data.income === '<1jt' ? 'di bawah 1 juta' : 
+                      data.income === '1-3jt' ? 'antara 1-3 juta' : 'di atas 3 juta';
+    profileConclusion += ` dan penghasilan bulanan ${incomeText}`;
+  }
+  
+  profileConclusion += '.';
+  conclusions.push(profileConclusion);
+
+  // 2. Product Preferences & Shopping Behavior
+  if (data.productType && data.favoriteColor) {
+    let preferenceConclusion = `Memiliki preferensi hijab jenis ${data.productType.toLowerCase()}`;
+    if (data.favoriteColor) preferenceConclusion += ` dengan warna ${data.favoriteColor.toLowerCase()}`;
+    if (data.size) preferenceConclusion += `, ukuran ${data.size}`;
+    if (data.priceRange) {
+      const priceText = data.priceRange === '<50rb' ? 'ekonomis (di bawah 50rb)' :
+                       data.priceRange === '50rb-100rb' ? 'menengah (50-100rb)' : 'premium (di atas 100rb)';
+      preferenceConclusion += ` dengan budget ${priceText}`;
+    }
+    preferenceConclusion += '.';
+    conclusions.push(preferenceConclusion);
+  }
+
+  // 3. Shopping Behavior Analysis
+  if (data.shoppingPlace && data.shopFrequency) {
+    let behaviorConclusion = `Berbelanja hijab secara ${data.shoppingPlace.toLowerCase()}`;
+    
+    const frequencyText = data.shopFrequency === '1-2x' ? 'jarang (1-2x/tahun)' :
+                         data.shopFrequency === '3-5x' ? 'sedang (3-5x/tahun)' :
+                         data.shopFrequency === '>6x' ? 'sering (>6x/tahun)' : 'tidak teratur';
+    behaviorConclusion += ` dengan frekuensi ${frequencyText}`;
+    
+    if (data.favPayment) {
+      behaviorConclusion += ` dan lebih suka pembayaran ${data.favPayment.toLowerCase()}`;
+    }
+    
+    if (data.reasonBuy) {
+      behaviorConclusion += `. Motivasi utama pembelian adalah ${data.reasonBuy.toLowerCase()}`;
+    }
+    
+    behaviorConclusion += '.';
+    conclusions.push(behaviorConclusion);
+  }
+
+  // 4. Brand Relationship
+  if (data.hasPurchased === 'Ya') {
+    let brandConclusion = 'Merupakan pelanggan existing Femmeia';
+    if (data.rating) {
+      const ratingText = parseInt(data.rating) >= 4 ? 'sangat puas' :
+                        parseInt(data.rating) >= 3 ? 'cukup puas' : 'kurang puas';
+      brandConclusion += ` dengan tingkat kepuasan ${ratingText} (${data.rating}/5)`;
+    }
+    
+    if (data.quality && data.materialQuality && data.serviceQuality) {
+      brandConclusion += `. Menilai kualitas produk ${data.quality.toLowerCase()}, bahan ${data.materialQuality.toLowerCase()}, dan pelayanan ${data.serviceQuality.toLowerCase()}`;
+    }
+    
+    brandConclusion += '.';
+    conclusions.push(brandConclusion);
+  } else {
+    conclusions.push('Merupakan calon pelanggan potensial yang belum pernah berbelanja di Femmeia.');
+  }
+
+  // 5. Brand Perception
+  if (data.logoImpression && data.designAesthetic) {
+    const logoText = data.logoImpression.toLowerCase();
+    const designText = data.designAesthetic.toLowerCase();
+    conclusions.push(`Persepsi terhadap brand: logo dinilai ${logoText} dan desain produk ${designText}.`);
+  }
+
+  // 6. Engagement Quality Assessment
+  let engagementConclusion = '';
+  if (scores.totalScore >= 1200) {
+    engagementConclusion = 'Memberikan feedback yang sangat komprehensif dan detail, menunjukkan engagement tinggi terhadap brand.';
+  } else if (scores.totalScore >= 800) {
+    engagementConclusion = 'Memberikan feedback yang baik dan konstruktif dengan insight yang berharga.';
+  } else if (scores.totalScore >= 400) {
+    engagementConclusion = 'Memberikan feedback dasar yang cukup membantu untuk pengembangan brand.';
+  } else {
+    engagementConclusion = 'Memberikan feedback minimal namun tetap berkontribusi pada riset pasar.';
+  }
+  conclusions.push(engagementConclusion);
+
+  // 7. Market Segment Classification
+  let segmentConclusion = 'Termasuk dalam segmen ';
+  if (data.shopFrequency === '>6x' && data.priceRange === '>100rb') {
+    segmentConclusion += 'premium loyal customer dengan daya beli tinggi.';
+  } else if (data.shopFrequency === '3-5x' || data.shopFrequency === '>6x') {
+    segmentConclusion += 'active customer dengan potensi repeat purchase yang baik.';
+  } else if (data.reasonBuy === 'Fashion' && data.limitedEdition === 'Ya') {
+    segmentConclusion += 'fashion-conscious customer yang tertarik produk eksklusif.';
+  } else if (data.priceRange === '30rb-50rb') {
+    segmentConclusion += 'price-sensitive customer yang mengutamakan value for money.';
+  } else {
+    segmentConclusion += 'mainstream customer dengan perilaku belanja standar.';
+  }
+  conclusions.push(segmentConclusion);
+
+  return conclusions.join(' ');
+}
 
     // Initialize
     showStep(currentStep);
