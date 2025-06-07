@@ -1,1 +1,3414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FemmeiaCloth - Hijab & Aksesoris Fashion Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary: #ff6b9d;
+        --primary-dark: #c44569;
+        --primary-light: #ff8fb3;
+        --secondary: #6c5ce7;
+        --background: #0f0f23;
+        --background-light: #1a1a2e;
+        --background-lighter: #16213e;
+        --surface: rgba(255, 255, 255, 0.05);
+        --surface-hover: rgba(255, 255, 255, 0.08);
+        --text: #e2e8f0;
+        --text-muted: #94a3b8;
+        --text-light: #cbd5e1;
+        --border: rgba(255, 255, 255, 0.1);
+        --border-hover: rgba(255, 107, 157, 0.3);
+        --success: #10b981;
+        --error: #ef4444;
+        --warning: #f59e0b;
+        --blur-strength: 20px;
+        --transition-speed: 0.3s;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.4);
+        --glow: 0 0 20px rgba(255, 107, 157, 0.3);
+        
+        /* Dark checkout theme */
+        --checkout-bg: #0a0a1a;
+        --checkout-card-bg: rgba(22, 22, 40, 0.9);
+        --checkout-border: rgba(255, 107, 157, 0.15);
+        --checkout-input-bg: rgba(15, 15, 35, 0.5);
+        --checkout-text: #e2e8f0;
+        --checkout-text-muted: #94a3b8;
+        --checkout-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    body {
+        font-family: 'Quicksand', sans-serif;
+        background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 50%, var(--background-lighter) 100%);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Enhanced Navigation */
+    .navbar {
+        background: rgba(15, 15, 35, 0.95);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border-bottom: 1px solid var(--border);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 1rem 0;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .navbar.scrolled {
+        background: rgba(15, 15, 35, 0.98);
+        box-shadow: var(--shadow);
+    }
+
+    .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(45deg, var(--primary), var(--primary-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        transition: all var(--transition-speed) ease;
+        z-index: 1001;
+        cursor: pointer;
+    }
+
+    .logo:hover {
+        transform: scale(1.05);
+        filter: drop-shadow(var(--glow));
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 1rem;
+        list-style: none;
+        align-items: center;
+    }
+
+    .nav-links li {
+        position: relative;
+    }
+
+    .nav-links a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all var(--transition-speed) ease;
+        padding: 0.75rem 1.25rem;
+        border-radius: 12px;
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .nav-links a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        opacity: 0;
+        transition: opacity var(--transition-speed) ease;
+        z-index: -1;
+    }
+
+    .nav-links a:hover::before {
+        opacity: 0.1;
+    }
+
+    .nav-links a:hover {
+        color: var(--primary-light);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
+    }
+
+    .cart-badge {
+        background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+        color: white;
+        border-radius: 50%;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.75rem;
+        margin-left: 0.5rem;
+        transition: all var(--transition-speed) ease;
+        animation: pulse 2s infinite;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .mobile-menu-btn {
+        display: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        z-index: 1001;
+        position: relative;
+        padding: 0.75rem;
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+    }
+
+    .mobile-menu-btn:hover {
+        color: var(--primary);
+        background: var(--surface-hover);
+        border-color: var(--border-hover);
+        transform: scale(1.05);
+    }
+
+    /* Enhanced Form Styles */
+    .form-container {
+        background: var(--surface);
+        backdrop-filter: blur(var(--blur-strength));
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 2rem;
+        transition: all var(--transition-speed) ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .form-container:hover {
+        border-color: var(--border-hover);
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-light);
+        transition: all var(--transition-speed) ease;
+        font-size: 0.9rem;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        background: var(--surface);
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        font-family: 'Quicksand', sans-serif;
+        font-size: 1rem;
+        transition: all var(--transition-speed) ease;
+        backdrop-filter: blur(10px);
+        position: relative;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: var(--surface-hover);
+        box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .form-input:focus + label {
+        color: var(--primary);
+    }
+
+    .form-input::placeholder {
+        color: var(--text-muted);
+        opacity: 0.7;
+    }
+
+    .form-textarea {
+        min-height: 100px;
+        resize: vertical;
+        font-family: 'Quicksand', sans-serif;
+    }
+
+    .form-select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 3rem;
+        cursor: pointer;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    /* Enhanced Button Styles */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem 2rem;
+        background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        min-height: 50px;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4);
+        filter: brightness(1.1);
+    }
+
+    .btn:active {
+        transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .btn-secondary {
+        background: linear-gradient(45deg, var(--secondary), #5a4fcf);
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+    }
+
+    .btn-outline:hover {
+        background: var(--primary);
+        color: white;
+    }
+
+    /* Sticky Checkout Button */
+    .sticky-checkout {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 1rem 1.5rem;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        z-index: 999;
+        box-shadow: var(--shadow);
+        transition: all var(--transition-speed) ease;
+        display: none;
+        backdrop-filter: blur(10px);
+    }
+
+    .sticky-checkout:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .sticky-checkout.show {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        animation: bounceIn 0.5s ease;
+    }
+
+    /* Page Sections */
+    .page-section {
+        display: none;
+        padding-top: 100px;
+        min-height: 100vh;
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .page-section.active {
+        display: block;
+    }
+
+    /* Enhanced Auth Section */
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem;
+        background: radial-gradient(circle at center, rgba(255, 107, 157, 0.1) 0%, transparent 70%);
+    }
+
+    .auth-card {
+        background: var(--surface);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 3rem;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: var(--shadow);
+        transition: all var(--transition-speed) ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    .auth-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--border-hover);
+    }
+
+    .auth-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .auth-switch {
+        text-align: center;
+        color: var(--text-muted);
+        margin-top: 1.5rem;
+    }
+
+    .auth-switch a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all var(--transition-speed) ease;
+        position: relative;
+    }
+
+    .auth-switch a::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background: var(--primary);
+        transform: scaleX(0);
+        transition: transform var(--transition-speed) ease;
+    }
+
+    .auth-switch a:hover::after {
+        transform: scaleX(1);
+    }
+
+    .forgot-password {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .forgot-password a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .forgot-password a:hover {
+        color: var(--primary);
+    }
+
+    .error {
+        color: var(--error);
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .error::before {
+        content: '⚠️';
+        font-size: 0.8rem;
+    }
+
+    .success {
+        color: var(--success);
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .success::before {
+        content: '✅';
+        font-size: 0.8rem;
+    }
+
+    /* Email Verification Notice */
+    .verification-notice {
+        background: linear-gradient(45deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.1));
+        border: 1px solid var(--warning);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .verification-notice h3 {
+        color: var(--warning);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .verification-notice h3::before {
+        content: '📧';
+        font-size: 1.5rem;
+    }
+
+    /* Enhanced Cards */
+    .card {
+        background: var(--surface);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 2rem;
+        transition: all var(--transition-speed) ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        opacity: 0;
+        transition: opacity var(--transition-speed) ease;
+    }
+
+    .card:hover::before {
+        opacity: 1;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--border-hover);
+    }
+
+    .card h3 {
+        color: var(--primary);
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    /* Promo Card */
+    .promo-card {
+        background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(108, 92, 231, 0.15));
+        border: 2px solid var(--primary);
+        border-radius: 24px;
+        padding: 2rem;
+        text-align: center;
+        margin: 2rem 0;
+        position: relative;
+        overflow: hidden;
+        animation: float 6s ease-in-out infinite;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .promo-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 107, 157, 0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+
+    .promo-card h3 {
+        color: var(--primary);
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .promo-code {
+        background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: bold;
+        display: inline-block;
+        margin: 1rem 0;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        position: relative;
+        z-index: 1;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+
+    .promo-code:hover {
+        transform: scale(1.05);
+        box-shadow: var(--glow);
+    }
+
+    /* Product Cards */
+    .product-card {
+        background: var(--surface);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all var(--transition-speed) ease;
+        cursor: pointer;
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, transparent 100%);
+        opacity: 0;
+        transition: opacity var(--transition-speed) ease;
+    }
+
+    .product-card:hover::after {
+        opacity: 1;
+    }
+
+    .product-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--border-hover);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.05);
+    }
+
+    .product-info {
+        padding: 1.5rem;
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-light);
+        transition: all var(--transition-speed) ease;
+    }
+
+    .product-card:hover .product-name {
+        color: var(--primary);
+    }
+
+    .product-price {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 1rem;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .product-colors {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .color-option {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .color-option:hover {
+        transform: scale(1.2);
+        border-color: var(--primary);
+        box-shadow: var(--glow);
+    }
+
+    .color-option.selected {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.3);
+    }
+
+    .color-option::after {
+        content: '✓';
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity var(--transition-speed) ease;
+        text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .color-option.selected::after {
+        opacity: 1;
+    }
+
+    /* Bento Grid */
+    .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 2rem 0;
+    }
+
+    /* Profile Section */
+    .profile-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--primary);
+        margin-bottom: 1rem;
+        transition: all var(--transition-speed) ease;
+        box-shadow: var(--shadow);
+    }
+
+    .profile-avatar:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .upload-btn {
+        background: rgba(255, 107, 157, 0.1);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border: 1px solid var(--primary);
+        color: var(--primary);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Quicksand', sans-serif;
+        margin-bottom: 1rem;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .upload-btn:hover {
+        background: rgba(255, 107, 157, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .profile-form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    /* Cart Styles */
+    .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: var(--surface);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border-radius: 16px;
+        margin-bottom: 1rem;
+        transition: all var(--transition-speed) ease;
+        border: 1px solid var(--border);
+    }
+
+    .cart-item:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow);
+        border-color: var(--border-hover);
+    }
+
+    .cart-item-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 12px;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .cart-item-info {
+        flex: 1;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .quantity-btn {
+        background: var(--primary);
+        border: none;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all var(--transition-speed) ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .quantity-btn:hover {
+        transform: scale(1.1);
+        box-shadow: var(--glow);
+    }
+
+    .cart-total {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 2rem 0;
+        text-shadow: var(--glow);
+        animation: pulse 2s infinite;
+    }
+
+    /* Filters */
+    .filters {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .filter-btn {
+        padding: 0.75rem 1.5rem;
+        background: var(--surface);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border: 1px solid var(--border);
+        border-radius: 25px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        position: relative;
+        overflow: hidden;
+        font-weight: 500;
+    }
+
+    .filter-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        opacity: 0;
+        transition: opacity var(--transition-speed) ease;
+        z-index: -1;
+    }
+
+    .filter-btn:hover::before,
+    .filter-btn.active::before {
+        opacity: 1;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+        border-color: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+    }
+
+    /* Enhanced Checkout Styles with Dark Theme */
+    .checkout-container {
+        background: var(--checkout-bg);
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+
+    .checkout-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .checkout-heading {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .cart-summary {
+        background: var(--checkout-card-bg);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border-radius: 24px;
+        box-shadow: var(--checkout-shadow);
+        border: 1px solid var(--checkout-border);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .cart-summary h3 {
+        color: var(--primary);
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        background: linear-gradient(45deg, var(--primary), var(--primary-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .cart-summary-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--checkout-border);
+        color: var(--checkout-text);
+    }
+
+    .cart-summary-item:last-child {
+        border-bottom: none;
+        font-weight: bold;
+        color: var(--primary);
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 2px solid var(--checkout-border);
+        font-size: 1.1rem;
+    }
+
+    .promo-section {
+        background: var(--checkout-card-bg);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--checkout-border);
+        box-shadow: var(--checkout-shadow);
+    }
+
+    .promo-input-group {
+        display: flex;
+        gap: 1rem;
+        align-items: end;
+    }
+
+    .promo-input-group input {
+        flex: 1;
+        margin-bottom: 0;
+        background: var(--checkout-input-bg);
+        border-color: var(--checkout-border);
+        color: var(--checkout-text);
+    }
+
+    .promo-input-group input:focus {
+        border-color: var(--primary);
+    }
+
+    .promo-btn {
+        background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+        color: white;
+        border: none;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        cursor: pointer;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 600;
+        transition: all var(--transition-speed) ease;
+        white-space: nowrap;
+    }
+
+    .promo-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--glow);
+        filter: brightness(1.1);
+    }
+
+    .checkout-form-container {
+        background: var(--checkout-card-bg);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border: 1px solid var(--checkout-border);
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: var(--checkout-shadow);
+    }
+
+    .checkout-form-container h3 {
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        font-size: 1.3rem;
+        background: linear-gradient(45deg, var(--primary), var(--primary-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .checkout-form-container label {
+        color: var(--checkout-text);
+        font-weight: 600;
+    }
+
+    .checkout-form-container .form-input {
+        background: var(--checkout-input-bg);
+        border-color: var(--checkout-border);
+        color: var(--checkout-text);
+    }
+
+    .checkout-form-container .form-input:focus {
+        border-color: var(--primary);
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .promo-success {
+        color: var(--success);
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .promo-error {
+        color: var(--error);
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .promo-error::before {
+        content: '⚠️';
+        font-size: 0.8rem;
+    }
+
+    /* WhatsApp Button */
+    .whatsapp-btn {
+        background: linear-gradient(45deg, #25D366, #128C7E);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        padding: 1.2rem;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        width: 100%;
+        margin-top: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .whatsapp-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .whatsapp-btn:hover::before {
+        left: 100%;
+    }
+
+    .whatsapp-btn:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 2000;
+        overflow-y: auto;
+        padding: 2rem;
+        animation: fadeIn 0.3s ease;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
+
+    .modal-content-product {
+        background: var(--surface);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        position: relative;
+        animation: scaleIn 0.3s ease;
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .close-modal:hover {
+        color: var(--primary);
+        background: var(--surface-hover);
+        transform: rotate(90deg);
+    }
+
+    .product-detail {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .product-detail-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 16px;
+        transition: all var(--transition-speed) ease;
+        border: 1px solid var(--border);
+    }
+
+    .product-detail-info h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--primary);
+    }
+
+    .product-detail-price {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--primary);
+        text-shadow: var(--glow);
+    }
+
+    /* Hero Section */
+    .hero {
+        text-align: center;
+        padding: 4rem 0;
+        background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(108, 92, 231, 0.1));
+        border-radius: 24px;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 107, 157, 0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* About Section */
+    .about-hero {
+        text-align: center;
+        padding: 4rem 0;
+        background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(108, 92, 231, 0.1));
+        border-radius: 24px;
+        margin-bottom: 3rem;
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+    }
+
+    .about-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+
+    .feature-card {
+        background: var(--surface);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        transition: all var(--transition-speed) ease;
+        border: 1px solid var(--border);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--border-hover);
+        box-shadow: var(--shadow);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    /* Notification */
+    .notification {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: var(--primary);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        z-index: 1001;
+        animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .notification.error {
+        background: var(--error);
+    }
+
+    .notification.success {
+        background: var(--success);
+    }
+
+    /* Loading Animation */
+    .loading {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 0.5rem;
+    }
+
+    /* Enhanced Blur Components */
+    .blur-panel {
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .blur-panel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top left, rgba(255, 107, 157, 0.05), transparent 70%);
+        pointer-events: none;
+    }
+
+    .blur-badge {
+        display: inline-block;
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        background: rgba(255, 107, 157, 0.15);
+        border: 1px solid var(--primary);
+        border-radius: 20px;
+        padding: 0.25rem 0.75rem;
+        color: var(--primary);
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .blur-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--border), transparent);
+        margin: 2rem 0;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        transition: all var(--transition-speed) ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .glass-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 70%);
+        transform: rotate(30deg);
+    }
+
+    .glass-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--border-hover);
+        box-shadow: var(--shadow-hover);
+    }
+
+    /* Customer Review Section */
+    .reviews-section {
+        padding: 3rem 0;
+    }
+
+    .review-card {
+        background: var(--surface);
+        backdrop-filter: blur(var(--blur-strength));
+        -webkit-backdrop-filter: blur(var(--blur-strength));
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .review-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--border-hover);
+        box-shadow: var(--shadow);
+    }
+
+    .review-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        gap: 1rem;
+    }
+
+    .reviewer-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .review-rating {
+        color: #FFD700;
+        margin-top: 0.5rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .nav-links {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 15, 35, 0.98);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            transition: left var(--transition-speed) ease;
+            z-index: 1000;
+            width: 100%;
+        }
+        
+        .nav-links.active {
+            left: 0;
+        }
+        
+        .nav-links a {
+            font-size: 1.2rem;
+            padding: 1rem 2rem;
+        }
+        
+        .mobile-menu-btn {
+            display: block;
+        }
+        
+        .bento-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .auth-card {
+            padding: 2rem;
+            margin: 1rem;
+        }
+        
+        .product-detail {
+            grid-template-columns: 1fr;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .checkout-wrapper {
+            padding: 0 1rem;
+        }
+
+        .promo-input-group {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .profile-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .about-features {
+            grid-template-columns: 1fr;
+        }
+
+        .sticky-checkout {
+            bottom: 10px;
+            right: 10px;
+            padding: 0.8rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+        }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
+    @keyframes pulse {
+        0% { text-shadow: 0 0 5px rgba(255, 107, 157, 0.3); }
+        50% { text-shadow: 0 0 20px rgba(255, 107, 157, 0.5); }
+        100% { text-shadow: 0 0 5px rgba(255, 107, 157, 0.3); }
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes bounceIn {
+        0% { transform: scale(0); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    /* Added for better styling */
+    .blur-text {
+        color: var(--text-light);
+        position: relative;
+        z-index: 1;
+    }
+
+    .blur-text::before {
+        content: '';
+        position: absolute;
+        background: rgba(255, 107, 157, 0.1);
+        filter: blur(15px);
+        width: 100%;
+        height: 30%;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        border-radius: 4px;
+    }
+</style>
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar" id="navbar">
+    <div class="container">
+        <div class="nav-content">
+            <div class="logo" onclick="showSection('home')">FemmeiaCloth</div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <!-- Navigation links will be loaded dynamically based on auth state -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Sticky Checkout Button -->
+<button class="sticky-checkout" id="stickyCheckout" onclick="showSection('checkout')">
+    🛒 Checkout
+</button>
+
+<!-- Auth Section -->
+<section id="authSection" class="page-section active">
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Email Verification Notice -->
+            <div id="verificationNotice" class="verification-notice" style="display: none;">
+                <h3>Verifikasi Email Diperlukan</h3>
+                <p>Silakan periksa email Anda dan klik link verifikasi untuk mengaktifkan akun.</p>
+                <button class="btn btn-outline" onclick="resendVerification()" id="resendBtn">
+                    <span id="resendBtnText">Kirim Ulang Email</span>
+                </button>
+            </div>
+
+            <div id="loginForm">
+                <h2 class="auth-title">Selamat Datang Kembali</h2>
+                <form onsubmit="login(event)">
+                    <div class="form-group">
+                        <label>Email atau Username</label>
+                        <input type="text" id="loginEmailOrUsername" class="form-input" required placeholder="Masukkan email atau username">
+                        <div class="error" id="loginEmailError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Kata Sandi</label>
+                        <input type="password" id="loginPassword" class="form-input" required placeholder="Masukkan kata sandi">
+                        <div class="error" id="loginPasswordError"></div>
+                    </div>
+                    <button type="submit" class="btn" id="loginBtn">
+                        <span id="loginBtnText">Masuk</span>
+                    </button>
+                </form>
+                <div class="forgot-password">
+                    <a href="#" onclick="showForgotPassword()">Lupa kata sandi?</a>
+                </div>
+                <div class="auth-switch">
+                    Belum punya akun? <a href="#" onclick="showRegister()">Daftar</a>
+                </div>
+            </div>
+
+            <div id="registerForm" style="display: none;">
+                <h2 class="auth-title">Bergabung dengan FemmeiaCloth</h2>
+                <form onsubmit="register(event)">
+                    <div class="form-group">
+                        <label>Nama Pengguna</label>
+                        <input type="text" id="registerUsername" class="form-input" required placeholder="Masukkan nama pengguna">
+                        <div class="error" id="registerUsernameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="registerEmail" class="form-input" required placeholder="Masukkan email">
+                        <div class="error" id="registerEmailError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Kata Sandi</label>
+                        <input type="password" id="registerPassword" class="form-input" required placeholder="Minimal 6 karakter">
+                        <div class="error" id="registerPasswordError"></div>
+                    </div>
+                    <button type="submit" class="btn" id="registerBtn">
+                        <span id="registerBtnText">Daftar</span>
+                    </button>
+                </form>
+                <div class="auth-switch">
+                    Sudah punya akun? <a href="#" onclick="showLogin()">Masuk</a>
+                </div>
+            </div>
+
+            <div id="forgotPasswordForm" style="display: none;">
+                <h2 class="auth-title">Reset Kata Sandi</h2>
+                <form onsubmit="resetPassword(event)">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="resetEmail" class="form-input" required placeholder="Masukkan email Anda">
+                        <div class="error" id="resetEmailError"></div>
+                        <div class="success" id="resetEmailSuccess"></div>
+                    </div>
+                    <button type="submit" class="btn" id="resetBtn">
+                        <span id="resetBtnText">Kirim Link Reset</span>
+                    </button>
+                </form>
+                <div class="auth-switch">
+                    Ingat kata sandi? <a href="#" onclick="showLogin()">Masuk</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Home Section -->
+<section id="homeSection" class="page-section">
+    <div class="container">
+        <div class="hero fade-in">
+            <h1 class="float">Hijab & Fashion Premium</h1>
+            <p>Temukan koleksi hijab dan aksesoris cantik berkualitas tinggi yang dirancang untuk wanita modern. Kualitas, variasi, dan harga terjangkau.</p>
+        </div>
+
+        <!-- Promo Card -->
+        <div class="promo-card">
+            <h3>🎉 Diskon Spesial 10%!</h3>
+            <p>Gunakan kode promo untuk mendapatkan diskon 10% untuk semua produk</p>
+            <div class="promo-code" onclick="copyPromoCode()">FEMMEIA10</div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Klik untuk menyalin kode</p>
+        </div>
+
+        <div class="bento-grid">
+            <div class="card float">
+                <h3>Koleksi Unggulan</h3>
+                <p>Jelajahi desain hijab terbaru kami yang dibuat dengan bahan premium dan perhatian terhadap detail.</p>
+            </div>
+            <div class="card float" style="animation-delay: 0.2s">
+                <h3>Jaminan Kualitas</h3>
+                <p>Setiap produk dipilih dengan hati-hati untuk memastikan kenyamanan, daya tahan, dan gaya yang bertahan lama.</p>
+            </div>
+            <div class="card float" style="animation-delay: 0.4s">
+                <h3>Kemewahan Terjangkau</h3>
+                <p>Fashion yang indah tidak harus mahal. Temukan harga kompetitif kami.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="productsSection" class="page-section">
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--primary);" class="blur-text">Produk Kami</h2>
+        
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterProducts('all')">Semua</button>
+            <button class="filter-btn" onclick="filterProducts('hijab')">Hijab</button>
+            <button class="filter-btn" onclick="filterProducts('inner')">Inner</button>
+            <button class="filter-btn" onclick="filterProducts('pashmina')">Pashmina</button>
+        </div>
+
+        <div class="bento-grid" id="productsGrid">
+            <!-- Products will be loaded here -->
+        </div>
+    </div>
+</section>
+
+<!-- Cart Section -->
+<section id="cartSection" class="page-section">
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--primary);" class="blur-text">Keranjang Belanja</h2>
+        <div id="cartItems"></div>
+        <div class="cart-total" id="cartTotal">Total: Rp 0</div>
+        <div style="text-align: center;">
+            <button class="btn" onclick="showSection('checkout')" style="max-width: 300px;">Lanjut ke Checkout</button>
+        </div>
+    </div>
+</section>
+
+<!-- Checkout Section -->
+<section id="checkoutSection" class="page-section">
+    <div class="checkout-container">
+        <div class="checkout-wrapper">
+            <h2 class="checkout-heading">Checkout</h2>
+            
+            <!-- Auth Warning for Non-logged Users -->
+            <div id="checkoutAuthWarning" class="card" style="display: none; text-align: center;">
+                <h3>Silakan Masuk Terlebih Dahulu</h3>
+                <p>Untuk melakukan pemesanan, Anda perlu masuk ke akun terlebih dahulu.</p>
+                <button class="btn" onclick="showSection('auth')">Masuk Sekarang</button>
+            </div>
+
+            <!-- Checkout Form -->
+            <div id="checkoutForm" style="display: none;">
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <h3>Ringkasan Pesanan</h3>
+                    <div id="checkoutCartItems"></div>
+                </div>
+
+                <!-- Promo Code Section -->
+                <div class="promo-section">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Kode Promo</h3>
+                    <div class="promo-input-group">
+                        <div style="flex: 1;">
+                            <label>Masukkan Kode Promo</label>
+                            <input type="text" id="promoCode" class="form-input" placeholder="Contoh: FEMMEIA10" style="text-transform: uppercase;">
+                        </div>
+                        <button type="button" class="promo-btn" onclick="applyPromoCode()">Terapkan</button>
+                    </div>
+                    <div id="promoMessage"></div>
+                </div>
+
+                <!-- Customer Information Form -->
+                <div class="checkout-form-container">
+                    <h3>Informasi Pembeli</h3>
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <input type="text" name="nama" id="customerName" class="form-input" required placeholder="Masukkan nama lengkap">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nomor WhatsApp</label>
+                            <input type="tel" name="whatsapp" id="customerWhatsapp" class="form-input" required placeholder="08xxxxxxxxxx">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Alamat Lengkap</label>
+                            <textarea name="alamat" id="customerAddress" class="form-input form-textarea" required placeholder="Masukkan alamat lengkap untuk pengiriman"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Metode Pengiriman</label>
+                                <select name="pengiriman" class="form-input form-select" required>
+                                    <option value="">-- Pilih Pengiriman --</option>
+                                    <option value="JNE">JNE</option>
+                                    <option value="J&T">J&T</option>
+                                    <option value="SiCepat">SiCepat</option>
+                                    <option value="Gosend">Gosend</option>
+                                    <option value="Antar Langsung">Antar Langsung (Makassar)</option>
+                                    <option value="Ambil Langsung">Ambil Langsung</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Metode Pembayaran</label>
+                                <select name="pembayaran" class="form-input form-select" required>
+                                    <option value="">-- Pilih Pembayaran --</option>
+                                    <option value="Transfer Bank">Transfer Bank</option>
+                                    <option value="COD">COD</option>
+                                    <option value="QRIS">QRIS</option>
+                                    <option value="E-Wallet">E-Wallet (Dana/OVO/GoPay)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Catatan Tambahan (Opsional)</label>
+                            <textarea name="catatan" class="form-input form-textarea" placeholder="Catatan khusus untuk pesanan Anda"></textarea>
+                        </div>
+
+                        <button type="submit" class="whatsapp-btn" id="orderBtn">
+                            <span id="orderBtnText">📱 Pesan via WhatsApp</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Profile Section -->
+<section id="profileSection" class="page-section">
+    <div class="container">
+        <div class="profile-header">
+            <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="Profile" class="profile-avatar" id="profileAvatar">
+            <input type="file" class="profile-upload" id="profileUpload" accept="image/*" onchange="uploadProfilePhoto(event)">
+            <br>
+            <button class="upload-btn" onclick="document.getElementById('profileUpload').click()">📷 Ganti Foto</button>
+            <h2 id="profileUsername">Nama Pengguna</h2>
+            <p id="profileEmail">email@example.com</p>
+        </div>
+
+        <div class="profile-form-grid">
+            <div class="card">
+                <h3>Edit Profil Dasar</h3>
+                <form onsubmit="updateProfile(event)">
+                    <div class="form-group">
+                        <label>Nama Pengguna</label>
+                        <input type="text" id="editUsername" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="editEmail" class="form-input" required>
+                    </div>
+                    <button type="submit" class="btn">Perbarui Profil</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Informasi Kontak</h3>
+                <form onsubmit="updateContactInfo(event)">
+                    <div class="form-group">
+                        <label>Nomor Telepon</label>
+                        <input type="tel" id="editPhone" class="form-input" placeholder="08xxxxxxxxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat Lengkap</label>
+                        <textarea id="editAddress" class="form-input form-textarea" placeholder="Masukkan alamat lengkap"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Simpan Kontak</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Ubah Kata Sandi</h3>
+                <form onsubmit="changePassword(event)">
+                    <div class="form-group">
+                        <label>Kata Sandi Lama</label>
+                        <input type="password" id="oldPassword" class="form-input" required>
+                        <div class="error" id="oldPasswordError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Kata Sandi Baru</label>
+                        <input type="password" id="newPassword" class="form-input" required>
+                        <div class="error" id="newPasswordError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Konfirmasi Kata Sandi Baru</label>
+                        <input type="password" id="confirmPassword" class="form-input" required>
+                        <div class="error" id="confirmPasswordError"></div>
+                    </div>
+                    <button type="submit" class="btn">Ubah Kata Sandi</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Riwayat Pesanan</h3>
+                <div id="orderHistory">
+                    <p style="color: var(--text-muted); text-align: center;">Belum ada pesanan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="aboutSection" class="page-section">
+    <div class="container">
+        <div class="about-hero">
+            <h1 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;" class="blur-text">Tentang FemmeiaCloth</h1>
+            <p style="font-size: 1.2rem; color: var(--text-muted);">Menyediakan hijab dan fashion berkualitas untuk wanita modern</p>
+        </div>
+
+        <div class="about-content">
+            <div class="card">
+                <h3>Visi Kami</h3>
+                <p>Menjadi brand hijab terdepan yang menghadirkan produk berkualitas tinggi dengan desain modern dan harga terjangkau untuk semua kalangan wanita muslimah.</p>
+            </div>
+
+            <div class="about-features">
+                <div class="feature-card">
+                    <span class="feature-icon">👗</span>
+                    <h4>Kualitas Premium</h4>
+                    <p>Bahan pilihan terbaik yang nyaman dan tahan lama</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🎨</span>
+                    <h4>Desain Modern</h4>
+                    <p>Mengikuti tren fashion terkini dengan sentuhan elegan</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">💰</span>
+                    <h4>Harga Terjangkau</h4>
+                    <p>Fashion berkualitas dengan harga yang bersahabat</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🚚</span>
+                    <h4>Pengiriman Cepat</h4>
+                    <p>Layanan pengiriman ke seluruh Indonesia</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Hubungi Kami</h3>
+                <p><strong>WhatsApp:</strong> +62 853-4189-9229</p>
+                <p><strong>Email:</strong> info@femmeiacloth.com</p>
+                <p><strong>Alamat:</strong> Makassar, Sulawesi Selatan</p>
+                <p><strong>Jam Operasional:</strong> Senin - Sabtu, 09:00 - 17:00 WITA</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Product Detail Modal -->
+<div id="productModal" class="modal">
+    <div class="modal-content-product">
+        <button class="close-modal" onclick="closeProductModal()">×</button>
+        <div class="product-detail" id="productDetail">
+            <!-- Product detail will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-storage.js";
+
+    // Firebase config
+    const firebaseConfig = {
+        apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
+        authDomain: "femmeiacloth-finance.firebaseapp.com",
+        projectId: "femmeiacloth-finance",
+        storageBucket: "femmeiacloth-finance.appspot.com",
+        messagingSenderId: "517478386163",
+        appId: "1:517478386163:web:51028f5841baa311126a86",
+        measurementId: "G-K4L516Q54R"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    // Products data
+    const products = [
+        {
+            id: 1,
+            name: "Inner Earab",
+            price: 25000,
+            category: "inner",
+            image: "https://www.femmeiacloth.me/app/store/assets/ciputall.jpg",
+            colors: ["Hitam", "Putih", "Cream", "Mocha", "Abu-abu"],
+            colorCodes: {
+                "Hitam": "#000000",
+                "Putih": "#FFFFFF",
+                "Cream": "#FFFDD0",
+                "Mocha": "#A38068",
+                "Abu-abu": "#808080"
+            },
+            description: "Inner Ninja premium, adem, nyaman dipakai seharian."
+        },
+        {
+            id: 2,
+            name: "Pashmina",
+            price: 55000,
+            category: "pashmina",
+            image: "https://www.femmeiacloth.me/app/store/assets/IMG-20250512-WA0017.jpg",
+            colors: ["Hitam", "Coklat", "Beige", "Mauve", "Lilac", "Hijau", "Olive"],
+            colorCodes: {
+                "Hitam": "#000000",
+                "Coklat": "#964B00",
+                "Beige": "#F5F5DC",
+                "Mauve": "#E0B0FF",
+                "Lilac": "#C8A2C8",
+                "Hijau": "#00FF00",
+                "Olive": "#808000"
+            },
+            description: "Pashmina bahan kaos premium, nyaman dipakai."
+        },
+        {
+            id: 3,
+            name: "Paris Jadul",
+            price: 35000,
+            category: "hijab",
+            image: "https://www.femmeiacloth.me/app/store/assets/all.jpg",
+            colors: ["Hitam", "Putih", "Abu-abu", "Navy", "Pink", "Cream"],
+            colorCodes: {
+                "Hitam": "#000000",
+                "Putih": "#FFFFFF",
+                "Abu-abu": "#808080",
+                "Navy": "#000080",
+                "Pink": "#FFC0CB",
+                "Cream": "#FFFDD0"
+            },
+            description: "Hijab ringan, mudah dibentuk, cocok untuk sehari-hari."
+        }
+    ];
+
+    // Global state
+    let currentUser = null;
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let currentFilter = 'all';
+    let selectedProduct = null;
+    let selectedColor = null;
+    let appliedPromo = null;
+    let userProfile = null;
+    let unverifiedUser = null;
+
+    // Make functions globally available
+    window.toggleMobileMenu = toggleMobileMenu;
+    window.showLogin = showLogin;
+    window.showRegister = showRegister;
+    window.showForgotPassword = showForgotPassword;
+    window.login = login;
+    window.register = register;
+    window.resetPassword = resetPassword;
+    window.resendVerification = resendVerification;
+    window.logout = logout;
+    window.showSection = showSection;
+    window.filterProducts = filterProducts;
+    window.showProductDetail = showProductDetail;
+    window.closeProductModal = closeProductModal;
+    window.updateSelectedColor = updateSelectedColor;
+    window.selectColor = selectColor;
+    window.addToCart = addToCart;
+    window.updateQuantity = updateQuantity;
+    window.removeFromCart = removeFromCart;
+    window.uploadProfilePhoto = uploadProfilePhoto;
+    window.updateProfile = updateProfile;
+    window.updateContactInfo = updateContactInfo;
+    window.changePassword = changePassword;
+    window.copyPromoCode = copyPromoCode;
+    window.applyPromoCode = applyPromoCode;
+
+    // Play welcome sound when page loads
+    function playWelcomeSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+            oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.2);
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        } catch (error) {
+            console.log('Audio not supported or blocked');
+        }
+    }
+
+    // Initialize app
+    document.addEventListener('DOMContentLoaded', function() {
+        loadProducts();
+        updateCartBadge();
+        updateStickyCheckout();
+        
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Play welcome sound after a short delay
+        setTimeout(() => {
+            playWelcomeSound();
+        }, 1000);
+    });
+
+    // Enhanced Auth state management
+    onAuthStateChanged(auth, async (user) => {
+        if (user && user.emailVerified) {
+            currentUser = user;
+            unverifiedUser = null;
+            hideVerificationNotice();
+            showMainApp();
+            updateNavLinks();
+            await loadProfile();
+        } else if (user && !user.emailVerified) {
+            unverifiedUser = user;
+            currentUser = null;
+            showVerificationNotice();
+            showAuthSection();
+            updateNavLinks();
+        } else {
+            currentUser = null;
+            unverifiedUser = null;
+            hideVerificationNotice();
+            showAuthSection();
+            updateNavLinks();
+        }
+    });
+
+    function showVerificationNotice() {
+        document.getElementById('verificationNotice').style.display = 'block';
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('forgotPasswordForm').style.display = 'none';
+    }
+
+    function hideVerificationNotice() {
+        document.getElementById('verificationNotice').style.display = 'none';
+    }
+
+    function showAuthSection() {
+        document.getElementById('authSection').classList.add('active');
+        document.querySelectorAll('.page-section:not(#authSection)').forEach(section => {
+            section.classList.remove('active');
+        });
+    }
+
+    function showMainApp() {
+        document.getElementById('authSection').classList.remove('active');
+        if (!document.querySelector('.page-section.active:not(#authSection)')) {
+            showSection('home');
+        }
+    }
+
+    // Enhanced Mobile menu toggle
+    function toggleMobileMenu() {
+        const navLinks = document.getElementById('navLinks');
+        const isActive = navLinks.classList.contains('active');
+        
+        if (isActive) {
+            navLinks.classList.remove('active');
+        } else {
+            navLinks.classList.add('active');
+        }
+        
+        // Prevent body scroll when menu is open
+        document.body.style.overflow = isActive ? 'auto' : 'hidden';
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const navLinks = document.getElementById('navLinks');
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        
+        if (!navLinks.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+            navLinks.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Authentication functions
+    function showLogin() {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('forgotPasswordForm').style.display = 'none';
+        document.getElementById('verificationNotice').style.display = 'none';
+        clearAuthErrors();
+    }
+
+    function showRegister() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+        document.getElementById('forgotPasswordForm').style.display = 'none';
+        document.getElementById('verificationNotice').style.display = 'none';
+        clearAuthErrors();
+    }
+
+    function showForgotPassword() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('forgotPasswordForm').style.display = 'block';
+        document.getElementById('verificationNotice').style.display = 'none';
+        clearAuthErrors();
+    }
+
+    function clearAuthErrors() {
+        document.querySelectorAll('.error').forEach(error => error.textContent = '');
+        document.querySelectorAll('.success').forEach(success => success.textContent = '');
+    }
+
+    function showAuthError(fieldId, message) {
+        const errorElement = document.getElementById(fieldId + 'Error');
+        if (errorElement) errorElement.textContent = message;
+    }
+
+    function showAuthSuccess(fieldId, message) {
+        const successElement = document.getElementById(fieldId + 'Success');
+        if (successElement) successElement.textContent = message;
+    }
+
+    async function login(event) {
+        event.preventDefault();
+        clearAuthErrors();
+
+        const emailOrUsername = document.getElementById('loginEmailOrUsername').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        if (!emailOrUsername || !password) {
+            showAuthError('loginEmail', 'Email/username dan password wajib diisi');
+            return;
+        }
+
+        const loginBtn = document.getElementById('loginBtn');
+        const loginBtnText = document.getElementById('loginBtnText');
+        
+        loginBtn.disabled = true;
+        loginBtnText.innerHTML = '<div class="loading"></div>Memproses...';
+
+        try {
+            let email = emailOrUsername;
+            
+            // If input doesn't contain @, treat as username and find email
+            if (!emailOrUsername.includes('@')) {
+                const q = query(collection(db, 'users'), where('username', '==', emailOrUsername));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    showAuthError('loginEmail', 'Username tidak ditemukan');
+                    return;
+                }
+                
+                email = querySnapshot.docs[0].data().email;
+            }
+
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            
+            if (!userCredential.user.emailVerified) {
+                showNotification('Email belum diverifikasi. Silakan periksa email Anda.', true);
+                return;
+            }
+
+            showNotification('Berhasil masuk! Selamat datang kembali.');
+        } catch (error) {
+            console.error('Login error:', error);
+            
+            let errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+            let errorField = 'loginEmail';
+            
+            switch (error.code) {
+                case 'auth/user-not-found':
+                    errorMessage = 'Email tidak terdaftar. Silakan daftar terlebih dahulu.';
+                    break;
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential':
+                    errorMessage = 'Password salah. Silakan periksa kembali password Anda.';
+                    errorField = 'loginPassword';
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = 'Format email tidak valid.';
+                    break;
+                case 'auth/too-many-requests':
+                    errorMessage = 'Terlalu banyak percobaan. Coba lagi dalam beberapa menit.';
+                    break;
+            }
+            
+            showAuthError(errorField, errorMessage);
+        } finally {
+            loginBtn.disabled = false;
+            loginBtnText.textContent = 'Masuk';
+        }
+    }
+
+    async function register(event) {
+        event.preventDefault();
+        clearAuthErrors();
+
+        const username = document.getElementById('registerUsername').value.trim();
+        const email = document.getElementById('registerEmail').value.trim();
+        const password = document.getElementById('registerPassword').value;
+
+        // Validation
+        if (!username) {
+            showAuthError('registerUsername', 'Nama pengguna wajib diisi');
+            return;
+        }
+
+        if (username.length < 3) {
+            showAuthError('registerUsername', 'Nama pengguna minimal 3 karakter');
+            return;
+        }
+
+        if (!email) {
+            showAuthError('registerEmail', 'Email wajib diisi');
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showAuthError('registerEmail', 'Format email tidak valid');
+            return;
+        }
+
+        if (!password) {
+            showAuthError('registerPassword', 'Password wajib diisi');
+            return;
+        }
+
+        if (password.length < 6) {
+            showAuthError('registerPassword', 'Password minimal 6 karakter');
+            return;
+        }
+
+        const registerBtn = document.getElementById('registerBtn');
+        const registerBtnText = document.getElementById('registerBtnText');
+        
+        registerBtn.disabled = true;
+        registerBtnText.innerHTML = '<div class="loading"></div>Memproses...';
+
+        try {
+            // Check if username already exists
+            const usernameQuery = query(collection(db, 'users'), where('username', '==', username));
+            const usernameSnapshot = await getDocs(usernameQuery);
+            
+            if (!usernameSnapshot.empty) {
+                showAuthError('registerUsername', 'Nama pengguna sudah digunakan');
+                return;
+            }
+
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            
+            // Save user profile to Firestore
+            await addDoc(collection(db, 'users'), {
+                uid: userCredential.user.uid,
+                username: username,
+                email: email,
+                phone: '',
+                address: '',
+                createdAt: new Date()
+            });
+
+            // Send email verification
+            await sendEmailVerification(userCredential.user);
+            
+            showNotification('Akun berhasil dibuat! Silakan periksa email untuk verifikasi.');
+            
+        } catch (error) {
+            console.error('Register error:', error);
+            
+            let errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+            let errorField = 'registerEmail';
+            
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    errorMessage = 'Email sudah terdaftar. Silakan gunakan email lain atau login.';
+                    break;
+                case 'auth/weak-password':
+                    errorMessage = 'Password terlalu lemah. Gunakan minimal 6 karakter.';
+                    errorField = 'registerPassword';
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = 'Format email tidak valid.';
+                    break;
+            }
+            
+            showAuthError(errorField, errorMessage);
+        } finally {
+            registerBtn.disabled = false;
+            registerBtnText.textContent = 'Daftar';
+        }
+    }
+
+    async function resetPassword(event) {
+        event.preventDefault();
+        clearAuthErrors();
+
+        const email = document.getElementById('resetEmail').value.trim();
+
+        if (!email) {
+            showAuthError('resetEmail', 'Email wajib diisi');
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showAuthError('resetEmail', 'Format email tidak valid');
+            return;
+        }
+
+        const resetBtn = document.getElementById('resetBtn');
+        const resetBtnText = document.getElementById('resetBtnText');
+        
+        resetBtn.disabled = true;
+        resetBtnText.innerHTML = '<div class="loading"></div>Mengirim...';
+
+        try {
+            await sendPasswordResetEmail(auth, email);
+            showAuthSuccess('resetEmail', 'Link reset password telah dikirim ke email Anda');
+            
+            setTimeout(() => {
+                showLogin();
+            }, 3000);
+        } catch (error) {
+            console.error('Reset password error:', error);
+            
+            let errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+            
+            switch (error.code) {
+                case 'auth/user-not-found':
+                    errorMessage = 'Email tidak terdaftar';
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = 'Format email tidak valid';
+                    break;
+            }
+            
+            showAuthError('resetEmail', errorMessage);
+        } finally {
+            resetBtn.disabled = false;
+            resetBtnText.textContent = 'Kirim Link Reset';
+        }
+    }
+
+    async function resendVerification() {
+        if (!unverifiedUser) {
+            showNotification('Tidak ada pengguna yang perlu diverifikasi', true);
+            return;
+        }
+
+        const resendBtn = document.getElementById('resendBtn');
+        const resendBtnText = document.getElementById('resendBtnText');
+        
+        resendBtn.disabled = true;
+        resendBtnText.innerHTML = '<div class="loading"></div>Mengirim...';
+
+        try {
+            await sendEmailVerification(unverifiedUser);
+            showNotification('Email verifikasi telah dikirim ulang!');
+        } catch (error) {
+            console.error('Resend verification error:', error);
+            showNotification('Gagal mengirim email verifikasi', true);
+        } finally {
+            resendBtn.disabled = false;
+            resendBtnText.textContent = 'Kirim Ulang Email';
+        }
+    }
+
+    function logout() {
+        signOut(auth).then(() => {
+            cart = [];
+            localStorage.removeItem('cart');
+            appliedPromo = null;
+            updateCartBadge();
+            updateStickyCheckout();
+            showNotification('Anda telah keluar dari akun');
+        });
+    }
+
+    // Update navigation links based on authentication state
+    function updateNavLinks() {
+        const navLinks = document.getElementById('navLinks');
+        
+        if (currentUser) {
+            // User is logged in and verified
+            navLinks.innerHTML = `
+                <li><a href="#" onclick="showSection('home')">🏠 Beranda</a></li>
+                <li><a href="#" onclick="showSection('products')">🛍️ Produk</a></li>
+                <li><a href="#" onclick="showSection('about')">ℹ️ Tentang</a></li>
+                <li><a href="#" onclick="showSection('cart')">🛒 Keranjang <span class="cart-badge" id="cartBadge">0</span></a></li>
+                <li><a href="#" onclick="showSection('profile')">👤 Profil</a></li>
+                <li><a href="#" onclick="logout()">🚪 Keluar</a></li>
+            `;
+        } else {
+            // User is not logged in or not verified
+            navLinks.innerHTML = `
+                <li><a href="#" onclick="showSection('home')">🏠 Beranda</a></li>
+                <li><a href="#" onclick="showSection('products')">🛍️ Produk</a></li>
+                <li><a href="#" onclick="showSection('about')">ℹ️ Tentang</a></li>
+                <li><a href="#" onclick="showSection('cart')">🛒 Keranjang <span class="cart-badge" id="cartBadge">0</span></a></li>
+                <li><a href="#" onclick="showSection('auth')">🔐 Masuk</a></li>
+            `;
+        }
+        
+        updateCartBadge();
+    }
+
+    // Navigation
+    function showSection(sectionName) {
+        // Check if user is trying to access profile or checkout without being logged in
+        if ((sectionName === 'profile' || sectionName === 'checkout') && !currentUser) {
+            showSection('auth');
+            showNotification('Silakan masuk terlebih dahulu', true);
+            return;
+        }
+        
+        document.querySelectorAll('.page-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionName + 'Section').classList.add('active');
+
+        // Close mobile menu when navigating
+        document.getElementById('navLinks').classList.remove('active');
+        document.body.style.overflow = 'auto';
+
+        if (sectionName === 'cart') {
+            loadCart();
+        } else if (sectionName === 'checkout') {
+            loadCheckout();
+        } else if (sectionName === 'profile') {
+            loadProfile();
+        }
+
+        updateStickyCheckout();
+    }
+
+    // Products
+    function loadProducts() {
+        const grid = document.getElementById('productsGrid');
+        const filteredProducts = currentFilter === 'all' 
+            ? products 
+            : products.filter(p => p.category === currentFilter);
+
+        grid.innerHTML = filteredProducts.map((product, index) => `
+            <div class="product-card fade-in" 
+                 onclick="showProductDetail(${product.id})"
+                 style="animation-delay: ${index * 0.1}s">
+                <img src="${product.image}" alt="${product.name}" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-name">${product.name}</h3>
+                    <div class="product-price">Rp ${formatPrice(product.price)}</div>
+                    <div class="product-colors">
+                        <span style="color: var(--text-muted); font-size: 0.8rem; margin-right: 0.5rem;">Warna:</span>
+                        ${product.colors.slice(0, 4).map(color => `
+                            <div class="color-option" 
+                                style="background-color: ${product.colorCodes[color]}" 
+                                title="${color}">
+                            </div>
+                        `).join('')}
+                        ${product.colors.length > 4 ? `<span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;">+${product.colors.length - 4}</span>` : ''}
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-top: auto;">${product.description}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterProducts(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        loadProducts();
+    }
+
+    // Format price with thousand separator
+    function formatPrice(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // Product Detail Modal
+    function showProductDetail(productId) {
+        selectedProduct = products.find(p => p.id === productId);
+        selectedColor = selectedProduct.colors[0];
+        
+        const modal = document.getElementById('productModal');
+        const productDetail = document.getElementById('productDetail');
+        
+        productDetail.innerHTML = `
+            <div>
+                <img src="${selectedProduct.image}" alt="${selectedProduct.name}" class="product-detail-image">
+            </div>
+            <div class="product-detail-info">
+                <h2>${selectedProduct.name}</h2>
+                <div class="product-detail-price">Rp ${formatPrice(selectedProduct.price)}</div>
+                <p style="margin-bottom: 1.5rem; color: #cbd5e1;">${selectedProduct.description}</p>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-light);">Pilih Warna:</label>
+                    <div class="product-colors" style="margin-bottom: 1rem;">
+                        ${selectedProduct.colors.map(color => `
+                            <div class="color-option ${color === selectedColor ? 'selected' : ''}" 
+                                style="background-color: ${selectedProduct.colorCodes[color]}" 
+                                title="${color}"
+                                onclick="selectColor('${color}')">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Warna terpilih: <span id="selectedColorText" style="color: var(--primary); font-weight: 600;">${selectedColor}</span></p>
+                </div>
+                <button class="btn" onclick="addToCart(${selectedProduct.id})" style="width: 100%;">
+                    🛒 Tambahkan ke Keranjang
+                </button>
+            </div>
+        `;
+        
+        modal.style.display = 'block';
+    }
+
+    function closeProductModal() {
+        document.getElementById('productModal').style.display = 'none';
+    }
+
+    function selectColor(color) {
+        selectedColor = color;
+        document.getElementById('selectedColorText').textContent = color;
+        
+        // Update color selection visual
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        event.target.classList.add('selected');
+    }
+
+    // Cart functions
+    function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        const color = selectedColor || product.colors[0];
+        
+        const existingItemIndex = cart.findIndex(item => 
+            item.id === productId && item.selectedColor === color
+        );
+
+        if (existingItemIndex !== -1) {
+            cart[existingItemIndex].quantity += 1;
+        } else {
+            cart.push({ 
+                ...product, 
+                quantity: 1,
+                selectedColor: color
+            });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartBadge();
+        updateStickyCheckout();
+        
+        // Show feedback
+        showNotification(`${product.name} (${color}) ditambahkan ke keranjang!`);
+        
+        // Close modal if open
+        closeProductModal();
+    }
+
+    function updateCartBadge() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartBadge = document.getElementById('cartBadge');
+        if (cartBadge) {
+            cartBadge.textContent = totalItems;
+        }
+    }
+
+    function updateStickyCheckout() {
+        const stickyCheckout = document.getElementById('stickyCheckout');
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        
+        if (totalItems > 0 && currentUser) {
+            stickyCheckout.classList.add('show');
+            stickyCheckout.innerHTML = `🛒 Checkout (${totalItems})`;
+        } else {
+            stickyCheckout.classList.remove('show');
+        }
+    }
+
+    function loadCart() {
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<div class="card" style="text-align: center;"><p style="color: #94a3b8;">Keranjang belanja Anda kosong</p><button class="btn" onclick="showSection(\'products\')">🛍️ Mulai Belanja</button></div>';
+            cartTotal.textContent = 'Total: Rp 0';
+            return;
+        }
+
+        cartItems.innerHTML = cart.map((item, index) => `
+            <div class="cart-item fade-in" style="animation-delay: ${index * 0.1}s">
+                <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                <div class="cart-item-info">
+                    <h4 style="color: var(--text-light); margin-bottom: 0.5rem;">${item.name}</h4>
+                    <p style="color: var(--primary); font-weight: 600;">Rp ${formatPrice(item.price)}</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Warna: ${item.selectedColor}</p>
+                </div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, '${item.selectedColor}', -1)">-</button>
+                    <span style="margin: 0 1rem; font-weight: 600; color: var(--text-light);">${item.quantity}</span>
+                    <button class="quantity-btn" onclick="updateQuantity(${item.id}, '${item.selectedColor}', 1)">+</button>
+                </div>
+                <button class="quantity-btn" onclick="removeFromCart(${item.id}, '${item.selectedColor}')" style="background: var(--error); margin-left: 1rem;">×</button>
+            </div>
+        `).join('');
+
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const discount = appliedPromo ? Math.floor(subtotal * 0.1) : 0;
+        const total = subtotal - discount;
+        
+        let totalHTML = `Subtotal: Rp ${formatPrice(subtotal)}`;
+        if (discount > 0) {
+            totalHTML += `<br><span style="color: var(--success);">Diskon (${appliedPromo}): -Rp ${formatPrice(discount)}</span>`;
+        }
+        totalHTML += `<br><strong style="font-size: 1.2rem;">Total: Rp ${formatPrice(total)}</strong>`;
+        
+        cartTotal.innerHTML = totalHTML;
+    }
+
+    function updateQuantity(productId, color, change) {
+        const itemIndex = cart.findIndex(item => item.id === productId && item.selectedColor === color);
+        
+        if (itemIndex !== -1) {
+            cart[itemIndex].quantity += change;
+            if (cart[itemIndex].quantity <= 0) {
+                removeFromCart(productId, color);
+            } else {
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+                updateCartBadge();
+                updateStickyCheckout();
+            }
+        }
+    }
+
+    function removeFromCart(productId, color) {
+        const itemToRemove = cart.find(item => item.id === productId && item.selectedColor === color);
+        const itemName = itemToRemove ? `${itemToRemove.name} (${itemToRemove.selectedColor})` : '';
+        
+        cart = cart.filter(item => !(item.id === productId && item.selectedColor === color));
+        localStorage.setItem('cart', JSON.stringify(cart));
+        loadCart();
+        updateCartBadge();
+        updateStickyCheckout();
+        
+        showNotification(`${itemName} dihapus dari keranjang`);
+    }
+
+    // Promo code functions
+    function copyPromoCode() {
+        navigator.clipboard.writeText('FEMMEIA10').then(() => {
+            showNotification('Kode promo berhasil disalin!');
+        }).catch(() => {
+            showNotification('Gagal menyalin kode promo', true);
+        });
+    }
+
+    function applyPromoCode() {
+        const promoInput = document.getElementById('promoCode');
+        const promoMessage = document.getElementById('promoMessage');
+        const code = promoInput.value.trim().toUpperCase();
+        
+        promoMessage.innerHTML = '';
+        
+        if (!code) {
+            promoMessage.innerHTML = '<div class="promo-error">Masukkan kode promo</div>';
+            return;
+        }
+        
+        if (code === 'FEMMEIA10') {
+            if (appliedPromo === code) {
+                promoMessage.innerHTML = '<div class="promo-error">Kode promo sudah diterapkan</div>';
+                return;
+            }
+            
+            appliedPromo = code;
+            promoMessage.innerHTML = '<div class="promo-success">✅ Kode promo berhasil diterapkan! Diskon 10%</div>';
+            loadCheckoutCartSummary();
+            showNotification('Selamat! Anda mendapat diskon 10%');
+        } else {
+            promoMessage.innerHTML = '<div class="promo-error">Kode promo tidak valid</div>';
+        }
+    }
+
+    // Checkout functions
+    function loadCheckout() {
+        const authWarning = document.getElementById('checkoutAuthWarning');
+        const checkoutForm = document.getElementById('checkoutForm');
+        
+        if (!currentUser) {
+            authWarning.style.display = 'block';
+            checkoutForm.style.display = 'none';
+        } else {
+            authWarning.style.display = 'none';
+            checkoutForm.style.display = 'block';
+            
+            // Load cart summary
+            loadCheckoutCartSummary();
+            
+            // Pre-fill user data if available
+            if (userProfile) {
+                const nameInput = document.getElementById('customerName');
+                const phoneInput = document.getElementById('customerWhatsapp');
+                const addressInput = document.getElementById('customerAddress');
+                
+                if (nameInput && !nameInput.value && userProfile.username) {
+                    nameInput.value = userProfile.username;
+                }
+                if (phoneInput && !phoneInput.value && userProfile.phone) {
+                    phoneInput.value = userProfile.phone;
+                }
+                if (addressInput && !addressInput.value && userProfile.address) {
+                    addressInput.value = userProfile.address;
+                }
+            }
+        }
+    }
+
+    function loadCheckoutCartSummary() {
+        const checkoutCartItems = document.getElementById('checkoutCartItems');
+        
+        if (cart.length === 0) {
+            checkoutCartItems.innerHTML = '<p style="color: var(--text-muted);">Keranjang kosong</p>';
+            return;
+        }
+
+        let subtotal = 0;
+        let summaryHTML = '';
+
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
+            
+            summaryHTML += `
+                <div class="cart-summary-item">
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        <small style="color: var(--text-muted);">Warna: ${item.selectedColor} | Qty: ${item.quantity}</small>
+                    </div>
+                    <div style="font-weight: 600;">Rp ${formatPrice(itemTotal)}</div>
+                </div>
+            `;
+        });
+
+        // Add discount if promo applied
+        const discount = appliedPromo ? Math.floor(subtotal * 0.1) : 0;
+        const total = subtotal - discount;
+
+        if (discount > 0) {
+            summaryHTML += `
+                <div class="cart-summary-item">
+                    <div>Diskon (${appliedPromo})</div>
+                    <div style="color: var(--success); font-weight: 600;">-Rp ${formatPrice(discount)}</div>
+                </div>
+            `;
+        }
+
+        summaryHTML += `
+            <div class="cart-summary-item">
+                <div><strong>Total</strong></div>
+                <div><strong>Rp ${formatPrice(total)}</strong></div>
+            </div>
+        `;
+
+        checkoutCartItems.innerHTML = summaryHTML;
+    }
+
+    // Order form submission
+    document.getElementById('orderForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!currentUser) {
+            showNotification('Silakan masuk terlebih dahulu', true);
+            return;
+        }
+
+        if (cart.length === 0) {
+            showNotification('Keranjang belanja kosong', true);
+            return;
+        }
+
+        const orderBtn = document.getElementById('orderBtn');
+        const orderBtnText = document.getElementById('orderBtnText');
+        
+        orderBtn.disabled = true;
+        orderBtnText.innerHTML = '<div class="loading"></div>Memproses...';
+
+        try {
+            const formData = new FormData(this);
+            
+            // Validate WhatsApp number
+            const whatsapp = formData.get('whatsapp').trim();
+            if (!/^[0-9]{10,15}$/.test(whatsapp.replace(/\D/g, ''))) {
+                showNotification('Nomor WhatsApp tidak valid', true);
+                return;
+            }
+
+            // Calculate totals
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = appliedPromo ? Math.floor(subtotal * 0.1) : 0;
+            const total = subtotal - discount;
+
+            // Create order data
+            const orderData = {
+                userId: currentUser.uid,
+                customerName: formData.get('nama'),
+                whatsapp: whatsapp,
+                address: formData.get('alamat'),
+                shipping: formData.get('pengiriman'),
+                payment: formData.get('pembayaran'),
+                notes: formData.get('catatan') || '',
+                items: cart,
+                subtotal: subtotal,
+                discount: discount,
+                promoCode: appliedPromo,
+                total: total,
+                createdAt: new Date(),
+                status: 'pending'
+            };
+
+            // Save order to Firebase
+            await addDoc(collection(db, 'orders'), orderData);
+
+            // Generate WhatsApp message
+            let message = `*Pesanan Baru - FemmeiaCloth*
+
+`;
+            message += `👤 *Nama:* ${orderData.customerName}
+`;
+            message += `📱 *WhatsApp:* ${orderData.whatsapp}
+`;
+            message += `📍 *Alamat:* ${orderData.address}
+
+`;
+            
+            message += `🛍️ *Detail Pesanan:*
+`;
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.name}
+`;
+                message += `   Warna: ${item.selectedColor}
+`;
+                message += `   Qty: ${item.quantity}
+`;
+                message += `   Harga: Rp ${formatPrice(item.price * item.quantity)}
+
+`;
+            });
+            
+            message += `💰 *Subtotal: Rp ${formatPrice(subtotal)}*
+`;
+            if (discount > 0) {
+                message += `🎉 *Diskon (${appliedPromo}): -Rp ${formatPrice(discount)}*
+`;
+            }
+            message += `💰 *Total: Rp ${formatPrice(total)}*
+
+`;
+            message += `🚚 *Pengiriman:* ${orderData.shipping}
+`;
+            message += `💳 *Pembayaran:* ${orderData.payment}
+`;
+            
+            if (orderData.notes) {
+                message += `📝 *Catatan:* ${orderData.notes}
+`;
+            }
+
+            // Open WhatsApp
+            const whatsappNumber = "6285341899229";
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+
+            // Clear cart and show success
+            cart = [];
+            appliedPromo = null;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+            updateStickyCheckout();
+            
+            showNotification('Pesanan berhasil dikirim ke WhatsApp!');
+            
+            // Reset form and redirect to home
+            this.reset();
+            document.getElementById('promoCode').value = '';
+            document.getElementById('promoMessage').innerHTML = '';
+            setTimeout(() => {
+                showSection('home');
+            }, 2000);
+
+        } catch (error) {
+            console.error('Order submission error:', error);
+            showNotification('Terjadi kesalahan saat memproses pesanan', true);
+        } finally {
+            orderBtn.disabled = false;
+            orderBtnText.textContent = '📱 Pesan via WhatsApp';
+        }
+    });
+
+    // Profile functions
+    async function loadProfile() {
+        if (!currentUser) return;
+        
+        document.getElementById('profileEmail').textContent = currentUser.email;
+        document.getElementById('editEmail').value = currentUser.email;
+        
+        // Load additional profile data from Firestore
+        try {
+            const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+            const querySnapshot = await getDocs(q);
+            
+            if (!querySnapshot.empty) {
+                userProfile = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+                
+                document.getElementById('profileUsername').textContent = userProfile.username || 'Pengguna';
+                document.getElementById('editUsername').value = userProfile.username || '';
+                document.getElementById('editPhone').value = userProfile.phone || '';
+                document.getElementById('editAddress').value = userProfile.address || '';
+                
+                if (userProfile.avatar) {
+                    document.getElementById('profileAvatar').src = userProfile.avatar;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading profile:', error);
+        }
+    }
+
+    async function uploadProfilePhoto(event) {
+        if (!currentUser) {
+            showNotification('Silakan masuk terlebih dahulu', true);
+            return;
+        }
+        
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            showNotification('File harus berupa gambar', true);
+            return;
+        }
+        
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            showNotification('Ukuran file maksimal 5MB', true);
+            return;
+        }
+        
+        try {
+            showNotification('Mengupload foto profil...');
+            
+            // Create a reference to the file location
+            const timestamp = Date.now();
+            const fileName = `${currentUser.uid}_${timestamp}_${file.name}`;
+            const storageRef = ref(storage, `profile-photos/${fileName}`);
+            
+            // Upload the file
+            const snapshot = await uploadBytes(storageRef, file);
+            
+            // Get the download URL
+            const downloadURL = await getDownloadURL(snapshot.ref);
+            
+            // Update profile avatar immediately
+            document.getElementById('profileAvatar').src = downloadURL;
+            
+            // Update user profile in Firestore
+            if (userProfile && userProfile.id) {
+                const userDocRef = doc(db, 'users', userProfile.id);
+                await updateDoc(userDocRef, {
+                    avatar: downloadURL,
+                    updatedAt: new Date()
+                });
+                
+                userProfile.avatar = downloadURL;
+            } else {
+                // Create new profile document if doesn't exist
+                const docRef = await addDoc(collection(db, 'users'), {
+                    uid: currentUser.uid,
+                    username: currentUser.displayName || 'Pengguna',
+                    email: currentUser.email,
+                    avatar: downloadURL,
+                    phone: '',
+                    address: '',
+                    createdAt: new Date()
+                });
+                
+                userProfile = {
+                    id: docRef.id,
+                    uid: currentUser.uid,
+                    username: currentUser.displayName || 'Pengguna',
+                    email: currentUser.email,
+                    avatar: downloadURL,
+                    phone: '',
+                    address: ''
+                };
+            }
+            
+            showNotification('Foto profil berhasil diperbarui!');
+        } catch (error) {
+            console.error('Upload error:', error);
+            showNotification('Gagal mengupload foto profil: ' + error.message, true);
+        }
+    }
+
+    async function updateProfile(event) {
+        event.preventDefault();
+        
+        if (!currentUser) {
+            showNotification('Silakan masuk terlebih dahulu', true);
+            return;
+        }
+        
+        const username = document.getElementById('editUsername').value.trim();
+        
+        if (!username) {
+            showNotification('Nama pengguna wajib diisi', true);
+            return;
+        }
+
+        try {
+            if (userProfile && userProfile.id) {
+                const userDocRef = doc(db, 'users', userProfile.id);
+                await updateDoc(userDocRef, {
+                    username: username,
+                    updatedAt: new Date()
+                });
+                
+                userProfile.username = username;
+            } else {
+                // Create new profile document
+                const docRef = await addDoc(collection(db, 'users'), {
+                    uid: currentUser.uid,
+                    username: username,
+                    email: currentUser.email,
+                    phone: '',
+                    address: '',
+                    createdAt: new Date()
+                });
+                
+                userProfile = {
+                    id: docRef.id,
+                    uid: currentUser.uid,
+                    username: username,
+                    email: currentUser.email,
+                    phone: '',
+                    address: ''
+                };
+            }
+            
+            document.getElementById('profileUsername').textContent = username;
+            showNotification('Profil berhasil diperbarui!');
+        } catch (error) {
+            console.error('Profile update error:', error);
+            showNotification('Gagal memperbarui profil', true);
+        }
+    }
+
+    async function updateContactInfo(event) {
+        event.preventDefault();
+        
+        if (!currentUser) {
+            showNotification('Silakan masuk terlebih dahulu', true);
+            return;
+        }
+        
+        const phone = document.getElementById('editPhone').value.trim();
+        const address = document.getElementById('editAddress').value.trim();
+
+        try {
+            if (userProfile && userProfile.id) {
+                const userDocRef = doc(db, 'users', userProfile.id);
+                await updateDoc(userDocRef, {
+                    phone: phone,
+                    address: address,
+                    updatedAt: new Date()
+                });
+                
+                userProfile.phone = phone;
+                userProfile.address = address;
+                
+                showNotification('Informasi kontak berhasil diperbarui!');
+            } else {
+                showNotification('Profil tidak ditemukan', true);
+            }
+        } catch (error) {
+            console.error('Contact update error:', error);
+            showNotification('Gagal memperbarui informasi kontak', true);
+        }
+    }
+
+    async function changePassword(event) {
+        event.preventDefault();
+        
+        if (!currentUser) {
+            showNotification('Silakan masuk terlebih dahulu', true);
+            return;
+        }
+        
+        const oldPassword = document.getElementById('oldPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        // Clear previous errors
+        document.getElementById('oldPasswordError').textContent = '';
+        document.getElementById('newPasswordError').textContent = '';
+        document.getElementById('confirmPasswordError').textContent = '';
+        
+        // Validation
+        if (!oldPassword) {
+            document.getElementById('oldPasswordError').textContent = 'Kata sandi lama wajib diisi';
+            return;
+        }
+        
+        if (!newPassword) {
+            document.getElementById('newPasswordError').textContent = 'Kata sandi baru wajib diisi';
+            return;
+        }
+        
+        if (newPassword.length < 6) {
+            document.getElementById('newPasswordError').textContent = 'Kata sandi baru minimal 6 karakter';
+            return;
+        }
+        
+        if (newPassword !== confirmPassword) {
+            document.getElementById('confirmPasswordError').textContent = 'Konfirmasi kata sandi tidak cocok';
+            return;
+        }
+
+        try {
+            // Re-authenticate user
+            const credential = EmailAuthProvider.credential(currentUser.email, oldPassword);
+            await reauthenticateWithCredential(currentUser, credential);
+            
+            // Update password
+            await updatePassword(currentUser, newPassword);
+            
+            // Clear form
+            document.getElementById('oldPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            
+            showNotification('Kata sandi berhasil diubah!');
+        } catch (error) {
+            console.error('Change password error:', error);
+            
+            let errorMessage = 'Terjadi kesalahan saat mengubah kata sandi';
+            let errorField = 'oldPasswordError';
+            
+            switch (error.code) {
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential':
+                    errorMessage = 'Kata sandi lama salah';
+                    break;
+                case 'auth/weak-password':
+                    errorMessage = 'Kata sandi baru terlalu lemah';
+                    errorField = 'newPasswordError';
+                    break;
+            }
+            
+            document.getElementById(errorField).textContent = errorMessage;
+        }
+    }
+
+    // Notification system
+    function showNotification(message, isError = false) {
+        // Remove any existing notifications
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(notification => notification.remove());
+        
+        // Create new notification
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        
+        if (isError) {
+            notification.classList.add('error');
+        } else {
+            notification.classList.add('success');
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('productModal');
+        if (event.target == modal) {
+            closeProductModal();
+        }
+    }
+
+    // Fix for mobile navigation
+    document.addEventListener('touchstart', function(e) {
+        const navLinks = document.getElementById('navLinks');
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        
+        if (navLinks.classList.contains('active') && 
+            !navLinks.contains(e.target) && 
+            !mobileMenuBtn.contains(e.target)) {
+            navLinks.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Function to update selectedColor
+    function updateSelectedColor() {
+        const colorSelect = document.getElementById('colorSelect');
+        if (colorSelect) {
+            selectedColor = colorSelect.value;
+        }
+    }
+</script>
+</body>
+</html>
 
