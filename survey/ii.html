@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Survey Berhadiah - Femmeia Cloth - Batch 1</title>
+  <meta name="description" content="Isi survey dan dapatkan hadiah!">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-card: rgba(255, 255, 255, 0.05);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.1);
+      --border-focus: rgba(255, 255, 255, 0.3);
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent: #ec4899;
+      --accent-secondary: #8b5cf6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background Effects */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+
+    /* Auth Header */
+    .auth-header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      padding: 1rem 2rem;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .auth-header h1 {
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 2rem;
+      padding: 0.75rem 1.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .user-info:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-focus);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: white;
+    }
+
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .user-email {
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .user-status {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .status-verified {
+      color: var(--success);
+    }
+
+    .status-unverified {
+      color: var(--warning);
+    }
+
+    .logout-btn {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--error);
+      padding: 0.6rem 1.2rem;
+      border-radius: 1.5rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      margin-top: 5rem;
+    }
+
+    .header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .header .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Login Gate */
+    .login-gate {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+    }
+
+    .login-gate h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .login-gate p {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    .login-gate-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1rem;
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+    }
+
+    .login-gate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(236, 72, 153, 0.4);
+    }
+
+    /* Email Verification Gate */
+    .verification-gate {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .verification-gate h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .verification-gate p {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    .verification-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .verification-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: white;
+      border: none;
+      padding: 0.875rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.9rem;
+    }
+
+    .verification-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+    }
+
+    .verification-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .verification-btn.secondary {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border);
+    }
+
+    /* Bento Grid Layout */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .bento-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-focus), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .bento-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+
+    .bento-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Alert Cards */
+    .alert-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .alert-card .icon {
+      display: inline-block;
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    /* Progress Card */
+    .progress-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, var(--glass-bg), rgba(16, 185, 129, 0.05));
+    }
+
+    .progress-bar-container {
+      background: rgba(255, 255, 255, 0.1);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+      border-radius: 4px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .step-indicator {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+      background: var(--accent);
+      transform: scale(1.2);
+    }
+
+    .step-dot.completed {
+      background: var(--success);
+    }
+
+    /* Form Styles */
+    .form-step {
+      display: none;
+      grid-column: 1 / -1;
+      min-height: 400px;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .required {
+      color: var(--accent);
+    }
+
+    input, select, textarea {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.875rem 1rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Checkbox Styles */
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .checkbox-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--border-focus);
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    .checkbox-item label {
+      margin: 0;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+
+    /* Button Styles */
+    .button-group {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    button {
+      padding: 0.875rem 2rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      font-family: "Quicksand";
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--border-focus);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: white;
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+      border: 1px solid transparent;
+      font-family: "Quicksand";
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 40px rgba(236, 72, 153, 0.3);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    /* Error Styles */
+    .error {
+      color: var(--error);
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+    }
+
+    .error-border {
+      border-color: var(--error) !important;
+    }
+
+    /* Success Styles */
+    .success {
+      color: var(--success);
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-focus);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .modal::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+    }
+
+    /* Auth Modal Specific Styles */
+    .auth-modal {
+      max-width: 450px;
+      text-align: left;
+    }
+
+    .auth-modal h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .auth-form input {
+      padding: 0.875rem 1rem;
+      border-radius: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+    }
+
+    .auth-form input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+    }
+
+    .auth-form button {
+      padding: 0.875rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: white;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+    }
+
+    .auth-form button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+    }
+
+    .auth-form button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .auth-switch {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--text-secondary);
+    }
+
+    .auth-switch button {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: underline;
+      font-family: inherit;
+      padding: 0;
+      margin: 0;
+    }
+
+    .modal-spinner {
+      margin: 0 auto 1.5rem;
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: modal-spin 1s ease-in-out infinite;
+    }
+
+    @keyframes modal-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .modal-content {
+      margin-bottom: 1rem;
+    }
+
+    .modal h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .modal p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .modal-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      margin-bottom: 1rem;
+    }
+
+    .modal-status.success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .modal-status.error {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--error);
+    }
+
+    .modal-btn {
+      padding: 0.75rem 2rem;
+      border-radius: 0.75rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: white;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .modal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.3);
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Quota Info */
+    .quota-info {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      color: var(--success);
+      padding: 1rem;
+      border-radius: 0.75rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .quota-info.empty {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+      border-color: rgba(239, 68, 68, 0.2);
+      color: var(--error);
+    }
+
+    /* Hide form when quota is empty */
+    .form-hidden {
+      display: none !important;
+    }
+
+    /* Pulse animation for loading text */
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .auth-header {
+        position: relative;
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+
+      .auth-header h1 {
+        font-size: 1rem;
+      }
+
+      .user-profile {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .user-info {
+        padding: 0.5rem 1rem;
+      }
+
+      .user-details {
+        text-align: center;
+      }
+
+      .header {
+        margin-top: 2rem;
+      }
+
+      .bento-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .bento-card {
+        padding: 1.5rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .verification-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .verification-btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .bento-card {
+        padding: 1rem;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .auth-header {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Auth Header -->
+  <div class="auth-header" id="authHeader" style="display: none;">
+    <h1>Survey Femmeia Cloth</h1>
+    <div class="user-profile" id="userProfile"></div>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h1>Survey Berhadiah</h1>
+      <p class="subtitle">Femmeia Cloth - Batch 1</p>
+    </div>
+
+    <!-- Login Gate -->
+    <div class="login-gate" id="loginGate">
+      <h2>Selamat Datang!</h2>
+      <p>Untuk mengikuti survey berhadiah ini, Anda perlu login terlebih dahulu. Hal ini untuk memastikan setiap orang hanya dapat mengisi survey satu kali dan menerima hadiah yang sesuai.</p>
+      <button class="login-gate-btn" id="showAuthModal">Login / Daftar</button>
+    </div>
+
+    <!-- Email Verification Gate -->
+    <div class="verification-gate" id="verificationGate" style="display: none;">
+      <h2>Verifikasi Email</h2>
+      <p>Kami telah mengirimkan email verifikasi ke alamat email Anda. Silakan periksa inbox dan klik link verifikasi, atau masukkan kode verifikasi di bawah ini.</p>
+      <div class="verification-actions">
+        <button class="verification-btn" id="checkVerificationBtn">Periksa Status Verifikasi</button>
+        <button class="verification-btn secondary" id="resendVerificationBtn">Kirim Ulang Email</button>
+        <button class="verification-btn secondary" id="changeEmailBtn">Ganti Email</button>
+      </div>
+    </div>
+
+    <!-- Survey Content -->
+    <div class="survey-content" id="surveyContent" style="display: none;">
+      <div class="bento-grid">
+        <!-- Alert Card -->
+        <div class="bento-card alert-card">
+          <span class="icon">🎁</span>
+          <strong>Hadiah Rp1.000 – Rp5.000</strong> berdasarkan kualitas jawaban Anda.<br>
+          Hadiah hanya dapat dikirim melalui <strong>e-wallet (OVO, DANA, GoPay, dll)</strong>.<br>
+          <span class="icon">🧾</span> <strong>Syarat:</strong> Wajib follow Instagram 
+          <a href="https://instagram.com/femmeia.cloth" target="_blank" style="color: var(--accent);">@femmeia.cloth</a> 
+          dan isi username IG Anda.
+        </div>
+
+        <!-- Privacy Notice -->
+        <div class="bento-card alert-card">
+          <strong>Perhatian:</strong><br>
+          Data yang Anda berikan akan digunakan untuk pengembangan produk dan layanan FemmeiaCloth. 
+          Kami menjamin kerahasiaan data Anda dan tidak akan disebarkan kepada pihak ketiga.<br><br>
+          Mohon lengkapi data dengan jujur untuk mendapatkan hadiah menarik. 
+          Kami akan merespon dalam 1x24 jam.
+        </div>
+
+        <!-- Quota Info -->
+        <div id="quotaInfo" class="quota-info" style="display: none;"></div>
+
+        <!-- Already Submitted Notice -->
+        <div id="alreadySubmittedInfo" class="quota-info empty" style="display: none;">
+          ✅ Anda sudah pernah mengisi survey ini. Terima kasih atas partisipasi Anda!
+        </div>
+
+        <!-- Progress Card -->
+        <div class="bento-card progress-card" id="progressCard">
+          <div class="progress-info">
+            <span id="stepTitle">Data Diri</span>
+            <span id="progressText">1 / 8</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar" style="width: 12.5%"></div>
+          </div>
+          <div class="step-indicator" id="stepIndicator">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+        </div>
+
+        <!-- Form Steps -->
+        <form id="surveyForm" novalidate>
+          <!-- Step 1: Informasi Pribadi -->
+          <div class="form-step active bento-card">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="name">Nama lengkap <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required />
+                <div class="error" id="nameError"></div>
+              </div>
+              <div class="form-group">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required />
+                <div class="error" id="emailError"></div>
+              </div>
+              <div class="form-group">
+                <label for="gender">Jenis kelamin <span class="required">*</span></label>
+                <select id="gender" name="gender" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Pria">Pria</option>
+                  <option value="Wanita">Wanita</option>
+                </select>
+                <div class="error" id="genderError"></div>
+              </div>
+              <div class="form-group">
+                <label for="age">Usia <span class="required">*</span></label>
+                <input type="number" id="age" name="age" min="1" required />
+                <div class="error" id="ageError"></div>
+              </div>
+              <div class="form-group">
+                <label for="city">Kota domisili <span class="required">*</span></label>
+                <input type="text" id="city" name="city" required />
+                <div class="error" id="cityError"></div>
+              </div>
+              <div class="form-group">
+                <label for="job">Status pekerjaan <span class="required">*</span></label>
+                <select id="job" name="job" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Pelajar">Pelajar</option>
+                  <option value="Mahasiswa">Mahasiswa</option>
+                  <option value="Bekerja">Bekerja</option>
+                  <option value="Tidak bekerja">Tidak bekerja</option>
+                </select>
+                <div class="error" id="jobError"></div>
+              </div>
+              <div class="form-group">
+                <label for="income">Penghasilan bulanan <span class="required">*</span></label>
+                <select id="income" name="income" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="<1jt">&lt; 1jt</option>
+                  <option value="1-3jt">1-3jt</option>
+                  <option value=">3jt">&gt; 3jt</option>
+                  <option value="(Memilih Untuk Tidak Menjawab)">Memilih Untuk Tidak Menjawab</option>
+                </select>
+                <div class="error" id="incomeError"></div>
+              </div>
+              <div class="form-group">
+                <label for="marital">Status pernikahan <span class="required">*</span></label>
+                <select id="marital" name="marital" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Belum menikah">Belum menikah</option>
+                  <option value="Menikah">Menikah</option>
+                  <option value="(Memilih Untuk Tidak Menjawab)">Memilih Untuk Tidak Menjawab</option>
+                </select>
+                <div class="error" id="maritalError"></div>
+              </div>
+              <div class="form-group">
+                <label for="whatsapp">Nomor WhatsApp <span class="required">*</span></label>
+                <input type="tel" id="whatsapp" name="whatsapp" placeholder="Contoh: 08123456789" required />
+                <div class="error" id="whatsappError"></div>
+              </div>
+              <div class="form-group">
+                <label for="ewallet">Nomor E-Wallet <span class="required">*</span></label>
+                <input type="tel" id="ewallet" name="ewallet" placeholder="Contoh: 08123456789" required />
+                <div class="error" id="ewalletError"></div>
+              </div>
+              <div class="form-group">
+                <label for="jenisewallet">Jenis E-Wallet <span class="required">*</span></label>
+                <select id="jenisewallet" name="jenisewallet" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Dana">Dana</option>
+                  <option value="OVO">OVO</option>
+                  <option value="Gopay">Gopay</option>
+                  <option value="Shopeepay">ShopeePay</option>
+                </select>
+                <div class="error" id="jenisewalletError"></div>
+              </div>
+              <div class="form-group full-width">
+                <label for="instagram">Username Instagram <span class="required">*</span></label>
+                <input type="text" id="instagram" name="instagram" placeholder="@username" required />
+                <div class="error" id="instagramError"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Preferensi Produk Hijab -->
+          <div class="form-step bento-card">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="productType">Jenis hijab favorit <span class="required">*</span></label>
+                <select id="productType" name="productType" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Paris">Paris</option>
+                  <option value="Pashmina">Pashmina</option>
+                  <option value="Inner">Inner</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+                <div class="error" id="productTypeError"></div>
+              </div>
+              <div class="form-group">
+                <label for="favoriteColor">Warna favorit hijab <span class="required">*</span></label>
+                <input type="text" id="favoriteColor" name="favoriteColor" required />
+                <div class="error" id="favoriteColorError"></div>
+              </div>
+              <div class="form-group">
+                <label for="size">Ukuran hijab biasa dipakai <span class="required">*</span></label>
+                <select id="size" name="size" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="110x110">110x110</option>
+                  <option value="115x115">115x115</option>
+                  <option value="165x55">165x55</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+                <div class="error" id="sizeError"></div>
+              </div>
+              <div class="form-group full-width">
+                <label for="priceRange">Kisaran harga nyaman <span class="required">*</span></label>
+                <select id="priceRange" name="priceRange" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="30rb-50rb">30rb-50rb</option>
+                  <option value="50rb-100rb">50rb-100rb</option>
+                  <option value=">100rb">&gt; 100rb</option>
+                </select>
+                <div class="error" id="priceRangeError"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Perilaku Belanja Hijab -->
+          <div class="form-step bento-card">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="shoppingPlace">Sering beli hijab di <span class="required">*</span></label>
+                <select id="shoppingPlace" name="shoppingPlace" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Online">Online (Misal. Tokopedia, Shopee, Tiktok, dan lainnya)</option>
+                  <option value="Offline">Offline</option>
+                  <option value="Keduanya">Keduanya</option>
+                </select>
+                <div class="error" id="shoppingPlaceError"></div>
+              </div>
+              <div class="form-group">
+                <label for="favoriteBrand">Brand hijab favorit <span class="required">*</span></label>
+                <input type="text" id="favoriteBrand" name="favoriteBrand" required />
+                <div class="error" id="favoriteBrandError"></div>
+              </div>
+              <div class="form-group">
+                <label for="shopFrequency">Frekuensi beli hijab per tahun <span class="required">*</span></label>
+                <select id="shopFrequency" name="shopFrequency" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="1-2x">1-2x</option>
+                  <option value="3-5x">3-5x</option>
+                  <option value=">6x">&gt; 6x</option>
+                  <option value="jarang">jarang</option>
+                </select>
+                <div class="error" id="shopFrequencyError"></div>
+              </div>
+              <div class="form-group">
+                <label for="reasonBuy">Alasan utama membeli hijab <span class="required">*</span></label>
+                <select id="reasonBuy" name="reasonBuy" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Fashion">Fashion</option>
+                  <option value="Fungsional">Fungsional</option>
+                  <option value="Agama">Agama</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+                <div class="error" id="reasonBuyError"></div>
+              </div>
+              <div class="form-group full-width">
+                <label for="buyMoment">Momen biasa membeli hijab</label>
+                <div class="checkbox-group">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="moment1" value="Ramadan" class="buyMoment" />
+                    <label for="moment1">Ramadan</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="moment2" value="Lebaran" class="buyMoment" />
+                    <label for="moment2">Lebaran</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="moment3" value="Harian" class="buyMoment" />
+                    <label for="moment3">Harian</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group full-width">
+                <label for="infoSource">Sumber info produk hijab</label>
+                <div class="checkbox-group">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="source1" value="Instagram" class="infoSource" />
+                    <label for="source1">Instagram</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="source2" value="TikTok" class="infoSource" />
+                    <label for="source2">TikTok</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="source3" value="Teman" class="infoSource" />
+                    <label for="source3">Teman</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="limitedEdition">Tertarik produk limited edition? <span class="required">*</span></label>
+                <div style="margin-top: 0.5rem;">
+                  <label style="display: inline-flex; align-items: center; margin-right: 1rem;">
+                    <input type="radio" id="limitedYes" name="limitedEdition" value="Ya" style="margin-right: 0.5rem;" required />
+                    Ya
+                  </label>
+                  <label style="display: inline-flex; align-items: center;">
+                    <input type="radio" id="limitedNo" name="limitedEdition" value="Tidak" style="margin-right: 0.5rem;" required />
+                    Tidak
+                  </label>
+                </div>
+                <div class="error" id="limitedEditionError"></div>
+              </div>
+              <div class="form-group">
+                <label for="favPayment">Metode pembayaran favorit <span class="required">*</span></label>
+                <select id="favPayment" name="favPayment" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Transfer Bank">Transfer Bank</option>
+                  <option value="E-Wallet">E-Wallet</option>
+                  <option value="COD">COD</option>
+                  <option value="Ambil Langsung/Diantarkan Langsung">Ambil Langsung/Diantarkan Langsung</option>
+                  <option value="Qris">Qris</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+                <div class="error" id="favPaymentError"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Kepuasan Pelanggan -->
+          <div class="form-step bento-card">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label for="hasPurchased">Pernah beli di Femmeia? <span class="required">*</span></label>
+                <div style="margin-top: 0.5rem;">
+                  <label style="display: inline-flex; align-items: center; margin-right: 1rem;">
+                    <input type="radio" id="purchasedYes" name="hasPurchased" value="Ya" style="margin-right: 0.5rem;" />
+                    Ya
+                  </label>
+                  <label style="display: inline-flex; align-items: center;">
+                    <input type="radio" id="purchasedNo" name="hasPurchased" value="Tidak" style="margin-right: 0.5rem;" />
+                    Tidak
+                  </label>
+                </div>
+                <div class="error" id="hasPurchasedError"></div>
+              </div>
+              <div class="form-group" id="ratingGroup" style="display: none;">
+                <label for="rating">Rating pengalaman belanja (1–5)</label>
+                <select id="rating" name="rating">
+                  <option value="">-- Pilih Rating --</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+              <div class="form-group" id="qualityGroup" style="display: none;">
+                <label for="quality">Kualitas hijab Femmeia</label>
+                <select id="quality" name="quality">
+                  <option value="">-- Pilih --</option>
+                  <option value="Sangat menarik">Sangat menarik</option>
+                  <option value="Menarik">Menarik</option>
+                  <option value="Biasa saja">Biasa saja</option>
+                  <option value="Kurang menarik">Kurang menarik</option>
+                </select>
+              </div>
+              <div class="form-group" id="materialQualityGroup" style="display: none;">
+                <label for="materialQuality">Kualitas bahan</label>
+                <select id="materialQuality" name="materialQuality">
+                  <option value="">-- Pilih --</option>
+                  <option value="Sangat menarik">Sangat menarik</option>
+                  <option value="Menarik">Menarik</option>
+                  <option value="Biasa saja">Biasa saja</option>
+                  <option value="Kurang menarik">Kurang menarik</option>
+                </select>
+              </div>
+              <div class="form-group" id="serviceQualityGroup" style="display: none;">
+                <label for="serviceQuality">Kualitas pelayanan</label>
+                <select id="serviceQuality" name="serviceQuality">
+                  <option value="">-- Pilih --</option>
+                  <option value="Sangat menarik">Sangat menarik</option>
+                  <option value="Menarik">Menarik</option>
+                  <option value="Biasa saja">Biasa saja</option>
+                  <option value="Kurang menarik">Kurang menarik</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label for="shopExp">Pengalaman belanja online umum <span class="required">*</span></label>
+                <textarea id="shopExp" name="shopExp" placeholder="Ceritakan pengalaman belanja online Anda secara umum..." required></textarea>
+                <div class="error" id="shopExpError"></div>
+              </div>
+              <div class="form-group full-width" id="feedbackGroup" style="display: none;">
+                <label for="feedback">Komentar tentang layanan kami</label>
+                <textarea id="feedback" name="feedback" placeholder="Berikan komentar tentang layanan Femmeia..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5: Branding & Visual -->
+          <div class="form-step bento-card">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="logoImpression">Penilaian terhadap logo <span class="required">*</span></label>
+                <select id="logoImpression" name="logoImpression" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Sangat menarik">Sangat menarik</option>
+                  <option value="Menarik">Menarik</option>
+                  <option value="Biasa saja">Biasa saja</option>
+                  <option value="Kurang menarik">Kurang menarik</option>
+                </select>
+                <div class="error" id="logoImpressionError"></div>
+              </div>
+              <div class="form-group">
+                <label for="designAesthetic">Kesan desain produk & identitas visual <span class="required">*</span></label>
+                <select id="designAesthetic" name="designAesthetic" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Sangat menarik">Sangat menarik</option>
+                  <option value="Menarik">Menarik</option>
+                  <option value="Biasa saja">Biasa saja</option>
+                  <option value="Kurang menarik">Kurang menarik</option>
+                </select>
+                <div class="error" id="designAestheticError"></div>
+              </div>
+              <div class="form-group">
+                <label for="instagramQuality">Kualitas feed Instagram <span class="required">*</span></label>
+                <select id="instagramQuality" name="instagramQuality" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="Sangat baik">Sangat baik</option>
+                  <option value="Baik">Baik</option>
+                  <option value="Biasa saja">Biasa saja</option>
+                  <option value="Kurang baik">Kurang baik</option>
+                </select>
+                <div class="error" id="instagramQualityError"></div>
+              </div>
+              <div class="form-group full-width">
+                <label for="brandingSuggestion">Saran terkait logo/sosmed <span class="required">*</span></label>
+                <textarea id="brandingSuggestion" name="brandingSuggestion" placeholder="Berikan saran untuk perbaikan logo atau media sosial..." required></textarea>
+                <div class="error" id="brandingSuggestionError"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6: Ide Produk & Layanan -->
+          <div class="form-step bento-card">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label>Ide produk baru yang diminati</label>
+                <div class="checkbox-group">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="idea1" value="Hijab Motif" class="productIdeas" />
+                    <label for="idea1">Hijab Motif</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="idea2" value="Inner Instan" class="productIdeas" />
+                    <label for="idea2">Inner Instan</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="idea3" value="Aksesoris Hijab" class="productIdeas" />
+                    <label for="idea3">Aksesoris Hijab</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group full-width">
+                <label for="otherIdea">Ide lainnya (jika ada) <span class="required">*</span></label>
+                <textarea id="otherIdea" name="otherIdea" placeholder="Tuliskan ide produk lainnya..." required></textarea>
+                <div class="error" id="otherIdeaError"></div>
+              </div>
+              <div class="form-group full-width">
+                <label for="serviceIdea">Saran layanan selain produk <span class="required">*</span></label>
+                <textarea id="serviceIdea" name="serviceIdea" placeholder="Berikan saran layanan yang diinginkan selain produk hijab..." required></textarea>
+                <div class="error" id="serviceIdeaError"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 7: Masukan Umum & Testimoni -->
+          <div class="form-step bento-card">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label for="suggestion">Testimoni atau saran umum <span class="required">*</span></label>
+                <textarea id="suggestion" name="suggestion" placeholder="Bagikan testimoni, saran, atau masukan Anda untuk Femmeia Cloth..." required></textarea>
+                <div class="error" id="suggestionError"></div>
+              </div>
+              <div class="form-group full-width">
+                <label for="mainProblem">Masalah utama saat beli hijab online <span class="required">*</span></label>
+                <textarea id="mainProblem" name="mainProblem" placeholder="Ceritakan masalah yang sering Anda hadapi saat berbelanja hijab online..." required></textarea>
+                <div class="error" id="mainProblemError"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 8: Persetujuan -->
+          <div class="form-step bento-card">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <div class="checkbox-group">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="agreeFollow" required />
+                    <label for="agreeFollow">Follow Instagram Femmeia <span class="required">*</span><br>
+                      <small>Saya sudah follow Instagram 
+                      <a href="https://instagram.com/femmeia.cloth" target="_blank" style="color: var(--accent);">@femmeia.cloth</a></small>
+                    </label>
+                  </div>
+                  <div class="error" id="agreeFollowError"></div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="agree1" required />
+                    <label for="agree1">Bersedia datanya digunakan <span class="required">*</span><br>
+                      <small>Saya bersedia data yang saya berikan digunakan untuk pengembangan Femmeia Cloth</small>
+                    </label>
+                  </div>
+                  <div class="error" id="agree1Error"></div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="agree2" required />
+                    <label for="agree2">Setuju ikut undian reward <span class="required">*</span><br>
+                      <small>Saya setuju mengikuti undian berhadiah dari Femmeia Cloth</small>
+                    </label>
+                  </div>
+                  <div class="error" id="agree2Error"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="button-group">
+            <button type="button" id="prevBtn" class="btn-secondary" disabled>
+              ← Sebelumnya
+            </button>
+            <button type="button" id="nextBtn" class="btn-primary">
+              Selanjutnya →
+            </button>
+            <button type="submit" id="submitBtn" class="btn-primary" style="display: none;">
+              <span id="submitText">Kirim Survey</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div id="modalContent">
+        <!-- Content will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModalOverlay">
+    <div class="modal auth-modal" id="authModal">
+      <h3 id="authTitle">Login</h3>
+      <form class="auth-form" id="authForm">
+        <input type="email" id="authEmail" placeholder="Email" required />
+        <div class="error" id="authEmailError"></div>
+        <input type="password" id="authPassword" placeholder="Password" required />
+        <div class="error" id="authPasswordError"></div>
+        <input type="password" id="authConfirmPassword" placeholder="Konfirmasi Password" style="display: none;" />
+        <div class="error" id="authConfirmPasswordError"></div>
+        <button type="submit" id="authSubmitBtn">
+          <span id="authSubmitText">Login</span>
+        </button>
+      </form>
+      <div class="auth-switch">
+        <span id="authSwitchText">Belum punya akun?</span>
+        <button type="button" id="authSwitchBtn">Daftar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, runTransaction, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification, reload } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+    
+    // EmailJS
+    emailjs.init('EgQN926d2p5Tl7keS');
+
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
+      authDomain: "femmeiacloth-finance.firebaseapp.com",
+      projectId: "femmeiacloth-finance",
+      storageBucket: "femmeiacloth-finance.appspot.com",
+      messagingSenderId: "517478386163",
+      appId: "1:517478386163:web:51028f5841baa311126a86",
+      measurementId: "G-K4L516Q54R"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // DOM Elements
+    const loginGate = document.getElementById('loginGate');
+    const verificationGate = document.getElementById('verificationGate');
+    const surveyContent = document.getElementById('surveyContent');
+    const authHeader = document.getElementById('authHeader');
+    const userProfile = document.getElementById('userProfile');
+    const showAuthModalBtn = document.getElementById('showAuthModal');
+    const authModalOverlay = document.getElementById('authModalOverlay');
+    const authModal = document.getElementById('authModal');
+    const authForm = document.getElementById('authForm');
+    const authTitle = document.getElementById('authTitle');
+    const authEmail = document.getElementById('authEmail');
+    const authPassword = document.getElementById('authPassword');
+    const authConfirmPassword = document.getElementById('authConfirmPassword');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authSubmitText = document.getElementById('authSubmitText');
+    const authSwitchText = document.getElementById('authSwitchText');
+    const authSwitchBtn = document.getElementById('authSwitchBtn');
+    const checkVerificationBtn = document.getElementById('checkVerificationBtn');
+    const resendVerificationBtn = document.getElementById('resendVerificationBtn');
+    const changeEmailBtn = document.getElementById('changeEmailBtn');
+    const alreadySubmittedInfo = document.getElementById('alreadySubmittedInfo');
+    const progressCard = document.getElementById('progressCard');
+
+    // Survey form elements
+    const steps = document.querySelectorAll('.form-step');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressBar = document.getElementById('progressBar');
+    const stepIndicator = document.getElementById('stepIndicator');
+    const stepTitle = document.getElementById('stepTitle');
+    const progressText = document.getElementById('progressText');
+    const quotaInfo = document.getElementById('quotaInfo');
+    const surveyForm = document.getElementById('surveyForm');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalContent = document.getElementById('modalContent');
+
+    let currentStep = 0;
+    const totalSteps = steps.length;
+    let quotaCount = null;
+    let isLoginMode = true;
+    let currentUser = null;
+    let hasSubmitted = false;
+    let resendCooldown = 0;
+
+    const stepTitles = [
+      'Informasi Pribadi',
+      'Preferensi Produk Hijab',
+      'Perilaku Belanja Hijab', 
+      'Kepuasan Pelanggan',
+      'Branding & Visual',
+      'Ide Produk & Layanan',
+      'Masukan Umum & Testimoni',
+      'Persetujuan'
+    ];
+
+    // Auth state management
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        if (user.emailVerified) {
+          await checkUserSubmissionStatus();
+          showSurveyContent();
+          updateUserInfo();
+        } else {
+          showVerificationGate();
+          updateUserInfo();
+        }
+      } else {
+        currentUser = null;
+        hasSubmitted = false;
+        showLoginGate();
+      }
+    });
+
+    function showLoginGate() {
+      loginGate.style.display = 'flex';
+      verificationGate.style.display = 'none';
+      surveyContent.style.display = 'none';
+      authHeader.style.display = 'none';
+    }
+
+    function showVerificationGate() {
+      loginGate.style.display = 'none';
+      verificationGate.style.display = 'flex';
+      surveyContent.style.display = 'none';
+      authHeader.style.display = 'flex';
+    }
+
+    function showSurveyContent() {
+      loginGate.style.display = 'none';
+      verificationGate.style.display = 'none';
+      surveyContent.style.display = 'block';
+      authHeader.style.display = 'flex';
+    }
+
+    function updateUserInfo() {
+      if (currentUser) {
+        const userInitial = currentUser.email.charAt(0).toUpperCase();
+        const isVerified = currentUser.emailVerified;
+        
+        userProfile.innerHTML = `
+          <div class="user-info">
+            <div class="user-avatar">${userInitial}</div>
+            <div class="user-details">
+              <div class="user-email">${currentUser.email}</div>
+              <div class="user-status ${isVerified ? 'status-verified' : 'status-unverified'}">
+                ${isVerified ? '✓ Terverifikasi' : '⚠ Belum Terverifikasi'}
+              </div>
+            </div>
+          </div>
+          <button class="logout-btn" id="logoutBtn">Logout</button>
+        `;
+        
+        // Re-attach logout event listener
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+      }
+    }
+
+    async function checkUserSubmissionStatus() {
+      if (!currentUser) return;
+      
+      try {
+        const surveysRef = collection(db, "surveys");
+        const q = query(surveysRef, where("userId", "==", currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        
+        hasSubmitted = !querySnapshot.empty;
+        
+        if (hasSubmitted) {
+          alreadySubmittedInfo.style.display = 'block';
+          progressCard.style.display = 'none';
+          surveyForm.style.display = 'none';
+        } else {
+          alreadySubmittedInfo.style.display = 'none';
+          progressCard.style.display = 'block';
+          surveyForm.style.display = 'block';
+          checkQuotaAndToggleForm();
+        }
+      } catch (error) {
+        console.error("Error checking submission status:", error);
+      }
+    }
+
+    // Auth modal functions
+    function showAuthModal() {
+      authModalOverlay.classList.add('active');
+      clearAuthErrors();
+    }
+
+    function hideAuthModal() {
+      authModalOverlay.classList.remove('active');
+      authForm.reset();
+      clearAuthErrors();
+    }
+
+    function toggleAuthMode() {
+      isLoginMode = !isLoginMode;
+      
+      if (isLoginMode) {
+        authTitle.textContent = 'Login';
+        authSubmitText.textContent = 'Login';
+        authSwitchText.textContent = 'Belum punya akun?';
+        authSwitchBtn.textContent = 'Daftar';
+        authConfirmPassword.style.display = 'none';
+        authConfirmPassword.required = false;
+      } else {
+        authTitle.textContent = 'Daftar';
+        authSubmitText.textContent = 'Daftar';
+        authSwitchText.textContent = 'Sudah punya akun?';
+        authSwitchBtn.textContent = 'Login';
+        authConfirmPassword.style.display = 'block';
+        authConfirmPassword.required = true;
+      }
+      
+      clearAuthErrors();
+    }
+
+    function clearAuthErrors() {
+      document.querySelectorAll('#authModal .error').forEach(error => error.textContent = '');
+      document.querySelectorAll('#authModal input').forEach(input => {
+        input.classList.remove('error-border');
+      });
+    }
+
+    function showAuthError(fieldId, message) {
+      const errorElement = document.getElementById(fieldId + 'Error');
+      const inputElement = document.getElementById(fieldId);
+      if (errorElement) errorElement.textContent = message;
+      if (inputElement) inputElement.classList.add('error-border');
+    }
+
+    function showAuthSuccess(fieldId, message) {
+      const errorElement = document.getElementById(fieldId + 'Error');
+      if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.className = 'success';
+      }
+    }
+
+    // Verification functions
+    async function checkEmailVerification() {
+      if (!currentUser) return;
+      
+      checkVerificationBtn.disabled = true;
+      checkVerificationBtn.innerHTML = '<div class="loading"></div>Memeriksa...';
+      
+      try {
+        await reload(currentUser);
+        if (currentUser.emailVerified) {
+          showModal('success', 'Email Terverifikasi!', 'Email Anda telah berhasil diverifikasi. Anda sekarang dapat mengakses survey.');
+          setTimeout(() => {
+            hideModal();
+            showSurveyContent();
+            updateUserInfo();
+          }, 2000);
+        } else {
+          showModal('error', 'Belum Terverifikasi', 'Email Anda belum terverifikasi. Silakan periksa inbox email Anda dan klik link verifikasi.');
+        }
+      } catch (error) {
+        console.error('Error checking verification:', error);
+        showModal('error', 'Gagal Memeriksa', 'Terjadi kesalahan saat memeriksa status verifikasi. Silakan coba lagi.');
+      } finally {
+        checkVerificationBtn.disabled = false;
+        checkVerificationBtn.textContent = 'Periksa Status Verifikasi';
+      }
+    }
+
+    async function resendVerificationEmail() {
+      if (!currentUser || resendCooldown > 0) return;
+      
+      resendVerificationBtn.disabled = true;
+      resendVerificationBtn.innerHTML = '<div class="loading"></div>Mengirim...';
+      
+      try {
+        await sendEmailVerification(currentUser);
+        showModal('success', 'Email Terkirim!', 'Email verifikasi telah dikirim ulang. Silakan periksa inbox email Anda.');
+        
+        // Start cooldown
+        resendCooldown = 60;
+        const cooldownInterval = setInterval(() => {
+          resendCooldown--;
+          resendVerificationBtn.textContent = `Kirim Ulang (${resendCooldown}s)`;
+          
+          if (resendCooldown <= 0) {
+            clearInterval(cooldownInterval);
+            resendVerificationBtn.disabled = false;
+            resendVerificationBtn.textContent = 'Kirim Ulang Email';
+          }
+        }, 1000);
+        
+      } catch (error) {
+        console.error('Error resending verification:', error);
+        let errorMessage = 'Gagal mengirim email verifikasi. Silakan coba lagi.';
+        
+        if (error.code === 'auth/too-many-requests') {
+          errorMessage = 'Terlalu banyak permintaan. Silakan tunggu beberapa saat sebelum mencoba lagi.';
+        }
+        
+        showModal('error', 'Gagal Mengirim', errorMessage);
+        resendVerificationBtn.disabled = false;
+        resendVerificationBtn.textContent = 'Kirim Ulang Email';
+      }
+    }
+
+    function changeEmail() {
+      signOut(auth);
+    }
+
+    // Auth event listeners
+    showAuthModalBtn.addEventListener('click', showAuthModal);
+    authSwitchBtn.addEventListener('click', toggleAuthMode);
+    checkVerificationBtn.addEventListener('click', checkEmailVerification);
+    resendVerificationBtn.addEventListener('click', resendVerificationEmail);
+    changeEmailBtn.addEventListener('click', changeEmail);
+
+    authModalOverlay.addEventListener('click', function(e) {
+      if (e.target === authModalOverlay) {
+        hideAuthModal();
+      }
+    });
+
+    authForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      clearAuthErrors();
+
+      const email = authEmail.value.trim();
+      const password = authPassword.value;
+      const confirmPassword = authConfirmPassword.value;
+
+      // Validation
+      if (!email) {
+        showAuthError('authEmail', 'Email wajib diisi');
+        return;
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showAuthError('authEmail', 'Format email tidak valid');
+        return;
+      }
+
+      if (!password) {
+        showAuthError('authPassword', 'Password wajib diisi');
+        return;
+      }
+
+      if (!isLoginMode) {
+        if (!confirmPassword) {
+          showAuthError('authConfirmPassword', 'Konfirmasi password wajib diisi');
+          return;
+        }
+        if (password !== confirmPassword) {
+          showAuthError('authConfirmPassword', 'Password tidak cocok');
+          return;
+        }
+        if (password.length < 6) {
+          showAuthError('authPassword', 'Password minimal 6 karakter');
+          return;
+        }
+      }
+
+      // Disable submit button
+      authSubmitBtn.disabled = true;
+      authSubmitText.innerHTML = '<div class="loading"></div>Memproses...';
+
+      try {
+        if (isLoginMode) {
+          await signInWithEmailAndPassword(auth, email, password);
+          showAuthSuccess('authEmail', 'Login berhasil!');
+        } else {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          await sendEmailVerification(userCredential.user);
+          showAuthSuccess('authEmail', 'Akun berhasil dibuat! Email verifikasi telah dikirim.');
+        }
+        
+        setTimeout(() => {
+          hideAuthModal();
+        }, 1500);
+        
+      } catch (error) {
+        console.error('Auth error:', error);
+        
+        let errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+        let errorField = 'authEmail';
+        
+        switch (error.code) {
+          case 'auth/user-not-found':
+            errorMessage = 'Email tidak terdaftar. Silakan daftar terlebih dahulu.';
+            break;
+          case 'auth/wrong-password':
+          case 'auth/invalid-credential':
+            errorMessage = 'Password salah. Silakan periksa kembali password Anda.';
+            errorField = 'authPassword';
+            break;
+          case 'auth/email-already-in-use':
+            errorMessage = 'Email sudah terdaftar. Silakan gunakan email lain atau login.';
+            break;
+          case 'auth/weak-password':
+            errorMessage = 'Password terlalu lemah. Gunakan minimal 6 karakter.';
+            errorField = 'authPassword';
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'Format email tidak valid.';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage = 'Terlalu banyak percobaan. Coba lagi dalam beberapa menit.';
+            break;
+          case 'auth/network-request-failed':
+            errorMessage = 'Koneksi internet bermasalah. Periksa koneksi Anda.';
+            break;
+        }
+        
+        showAuthError(errorField, errorMessage);
+      } finally {
+        authSubmitBtn.disabled = false;
+        authSubmitText.textContent = isLoginMode ? 'Login' : 'Daftar';
+      }
+    });
+
+    // Modal functions
+    function showModal(type, title, message) {
+      let content = '';
+      
+      if (type === 'loading') {
+        content = `
+          <div class="modal-spinner"></div>
+          <h3>${title}</h3>
+          <p class="pulse">${message}</p>
+        `;
+      } else if (type === 'success') {
+        content = `
+          <div class="modal-status success">✅ Berhasil</div>
+          <h3>${title}</h3>
+          <p>${message}</p>
+          <button class="modal-btn" onclick="document.getElementById('modalOverlay').classList.remove('active')">
+            Tutup
+          </button>
+        `;
+      } else if (type === 'error') {
+        content = `
+          <div class="modal-status error">❌ Gagal</div>
+          <h3>${title}</h3>
+          <p>${message}</p>
+          <button class="modal-btn" onclick="document.getElementById('modalOverlay').classList.remove('active')">
+            Tutup
+          </button>
+        `;
+      }
+      
+      modalContent.innerHTML = content;
+      modalOverlay.classList.add('active');
+    }
+
+    function hideModal() {
+      modalOverlay.classList.remove('active');
+    }
+
+    // Show/hide customer satisfaction fields based on purchase history
+    document.addEventListener('change', function(e) {
+      if (e.target.name === 'hasPurchased') {
+        const ratingGroup = document.getElementById('ratingGroup');
+        const qualityGroup = document.getElementById('qualityGroup');
+        const materialQualityGroup = document.getElementById('materialQualityGroup');
+        const serviceQualityGroup = document.getElementById('serviceQualityGroup');
+        const feedbackGroup = document.getElementById('feedbackGroup');
+        
+        if (e.target.value === 'Ya') {
+          ratingGroup.style.display = 'block';
+          qualityGroup.style.display = 'block';
+          materialQualityGroup.style.display = 'block';
+          serviceQualityGroup.style.display = 'block';
+          feedbackGroup.style.display = 'block';
+        } else {
+          ratingGroup.style.display = 'none';
+          qualityGroup.style.display = 'none';
+          materialQualityGroup.style.display = 'none';
+          serviceQualityGroup.style.display = 'none';
+          feedbackGroup.style.display = 'none';
+          // Clear values
+          document.getElementById('rating').value = '';
+          document.getElementById('quality').value = '';
+          document.getElementById('materialQuality').value = '';
+          document.getElementById('serviceQuality').value = '';
+          document.getElementById('feedback').value = '';
+        }
+      }
+    });
+
+    function updateProgress() {
+      const progress = ((currentStep + 1) / totalSteps) * 100;
+      progressBar.style.width = progress + '%';
+      stepTitle.textContent = stepTitles[currentStep];
+      progressText.textContent = `${currentStep + 1} / 8`;
+
+      // Update step indicators
+      const dots = stepIndicator.querySelectorAll('.step-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.remove('active', 'completed');
+        if (index < currentStep) {
+          dot.classList.add('completed');
+        } else if (index === currentStep) {
+          dot.classList.add('active');
+        }
+      });
+    }
+
+    function showStep(n) {
+      steps.forEach((step, i) => {
+        step.classList.toggle('active', i === n);
+      });
+
+      prevBtn.disabled = n === 0;
+      
+      if (n === totalSteps - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-block';
+      } else {
+        nextBtn.style.display = 'inline-block';
+        submitBtn.style.display = 'none';
+      }
+
+      updateProgress();
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.error').forEach(error => error.textContent = '');
+      document.querySelectorAll('input, select, textarea').forEach(input => {
+        input.classList.remove('error-border');
+      });
+    }
+
+    function showError(fieldId, message) {
+      const errorElement = document.getElementById(fieldId + 'Error');
+      const inputElement = document.getElementById(fieldId);
+      if (errorElement) errorElement.textContent = message;
+      if (inputElement) inputElement.classList.add('error-border');
+    }
+
+    function validateStep(n) {
+      clearErrors();
+      let isValid = true;
+
+      switch (n) {
+        case 0:
+          const step0Fields = ['name', 'email', 'gender', 'age', 'city', 'job', 'income', 'marital', 'whatsapp', 'ewallet', 'jenisewallet', 'instagram'];
+          step0Fields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value.trim()) {
+              showError(field, 'Field ini wajib diisi');
+              isValid = false;
+            }
+          });
+          
+          // Add phone validation after the existing required field checks
+          if (document.getElementById('whatsapp').value && !/^[0-9+\-\s()]+$/.test(document.getElementById('whatsapp').value)) {
+            showError('whatsapp', 'Format nomor WhatsApp tidak valid');
+            isValid = false;
+          }
+          if (document.getElementById('ewallet').value && !/^[0-9+\-\s()]+$/.test(document.getElementById('ewallet').value)) {
+            showError('ewallet', 'Format nomor E-Wallet tidak valid');
+            isValid = false;
+          }
+          break;
+
+        case 1:
+          const step1Fields = ['productType', 'favoriteColor', 'size', 'priceRange'];
+          step1Fields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value.trim()) {
+              showError(field, 'Field ini wajib diisi');
+              isValid = false;
+            }
+          });
+          break;
+
+        case 2:
+          const step2Fields = ['shoppingPlace', 'favoriteBrand', 'shopFrequency', 'reasonBuy', 'favPayment'];
+          step2Fields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value.trim()) {
+              showError(field, 'Field ini wajib diisi');
+              isValid = false;
+            }
+          });
+          
+          // Check radio button for limitedEdition
+          if (!document.querySelector('input[name="limitedEdition"]:checked')) {
+            showError('limitedEdition', 'Pilihan wajib dipilih');
+            isValid = false;
+          }
+          break;
+
+        case 3:
+          if (!document.querySelector('input[name="hasPurchased"]:checked')) {
+            showError('hasPurchased', 'Pilihan wajib dipilih');
+            isValid = false;
+          }
+          if (!document.getElementById('shopExp').value.trim()) {
+            showError('shopExp', 'Field ini wajib diisi');
+            isValid = false;
+          }
+          break;
+
+        case 4:
+          const step4Fields = ['logoImpression', 'designAesthetic', 'instagramQuality', 'brandingSuggestion'];
+          step4Fields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value.trim()) {
+              showError(field, 'Field ini wajib diisi');
+              isValid = false;
+            }
+          });
+          break;
+
+        case 5:
+          const step5Fields = ['otherIdea', 'serviceIdea'];
+          step5Fields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value.trim()) {
+              showError(field, 'Field ini wajib diisi');
+              isValid = false;
+            }
+          });
+          break;
+
+        case 6:
+          const step6Fields = ['suggestion', 'mainProblem'];
+          step6Fields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value.trim()) {
+              showError(field, 'Field ini wajib diisi');
+              isValid = false;
+            }
+          });
+          break;
+
+        case 7:
+          if (!document.getElementById('agreeFollow').checked) {
+            showError('agreeFollow', 'Wajib follow Instagram @femmeia.cloth');
+            isValid = false;
+          }
+          if (!document.getElementById('agree1').checked) {
+            showError('agree1', 'Persetujuan penggunaan data wajib dicentang');
+            isValid = false;
+          }
+          if (!document.getElementById('agree2').checked) {
+            showError('agree2', 'Persetujuan undian berhadiah wajib dicentang');
+            isValid = false;
+          }
+          break;
+      }
+
+      return isValid;
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (validateStep(currentStep)) {
+        if (currentStep < totalSteps - 1) {
+          currentStep++;
+          showStep(currentStep);
+        }
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    });
+
+    // Close modal when clicking outside
+    modalOverlay.addEventListener('click', function(e) {
+      if (e.target === modalOverlay) {
+        // Only close if it's not a loading modal
+        if (!modalContent.querySelector('.modal-spinner')) {
+          hideModal();
+        }
+      }
+    });
+
+    // Check quota
+    const quotaDocRef = doc(db, "survey_control", "quota");
+
+    async function checkQuotaAndToggleForm() {
+      if (hasSubmitted) return;
+      
+      try {
+        const docSnap = await getDoc(quotaDocRef);
+        if (docSnap.exists()) {
+          quotaCount = docSnap.data().count;
+          if (quotaCount <= 0) {
+            quotaInfo.innerHTML = "🚫 Stok survey sudah habis. Terima kasih atas antusiasmenya!";
+            quotaInfo.className = "quota-info empty";
+            quotaInfo.style.display = "block";
+            surveyForm.classList.add('form-hidden');
+          } else {
+            quotaInfo.innerHTML = `✅ Sisa kuota survey: <strong>${quotaCount}</strong>`;
+            quotaInfo.className = "quota-info";
+            quotaInfo.style.display = "block";
+            surveyForm.classList.remove('form-hidden');
+          }
+        } else {
+          quotaInfo.innerHTML = "⚠️ Quota belum diinisialisasi di Firestore!";
+          quotaInfo.className = "quota-info empty";
+          quotaInfo.style.display = "block";
+          surveyForm.classList.add('form-hidden');
+        }
+      } catch (err) {
+        quotaInfo.innerHTML = "❌ Gagal memuat quota survey.";
+        quotaInfo.className = "quota-info empty";
+        quotaInfo.style.display = "block";
+        surveyForm.classList.add('form-hidden');
+      }
+    }
+
+    // Form submission
+    surveyForm.addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      if (!validateStep(currentStep) || !currentUser || hasSubmitted || !currentUser.emailVerified) {
+        if (!currentUser.emailVerified) {
+          showModal('error', 'Email Belum Terverifikasi', 'Silakan verifikasi email Anda terlebih dahulu sebelum mengisi survey.');
+        }
+        return;
+      }
+
+      // Show loading modal
+      showModal('loading', 'Mengirim Survey', 'Mohon tunggu sebentar, survey Anda sedang diproses...');
+
+      // Collect form data
+      const ideas = Array.from(document.querySelectorAll('.productIdeas:checked')).map(cb => cb.value).join(', ');
+
+      // Survey Data Object
+      const surveyData = {
+        // User identification
+        userId: currentUser.uid,
+        userEmail: currentUser.email,
+        
+        // Step 1: Informasi Pribadi
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        gender: document.getElementById('gender').value,
+        age: document.getElementById('age').value,
+        city: document.getElementById('city').value,
+        job: document.getElementById('job').value,
+        income: document.getElementById('income')?.value || '',
+        marital: document.getElementById('marital')?.value || '',
+        whatsapp: document.getElementById('whatsapp').value,
+        ewallet: document.getElementById('ewallet').value,
+        jenisewallet: document.getElementById('jenisewallet').value,
+        instagram: document.getElementById('instagram').value,
+
+        // Step 2: Preferensi Produk Hijab
+        productType: document.getElementById('productType').value,
+        favoriteColor: document.getElementById('favoriteColor').value,
+        size: document.getElementById('size').value,
+        priceRange: document.getElementById('priceRange').value,
+
+        // Step 3: Perilaku Belanja Hijab
+        shoppingPlace: document.getElementById('shoppingPlace').value,
+        favoriteBrand: document.getElementById('favoriteBrand').value,
+        shopFrequency: document.getElementById('shopFrequency').value,
+        reasonBuy: document.getElementById('reasonBuy').value,
+        buyMoment: Array.from(document.querySelectorAll('.buyMoment:checked')).map(cb => cb.value).join(', '),
+        infoSource: Array.from(document.querySelectorAll('.infoSource:checked')).map(cb => cb.value).join(', '),
+        limitedEdition: document.querySelector('input[name="limitedEdition"]:checked')?.value || '',
+        favPayment: document.getElementById('favPayment').value,
+
+        // Step 4: Kepuasan Pelanggan
+        hasPurchased: document.querySelector('input[name="hasPurchased"]:checked')?.value || '',
+        rating: document.getElementById('rating').value,
+        quality: document.getElementById('quality').value,
+        materialQuality: document.getElementById('materialQuality').value,
+        serviceQuality: document.getElementById('serviceQuality').value,
+        shopExp: document.getElementById('shopExp').value,
+        feedback: document.getElementById('feedback').value,
+
+        // Step 5: Branding & Visual
+        logoImpression: document.getElementById('logoImpression').value,
+        designAesthetic: document.getElementById('designAesthetic').value,
+        instagramQuality: document.getElementById('instagramQuality').value,
+        brandingSuggestion: document.getElementById('brandingSuggestion').value,
+
+        // Step 6: Ide Produk & Layanan
+        productIdeas: ideas,
+        otherIdea: document.getElementById('otherIdea').value,
+        serviceIdea: document.getElementById('serviceIdea').value,
+
+        // Step 7: Masukan Umum & Testimoni
+        suggestion: document.getElementById('suggestion').value,
+        mainProblem: document.getElementById('mainProblem').value,
+
+        // Step 8: Timestamp
+        timestamp: new Date()
+      };
+
+      // Calculate prize and conclusion
+      const { prizeAmount, conclusion } = calculatePrizeAndConclusion(surveyData);
+      surveyData.prizeAmount = prizeAmount;
+      surveyData.conclusion = conclusion;
+
+      try {
+        await runTransaction(db, async (transaction) => {
+          const quotaDoc = await transaction.get(quotaDocRef);
+          if (!quotaDoc.exists()) throw "Quota tidak ditemukan!";
+          let count = quotaDoc.data().count;
+          if (count <= 0) throw "Stok survey sudah habis!";
+          
+          // Check if user already submitted
+          const surveysRef = collection(db, "surveys");
+          const q = query(surveysRef, where("userId", "==", currentUser.uid));
+          const existingSubmissions = await getDocs(q);
+          if (!existingSubmissions.empty) throw "Anda sudah pernah mengisi survey!";
+          
+          // Save survey
+          const surveysCol = collection(db, "surveys");
+          await addDoc(surveysCol, surveyData);
+          
+          // Update quota
+          transaction.update(quotaDocRef, { count: count - 1 });
+        });
+
+        // Send email
+        emailjs.send('service_00xj2ta', 'template_4i1ue1g', surveyData)
+          .then(() => {
+            // Show success modal
+            showModal(
+              'success', 
+              'Survey Berhasil Dikirim', 
+              `Terima kasih atas partisipasi Anda! Hadiah Rp${prizeAmount} akan dikirimkan dalam 1x24 jam ke e-wallet yang telah Anda cantumkan.`
+            );
+            surveyForm.reset();
+            currentStep = 0;
+            showStep(currentStep);
+            hasSubmitted = true;
+            checkUserSubmissionStatus();
+          }, (error) => {
+            // Show partial success modal
+            showModal(
+              'success', 
+              'Survey Berhasil Disimpan', 
+              `Survey Anda telah berhasil disimpan dengan hadiah Rp${prizeAmount}, namun pengiriman email notifikasi gagal. Kami tetap akan memproses hadiah Anda.`
+            );
+            console.error(error);
+            hasSubmitted = true;
+            checkUserSubmissionStatus();
+          });
+
+      } catch (e) {
+        // Show error modal
+        if (e === "Stok survey sudah habis!") {
+          showModal(
+            'error', 
+            'Kuota Survey Habis', 
+            'Mohon maaf, kuota survey sudah habis. Terima kasih atas antusiasme Anda!'
+          );
+        } else if (e === "Anda sudah pernah mengisi survey!") {
+          showModal(
+            'error', 
+            'Survey Sudah Pernah Diisi', 
+            'Anda sudah pernah mengisi survey ini sebelumnya. Setiap akun hanya dapat mengisi survey satu kali.'
+          );
+          hasSubmitted = true;
+          checkUserSubmissionStatus();
+        } else {
+          showModal(
+            'error', 
+            'Gagal Mengirim Survey', 
+            'Terjadi kesalahan saat mengirim survey. Silakan coba lagi dalam beberapa saat.'
+          );
+        }
+        console.error(e);
+        checkQuotaAndToggleForm();
+      }
+    });
+
+    // Improved Prize calculation function with better accuracy
+    function calculatePrizeAndConclusion(surveyData) {
+      // Initialize base prize
+      let prize = 1000; // Start with minimum 1000
+      let profileScore = 0;
+      let engagementScore = 0;
+      let qualityScore = 0;
+      let brandLoyaltyScore = 0;
+      let innovationScore = 0;
+
+      // 1. Profile Completeness Score (max 300 points)
+      const requiredFields = ['name', 'email', 'whatsapp', 'instagram', 'city', 'gender', 'age'];
+      const optionalFields = ['job', 'income', 'marital'];
+      
+      // Required fields completion
+      const completedRequired = requiredFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+      profileScore += (completedRequired / requiredFields.length) * 200;
+      
+      // Optional fields bonus
+      const completedOptional = optionalFields.filter(field => 
+        surveyData[field] && surveyData[field].trim() && 
+        !surveyData[field].includes('Tidak Menjawab')
+      ).length;
+      profileScore += (completedOptional / optionalFields.length) * 100;
+
+      // 2. Engagement Quality Score (max 600 points)
+      const textFields = [
+        { field: "shopExp", weight: 1.2, minLength: 50 },
+        { field: "brandingSuggestion", weight: 1.5, minLength: 30 },
+        { field: "otherIdea", weight: 1.3, minLength: 20 },
+        { field: "serviceIdea", weight: 1.3, minLength: 20 },
+        { field: "suggestion", weight: 1.4, minLength: 30 },
+        { field: "mainProblem", weight: 1.2, minLength: 30 },
+        { field: "feedback", weight: 1.1, minLength: 20 }
+      ];
+
+      textFields.forEach(({ field, weight, minLength }) => {
+        if (surveyData[field] && surveyData[field].trim()) {
+          const text = surveyData[field].trim();
+          let fieldScore = 0;
+          
+          if (text.length >= minLength) {
+            // Base score for meeting minimum
+            fieldScore = 30;
+            
+            // Length bonus (diminishing returns)
+            if (text.length > 100) fieldScore += 40;
+            else if (text.length > 50) fieldScore += 20;
+            
+            // Quality indicators bonus
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 10).length;
+            if (sentences >= 3) fieldScore += 20;
+            
+            // Specific keyword bonus for valuable feedback
+            const valuableKeywords = ['saran', 'sebaiknya', 'bisa', 'perlu', 'harap', 'mungkin', 'lebih baik', 'kualitas', 'pelayanan'];
+            const keywordCount = valuableKeywords.filter(keyword => 
+              text.toLowerCase().includes(keyword)
+            ).length;
+            fieldScore += Math.min(keywordCount * 5, 20);
+          }
+          
+          engagementScore += fieldScore * weight;
+        }
+      });
+
+      // 3. Brand Loyalty & Experience Score (max 400 points)
+      if (surveyData.hasPurchased === 'Ya') {
+        brandLoyaltyScore += 150; // Base loyalty bonus
+        
+        // Rating quality bonus
+        if (surveyData.rating) {
+          const rating = parseInt(surveyData.rating);
+          if (rating >= 4) brandLoyaltyScore += 100;
+          else if (rating >= 3) brandLoyaltyScore += 50;
+          else brandLoyaltyScore += 25; // Even negative feedback is valuable
+        }
+        
+        // Detailed experience bonus
+        if (surveyData.quality && surveyData.materialQuality && surveyData.serviceQuality) {
+          brandLoyaltyScore += 75;
+        }
+        
+        // Constructive feedback bonus
+        if (surveyData.feedback && surveyData.feedback.length > 30) {
+          brandLoyaltyScore += 75;
+        }
+      } else {
+        // Potential customer bonus (still valuable)
+        brandLoyaltyScore += 50;
+      }
+
+      // 4. Market Research Value Score (max 300 points)
+      let marketResearchScore = 0;
+      
+      // Shopping behavior completeness
+      const behaviorFields = ['shoppingPlace', 'favoriteBrand', 'shopFrequency', 'reasonBuy', 'favPayment'];
+      const completedBehavior = behaviorFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+      marketResearchScore += (completedBehavior / behaviorFields.length) * 100;
+      
+      // Preference completeness
+      const preferenceFields = ['productType', 'favoriteColor', 'size', 'priceRange'];
+      const completedPreferences = preferenceFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+      marketResearchScore += (completedPreferences / preferenceFields.length) * 100;
+      
+      // Additional insights (checkboxes)
+      if (surveyData.buyMoment && surveyData.buyMoment.length > 0) marketResearchScore += 25;
+      if (surveyData.infoSource && surveyData.infoSource.length > 0) marketResearchScore += 25;
+      if (surveyData.productIdeas && surveyData.productIdeas.length > 0) marketResearchScore += 25;
+      if (surveyData.limitedEdition) marketResearchScore += 25;
+
+      // 5. Innovation & Branding Feedback Score (max 400 points)
+      const brandingFields = ['logoImpression', 'designAesthetic', 'instagramQuality'];
+      const completedBranding = brandingFields.filter(field => surveyData[field] && surveyData[field].trim()).length;
+      innovationScore += (completedBranding / brandingFields.length) * 150;
+      
+      // Constructive branding feedback
+      if (surveyData.brandingSuggestion && surveyData.brandingSuggestion.length > 50) {
+        innovationScore += 100;
+      }
+      
+      // Product innovation ideas
+      if (surveyData.otherIdea && surveyData.otherIdea.length > 30) {
+        innovationScore += 75;
+      }
+      
+      if (surveyData.serviceIdea && surveyData.serviceIdea.length > 30) {
+        innovationScore += 75;
+      }
+
+      // Calculate total score and final prize
+      const totalScore = profileScore + engagementScore + brandLoyaltyScore + marketResearchScore + innovationScore;
+      
+      // Progressive prize calculation with better distribution
+      if (totalScore >= 1500) prize = 5000;
+      else if (totalScore >= 1200) prize = 4000;
+      else if (totalScore >= 1000) prize = 3000;
+      else if (totalScore >= 800) prize = 2500;
+      else if (totalScore >= 600) prize = 2000;
+      else if (totalScore >= 400) prize = 1500;
+      else if (totalScore >= 250) prize = 1000;
+      else if (totalScore >= 150) prize = 500;
+      else prize = 1000;
+
+      // Generate improved conclusion
+      const conclusion = generateImprovedConclusion(surveyData, {
+        profileScore,
+        engagementScore,
+        brandLoyaltyScore,
+        marketResearchScore,
+        innovationScore,
+        totalScore
+      });
+
+      return {
+        prizeAmount: prize,
+        conclusion: conclusion
+      };
+    }
+
+    // Improved conclusion generation function
+    function generateImprovedConclusion(data, scores) {
+      const conclusions = [];
+
+      // 1. Demographic Profile
+      let profileConclusion = `Responden ${data.name} (${data.gender.toLowerCase()}, ${data.age} tahun) dari ${data.city}`;
+      
+      if (data.job && !data.job.includes('Tidak Menjawab')) {
+        profileConclusion += ` dengan status ${data.job.toLowerCase()}`;
+      }
+      
+      if (data.income && !data.income.includes('Tidak Menjawab')) {
+        const incomeText = data.income === '<1jt' ? 'di bawah 1 juta' : 
+                          data.income === '1-3jt' ? 'antara 1-3 juta' : 'di atas 3 juta';
+        profileConclusion += ` dan penghasilan bulanan ${incomeText}`;
+      }
+      
+      profileConclusion += '.';
+      conclusions.push(profileConclusion);
+
+      // 2. Product Preferences & Shopping Behavior
+      if (data.productType && data.favoriteColor) {
+        let preferenceConclusion = `Memiliki preferensi hijab jenis ${data.productType.toLowerCase()}`;
+        if (data.favoriteColor) preferenceConclusion += ` dengan warna ${data.favoriteColor.toLowerCase()}`;
+        if (data.size) preferenceConclusion += `, ukuran ${data.size}`;
+        if (data.priceRange) {
+          const priceText = data.priceRange === '<50rb' ? 'ekonomis (di bawah 50rb)' :
+                           data.priceRange === '50rb-100rb' ? 'menengah (50-100rb)' : 'premium (di atas 100rb)';
+          preferenceConclusion += ` dengan budget ${priceText}`;
+        }
+        preferenceConclusion += '.';
+        conclusions.push(preferenceConclusion);
+      }
+
+      // 3. Shopping Behavior Analysis
+      if (data.shoppingPlace && data.shopFrequency) {
+        let behaviorConclusion = `Berbelanja hijab secara ${data.shoppingPlace.toLowerCase()}`;
+        
+        const frequencyText = data.shopFrequency === '1-2x' ? 'jarang (1-2x/tahun)' :
+                             data.shopFrequency === '3-5x' ? 'sedang (3-5x/tahun)' :
+                             data.shopFrequency === '>6x' ? 'sering (>6x/tahun)' : 'tidak teratur';
+        behaviorConclusion += ` dengan frekuensi ${frequencyText}`;
+        
+        if (data.favPayment) {
+          behaviorConclusion += ` dan lebih suka pembayaran ${data.favPayment.toLowerCase()}`;
+        }
+        
+        if (data.reasonBuy) {
+          behaviorConclusion += `. Motivasi utama pembelian adalah ${data.reasonBuy.toLowerCase()}`;
+        }
+        
+        behaviorConclusion += '.';
+        conclusions.push(behaviorConclusion);
+      }
+
+      // 4. Brand Relationship
+      if (data.hasPurchased === 'Ya') {
+        let brandConclusion = 'Merupakan pelanggan existing Femmeia';
+        if (data.rating) {
+          const ratingText = parseInt(data.rating) >= 4 ? 'sangat puas' :
+                            parseInt(data.rating) >= 3 ? 'cukup puas' : 'kurang puas';
+          brandConclusion += ` dengan tingkat kepuasan ${ratingText} (${data.rating}/5)`;
+        }
+        
+        if (data.quality && data.materialQuality && data.serviceQuality) {
+          brandConclusion += `. Menilai kualitas produk ${data.quality.toLowerCase()}, bahan ${data.materialQuality.toLowerCase()}, dan pelayanan ${data.serviceQuality.toLowerCase()}`;
+        }
+        
+        brandConclusion += '.';
+        conclusions.push(brandConclusion);
+      } else {
+        conclusions.push('Merupakan calon pelanggan potensial yang belum pernah berbelanja di Femmeia.');
+      }
+
+      // 5. Brand Perception
+      if (data.logoImpression && data.designAesthetic) {
+        const logoText = data.logoImpression.toLowerCase();
+        const designText = data.designAesthetic.toLowerCase();
+        conclusions.push(`Persepsi terhadap brand: logo dinilai ${logoText} dan desain produk ${designText}.`);
+      }
+
+      // 6. Engagement Quality Assessment
+      let engagementConclusion = '';
+      if (scores.totalScore >= 1200) {
+        engagementConclusion = 'Memberikan feedback yang sangat komprehensif dan detail, menunjukkan engagement tinggi terhadap brand.';
+      } else if (scores.totalScore >= 800) {
+        engagementConclusion = 'Memberikan feedback yang baik dan konstruktif dengan insight yang berharga.';
+      } else if (scores.totalScore >= 400) {
+        engagementConclusion = 'Memberikan feedback dasar yang cukup membantu untuk pengembangan brand.';
+      } else {
+        engagementConclusion = 'Memberikan feedback minimal namun tetap berkontribusi pada riset pasar.';
+      }
+      conclusions.push(engagementConclusion);
+
+      // 7. Market Segment Classification
+      let segmentConclusion = 'Termasuk dalam segmen ';
+      if (data.shopFrequency === '>6x' && data.priceRange === '>100rb') {
+        segmentConclusion += 'premium loyal customer dengan daya beli tinggi.';
+      } else if (data.shopFrequency === '3-5x' || data.shopFrequency === '>6x') {
+        segmentConclusion += 'active customer dengan potensi repeat purchase yang baik.';
+      } else if (data.reasonBuy === 'Fashion' && data.limitedEdition === 'Ya') {
+        segmentConclusion += 'fashion-conscious customer yang tertarik produk eksklusif.';
+      } else if (data.priceRange === '30rb-50rb') {
+        segmentConclusion += 'price-sensitive customer yang mengutamakan value for money.';
+      } else {
+        segmentConclusion += 'mainstream customer dengan perilaku belanja standar.';
+      }
+      conclusions.push(segmentConclusion);
+
+      return conclusions.join(' ');
+    }
+
+    // Initialize
+    showStep(currentStep);
+  </script>
+  
+  <script>
+    document.getElementById('surveyForm').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        if (event.target.tagName !== 'TEXTAREA') {
+          event.preventDefault();
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
