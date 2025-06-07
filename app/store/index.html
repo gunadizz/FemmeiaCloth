@@ -32,13 +32,13 @@
         --warning: #fbbf24;
         
         /* Blur and effects */
-        --blur-strength: 40px;
-        --blur-light: 20px;
-        --blur-heavy: 60px;
+        --blur-strength: 10px;
+        --blur-light: 8px;
+        --blur-heavy: 13px;
         
         /* Transitions */
-        --transition-speed: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        --transition-speed: 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-bounce: 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
         
         /* Shadows */
         --shadow: 0 8px 32px rgba(31, 41, 55, 0.06);
@@ -441,16 +441,15 @@
         position: relative;
     }
 
-    .form-group::before {
+    .form-group::before {.
+    display:none;
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         width: 0;
         height: 2px;
-        background: linear-gradient(90deg, var(--accent-dark), var(--accent-mid));
-        transition: width var(--transition-speed) ease;
-        border-radius: 2px;
+        
     }
 
     .form-group:focus-within::before {
@@ -635,6 +634,7 @@
         display: block;
     }
 
+
     /* Enhanced Auth Section */
     .auth-container {
         display: flex;
@@ -645,7 +645,6 @@
         background: radial-gradient(circle at center, rgba(55, 65, 81, 0.02) 0%, transparent 60%);
         position: relative;
     }
-
     .auth-card {
         background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(var(--blur-strength));
