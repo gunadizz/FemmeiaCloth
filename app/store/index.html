@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FemmeiaCloth - Hijab & Aksesoris Fashion Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -295,22 +293,9 @@
             transform: translateY(0);
         }
 
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-
-        .btn:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .auth-switch {
@@ -343,6 +328,12 @@
         .auth-switch a:hover::after {
             transform: scaleX(1);
             transform-origin: bottom left;
+        }
+
+        .error {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
         }
 
         /* Bento Grid Layout */
@@ -500,50 +491,6 @@
             border-color: var(--primary);
         }
 
-        /* Profile Section */
-        .profile-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--primary);
-            margin-bottom: 1rem;
-            transition: all var(--transition-speed) ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .profile-upload {
-            display: none;
-        }
-
-        .upload-btn {
-            background: rgba(255, 107, 157, 0.1);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Quicksand', sans-serif;
-            margin-bottom: 1rem;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .upload-btn:hover {
-            background: rgba(255, 107, 157, 0.2);
-            transform: translateY(-2px);
-        }
-
         /* Cart */
         .cart-item {
             display: flex;
@@ -658,52 +605,6 @@
             transform: translateY(-2px);
         }
 
-        /* WhatsApp Button */
-        .whatsapp-btn {
-            background: #25D366;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 1rem;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-            width: 100%;
-            max-width: 300px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .whatsapp-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
-        }
-
-        .whatsapp-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-
-        .whatsapp-btn:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
-        }
-
         /* Checkout Section Styles */
         .checkout-container {
             background: var(--bento-bg);
@@ -712,9 +613,9 @@
         }
 
         .checkout-wrapper {
-            max-width: 540px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 0 2vw;
+            padding: 0 2rem;
         }
 
         .checkout-auth-warning {
@@ -737,249 +638,313 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Bento Form Styles */
-        .bento-container {
-            margin: 0 0 24px 0;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            width: 98vw;
-            max-width: 540px;
-            padding: 0 2vw;
-            position: relative;
-        }
-
-        .bento-grid-form {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
-
-        .bento-tile {
+        .cart-summary {
             background: var(--bento-blur);
             border-radius: 24px;
             box-shadow: var(--card-shadow);
             border: 1.5px solid var(--checkout-border);
-            padding: 18px 14px 10px 14px;
-            min-width: 0;
-            min-height: 0;
-            position: relative;
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .bento-header {
-            margin-bottom: 10px;
-            font-size: 1.13rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+        .cart-summary h3 {
             color: #b49bd1;
-            background: var(--header-grad);
-            border-radius: 11px;
-            padding: 7px 0 7px 15px;
-            box-shadow: 0 1px 4px #e0c2ee13;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
         }
 
-        .bento-tile label {
+        .cart-summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--checkout-border);
+        }
+
+        .cart-summary-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            color: #b594a7;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--checkout-border);
+        }
+
+        .checkout-form {
+            background: var(--bento-blur);
+            border-radius: 24px;
+            box-shadow: var(--card-shadow);
+            border: 1.5px solid var(--checkout-border);
+            padding: 2rem;
+        }
+
+        .checkout-form h3 {
+            color: #b49bd1;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .checkout-form label {
             font-weight: 600;
-            margin-top: 9px;
-            margin-bottom: 3px;
+            margin-bottom: 0.5rem;
             display: block;
             color: var(--secondary-text);
-            letter-spacing: .5px;
-            font-size: .97em;
+            font-size: 0.9rem;
         }
 
-        .bento-tile input,
-        .bento-tile textarea,
-        .bento-tile select {
+        .checkout-form input,
+        .checkout-form textarea,
+        .checkout-form select {
             width: 100%;
-            padding: 11px 10px;
-            margin-top: 2px;
-            margin-bottom: 8px;
-            border-radius: 15px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 12px;
             border: 1.5px solid var(--checkout-border);
             background: #fff;
-            font-size: .97rem;
+            font-size: 0.9rem;
             outline: none;
-            transition: border-color .16s, box-shadow .16s;
+            transition: border-color 0.3s, box-shadow 0.3s;
             color: var(--main-text);
             font-family: 'Quicksand', sans-serif;
         }
 
-        .bento-tile input:focus,
-        .bento-tile select:focus,
-        .bento-tile textarea:focus {
+        .checkout-form input:focus,
+        .checkout-form select:focus,
+        .checkout-form textarea:focus {
             border-color: var(--accent);
             background: #faf6fb;
             box-shadow: 0 0 8px 0 #e0c2ee60;
         }
 
-        .bento-tile textarea {
-            min-height: 46px;
+        .checkout-form textarea {
+            min-height: 80px;
             resize: vertical;
         }
 
-        .select-wrapper {
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Profile Section */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 3rem;
             position: relative;
         }
 
-        .color-preview {
-            margin-top: 5px;
-            height: 30px;
-            border-radius: 10px;
-            border: 1.5px solid var(--checkout-border);
-            box-shadow: 0 1px 5px 0 #e4cff51d;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 0 7px;
-        }
-
-        .color-dot {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            border: 1.1px solid #fff;
-            box-shadow: 0 1px 4px 0 #e4cff526;
-            margin-right: 2px;
-            margin-top: 1.5px;
-            cursor: pointer;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            margin-bottom: 1rem;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .color-dot.selected {
-            border: 2px solid #b49bd1;
-            box-shadow: 0 0 0 1.5px #e6dbe7aa;
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .color-label {
-            font-size: .92em;
-            color: #7d6c91;
-            margin-left: 1px;
-            margin-right: 5px;
-            font-weight: 500;
-            letter-spacing: 0.4px;
+        .profile-upload {
+            display: none;
         }
 
-        .bento-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 13px;
-        }
-
-        .total-harga {
-            font-weight: 600;
-            font-size: 1em;
-            text-align: right;
-            color: #b594a7;
-            background: var(--soft-purple);
+        .upload-btn {
+            background: rgba(255, 107, 157, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
             border-radius: 8px;
-            padding: 6px 0 5px 0;
-            margin: 6px 0 2px 0;
-            box-shadow: 0 1px 4px 0 #e0c2ee13;
-        }
-
-        .checkout-btn {
-            margin-top: 13px;
-            padding: 10px;
-            background: var(--button);
-            color: #b594a7;
-            font-weight: bold;
-            font-size: 1.01rem;
-            border: none;
-            border-radius: 13px;
             cursor: pointer;
-            width: 100%;
-            box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816;
-            transition: transform .19s, box-shadow .19s;
             font-family: 'Quicksand', sans-serif;
+            margin-bottom: 1rem;
+            transition: all var(--transition-speed) ease;
         }
 
-        .checkout-btn:hover,
-        .checkout-btn:focus {
-            color: #9b6ca1;
-            box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816;
-            transform: scale(1.035) translateY(-1.5px) rotate(-.5deg);
+        .upload-btn:hover {
+            background: rgba(255, 107, 157, 0.2);
+            transform: translateY(-2px);
         }
 
-        .checkout-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Modal Styles */
-        .modal-bg {
+        /* Product Detail Modal */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(230, 225, 236, 0.33);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(9px);
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease;
         }
 
-        .modal-bg.open {
-            display: flex;
-            animation: modalFadeInBg .28s cubic-bezier(.67,0,.25,1);
+        .modal-content-product {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            position: relative;
+            animation: scaleIn 0.3s ease;
         }
 
-        @keyframes modalFadeInBg {
-            from { background: rgba(230, 225, 236, 0.0); }
-            to { background: rgba(230, 225, 236, 0.33); }
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        .modal-content {
-            background: #fff;
-            border-radius: 16px;
-            padding: 17px 13px;
-            max-width: 340px;
-            min-width: 220px;
-            width: 98vw;
-            box-shadow: 0 8px 22px 0 #e0c2ee1a;
-            border: 1.5px solid var(--checkout-border);
-            opacity: 0;
-            transform: scale(.95) translateY(35px);
-            transition: opacity .27s cubic-bezier(.67,0,.25,1), transform .27s cubic-bezier(.67,0,.25,1);
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
         }
 
-        .modal-bg.open .modal-content {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            transition-delay: .06s;
+        .close-modal:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
         }
 
-        .modal-bg.closing .modal-content {
-            opacity: 0;
-            transform: scale(.97) translateY(40px);
-            transition: opacity .24s cubic-bezier(.67,0,.25,1), transform .24s cubic-bezier(.67,0,.25,1);
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
         }
 
-        .modal-content h3 {
-            font-size: 1.01em;
-            color: #af83b7;
-            margin-bottom: 8px;
-        }
-
-        .modal-content ul {
-            padding-left: 12px;
-            margin-bottom: 7px;
-        }
-
-        .modal-content li {
-            margin-bottom: 1px;
-            color: var(--main-text);
-        }
-
-        .modal-content button {
-            margin: 0 0 7px 0;
+        .product-detail-image {
             width: 100%;
-            font-size: .96em;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: all var(--transition-speed) ease;
+            border: 1px solid var(--border);
         }
 
-        .modal-content .total-harga {
-            margin: 0 0 7px 0;
+        .product-detail-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-detail-info h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .product-detail-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            text-shadow: 0 2px 10px rgba(255, 107, 157, 0.3);
+        }
+
+        .color-select {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .color-select select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            font-family: 'Quicksand', sans-serif;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .color-select select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            z-index: 1001;
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Responsive */
@@ -1032,17 +997,16 @@
                 margin-top: 1rem;
             }
 
-            .bento-container {
-                max-width: 100vw;
-            }
-
-            .bento-row {
+            .product-detail {
                 grid-template-columns: 1fr;
-                gap: 8px;
             }
 
-            .bento-tile {
-                padding: 10px 3vw 7px 3vw;
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-wrapper {
+                padding: 0 1rem;
             }
         }
 
@@ -1056,21 +1020,6 @@
             0% { text-shadow: 0 0 5px rgba(255, 107, 157, 0.3); }
             50% { text-shadow: 0 0 20px rgba(255, 107, 157, 0.5); }
             100% { text-shadow: 0 0 5px rgba(255, 107, 157, 0.3); }
-        }
-
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 1;
-            }
-            20% {
-                transform: scale(25, 25);
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: scale(40, 40);
-            }
         }
 
         @keyframes float {
@@ -1134,208 +1083,6 @@
             position: relative;
             z-index: 1;
         }
-
-        /* Product Detail Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            overflow-y: auto;
-            padding: 2rem;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content-product {
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(var(--blur-strength));
-            -webkit-backdrop-filter: blur(var(--blur-strength));
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            position: relative;
-            animation: scaleIn 0.3s ease;
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .close-modal:hover {
-            color: var(--primary);
-            transform: rotate(90deg);
-        }
-
-        .product-detail {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .product-detail {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .product-detail-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 12px;
-            transition: all var(--transition-speed) ease;
-            border: 1px solid var(--border);
-        }
-
-        .product-detail-image:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .product-detail-info h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-            position: relative;
-            display: inline-block;
-        }
-
-        .product-detail-info h2::after {
-            content: '';
-            position: absolute;
-            width: 30%;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--primary);
-            transition: width var(--transition-speed) ease;
-        }
-
-        .product-detail-info:hover h2::after {
-            width: 50%;
-        }
-
-        .product-detail-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--primary);
-            text-shadow: 0 2px 10px rgba(255, 107, 157, 0.3);
-        }
-
-        .product-detail-colors {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .color-select {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .color-select select {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.5rem;
-            border-radius: 8px;
-            font-family: 'Quicksand', sans-serif;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .color-select select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            z-index: 1001;
-            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        /* Glowing elements */
-        .glow {
-            position: relative;
-        }
-
-        .glow::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: inherit;
-            box-shadow: 0 0 20px 5px rgba(255, 107, 157, 0.3);
-            opacity: 0;
-            transition: opacity var(--transition-speed) ease;
-            z-index: -1;
-        }
-
-        .glow:hover::after {
-            opacity: 1;
-        }
-
-        /* Loading */
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 14px 0 0 0;
-            color: #b594a7;
-            font-size: .95em;
-            font-weight: 600;
-            letter-spacing: .03em;
-        }
-
-        .notif {
-            color: #b594a7;
-            font-weight: bold;
-            margin: 6px 0 0 0;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
@@ -1355,19 +1102,23 @@
     <!-- Auth Section -->
     <section id="authSection" class="page-section active">
         <div class="auth-container">
-            <div class="auth-card glow">
+            <div class="auth-card">
                 <div id="loginForm">
                     <h2 class="auth-title">Selamat Datang Kembali</h2>
                     <form onsubmit="login(event)">
                         <div class="form-group">
                             <label>Email</label>
                             <input type="email" id="loginEmail" required>
+                            <div class="error" id="loginEmailError"></div>
                         </div>
                         <div class="form-group">
                             <label>Kata Sandi</label>
                             <input type="password" id="loginPassword" required>
+                            <div class="error" id="loginPasswordError"></div>
                         </div>
-                        <button type="submit" class="btn">Masuk</button>
+                        <button type="submit" class="btn" id="loginBtn">
+                            <span id="loginBtnText">Masuk</span>
+                        </button>
                     </form>
                     <div class="auth-switch">
                         Belum punya akun? <a href="#" onclick="showRegister()">Daftar</a>
@@ -1380,16 +1131,21 @@
                         <div class="form-group">
                             <label>Nama Pengguna</label>
                             <input type="text" id="registerUsername" required>
+                            <div class="error" id="registerUsernameError"></div>
                         </div>
                         <div class="form-group">
                             <label>Email</label>
                             <input type="email" id="registerEmail" required>
+                            <div class="error" id="registerEmailError"></div>
                         </div>
                         <div class="form-group">
                             <label>Kata Sandi</label>
                             <input type="password" id="registerPassword" required>
+                            <div class="error" id="registerPasswordError"></div>
                         </div>
-                        <button type="submit" class="btn">Daftar</button>
+                        <button type="submit" class="btn" id="registerBtn">
+                            <span id="registerBtnText">Daftar</span>
+                        </button>
                     </form>
                     <div class="auth-switch">
                         Sudah punya akun? <a href="#" onclick="showLogin()">Masuk</a>
@@ -1462,119 +1218,61 @@
                 <div id="checkoutAuthWarning" class="checkout-auth-warning" style="display: none;">
                     <h3>Silakan Masuk Terlebih Dahulu</h3>
                     <p>Untuk melakukan pemesanan, Anda perlu masuk ke akun terlebih dahulu.</p>
-                    <button class="btn" onclick="document.getElementById('authSection').classList.add('active'); document.getElementById('checkoutSection').classList.remove('active');">Masuk Sekarang</button>
+                    <button class="btn" onclick="showSection('auth')">Masuk Sekarang</button>
                 </div>
 
                 <!-- Checkout Form -->
                 <div id="checkoutForm" style="display: none;">
-                    <div class="bento-container">
-                        <!-- Modal Ringkasan -->
-                        <div class="modal-bg" id="modalBg">
-                            <div class="modal-content" id="modalContent">
-                                <h3>Ringkasan Pesanan</h3>
-                                <ul id="ringkasanList"></ul>
-                                <div class="total-harga" id="ringkasanHarga"></div>
-                                <button type="button" id="lanjutWA" class="checkout-btn">Lanjut ke WhatsApp</button>
-                                <button type="button" id="batalModal" class="checkout-btn" style="background:#f6f7fb;color:#b594a7;">Cek Ulang</button>
-                            </div>
-                        </div>
+                    <!-- Cart Summary -->
+                    <div class="cart-summary">
+                        <h3>Ringkasan Pesanan</h3>
+                        <div id="checkoutCartItems"></div>
+                    </div>
 
-                        <form id="orderForm" autocomplete="off">
-                            <div class="bento-grid-form">
-                                <div class="bento-tile">
-                                    <div class="bento-header">Identitas Pembeli</div>
-                                    <label>Nama</label>
-                                    <input type="text" name="nama" required placeholder="Contoh: Putri Maharani" autocomplete="name">
-                                    <label>No. WhatsApp Aktif</label>
-                                    <input type="tel" name="wa" required inputmode="numeric" pattern="[0-9]+" minlength="10" maxlength="15" placeholder="08xxxxxxxxxx" autocomplete="tel">
-                                    <label>Alamat Lengkap</label>
-                                    <textarea name="alamat" required rows="3" placeholder="Contoh: Jl. Melati No. 99, RT 01 RW 02, Tamalanrea, Makassar" autocomplete="street-address"></textarea>
+                    <!-- Customer Information Form -->
+                    <div class="checkout-form">
+                        <h3>Informasi Pembeli</h3>
+                        <form id="orderForm">
+                            <label>Nama Lengkap</label>
+                            <input type="text" name="nama" id="customerName" required placeholder="Masukkan nama lengkap">
+
+                            <label>Nomor WhatsApp</label>
+                            <input type="tel" name="whatsapp" id="customerWhatsapp" required placeholder="08xxxxxxxxxx">
+
+                            <label>Alamat Lengkap</label>
+                            <textarea name="alamat" id="customerAddress" required placeholder="Masukkan alamat lengkap untuk pengiriman"></textarea>
+
+                            <div class="form-row">
+                                <div>
+                                    <label>Metode Pengiriman</label>
+                                    <select name="pengiriman" required>
+                                        <option value="">-- Pilih Pengiriman --</option>
+                                        <option value="JNE">JNE</option>
+                                        <option value="J&T">J&T</option>
+                                        <option value="SiCepat">SiCepat</option>
+                                        <option value="Gosend">Gosend</option>
+                                        <option value="Antar Langsung">Antar Langsung (Makassar)</option>
+                                        <option value="Ambil Langsung">Ambil Langsung</option>
+                                    </select>
                                 </div>
-
-                                <div class="bento-tile">
-                                    <div class="bento-header">Detail Produk</div>
-                                    <div class="bento-row">
-                                        <div>
-                                            <label>Jenis Produk</label>
-                                            <div class="select-wrapper">
-                                                <select id="productType" name="produk" required>
-                                                    <option value="">-- Pilih Produk --</option>
-                                                    <option value="Hijab Paris - 35.000">Hijab Paris – Rp35.000</option>
-                                                    <option value="Pashmina Kaos - 55.000">Pashmina Kaos – Rp55.000</option>
-                                                    <option value="Premium Inner Ninja - 25.000">Premium Inner Ninja – Rp25.000</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label>Jumlah</label>
-                                            <input type="number" name="jumlah" min="1" max="20" required value="1" placeholder="1">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label>Warna</label>
-                                        <div class="color-preview" id="colorPreview"></div>
-                                        <div class="select-wrapper" style="margin-top:7px;">
-                                            <select id="warna" name="warna" required>
-                                                <option value="">-- Pilih Warna --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <label>Pakai Paper Bag</label>
-                                    <div class="select-wrapper">
-                                        <select name="paperbag" id="paperbag" required>
-                                            <option value="">-- Pilih --</option>
-                                            <option value="Tidak">Tidak</option>
-                                            <option value="Pakai (Rp5.000)">Pakai (+ Rp5.000)</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="bento-tile">
-                                    <div class="bento-header">Pengiriman & Pembayaran</div>
-                                    <div class="bento-row">
-                                        <div>
-                                            <label>Metode Pengiriman</label>
-                                            <div class="select-wrapper">
-                                                <select name="pengiriman" required>
-                                                    <option value="">-- Pilih --</option>
-                                                    <option value="SPX ID">SPX ID</option>
-                                                    <option value="J&T">J&T</option>
-                                                    <option value="Gosend">Gosend</option>
-                                                    <option value="Antar Langsung (Khusus Area Tamalanrea)">Antar Langsung (Khusus Area Tamalanrea)</option>
-                                                    <option value="Ambil Langsung">Ambil langsung</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label>Metode Pembayaran</label>
-                                            <div class="select-wrapper">
-                                                <select name="pembayaran" required>
-                                                    <option value="">-- Pilih --</option>
-                                                    <option value="Transfer Bank">Transfer Bank</option>
-                                                    <option value="COD">COD</option>
-                                                    <option value="QRIS">QRIS</option>
-                                                    <option value="Dana / e-wallet">Dana / e-wallet</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="bento-tile">
-                                    <div class="bento-header">Catatan & Promo</div>
-                                    <label>Kode Promo (Jika Tersedia)</label>
-                                    <input type="text" name="promo" id="promoInput" placeholder="Opsional">
-                                    <label>Catatan Tambahan (Opsional)</label>
-                                    <textarea name="catatan" placeholder="Contoh: packing rapi, dll."></textarea>
-                                </div>
-
-                                <div class="bento-tile">
-                                    <div class="total-harga" id="totalHarga">Total: Rp0</div>
-                                    <button type="submit" id="pesanBtn" class="checkout-btn">🛒 Pesan Sekarang</button>
-                                    <div class="loading" id="loadingText">⏳ Menyiapkan Pesanan...</div>
-                                    <div class="notif" id="notif"></div>
+                                <div>
+                                    <label>Metode Pembayaran</label>
+                                    <select name="pembayaran" required>
+                                        <option value="">-- Pilih Pembayaran --</option>
+                                        <option value="Transfer Bank">Transfer Bank</option>
+                                        <option value="COD">COD</option>
+                                        <option value="QRIS">QRIS</option>
+                                        <option value="E-Wallet">E-Wallet (Dana/OVO/GoPay)</option>
+                                    </select>
                                 </div>
                             </div>
+
+                            <label>Catatan Tambahan (Opsional)</label>
+                            <textarea name="catatan" placeholder="Catatan khusus untuk pesanan Anda"></textarea>
+
+                            <button type="submit" class="whatsapp-btn" id="orderBtn">
+                                <span id="orderBtnText">📱 Pesan via WhatsApp</span>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -1594,7 +1292,7 @@
                 <p id="profileEmail">email@example.com</p>
             </div>
 
-            <div class="bento-card glow" style="max-width: 500px; margin: 0 auto;">
+            <div class="bento-card" style="max-width: 500px; margin: 0 auto;">
                 <h3>Edit Profil</h3>
                 <form onsubmit="updateProfile(event)">
                     <div class="form-group">
@@ -1621,8 +1319,14 @@
         </div>
     </div>
 
-    <script>
-        // Firebase config
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Firebase imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+        // Firebase config (same as survey)
         const firebaseConfig = {
             apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
             authDomain: "femmeiacloth-finance.firebaseapp.com",
@@ -1634,34 +1338,34 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
 
-        // Sample products data based on the provided image
+        // Updated products data with new images
         const products = [
             {
                 id: 1,
-                name: "Hijab Paris",
-                price: 35000,
-                category: "hijab",
-                image: "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg",
-                colors: ["Hitam", "Putih", "Abu-abu", "Navy", "Pink", "Cream"],
+                name: "Inner Earab",
+                price: 25000,
+                category: "inner",
+                image: "https://www.femmeiacloth.me/app/store/assets/ciputall.jpg",
+                colors: ["Hitam", "Putih", "Cream", "Mocha", "Abu-abu"],
                 colorCodes: {
                     "Hitam": "#000000",
                     "Putih": "#FFFFFF",
-                    "Abu-abu": "#808080",
-                    "Navy": "#000080",
-                    "Pink": "#FFC0CB",
-                    "Cream": "#FFFDD0"
+                    "Cream": "#FFFDD0",
+                    "Mocha": "#A38068",
+                    "Abu-abu": "#808080"
                 },
-                description: "Hijab ringan, mudah dibentuk, cocok untuk sehari-hari."
+                description: "Inner Ninja premium, adem, nyaman dipakai seharian."
             },
             {
                 id: 2,
-                name: "Pashmina Kaos",
+                name: "Pashmina",
                 price: 55000,
                 category: "pashmina",
-                image: "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg",
+                image: "https://www.femmeiacloth.me/app/store/assets/IMG-20250512-WA0017.jpg",
                 colors: ["Hitam", "Coklat", "Beige", "Mauve", "Lilac", "Hijau", "Olive"],
                 colorCodes: {
                     "Hitam": "#000000",
@@ -1676,48 +1380,22 @@
             },
             {
                 id: 3,
-                name: "Premium Inner Ninja",
-                price: 25000,
-                category: "inner",
-                image: "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg",
-                colors: ["Hitam", "Putih", "Cream", "Mocha", "Abu-abu"],
+                name: "Paris Jadul",
+                price: 35000,
+                category: "hijab",
+                image: "https://www.femmeiacloth.me/app/store/assets/all.jpg",
+                colors: ["Hitam", "Putih", "Abu-abu", "Navy", "Pink", "Cream"],
                 colorCodes: {
                     "Hitam": "#000000",
                     "Putih": "#FFFFFF",
-                    "Cream": "#FFFDD0",
-                    "Mocha": "#A38068",
-                    "Abu-abu": "#808080"
+                    "Abu-abu": "#808080",
+                    "Navy": "#000080",
+                    "Pink": "#FFC0CB",
+                    "Cream": "#FFFDD0"
                 },
-                description: "Inner Ninja premium, adem, nyaman dipakai seharian."
+                description: "Hijab ringan, mudah dibentuk, cocok untuk sehari-hari."
             }
         ];
-
-        // Checkout form color options and prices
-        const colorHexMap = {
-            "Hitam": "#191919", "Stone": "#b8b6b1", "Abu Ash": "#a7a6a6", "Soft Latte": "#e5ceb8",
-            "Cream": "#fff6cf", "Vanilla": "#fbe7a2", "Biskuit": "#e2c39a", "Dusty Rose": "#e4aeb1",
-            "Dark Blue": "#222e50", "Dark Choco": "#513c29", "Burgundy": "#7d2636", "Maroon": "#781f29",
-            "Dark Grey": "#44474b", "Silver": "#c0c0c0", "Khaky": "#bdb76b", "Oat": "#e5d1b8",
-            "BW": "#f8f8f8", "Khaky Putty": "#cabfa0", "Navy": "#2a3759",
-            "Putih": "#FFFFFF", "Abu-abu": "#808080", "Pink": "#FFC0CB", "Coklat": "#964B00",
-            "Beige": "#F5F5DC", "Mauve": "#E0B0FF", "Lilac": "#C8A2C8", "Hijau": "#00FF00", "Olive": "#808000",
-            "Mocha": "#A38068"
-        };
-
-        const warnaOptions = {
-            "Hijab Paris - 35.000": ["Hitam", "Putih", "Abu-abu", "Navy", "Pink", "Cream"],
-            "Pashmina Kaos - 55.000": ["Hitam", "Coklat", "Beige", "Mauve", "Lilac", "Hijau", "Olive"],
-            "Premium Inner Ninja - 25.000": ["Hitam", "Putih", "Cream", "Mocha", "Abu-abu"]
-        };
-
-        const hargaProduk = {
-            "Hijab Paris - 35.000": 35000,
-            "Pashmina Kaos - 55.000": 55000,
-            "Premium Inner Ninja - 25.000": 25000
-        };
-
-        const PROMO_CODE = "femmeia10";
-        const PROMO_DISKON = 0.10;
 
         // Global state
         let currentUser = null;
@@ -1726,13 +1404,61 @@
         let selectedProduct = null;
         let selectedColor = null;
 
+        // Make functions globally available
+        window.toggleMobileMenu = toggleMobileMenu;
+        window.showLogin = showLogin;
+        window.showRegister = showRegister;
+        window.login = login;
+        window.register = register;
+        window.logout = logout;
+        window.showSection = showSection;
+        window.filterProducts = filterProducts;
+        window.showProductDetail = showProductDetail;
+        window.closeProductModal = closeProductModal;
+        window.updateSelectedColor = updateSelectedColor;
+        window.selectColor = selectColor;
+        window.addToCart = addToCart;
+        window.updateQuantity = updateQuantity;
+        window.removeFromCart = removeFromCart;
+        window.uploadProfilePhoto = uploadProfilePhoto;
+        window.updateProfile = updateProfile;
+
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
-            checkAuth();
             loadProducts();
             updateCartBadge();
-            initializeCheckoutForm();
         });
+
+        // Auth state management
+        onAuthStateChanged(auth, async (user) => {
+            if (user && user.emailVerified) {
+                currentUser = user;
+                showMainApp();
+                updateNavLinks();
+                loadProfile();
+            } else if (user && !user.emailVerified) {
+                showNotification('Silakan verifikasi email Anda terlebih dahulu', true);
+                signOut(auth);
+            } else {
+                currentUser = null;
+                showAuthSection();
+                updateNavLinks();
+            }
+        });
+
+        function showAuthSection() {
+            document.getElementById('authSection').classList.add('active');
+            document.querySelectorAll('.page-section:not(#authSection)').forEach(section => {
+                section.classList.remove('active');
+            });
+        }
+
+        function showMainApp() {
+            document.getElementById('authSection').classList.remove('active');
+            if (!document.querySelector('.page-section.active:not(#authSection)')) {
+                showSection('home');
+            }
+        }
 
         // Mobile menu toggle
         function toggleMobileMenu() {
@@ -1744,114 +1470,168 @@
         function showLogin() {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('registerForm').style.display = 'none';
+            clearAuthErrors();
         }
 
         function showRegister() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'block';
+            clearAuthErrors();
+        }
+
+        function clearAuthErrors() {
+            document.querySelectorAll('.error').forEach(error => error.textContent = '');
+        }
+
+        function showAuthError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId + 'Error');
+            if (errorElement) errorElement.textContent = message;
         }
 
         async function login(event) {
             event.preventDefault();
-            const email = document.getElementById('loginEmail').value;
+            clearAuthErrors();
+
+            const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
 
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            const user = users.find(u => u.email === email && u.password === password);
+            if (!email || !password) {
+                showAuthError('loginEmail', 'Email dan password wajib diisi');
+                return;
+            }
 
-            if (user) {
-                currentUser = user;
-                localStorage.setItem('currentUser', JSON.stringify(user));
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            
+            loginBtn.disabled = true;
+            loginBtnText.innerHTML = '<div class="loading"></div>Memproses...';
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showNotification('Berhasil masuk! Selamat datang kembali.');
+            } catch (error) {
+                console.error('Login error:', error);
                 
-                // Save user to Firebase
-                try {
-                    await db.collection('users').doc(user.id.toString()).set({
-                        username: user.username,
-                        email: user.email,
-                        avatar: user.avatar,
-                        lastLogin: new Date()
-                    });
-                } catch (error) {
-                    console.log('Firebase save error:', error);
+                let errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+                let errorField = 'loginEmail';
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'Email tidak terdaftar. Silakan daftar terlebih dahulu.';
+                        break;
+                    case 'auth/wrong-password':
+                    case 'auth/invalid-credential':
+                        errorMessage = 'Password salah. Silakan periksa kembali password Anda.';
+                        errorField = 'loginPassword';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Format email tidak valid.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Terlalu banyak percobaan. Coba lagi dalam beberapa menit.';
+                        break;
                 }
                 
-                showMainApp();
-                showSection('home');
-                showNotification('Berhasil masuk! Selamat datang kembali.');
-            } else {
-                showNotification('Email atau kata sandi tidak valid', true);
+                showAuthError(errorField, errorMessage);
+            } finally {
+                loginBtn.disabled = false;
+                loginBtnText.textContent = 'Masuk';
             }
         }
 
         async function register(event) {
             event.preventDefault();
-            const username = document.getElementById('registerUsername').value;
-            const email = document.getElementById('registerEmail').value;
+            clearAuthErrors();
+
+            const username = document.getElementById('registerUsername').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
             const password = document.getElementById('registerPassword').value;
 
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            
-            if (users.find(u => u.email === email)) {
-                showNotification('Email sudah terdaftar', true);
+            // Validation
+            if (!username) {
+                showAuthError('registerUsername', 'Nama pengguna wajib diisi');
                 return;
             }
 
-            const newUser = {
-                id: Date.now(),
-                username,
-                email,
-                password,
-                avatar: 'https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg'
-            };
+            if (!email) {
+                showAuthError('registerEmail', 'Email wajib diisi');
+                return;
+            }
 
-            users.push(newUser);
-            localStorage.setItem('users', JSON.stringify(users));
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showAuthError('registerEmail', 'Format email tidak valid');
+                return;
+            }
+
+            if (!password) {
+                showAuthError('registerPassword', 'Password wajib diisi');
+                return;
+            }
+
+            if (password.length < 6) {
+                showAuthError('registerPassword', 'Password minimal 6 karakter');
+                return;
+            }
+
+            const registerBtn = document.getElementById('registerBtn');
+            const registerBtnText = document.getElementById('registerBtnText');
             
-            currentUser = newUser;
-            localStorage.setItem('currentUser', JSON.stringify(newUser));
-            
-            // Save user to Firebase
+            registerBtn.disabled = true;
+            registerBtnText.innerHTML = '<div class="loading"></div>Memproses...';
+
             try {
-                await db.collection('users').doc(newUser.id.toString()).set({
-                    username: newUser.username,
-                    email: newUser.email,
-                    avatar: newUser.avatar,
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                
+                // Save user profile to Firestore
+                await addDoc(collection(db, 'users'), {
+                    uid: userCredential.user.uid,
+                    username: username,
+                    email: email,
                     createdAt: new Date()
                 });
+
+                // Send email verification
+                await sendEmailVerification(userCredential.user);
+                
+                showNotification('Akun berhasil dibuat! Silakan periksa email untuk verifikasi.');
+                
+                // Sign out until email is verified
+                await signOut(auth);
+                
+                showLogin();
             } catch (error) {
-                console.log('Firebase save error:', error);
+                console.error('Register error:', error);
+                
+                let errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+                let errorField = 'registerEmail';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'Email sudah terdaftar. Silakan gunakan email lain atau login.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password terlalu lemah. Gunakan minimal 6 karakter.';
+                        errorField = 'registerPassword';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Format email tidak valid.';
+                        break;
+                }
+                
+                showAuthError(errorField, errorMessage);
+            } finally {
+                registerBtn.disabled = false;
+                registerBtnText.textContent = 'Daftar';
             }
-            
-            showMainApp();
-            showSection('home');
-            showNotification('Akun berhasil dibuat! Selamat datang.');
         }
 
         function logout() {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            document.getElementById('authSection').classList.add('active');
-            document.querySelectorAll('.page-section:not(#authSection)').forEach(section => {
-                section.classList.remove('active');
+            signOut(auth).then(() => {
+                cart = [];
+                localStorage.removeItem('cart');
+                updateCartBadge();
+                showNotification('Anda telah keluar dari akun');
             });
-            updateNavLinks();
-            showNotification('Anda telah keluar dari akun');
-        }
-
-        function checkAuth() {
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                showMainApp();
-                showSection('home');
-            }
-            updateNavLinks();
-        }
-
-        function showMainApp() {
-            document.getElementById('authSection').classList.remove('active');
-            loadProfile();
-            updateNavLinks();
         }
 
         // Update navigation links based on authentication state
@@ -1873,7 +1653,7 @@
                     <li><a href="#" onclick="showSection('home')">Beranda</a></li>
                     <li><a href="#" onclick="showSection('products')">Produk</a></li>
                     <li><a href="#" onclick="showSection('cart')">Keranjang <span class="cart-badge" id="cartBadge">0</span></a></li>
-                    <li><a href="#" onclick="document.getElementById('authSection').classList.add('active')">Masuk</a></li>
+                    <li><a href="#" onclick="showSection('auth')">Masuk</a></li>
                 `;
             }
             
@@ -1884,7 +1664,7 @@
         function showSection(sectionName) {
             // Check if user is trying to access profile or checkout without being logged in
             if ((sectionName === 'profile' || sectionName === 'checkout') && !currentUser) {
-                document.getElementById('authSection').classList.add('active');
+                showSection('auth');
                 showNotification('Silakan masuk terlebih dahulu', true);
                 return;
             }
@@ -2034,11 +1814,6 @@
             const cartBadge = document.getElementById('cartBadge');
             if (cartBadge) {
                 cartBadge.textContent = totalItems;
-                
-                // Add animation
-                cartBadge.classList.remove('pulse');
-                void cartBadge.offsetWidth; // Trigger reflow
-                cartBadge.classList.add('pulse');
             }
         }
 
@@ -2112,248 +1887,194 @@
                 authWarning.style.display = 'none';
                 checkoutForm.style.display = 'block';
                 
-                // Pre-fill user data
+                // Load cart summary
+                loadCheckoutCartSummary();
+                
+                // Pre-fill user data if available
                 if (currentUser) {
-                    const nameInput = document.querySelector('input[name="nama"]');
+                    const nameInput = document.getElementById('customerName');
                     if (nameInput && !nameInput.value) {
-                        nameInput.value = currentUser.username;
+                        // Try to get username from Firestore
+                        getUserProfile().then(profile => {
+                            if (profile && profile.username) {
+                                nameInput.value = profile.username;
+                            }
+                        });
                     }
                 }
             }
         }
 
-        // Initialize checkout form
-        function initializeCheckoutForm() {
-            const productType = document.getElementById('productType');
-            const warna = document.getElementById('warna');
-            const colorPreview = document.getElementById('colorPreview');
-            const jumlah = document.querySelector('input[name="jumlah"]');
-            const paperbag = document.getElementById('paperbag');
-            const totalHarga = document.getElementById('totalHarga');
-            const notif = document.getElementById('notif');
-            const pesanBtn = document.getElementById('pesanBtn');
-            const promoInput = document.getElementById('promoInput');
-
-            if (!productType) return; // Exit if elements don't exist yet
-
-            // Modal animation helpers
-            const modalBg = document.getElementById('modalBg');
-            const modalContent = document.getElementById('modalContent');
+        async function getUserProfile() {
+            if (!currentUser) return null;
             
-            function openModal() {
-                modalBg.classList.add('open');
-                modalBg.classList.remove('closing');
-                setTimeout(() => {
-                    modalContent.scrollTop = 0;
-                }, 30);
+            try {
+                const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                    return querySnapshot.docs[0].data();
+                }
+            } catch (error) {
+                console.error('Error getting user profile:', error);
             }
             
-            function closeModal() {
-                modalBg.classList.add('closing');
-                modalBg.classList.remove('open');
-                setTimeout(() => {
-                    modalBg.classList.remove('closing');
-                }, 250);
-            }
-
-            // Warna custom select sync
-            productType.addEventListener('change', function () {
-                const selected = this.value;
-                warna.innerHTML = '<option value="">-- Pilih Warna --</option>';
-                colorPreview.innerHTML = '';
-                if (warnaOptions[selected]) {
-                    warnaOptions[selected].forEach(w => {
-                        let opt = document.createElement('option');
-                        opt.value = w;
-                        opt.textContent = w;
-                        warna.appendChild(opt);
-                    });
-                    updateColorPreview(selected, warna.value);
-                }
-                hitungTotal();
-            });
-
-            warna.addEventListener('focus', function () {
-                if (!productType.value) {
-                    alert("Silakan pilih jenis produk terlebih dahulu.");
-                    productType.focus();
-                }
-            });
-
-            function updateColorPreview(prod, selectedWarna) {
-                colorPreview.innerHTML = '';
-                if (warnaOptions[prod]) {
-                    warnaOptions[prod].forEach(w => {
-                        const hex = colorHexMap[w] || '#fff';
-                        const dot = document.createElement('span');
-                        dot.className = 'color-dot' + (w === selectedWarna ? ' selected' : '');
-                        dot.style.background = hex;
-                        dot.title = w;
-                        dot.onclick = function() {
-                            warna.value = w;
-                            updateColorPreview(prod, w);
-                        };
-                        colorPreview.appendChild(dot);
-                    });
-                    if (selectedWarna) {
-                        const label = document.createElement('span');
-                        label.className = 'color-label';
-                        label.innerText = selectedWarna;
-                        colorPreview.appendChild(label);
-                    }
-                }
-            }
-
-            warna.addEventListener('change', function () {
-                updateColorPreview(productType.value, warna.value);
-            });
-
-            jumlah.addEventListener('input', hitungTotal);
-            productType.addEventListener('change', hitungTotal);
-            paperbag.addEventListener('change', hitungTotal);
-            promoInput.addEventListener('input', hitungTotal);
-
-            function hitungTotal() {
-                const prod = productType.value;
-                let qty = parseInt(jumlah.value) || 1;
-                if (qty < 1) qty = 1;
-                let harga = hargaProduk[prod] ? hargaProduk[prod] * qty : 0;
-                if (paperbag.value.startsWith('Pakai')) harga += 5000;
-                let promoValid = false;
-                let promoValue = promoInput.value.trim().toLowerCase();
-                if (promoValue === PROMO_CODE) {
-                    promoValid = true;
-                    harga = Math.floor(harga * (1 - PROMO_DISKON));
-                    promoInput.style.borderColor = "#82ca9c";
-                } else if (promoValue.length > 0) {
-                    promoInput.style.borderColor = "#d16a6a";
-                } else {
-                    promoInput.style.borderColor = "";
-                }
-                totalHarga.innerText = `Total: Rp${harga.toLocaleString('id-ID')}` + (promoValid ? " (promo -10%)" : "");
-                return harga;
-            }
-
-            function resetNotif() { 
-                if (notif) notif.innerText = ''; 
-            }
-
-            // Order form submission
-            document.getElementById('orderForm').addEventListener('submit', async function (e) {
-                e.preventDefault();
-                resetNotif();
-                
-                if (!currentUser) {
-                    showNotification('Silakan masuk terlebih dahulu', true);
-                    return;
-                }
-                
-                const waVal = this.wa.value.trim();
-                if (!/^[0-9]{10,15}$/.test(waVal)) {
-                    notif.innerText = 'Nomor WhatsApp tidak valid!';
-                    this.wa.focus();
-                    return;
-                }
-                
-                let promoValue = promoInput.value.trim().toLowerCase();
-                if (promoValue.length > 0 && promoValue !== PROMO_CODE) {
-                    notif.innerText = 'Kode promo tidak valid! Masukkan: femmeia10';
-                    promoInput.focus();
-                    promoInput.style.borderColor = "#d16a6a";
-                    showNotification('Kode promo salah. Gunakan femmeia10');
-                    return;
-                }
-                
-                pesanBtn.disabled = true;
-                document.getElementById('loadingText').style.display = 'block';
-                
-                setTimeout(async () => {
-                    document.getElementById('loadingText').style.display = 'none';
-                    pesanBtn.disabled = false;
-                    
-                    const form = new FormData(this);
-                    const pesan = [
-                        ["Nama", form.get('nama')],
-                        ["No WA", form.get('wa')],
-                        ["Alamat", form.get('alamat')],
-                        ["Produk", form.get('produk')],
-                        ["Warna", form.get('warna')],
-                        ["Jumlah", form.get('jumlah')],
-                        ["Paperbag", form.get('paperbag')],
-                        ["Pengiriman", form.get('pengiriman')],
-                        ["Pembayaran", form.get('pembayaran')],
-                        ["Kode Promo", form.get('promo')],
-                        ["Catatan", form.get('catatan')],
-                    ];
-                    
-                    const harga = hitungTotal();
-                    
-                    // Save order to Firebase
-                    try {
-                        const orderData = {
-                            userId: currentUser.id,
-                            customerName: form.get('nama'),
-                            whatsapp: form.get('wa'),
-                            address: form.get('alamat'),
-                            product: form.get('produk'),
-                            color: form.get('warna'),
-                            quantity: parseInt(form.get('jumlah')),
-                            paperBag: form.get('paperbag'),
-                            shipping: form.get('pengiriman'),
-                            payment: form.get('pembayaran'),
-                            promoCode: form.get('promo'),
-                            notes: form.get('catatan'),
-                            total: harga,
-                            createdAt: new Date(),
-                            status: 'pending'
-                        };
-                        
-                        await db.collection('orders').add(orderData);
-                        console.log('Order saved to Firebase');
-                    } catch (error) {
-                        console.log('Firebase save error:', error);
-                    }
-                    
-                    const ringkasanList = document.getElementById('ringkasanList');
-                    ringkasanList.innerHTML = '';
-                    pesan.forEach(([k,v]) => { 
-                        if (v) ringkasanList.innerHTML += `<li><strong>${k}:</strong> ${v}</li>`; 
-                    });
-                    document.getElementById('ringkasanHarga').innerText = `Total: Rp${harga.toLocaleString('id-ID')}` + (promoValue === PROMO_CODE ? " (promo -10%)" : "");
-                    
-                    openModal();
-                    window._ringkasanMsg = `*Form Pemesanan | FemmeiaCloth:*\n\n` +
-                        pesan.map(([k,v]) => `${k}: ${v}`).join('\n') +
-                        `\nTotal: Rp${harga.toLocaleString('id-ID')}` + (promoValue === PROMO_CODE ? " (promo -10%)" : "");
-                }, 650);
-            });
-
-            document.getElementById('lanjutWA').onclick = function() {
-                closeModal();
-                pesanBtn.disabled = false;
-                const waNumber = "6287777420644";
-                const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(window._ringkasanMsg)}`;
-                window.open(url, "_blank");
-                showNotification('Pesanan diarahkan ke WhatsApp!');
-                notif.innerText = '';
-            };
-
-            document.getElementById('batalModal').onclick = function() {
-                closeModal();
-                pesanBtn.disabled = false;
-            };
-
-            productType.dispatchEvent(new Event('change'));
+            return null;
         }
+
+        function loadCheckoutCartSummary() {
+            const checkoutCartItems = document.getElementById('checkoutCartItems');
+            
+            if (cart.length === 0) {
+                checkoutCartItems.innerHTML = '<p style="color: #8e88a7;">Keranjang kosong</p>';
+                return;
+            }
+
+            let total = 0;
+            let summaryHTML = '';
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                summaryHTML += `
+                    <div class="cart-summary-item">
+                        <div>
+                            <strong>${item.name}</strong><br>
+                            <small>Warna: ${item.selectedColor} | Qty: ${item.quantity}</small>
+                        </div>
+                        <div>Rp ${formatPrice(itemTotal)}</div>
+                    </div>
+                `;
+            });
+
+            summaryHTML += `
+                <div class="cart-summary-item">
+                    <div><strong>Total</strong></div>
+                    <div><strong>Rp ${formatPrice(total)}</strong></div>
+                </div>
+            `;
+
+            checkoutCartItems.innerHTML = summaryHTML;
+        }
+
+        // Order form submission
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                showNotification('Silakan masuk terlebih dahulu', true);
+                return;
+            }
+
+            if (cart.length === 0) {
+                showNotification('Keranjang belanja kosong', true);
+                return;
+            }
+
+            const orderBtn = document.getElementById('orderBtn');
+            const orderBtnText = document.getElementById('orderBtnText');
+            
+            orderBtn.disabled = true;
+            orderBtnText.innerHTML = '<div class="loading"></div>Memproses...';
+
+            try {
+                const formData = new FormData(this);
+                
+                // Validate WhatsApp number
+                const whatsapp = formData.get('whatsapp').trim();
+                if (!/^[0-9]{10,15}$/.test(whatsapp)) {
+                    showNotification('Nomor WhatsApp tidak valid', true);
+                    return;
+                }
+
+                // Calculate total
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+                // Create order data
+                const orderData = {
+                    userId: currentUser.uid,
+                    customerName: formData.get('nama'),
+                    whatsapp: whatsapp,
+                    address: formData.get('alamat'),
+                    shipping: formData.get('pengiriman'),
+                    payment: formData.get('pembayaran'),
+                    notes: formData.get('catatan') || '',
+                    items: cart,
+                    total: total,
+                    createdAt: new Date(),
+                    status: 'pending'
+                };
+
+                // Save order to Firebase
+                await addDoc(collection(db, 'orders'), orderData);
+
+                // Generate WhatsApp message
+                let message = `*Pesanan Baru - FemmeiaCloth*\n\n`;
+                message += `👤 *Nama:* ${orderData.customerName}\n`;
+                message += `📱 *WhatsApp:* ${orderData.whatsapp}\n`;
+                message += `📍 *Alamat:* ${orderData.address}\n\n`;
+                
+                message += `🛍️ *Detail Pesanan:*\n`;
+                cart.forEach((item, index) => {
+                    message += `${index + 1}. ${item.name}\n`;
+                    message += `   Warna: ${item.selectedColor}\n`;
+                    message += `   Qty: ${item.quantity}\n`;
+                    message += `   Harga: Rp ${formatPrice(item.price * item.quantity)}\n\n`;
+                });
+                
+                message += `💰 *Total: Rp ${formatPrice(total)}*\n\n`;
+                message += `🚚 *Pengiriman:* ${orderData.shipping}\n`;
+                message += `💳 *Pembayaran:* ${orderData.payment}\n`;
+                
+                if (orderData.notes) {
+                    message += `📝 *Catatan:* ${orderData.notes}\n`;
+                }
+
+                // Open WhatsApp
+                const whatsappNumber = "6285341899229";
+                const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappURL, '_blank');
+
+                // Clear cart and show success
+                cart = [];
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartBadge();
+                
+                showNotification('Pesanan berhasil dikirim ke WhatsApp!');
+                
+                // Reset form and redirect to home
+                this.reset();
+                setTimeout(() => {
+                    showSection('home');
+                }, 2000);
+
+            } catch (error) {
+                console.error('Order submission error:', error);
+                showNotification('Terjadi kesalahan saat memproses pesanan', true);
+            } finally {
+                orderBtn.disabled = false;
+                orderBtnText.textContent = '📱 Pesan via WhatsApp';
+            }
+        });
 
         // Profile functions
         function loadProfile() {
             if (currentUser) {
-                document.getElementById('profileUsername').textContent = currentUser.username;
                 document.getElementById('profileEmail').textContent = currentUser.email;
-                document.getElementById('profileAvatar').src = currentUser.avatar || 'https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg';
-                document.getElementById('editUsername').value = currentUser.username;
                 document.getElementById('editEmail').value = currentUser.email;
+                
+                // Load additional profile data from Firestore
+                getUserProfile().then(profile => {
+                    if (profile) {
+                        document.getElementById('profileUsername').textContent = profile.username || 'Pengguna';
+                        document.getElementById('editUsername').value = profile.username || '';
+                        
+                        if (profile.avatar) {
+                            document.getElementById('profileAvatar').src = profile.avatar;
+                        }
+                    }
+                });
             }
         }
 
@@ -2367,19 +2088,11 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    currentUser.avatar = e.target.result;
-                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    
-                    // Update users array
-                    const users = JSON.parse(localStorage.getItem('users')) || [];
-                    const userIndex = users.findIndex(u => u.id === currentUser.id);
-                    if (userIndex !== -1) {
-                        users[userIndex] = currentUser;
-                        localStorage.setItem('users', JSON.stringify(users));
-                    }
-                    
-                    loadProfile();
+                    document.getElementById('profileAvatar').src = e.target.result;
                     showNotification('Foto profil berhasil diperbarui');
+                    
+                    // Here you could upload to Firebase Storage if needed
+                    // For now, we'll just update the UI
                 };
                 reader.readAsDataURL(file);
             }
@@ -2393,35 +2106,40 @@
                 return;
             }
             
-            const username = document.getElementById('editUsername').value;
-            const email = document.getElementById('editEmail').value;
+            const username = document.getElementById('editUsername').value.trim();
+            
+            if (!username) {
+                showNotification('Nama pengguna wajib diisi', true);
+                return;
+            }
 
-            currentUser.username = username;
-            currentUser.email = email;
-            
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
-            // Update users array
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            const userIndex = users.findIndex(u => u.id === currentUser.id);
-            if (userIndex !== -1) {
-                users[userIndex] = currentUser;
-                localStorage.setItem('users', JSON.stringify(users));
-            }
-            
-            // Update Firebase
             try {
-                await db.collection('users').doc(currentUser.id.toString()).update({
-                    username: username,
-                    email: email,
-                    updatedAt: new Date()
-                });
+                // Update profile in Firestore
+                const q = query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                    const userDoc = querySnapshot.docs[0];
+                    await userDoc.ref.update({
+                        username: username,
+                        updatedAt: new Date()
+                    });
+                } else {
+                    // Create new profile document
+                    await addDoc(collection(db, 'users'), {
+                        uid: currentUser.uid,
+                        username: username,
+                        email: currentUser.email,
+                        createdAt: new Date()
+                    });
+                }
+                
+                loadProfile();
+                showNotification('Profil berhasil diperbarui!');
             } catch (error) {
-                console.log('Firebase update error:', error);
+                console.error('Profile update error:', error);
+                showNotification('Gagal memperbarui profil', true);
             }
-            
-            loadProfile();
-            showNotification('Profil berhasil diperbarui!');
         }
 
         // Notification system
