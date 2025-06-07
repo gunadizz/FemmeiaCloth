@@ -1512,8 +1512,81 @@
         filter: drop-shadow(0 1px 3px rgba(31, 41, 55, 0.1));
     }
 </style>
+<style>
+  /* Tambahkan blur hanya pada body saat loading */
+  body.loading-active *:not(#preloader):not(#preloader *) {
+    filter: blur(6px);
+    transition: filter 0.9s ease;
+  }
+
+  .spinner-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .spinner {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: cubeSpin 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  /* Warna face spinner dengan pengurangan hitam agar seimbang */
+  .face {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(145deg, #6b7280, #374151);
+    border-radius: 0.75rem;
+    box-shadow:
+      inset 0 2px 6px rgba(31 41 55 / 0.18),
+      0 4px 12px rgba(55 65 81 / 0.15);
+    border: 1px solid rgba(55 65 81 / 0.25);
+    filter: drop-shadow(0 2px 6px rgba(31 41 55 / 0.1));
+  }
+  .face1 { transform: rotateY(  0deg) translateZ(40px); }
+  .face2 { transform: rotateY( 90deg) translateZ(40px); }
+  .face3 { transform: rotateY(180deg) translateZ(40px); }
+  .face4 { transform: rotateY(-90deg) translateZ(40px); }
+  .face5 { transform: rotateX( 90deg) translateZ(40px); }
+  .face6 { transform: rotateX(-90deg) translateZ(40px); }
+
+  @keyframes cubeSpin {
+    0% {
+      transform: rotateX(0deg) rotateY(0deg);
+    }
+    100% {
+      transform: rotateX(360deg) rotateY(360deg);
+    }
+  }
+</style>
 </head>
 <body>
+	<!-- Preloader (letakkan di dalam <body> paling atas) -->
+<div id="preloader" aria-label="Loading" role="status" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(255 255 255 / 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  perspective: 1200px;
+  transition: opacity 0.9s ease, transform 0.9s ease;
+">
+  <div class="spinner-container" aria-hidden="true">
+    <div class="spinner">
+      <div class="face face1"></div>
+      <div class="face face2"></div>
+      <div class="face face3"></div>
+      <div class="face face4"></div>
+      <div class="face face5"></div>
+      <div class="face face6"></div>
+    </div>
+  </div>
+</div>
+
 <!-- Enhanced Navigation for Desktop -->
 <nav class="navbar" id="navbar">
     <div class="container">
@@ -3749,6 +3822,75 @@
         }
     });
 </script>
+<!-- Letakkan elemen audio ini di dalam <body>, misalnya di bagian paling bawah -->
+<audio id="clickSound" src="https://github.com/gunadizz/FemmeiaCloth/raw/refs/heads/main/app/store/assets/ui-pop-sound-316482.mp3" preload="auto"></audio>
+
+<script>
+  // Ambil elemen audio
+  const clickSound = document.getElementById('clickSound');
+
+  // Fungsi untuk memutar suara dengan cara reset posisi audio agar bisa diputar berulang tanpa delay
+  function playClickSound() {
+    clickSound.pause();
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {
+      // Mengabaikan error bila pemutaran suara terganggu (seperti autoplay policy)
+    });
+  }
+
+  // Pasang event listener global untuk click pada document
+  document.addEventListener('click', (event) => {
+    // Dapatkan elemen target yang diklik
+    const target = event.target;
+
+    // Cek apakah elemen target bisa diklik:
+    // - tombol (button)
+    // - link (a)
+    // - punya class btn (misal elemen klik utama di UI)
+    // - atau elemen dengan cursor pointer (opsional, bisa diganti/diperketat sesuai kebutuhan)
+    
+    if (
+      target.closest('button') || 
+      target.closest('a') || 
+      target.closest('.btn') || 
+      getComputedStyle(target).cursor === 'pointer'
+    ) {
+      playClickSound();
+    }
+  }, true); // gunakan capture phase supaya event terdengar lebih awal
+</script>
+<script>
+  document.body.classList.add('loading-active'); // aktifkan blur pada body saat loading
+
+  const preloader = document.getElementById('preloader');
+  const spinner = preloader.querySelector('.spinner');
+
+  spinner.addEventListener('animationend', () => {
+    // Saat animasi spinner selesai, fade out + zoom out preloader
+    preloader.style.opacity = '0';
+    preloader.style.transform = 'scale(1.1)';
+
+    // Hilangkan blur dari body bertahap
+    document.body.classList.remove('loading-active');
+
+    setTimeout(() => {
+      preloader.style.display = 'none';
+    }, 900); // durasi animasi fade out + zoom out
+  });
+
+  // Fallback jika load halaman terlambat
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (preloader.style.display !== 'none') {
+        preloader.style.opacity = '0';
+        preloader.style.transform = 'scale(1.1)';
+        document.body.classList.remove('loading-active');
+        setTimeout(() => preloader.style.display = 'none', 900);
+      }
+    }, 5800);
+  });
+</script>
+
 </body>
 </html>
 
