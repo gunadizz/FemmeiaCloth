@@ -2020,7 +2020,147 @@ button:focus, .btn:focus, a:focus, input:focus, select:focus, textarea:focus, .c
     opacity 1s cubic-bezier(.4,0,.2,1),
     transform 1s cubic-bezier(.4,0,.2,1);
 }
-</style>
+/* SHAPES BACKGROUND - PASTIKAN ADA DI PALING BELAKANG */
+    .scattered-shapes {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0; /* PALING BELAKANG */
+      pointer-events: none;
+      user-select: none;
+      overflow: hidden;
+    }
+    .scattered-shape {
+      position: absolute;
+      opacity: 0.13;
+      filter: blur(1px);
+      pointer-events: none;
+      z-index: 0;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      /* smooth start for all */
+      animation-fill-mode: both;
+    }
+    /* CIRCLE */
+    .scattered-shape.circle1 {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--accent-mid);
+      top: 6%; left: 12%;
+      animation-name: floatY1; animation-duration: 13s;
+    }
+    .scattered-shape.circle2 {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--success);
+      top: 32%; left: 83%;
+      animation-name: floatX2; animation-duration: 11s;
+    }
+    .scattered-shape.circle3 {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--warning);
+      top: 78%; left: 25%;
+      animation-name: floatXY3; animation-duration: 17s;
+    }
+    .scattered-shape.circle4 {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--accent-light);
+      top: 60%; left: 65%;
+      animation-name: floatY2; animation-duration: 12.2s;
+    }
+    /* SQUARE */
+    .scattered-shape.square1 {
+      width: 38px; height: 38px; border-radius: var(--radius-md);
+      background: var(--background-lighter);
+      border: 2px solid var(--accent-light);
+      top: 18%; left: 75%;
+      animation-name: floatX2; animation-duration: 10.5s;
+    }
+    .scattered-shape.square2 {
+      width: 62px; height: 62px; border-radius: var(--radius-xl);
+      background: var(--accent-light);
+      top: 68%; left: 77%;
+      animation-name: floatXY3; animation-duration: 15s;
+    }
+    /* TRIANGLE */
+    .scattered-shape.triangle1 {
+      width: 0; height: 0;
+      border-left: 28px solid transparent;
+      border-right: 28px solid transparent;
+      border-bottom: 50px solid var(--warning);
+      top: 54%; left: 15%;
+      animation-name: floatY1; animation-duration: 16s;
+    }
+    .scattered-shape.triangle2 {
+      width: 0; height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-bottom: 34px solid var(--accent-mid);
+      top: 38%; left: 56%;
+      animation-name: floatX2; animation-duration: 13.1s;
+    }
+    /* DIAMOND */
+    .scattered-shape.diamond1 {
+      width: 44px; height: 44px;
+      background: var(--success);
+      transform: rotate(45deg);
+      border-radius: var(--radius-sm);
+      top: 85%; left: 41%;
+      animation-name: floatXY3; animation-duration: 19s;
+    }
+    .scattered-shape.diamond2 {
+      width: 28px; height: 28px;
+      background: var(--accent-dark);
+      transform: rotate(45deg);
+      border-radius: var(--radius-sm);
+      top: 37%; left: 17%;
+      animation-name: floatY1; animation-duration: 11.3s;
+    }
+
+    /* KEYFRAMES ANIMASI */
+    @keyframes floatY1 {
+      0%,100% { transform: translateY(0) scale(1);}
+      50% { transform: translateY(-28px) scale(1.12);}
+    }
+    @keyframes floatY2 {
+      0%,100% { transform: translateY(0) scale(1);}
+      40% { transform: translateY(19px) scale(1.08);}
+      80% { transform: translateY(-12px) scale(0.98);}
+    }
+    @keyframes floatX2 {
+      0%,100% { transform: translateX(0) scale(1);}
+      50% { transform: translateX(-34px) scale(1.09);}
+    }
+    @keyframes floatXY3 {
+      0%,100% { transform: translate(0,0) scale(1);}
+      33% { transform: translate(-19px, -17px) scale(1.11);}
+      66% { transform: translate(14px, 11px) scale(0.97);}
+    }
+
+    /* DEMO CONTENT */
+    .demo-content {
+      max-width: 480px;
+      margin: 10vh auto 0 auto;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 32px rgba(31, 41, 55, 0.06);
+      padding: 2rem 2.5rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .demo-content h1 {
+      color: var(--accent-dark);
+      letter-spacing: -0.02em;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .demo-content p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+  </style>
+
+
 </head>
 <body>
 	<!-- Preloader (letakkan di dalam <body> paling atas) -->
@@ -2046,7 +2186,19 @@ button:focus, .btn:focus, a:focus, input:focus, select:focus, textarea:focus, .c
     </div>
   </div>
 </div>
-
+<!-- BACKGROUND SHAPES -->
+  <div class="scattered-shapes" aria-hidden="true">
+    <div class="scattered-shape circle1"></div>
+    <div class="scattered-shape circle2"></div>
+    <div class="scattered-shape circle3"></div>
+    <div class="scattered-shape circle4"></div>
+    <div class="scattered-shape square1"></div>
+    <div class="scattered-shape square2"></div>
+    <div class="scattered-shape triangle1"></div>
+    <div class="scattered-shape triangle2"></div>
+    <div class="scattered-shape diamond1"></div>
+    <div class="scattered-shape diamond2"></div>
+  </div>
 <!-- Enhanced Navigation for Desktop -->
 <nav class="navbar" id="navbar">
     <div class="container">
