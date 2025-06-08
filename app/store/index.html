@@ -2208,8 +2208,10 @@ button:focus, .btn:focus, a:focus, input:focus, select:focus, textarea:focus, .c
 .btn-social.ig {
   background: #FF96B9;
   color: #fff;
+  
 }
 .btn-social.wa {
+	
   background: #86D3A2;
   color: #fff;
 }
@@ -2831,6 +2833,131 @@ input:checked + .toggle-slider::before {
       height: 20px;
     }
   }
+  .download-buttons-custom {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+.btn-download-custom {
+  display: flex;
+  align-items: center;
+  gap: 0.65em;
+  padding: 0.72em 1.35em;
+  font-family: "Quicksand", sans-serif;
+  border-radius: 2em;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 1.5px solid #e5e7eb;
+  cursor: pointer;
+  color: #222;
+  background: rgba(255,255,255,0.35);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.18s, border-color 0.18s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 16px 0 rgba(40,48,60,0.04);
+}
+.btn-download-custom img {
+  height: 24px;
+  width: 24px;
+}
+.btn-download-custom:active {
+  transform: scale(.97);
+}
+.btn-download-custom:hover {
+  background: rgba(255,255,255,0.6);
+  border-color: #bfc9db;
+}
+
+/* Modal glass & blur styles + animation */
+.modal-guide {
+  display: none;
+  position: fixed;
+  font-family: "Quicksand", sans-serif;
+  z-index: 1001;
+  left: 0; top: 0; right: 0; bottom: 0;
+  justify-content: center;
+  align-items: center;
+  background: rgba(40,48,60,0.13);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: background 0.35s;
+  animation: fadeModalBgIn 0.45s;
+}
+.modal-guide.active {
+  display: flex;
+  animation: fadeModalBgIn 0.45s;
+}
+.modal-guide.closing {
+  animation: fadeModalBgOut 0.4s forwards;
+  font-family: "Quicksand", sans-serif;
+}
+@keyframes fadeModalBgIn {
+  from { background: rgba(40,48,60,0.0);}
+  to   { background: rgba(40,48,60,0.13);}
+}
+@keyframes fadeModalBgOut {
+  from { background: rgba(40,48,60,0.13);}
+  to   { background: rgba(40,48,60,0.0);}
+}
+
+.modal-content-anim {
+  background: rgba(255,255,255,0.79);
+  border-radius: 1.2rem;
+  padding: 2rem 1.5rem 1.1rem 1.5rem;
+  box-shadow: 0 8px 32px rgba(31,41,55,0.13);
+  max-width: 320px;
+  text-align: left;
+  position: relative;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  animation: modalPopIn 0.4s cubic-bezier(.27,1.11,.61,1.02);
+  transition: transform 0.22s cubic-bezier(.27,1.11,.61,1.02), opacity 0.22s cubic-bezier(.27,1.11,.61,1.02);
+}
+.modal-guide.closing .modal-content-anim {
+  animation: modalPopOut 0.33s cubic-bezier(.27,1.11,.61,1.02) forwards;
+}
+@keyframes modalPopIn {
+  0%   { opacity: 0; transform: scale(0.85) translateY(60px);}
+  100% { opacity: 1; transform: scale(1) translateY(0);}
+}
+@keyframes modalPopOut {
+  0%   { opacity: 1; transform: scale(1) translateY(0);}
+  100% { opacity: 0; transform: scale(0.85) translateY(60px);}
+}
+.modal-content-anim h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+.modal-content-anim ol {
+  margin-left: 1.1rem;
+  color: #374151;
+  font-size: 1rem;
+  margin-bottom: 1.3rem;
+}
+.modal-close-anim {
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  transition: background 0.2s;
+  opacity: 0.85;
+}
+.modal-close-anim:hover {
+  background: #3ddc84;
+  color: #fff;
+  opacity: 1;
+}
 </style>
 </head>
 <body>
@@ -3211,8 +3338,26 @@ input:checked + .toggle-slider::before {
                 Hijab & Fashion Premium
             </h1>
             <p>Temukan koleksi hijab dan aksesoris cantik berkualitas tinggi yang dirancang untuk wanita modern. Kualitas, variasi, dan harga terjangkau.</p>
-        </div>
+  </div>
 
+<div class="download-buttons-custom">
+  <button type="button" class="btn-download-custom android" onclick="showGuide('android')">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/android.svg" alt="Android" />
+    <span>Download Android</span>
+  </button>
+  <button type="button" class="btn-download-custom ios" onclick="showGuide('ios')">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="iOS" />
+    <span>Download iOS</span>
+  </button>
+</div>
+<!-- Modal -->
+<div class="modal-guide" id="modalGuide">
+  <div class="modal-content-anim">
+    <button class="modal-close-anim" onclick="closeGuide()">x</button>
+    <h3 id="modalTitle">Panduan Install</h3>
+    <ol id="modalSteps"></ol>
+  </div>
+</div> 
         <!-- Promo Card -->
         <div class="promo-card">
             <h3>
@@ -3793,7 +3938,8 @@ input:checked + .toggle-slider::before {
                     Visi Kami
                 </h3>
                 <p>Menjadi brand hijab terdepan yang menghadirkan produk berkualitas tinggi dengan desain modern dan harga terjangkau untuk semua kalangan wanita muslimah.</p>
-            </div>
+        
+    </div>
 
             <div class="card">
                 <h3>
@@ -6619,6 +6765,43 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
     const settings = loadSettings();
     applySettings(settings);
+});
+
+// modal download app
+
+function showGuide(platform) {
+  const modal = document.getElementById('modalGuide');
+  modal.classList.remove('closing');
+  modal.classList.add('active');
+  let title = document.getElementById('modalTitle');
+  let steps = document.getElementById('modalSteps');
+  if(platform === 'android') {
+    title.innerText = "Cara Install di Android";
+    steps.innerHTML = `
+      <li>Buka website ini di browser Chrome.</li>
+      <li>Tap menu (titik tiga kanan atas).</li>
+      <li>Pilih <b>"Add to Home screen"</b> / <b>"Tambahkan ke layar utama"</b>.</li>
+      <li>Ikuti instruksi hingga FemmeiaCloth muncul di layar utama.</li>
+    `;
+  } else {
+    title.innerText = "Cara Install di iOS (iPhone/iPad)";
+    steps.innerHTML = `
+      <li>Buka website ini di Safari.</li>
+      <li>Tap ikon <b>Share</b> (kotak dengan panah ke atas).</li>
+      <li>Pilih <b>"Add to Home Screen"</b> / <b>"Tambahkan ke Layar Utama"</b>.</li>
+      <li>Ikuti instruksi hingga FemmeiaCloth muncul di layar utama.</li>
+    `;
+  }
+}
+function closeGuide() {
+  const modal = document.getElementById('modalGuide');
+  modal.classList.add('closing');
+  setTimeout(() => {
+    modal.classList.remove('active', 'closing');
+  }, 380);
+}
+document.getElementById('modalGuide').addEventListener('click', function(e) {
+  if(e.target === this) closeGuide();
 });
 
 </script>
