@@ -111,9 +111,7 @@
 
     /* Enhanced Desktop Navigation */
     .navbar {
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(var(--blur-strength));
-        -webkit-backdrop-filter: blur(var(--blur-strength));
+        
         border-bottom: 1px solid var(--border);
         position: fixed;
         top: 0;
@@ -250,7 +248,11 @@
         box-shadow: 0 -8px 40px rgba(31, 41, 55, 0.08);
         animation: slideUpIn 0.6s var(--transition-bounce);
     }
-
+@media (min-width: 900px) {
+  .mobile-bottom-nav {
+    display: none;
+  }
+}
     .mobile-bottom-nav::before {
         content: '';
         position: absolute;
@@ -1756,6 +1758,268 @@ button:focus, .btn:focus, a:focus, input:focus, select:focus, textarea:focus, .c
   transform: scale(0.98);
   filter: brightness(0.99);
 }
+/* ...CSS styles as before... */
+
+/* Tambahan styling untuk survey section */
+.survey-section {
+  background: linear-gradient(100deg, #f8fafc 60%, #f1f5f9 100%);
+  border-radius: 1.5rem;
+  box-shadow: 0 6px 32px rgba(31, 41, 55, 0.06);
+  margin: 2rem 0;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;text-align: center;
+  flex-wrap: wrap;
+  border: 1.5px solid #e5e7eb;
+  position: relative;
+  overflow: hidden;
+  animation: floatCard 7s ease-in-out infinite;
+}
+.survey-section-content {
+  flex: 1;text-align: center;
+  min-width: 200px;
+}
+.survey-section-title {
+  font-size: 1.7rem;
+  font-weight: 800;text-align: center;
+  color: #1f2937;
+  margin-bottom: 0.7rem;
+  letter-spacing: -0.02em;
+}
+.survey-section-desc {
+  font-size: 1.09rem;text-align: center;
+  color: #374151;
+  margin-bottom: 1.1rem;
+  font-weight: 500;
+}
+.survey-section-btn {
+  display: block;
+  padding: 1rem 2rem;
+  background: #1f2937;
+  color: #fff;
+  border: none;text-align: center;
+  border-radius: 1.25rem;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 1.12rem;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.25s;
+  box-shadow: 0 6px 24px rgba(55, 65, 81, 0.11);
+  text-decoration: none;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0.5rem;
+}
+.survey-section-btn:hover {
+  background: #374151;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 12px 28px rgba(31, 41, 55, 0.13);
+}
+@media (max-width: 700px) {
+  .survey-section {
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    gap: 1.2rem;
+  }
+  .survey-section-btn {
+    width: 100%;
+    padding: 1rem 0;
+    font-size: 1.03rem;
+  }
+}
+
+
+.cookie-consent {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: fixed;
+  left: 50%;
+  bottom: 5.5rem;
+  transform: translateX(-50%) translateY(32px) scale(0.97);
+  background: rgba(255,255,255,0.92);
+  color: #1e293b;
+  padding: 1.1rem 1.4rem 1rem 1.4rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 28px rgba(31,41,55,0.14);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  z-index: 2000;
+  max-width: 370px;
+  width: 96vw;
+  min-width: 0;
+  font-size: 0.96rem;
+  border: 1.5px solid rgba(226,232,240,0.13);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.42s cubic-bezier(.4,0,.2,1),
+    transform 0.42s cubic-bezier(.4,0,.2,1);
+  will-change: opacity, transform;
+}
+
+.cookie-consent.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+.cookie-consent.hiding {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(32px) scale(0.94);
+  transition:
+    opacity 0.36s cubic-bezier(.4,0,.2,1),
+    transform 0.36s cubic-bezier(.4,0,.2,1);
+}
+
+.cookie-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.18rem;
+}
+.cookie-svg {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floatCookie 2.6s infinite ease-in-out alternate;
+  flex-shrink: 0;
+}
+@keyframes floatCookie {
+  from { transform: translateY(0) scale(1);}
+  to   { transform: translateY(-5px) scale(1.08);}
+}
+.cookie-title {
+  font-size: 1.01rem;
+  font-weight: 700;
+  color: #d97706;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cookie-message {
+  margin-bottom: 0.46rem;
+  font-size: 0.94rem;
+  color: #334155;
+  font-weight: 500;
+  text-align: left;
+  line-height: 1.38;
+  word-break: break-word;
+}
+
+.cookie-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.33rem;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.cookie-btn,
+.cookie-btn-decline {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.81rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+  outline: none;
+  margin: 0;
+  min-width: 70px;
+  box-shadow: 0 2px 11px rgba(31,41,55,0.17), 0 1px 2px rgba(31,41,55,0.09);
+  transition:
+    background 0.18s cubic-bezier(.4,0,.2,1),
+    color 0.18s cubic-bezier(.4,0,.2,1),
+    box-shadow 0.18s cubic-bezier(.4,0,.2,1),
+    transform 0.19s cubic-bezier(.4,0,.2,1);
+}
+
+.cookie-btn {
+  background: linear-gradient(100deg, #ffe38c 40%, #ffd34f 100%);
+  color: #7c4700;
+}
+.cookie-btn:hover, .cookie-btn:focus {
+  background: linear-gradient(100deg, #ffd34f 70%, #ffcb1c 100%);
+  color: #fff;
+  transform: translateY(-1px) scale(1.08);
+  box-shadow: 0 7px 18px rgba(255,211,79,0.19), 0 2px 6px rgba(31,41,55,0.10);
+}
+
+.cookie-btn-decline {
+  background: rgba(241,245,249,0.82);
+  color: #64748b;
+  border: 2px solid #e2e8f0;
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+}
+.cookie-btn-decline:hover, .cookie-btn-decline:focus {
+  background: rgba(251,191,36,0.17);
+  color: #f59e42;
+  border-color: #f59e42;
+  transform: translateY(-1px) scale(1.08);
+  box-shadow: 0 3px 13px rgba(245,158,66,0.14), 0 2px 6px rgba(31,41,55,0.09);
+}
+
+/* Responsive for mobile */
+@media (max-width: 600px) {
+  .cookie-consent {
+    max-width: 98vw;
+    width: 90vw;
+    padding: 0.67rem 0.15rem 0.7rem 0.5rem;
+    font-size: 0.90rem;
+    gap: 0.35rem;
+    bottom: 5.1rem;
+  }
+  .cookie-header {
+    gap: 0.27rem;
+    margin-bottom: 0.05rem;
+  }
+  .cookie-svg {
+    width: 17px;
+    height: 17px;
+  }
+  .cookie-title {
+    font-size: 0.90rem;
+  }
+  .cookie-message {
+    font-size: 0.87rem;
+    margin-bottom: 0.13rem;
+  }
+  .cookie-actions {
+    width: 100%;
+    gap: 0.1rem;
+    justify-content: flex-end;
+  }
+  .cookie-btn, .cookie-btn-decline {
+    width: auto;
+    font-size: 0.85rem;margin-right:5px;
+    padding: 0.32rem 0.33rem;
+    min-width: 0;
+    border-radius: 0.6rem;
+  }
+}
+/* Animasi keluar: transisi ke bawah dan transparan */
+.cookie-consent.hiding {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(32px) scale(0.94);
+  transition:
+    opacity 1s cubic-bezier(.4,0,.2,1),
+    transform 1s cubic-bezier(.4,0,.2,1);
+}
 </style>
 </head>
 <body>
@@ -1998,6 +2262,23 @@ button:focus, .btn:focus, a:focus, input:focus, select:focus, textarea:focus, .c
             <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Klik untuk menyalin kode</p>
         </div>
 
+    <!-- Survey Section -->
+    <section class="survey-section" aria-label="Survey Berhadiah">
+      <div class="survey-section-content">
+        <div class="survey-section-title">
+          <span class="survey-icon">🎁</span>
+          Ikuti Survey Berhadiah! (Batch Pertama)
+        </div>
+        <div class="survey-section-desc">
+          Dapatkan <span class="highlight">saldo e-wallet</span> senilai <b>Rp1.000 - Rp10.000</b> dengan mengisi survey singkat dari FemmeiaCloth.<br>
+          Bantu kami jadi lebih baik &amp; menangkan hadiahnya!
+        </div>
+        <a class="survey-section-btn pulse" href="https://www.femmeiacloth.me/survey" target="_blank" rel="noopener">
+          Isi survey sekarang!
+        </a>
+      </div>
+    </section>
+    
 <section class="testimoni-section container">
   <div class="testimoni-slider-outer">
     <div class="testimoni-slider" id="testimoniSlider">
@@ -2593,7 +2874,55 @@ button:focus, .btn:focus, a:focus, input:focus, select:focus, textarea:focus, .c
     </div>
 </div>
 
-<!-- Firebase SDK and JavaScript -->
+<div class="cookie-consent" id="cookieConsent">
+  <div class="cookie-header">
+    <div class="cookie-svg" aria-hidden="true">
+      <!-- SVG cookie icon, full color -->
+      <svg width="22" height="22" viewBox="0 0 56 56" fill="none">
+        <circle cx="28" cy="28" r="26" fill="#FFD34F" stroke="#FBBF24" stroke-width="4"/>
+        <circle cx="38" cy="21" r="3.5" fill="#FFF7D6"/>
+        <circle cx="25" cy="38" r="3.5" fill="#FFF7D6"/>
+        <circle cx="16" cy="24" r="2.2" fill="#C47B00"/>
+        <circle cx="35" cy="34" r="2.2" fill="#C47B00"/>
+        <circle cx="26" cy="17" r="2" fill="#C47B00"/>
+        <path d="M42 14c0 2.21-1.79 4-4 4" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="28" cy="28" rx="26" ry="25.8" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.2"/>
+      </svg>
+    </div>
+    <div class="cookie-title">Persetujuan Cookie</div>
+  </div>
+  <div class="cookie-message">
+    Website ini menggunakan cookie untuk meningkatkan pengalaman Anda. Dengan melanjutkan, Anda menyetujui penggunaan cookie kami.
+  </div>
+  <div class="cookie-actions">
+    <button class="cookie-btn" id="cookieConsentBtn">Setuju</button>
+    <button class="cookie-btn-decline" id="cookieDeclineBtn">Tolak</button>
+  </div>
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    const consent = document.getElementById('cookieConsent');
+    const showConsent = !localStorage.getItem('cookieConsentAccepted') && !localStorage.getItem('cookieConsentDeclined');
+    if (showConsent) {
+      setTimeout(() => consent.classList.add('visible'), 350);
+    }
+    function closeConsent() {
+      consent.classList.remove('visible');
+      consent.classList.add('hiding');
+      setTimeout(() => {
+        consent.classList.remove('hiding');
+      }, 380);
+    }
+    document.getElementById('cookieConsentBtn').onclick = function() {
+      localStorage.setItem('cookieConsentAccepted', 'yes');
+      closeConsent();
+    };
+    document.getElementById('cookieDeclineBtn').onclick = function() {
+      localStorage.setItem('cookieConsentDeclined', 'yes');
+      closeConsent();
+    };
+  });
+</script>
 <script type="module">
     // Firebase imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
@@ -4240,7 +4569,6 @@ button:focus, .btn:focus, a:focus, input:focus, select:focus, textarea:focus, .c
 })();
 
 </script>
-
 </body>
 </html>
 
