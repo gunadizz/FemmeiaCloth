@@ -18,7 +18,9 @@
   <meta name="twitter:title" content="FemmeiaCloth | Hijab Premium Brand Lokal">
   <meta name="twitter:description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
-  <!-- In the <head> section -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f8fafc">
+	
   <meta name="google-adsense-account" content="ca-pub-3270682405009922">
 <meta name="theme-color" content="#f8fafc">
 
@@ -3891,6 +3893,19 @@ input:checked + .toggle-slider::before {
     <button class="cookie-btn-decline" id="cookieDeclineBtn">Tolak</button>
   </div>
 </div>
+
+<!-- PWA -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').then(reg => {
+      console.log('Service Worker registered:', reg);
+    }).catch(err => {
+      console.log('Service Worker registration failed:', err);
+    });
+  });
+}
+</script>
 <script>
   window.addEventListener('DOMContentLoaded', function() {
     const consent = document.getElementById('cookieConsent');
