@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Femmeia Store Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+    <meta name="description" content="Demo template e-commerce Femmeia Store. Pure HTML, CSS, JS dengan backend Firebase. Cocok untuk toko fashion.">
+    <meta property="og:title" content="Femmeia Store Demo">
+    <meta property="og:description" content="Demo template e-commerce Femmeia Store. Pure HTML, CSS, JS dengan backend Firebase. Cocok untuk toko fashion.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+    <meta property="og:url" content="https://femmeiacloth.me/demo">
+    <meta property="og:type" content="website">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Enhanced color system */
+            --background: #ffffff;
+            --background-light: #f8fafc;
+            --background-lighter: #f1f5f9;
+            --surface: rgba(255, 255, 255, 0.85);
+            --surface-hover: rgba(255, 255, 255, 0.95);
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --text-light: #94a3b8;
+            --accent-dark: #1f2937;
+            --accent-mid: #374151;
+            --accent-light: #9ca3af;
+            --border: rgba(55, 65, 81, 0.12);
+            --border-hover: rgba(55, 65, 81, 0.2);
+            --success: #059669;
+            --error: #dc2626;
+            --warning: #fbbf24;
+            --whatsapp: #25D366;
+            --html: #E34F26;
+            --css: #1572B6;
+            --js: #F7DF1E;
+            --firebase: #FFCA28;
+            
+            /* Blur and effects */
+            --blur-strength: 10px;
+            --blur-light: 8px;
+            --blur-heavy: 13px;
+            
+            /* Transitions */
+            --transition-speed: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* Shadows */
+            --shadow: 0 8px 32px rgba(31, 41, 55, 0.06);
+            --shadow-hover: 0 16px 48px rgba(31, 41, 55, 0.1);
+            --shadow-intense: 0 24px 64px rgba(31, 41, 55, 0.15);
+            
+            /* Spacing */
+            --radius-sm: 0.75rem;
+            --radius-md: 1rem;
+            --radius-lg: 1.25rem;
+            --radius-xl: 1.5rem;
+            
+            /* Z-index layers */
+            --z-sticky: 999;
+            --z-nav: 1000;
+            --z-modal: 2000;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+            padding-bottom: 5rem;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 25% 75%, rgba(31, 41, 55, 0.01) 0%, transparent 40%),
+                radial-gradient(circle at 75% 25%, rgba(31, 41, 55, 0.01) 0%, transparent 40%);
+            animation: floatBackground 60s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        /* Mobile Bottom Navigation */
+        .mobile-bottom-nav {
+            display: block;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border-top: 1px solid var(--border);
+            padding: 0.75rem 0 max(0.75rem, env(safe-area-inset-bottom));
+            z-index: var(--z-nav);
+            box-shadow: 0 -8px 40px rgba(31, 41, 55, 0.08);
+            animation: slideUpIn 0.6s var(--transition-bounce);
+        }
+
+        @media (min-width: 900px) {
+            .mobile-bottom-nav {
+                display: block !important; /* Override any previous rules */
+            }
+        }
+
+        .mobile-bottom-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            animation: shimmerLine 3s ease-in-out infinite;
+        }
+
+        .mobile-nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-width: 60px;
+            backdrop-filter: blur(var(--blur-light));
+            -webkit-backdrop-filter: blur(var(--blur-light));
+        }
+
+        .mobile-nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(31, 41, 55, 0.06) 0%, transparent 70%);
+            opacity: 0;
+            transition: all var(--transition-speed) ease;
+            z-index: -1;
+            border-radius: var(--radius-md);
+        }
+
+        .mobile-nav-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(31, 41, 55, 0.02);
+            border-radius: 50%;
+            transition: all var(--transition-speed) ease;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .mobile-nav-item:hover::before,
+        .mobile-nav-item.active::before {
+            opacity: 1;
+        }
+
+        .mobile-nav-item:hover::after,
+        .mobile-nav-item.active::after {
+            width: 100px;
+            height: 100px;
+        }
+
+        .mobile-nav-item:active {
+            transform: scale(0.95);
+        }
+
+        .mobile-nav-icon {
+            width: 22px;
+            height: 22px;
+            stroke: var(--text-muted);
+            transition: all var(--transition-speed) ease;
+            filter: drop-shadow(0 1px 2px rgba(31, 41, 55, 0.1));
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .mobile-nav-item:hover .mobile-nav-icon,
+        .mobile-nav-item.active .mobile-nav-icon {
+            stroke: var(--accent-dark);
+            transform: translateY(-2px) scale(1.1);
+            filter: drop-shadow(0 4px 12px rgba(31, 41, 55, 0.2));
+            stroke-width: 2.5;
+        }
+
+        .mobile-nav-text {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all var(--transition-speed) ease;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .mobile-nav-item:hover .mobile-nav-text,
+        .mobile-nav-item.active .mobile-nav-text {
+            color: var(--accent-dark);
+            font-weight: 700;
+            transform: translateY(-1px);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 6rem 0;
+            background: rgba(55, 65, 81, 0.02);
+            backdrop-filter: blur(var(--blur-light));
+            -webkit-backdrop-filter: blur(var(--blur-light));
+            border-radius: var(--radius-xl);
+            margin: 2rem 0 3rem 0;
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.8s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            margin-left:0.4rem;
+            margin-right: 0.4rem;
+            color: var(--accent-dark);
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.02em;
+            animation: textFadeIn 1s ease 0.3s both;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            font-weight: 500;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            position: relative;
+            z-index: 1;
+            animation: textFadeIn 1s ease 0.6s both;
+        }
+
+        .cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--whatsapp); /* #25D366 */
+    border: none;
+    border-radius: 20px 8px 20px 8px;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    min-height: 40px;
+    backdrop-filter: blur(var(--blur-light));
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.5); /* Efek hover dengan intensitas lebih tinggi */
+    margin-bottom: 2rem;
+    z-index: 10;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 18px 29px rgba(37, 211, 102, 0.5); /* Efek hover dengan intensitas lebih tinggi */
+    background: #20bd57;
+}
+
+.cta-button:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.cta-button:hover::before {
+    left: 100%;
+}
+
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 0.5rem 0 0.5rem 0;
+            align-items: center;
+        }
+
+        .tech-tag {
+            padding: 0.4rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            box-shadow: var(--shadow);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .tech-tag:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow-hover);transition: all var(--transition-speed) ease;
+        }
+.tech-tag:hover {
+    transform: translateY(-2px) scale(1.02);
+}
+
+        .tech-tag.html {
+            background: var(--html);
+            box-shadow: 0 8px 20px rgba(227, 79, 38, 0.5); 
+        }
+
+        .tech-tag.html:hover {
+    box-shadow: 0 15px 25px rgba(227, 79, 38, 0.5); /* Efek hover dengan intensitas lebih tinggi */
+}
+
+.tech-tag.css {
+    background: var(--css); /* #1572B6 */
+   box-shadow: 0 8px 20px rgba(21, 114, 182, 0.5); /* Bayangan dengan warna biru yang sesuai */
+}
+
+.tech-tag.css:hover {
+    box-shadow: 0 15px 25px rgba(21, 114, 182, 0.5); /* Efek hover dengan intensitas lebih tinggi */
+}
+
+.tech-tag.js {
+    background: var(--js); /* #F7DF1E */
+    color: var(--text);
+    box-shadow: 0 8px 20px rgba(247, 223, 30, 0.5);  /* Bayangan dengan warna kuning yang sesuai */
+}
+
+.tech-tag.js:hover {
+    box-shadow: 0 15px 25px rgba(247, 223, 30, 0.5); /* Efek hover dengan intensitas lebih tinggi */
+}
+
+.tech-tag.firebase {
+    background: var(--firebase); /* #FFCA28 */
+    color: var(--text);
+    box-shadow: 0 8px 20px rgba(255, 202, 40, 0.5);/* Bayangan dengan warna kuning-oranye yang sesuai */
+}
+
+.tech-tag.firebase:hover {
+    box-shadow: 0 15px 25px rgba(255, 202, 40, 0.5); /* Efek hover dengan intensitas lebih tinggi */
+}
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(var(--blur-heavy));
+            -webkit-backdrop-filter: blur(var(--blur-heavy));
+        }
+
+        .card h2 {
+            color: var(--accent-dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .card ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card li {
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: var(--shadow-intense);
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: contain;
+            background: #000;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.05) saturate(1.1);
+        }
+
+        .gallery-caption {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .gallery-caption h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-caption p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(31, 41, 55, 0.9);
+            backdrop-filter: blur(var(--blur-light));
+            -webkit-backdrop-filter: blur(var(--blur-light));
+            z-index: var(--z-modal);
+            overflow: auto;
+            padding: 2rem 1.25rem;
+            animation: fadeIn 0.3s ease;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox.closing {
+            animation: fadeOut 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        .lightbox-content {
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-xl);
+            max-width: 100vw;
+            max-height: 100vh;
+            margin: 2rem auto;
+            position: relative;
+            animation: scaleIn 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 85vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-intense);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(var(--blur-light));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: calc(var(--z-modal) + 1);
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .lightbox-prev {
+            left: 1rem;
+        }
+
+        .lightbox-next {
+            right: 1rem;
+        }
+
+        .close-lightbox {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(var(--blur-light));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            z-index: calc(var(--z-modal) + 2);
+        }
+
+        .close-lightbox:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .lightbox-prev {
+                left: 0.5rem;
+            }
+
+            .lightbox-next {
+                right: 0.5rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes floatBackground {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(15px, -10px) rotate(1deg); }
+            66% { transform: translate(-10px, 15px) rotate(-1deg); }
+        }
+
+        @keyframes shimmerLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h1>Femmeia Store Template Demo</h1>
+        <p>Template e-commerce premium untuk toko fashion modern. Dirancang dengan desain responsif dan fitur canggih.</p>
+        <a href="https://wa.me/6285341899229?text=Saya%20ingin%20membeli%20template%20FemmeiaCloth%20Store" target="_blank" class="cta-button">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0,0,256,256">
+<g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M25,2c-12.69047,0 -23,10.30953 -23,23c0,4.0791 1.11869,7.88588 2.98438,11.20898l-2.94727,10.52148c-0.09582,0.34262 -0.00241,0.71035 0.24531,0.96571c0.24772,0.25536 0.61244,0.35989 0.95781,0.27452l10.9707,-2.71875c3.22369,1.72098 6.88165,2.74805 10.78906,2.74805c12.69047,0 23,-10.30953 23,-23c0,-12.69047 -10.30953,-23 -23,-23zM25,4c11.60953,0 21,9.39047 21,21c0,11.60953 -9.39047,21 -21,21c-3.72198,0 -7.20788,-0.97037 -10.23828,-2.66602c-0.22164,-0.12385 -0.48208,-0.15876 -0.72852,-0.09766l-9.60742,2.38086l2.57617,-9.19141c0.07449,-0.26248 0.03851,-0.54399 -0.09961,-0.7793c-1.84166,-3.12289 -2.90234,-6.75638 -2.90234,-10.64648c0,-11.60953 9.39047,-21 21,-21zM16.64258,13c-0.64104,0 -1.55653,0.23849 -2.30859,1.04883c-0.45172,0.48672 -2.33398,2.32068 -2.33398,5.54492c0,3.36152 2.33139,6.2621 2.61328,6.63477h0.00195v0.00195c-0.02674,-0.03514 0.3578,0.52172 0.87109,1.18945c0.5133,0.66773 1.23108,1.54472 2.13281,2.49414c1.80347,1.89885 4.33914,4.09336 7.48633,5.43555c1.44932,0.61717 2.59271,0.98981 3.45898,1.26172c1.60539,0.5041 3.06762,0.42747 4.16602,0.26563c0.82216,-0.12108 1.72641,-0.51584 2.62109,-1.08203c0.89469,-0.56619 1.77153,-1.2702 2.1582,-2.33984c0.27701,-0.76683 0.41783,-1.47548 0.46875,-2.05859c0.02546,-0.29156 0.02869,-0.54888 0.00977,-0.78711c-0.01897,-0.23823 0.0013,-0.42071 -0.2207,-0.78516c-0.46557,-0.76441 -0.99283,-0.78437 -1.54297,-1.05664c-0.30567,-0.15128 -1.17595,-0.57625 -2.04883,-0.99219c-0.8719,-0.41547 -1.62686,-0.78344 -2.0918,-0.94922c-0.29375,-0.10568 -0.65243,-0.25782 -1.16992,-0.19922c-0.51749,0.0586 -1.0286,0.43198 -1.32617,0.87305c-0.28205,0.41807 -1.4175,1.75835 -1.76367,2.15234c-0.0046,-0.0028 0.02544,0.01104 -0.11133,-0.05664c-0.42813,-0.21189 -0.95173,-0.39205 -1.72656,-0.80078c-0.77483,-0.40873 -1.74407,-1.01229 -2.80469,-1.94727v-0.00195c-1.57861,-1.38975 -2.68437,-3.1346 -3.0332,-3.7207c0.0235,-0.02796 -0.00279,0.0059 0.04687,-0.04297l0.00195,-0.00195c0.35652,-0.35115 0.67247,-0.77056 0.93945,-1.07812c0.37854,-0.43609 0.54559,-0.82052 0.72656,-1.17969c0.36067,-0.71583 0.15985,-1.50352 -0.04883,-1.91797v-0.00195c0.01441,0.02867 -0.11288,-0.25219 -0.25,-0.57617c-0.13751,-0.32491 -0.31279,-0.74613 -0.5,-1.19531c-0.37442,-0.89836 -0.79243,-1.90595 -1.04102,-2.49609v-0.00195c-0.29285,-0.69513 -0.68904,-1.1959 -1.20703,-1.4375c-0.51799,-0.2416 -0.97563,-0.17291 -0.99414,-0.17383h-0.00195c-0.36964,-0.01705 -0.77527,-0.02148 -1.17773,-0.02148zM16.64258,15c0.38554,0 0.76564,0.0047 1.08398,0.01953c0.32749,0.01632 0.30712,0.01766 0.24414,-0.01172c-0.06399,-0.02984 0.02283,-0.03953 0.20898,0.40234c0.24341,0.57785 0.66348,1.58909 1.03906,2.49023c0.18779,0.45057 0.36354,0.87343 0.50391,1.20508c0.14036,0.33165 0.21642,0.51683 0.30469,0.69336v0.00195l0.00195,0.00195c0.08654,0.17075 0.07889,0.06143 0.04883,0.12109c-0.21103,0.41883 -0.23966,0.52166 -0.45312,0.76758c-0.32502,0.37443 -0.65655,0.792 -0.83203,0.96484c-0.15353,0.15082 -0.43055,0.38578 -0.60352,0.8457c-0.17323,0.46063 -0.09238,1.09262 0.18555,1.56445c0.37003,0.62819 1.58941,2.6129 3.48438,4.28125c1.19338,1.05202 2.30519,1.74828 3.19336,2.2168c0.88817,0.46852 1.61157,0.74215 1.77344,0.82227c0.38438,0.19023 0.80448,0.33795 1.29297,0.2793c0.48849,-0.05865 0.90964,-0.35504 1.17773,-0.6582l0.00195,-0.00195c0.3568,-0.40451 1.41702,-1.61513 1.92578,-2.36133c0.02156,0.0076 0.0145,0.0017 0.18359,0.0625v0.00195h0.00195c0.0772,0.02749 1.04413,0.46028 1.90625,0.87109c0.86212,0.41081 1.73716,0.8378 2.02148,0.97852c0.41033,0.20308 0.60422,0.33529 0.6543,0.33594c0.00338,0.08798 0.0068,0.18333 -0.00586,0.32813c-0.03507,0.40164 -0.14243,0.95757 -0.35742,1.55273c-0.10532,0.29136 -0.65389,0.89227 -1.3457,1.33008c-0.69181,0.43781 -1.53386,0.74705 -1.8457,0.79297c-0.9376,0.13815 -2.05083,0.18859 -3.27344,-0.19531c-0.84773,-0.26609 -1.90476,-0.61053 -3.27344,-1.19336c-2.77581,-1.18381 -5.13503,-3.19825 -6.82031,-4.97266c-0.84264,-0.8872 -1.51775,-1.71309 -1.99805,-2.33789c-0.4794,-0.62364 -0.68874,-0.94816 -0.86328,-1.17773l-0.00195,-0.00195c-0.30983,-0.40973 -2.20703,-3.04868 -2.20703,-5.42578c0,-2.51576 1.1685,-3.50231 1.80078,-4.18359c0.33194,-0.35766 0.69484,-0.41016 0.8418,-0.41016z"></path></g></g>
+</svg>
+            Order Sekarang | WhatsApp 
+        </a>
+    </section>
+
+    <!-- Description Card -->
+    <section class="container">
+        <div class="card">
+            <h2>Deskripsi Template</h2>
+            <ul>
+                <li>Template web e-commerce <strong>Femmeia Store</strong></li>
+                <li>Pure HTML, CSS, JS → <strong>tanpa framework</strong>
+                    <div class="tech-tags">
+                        <div class="tech-tag html">HTML</div>
+                        <div class="tech-tag css">CSS</div>
+                        <div class="tech-tag js">JavaScript</div>
+                        
+                    </div>
+                </li>
+                <li>Backend pakai <strong>Firebase</strong> untuk autentikasi & data</li>
+                <div class="tech-tags">
+                        <div class="tech-tag firebase">Firebase</div>
+                    </div>
+                <li>Responsive design, cocok untuk semua perangkat</li>
+                <li>Ideal untuk toko online produk fashion seperti hijab, pakaian, dll.</li>
+            </ul>
+        </div>
+
+        <!-- Analysis Card -->
+        <div class="card">
+            <h2>Deskripsi Lanjutan</h2>
+            <ul>
+                <li>Struktur file sederhana dengan HTML, CSS kustom, dan JavaScript minimal untuk performa cepat.</li>
+                <li>Desain mobile-friendly dengan tata letak berbasis CSS Grid dan Flexbox.</li>
+                <li>Tidak menggunakan framework, sehingga mudah dimodifikasi oleh developer.</li>
+                <li>Cocok dipasang di hosting statis seperti GitHub Pages, Vercel, atau Netlify.</li>
+                <li>Desain elegan dengan animasi halus, efek glass morphism, dan tipografi modern.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="container">
+        <div class="card">
+            <h2>Galeri Preview</h2>
+            <div class="gallery">
+                <div class="gallery-item" onclick="openLightbox(0)">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/1.jpg" alt="Preview 1">
+                    <div class="gallery-caption">
+                        <h3>Beranda Utama</h3>
+                        <p>Tampilan beranda dengan desain modern dan hero section yang menarik.</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(1)">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/2.jpg" alt="Preview 2">
+                    <div class="gallery-caption">
+                        <h3>Produk Grid</h3>
+                        <p>Tampilan daftar produk dengan grid responsif dan filter kategori.</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(2)">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/3.jpg" alt="Preview 3">
+                    <div class="gallery-caption">
+                        <h3>Detail Produk</h3>
+                        <p>Modal detail produk dengan pilihan warna dan tombol tambah ke keranjang.</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(3)">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/4.jpg" alt="Preview 4">
+                    <div class="gallery-caption">
+                        <h3>Keranjang Belanja</h3>
+                        <p>Tampilan keranjang belanja dengan kontrol kuantitas dan total harga.</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(4)">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/5.jpg" alt="Preview 5">
+                    <div class="gallery-caption">
+                        <h3>Checkout Form</h3>
+                        <p>Formulir checkout dengan input informasi pelanggan dan metode pembayaran.</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(5)">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/6.jpg" alt="Preview 6">
+                    <div class="gallery-caption">
+                        <h3>Halaman Profil</h3>
+                        <p>Halaman profil pengguna dengan opsi edit dan riwayat pesanan.</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(6)">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/7.jpg" alt="Preview 7">
+                    <div class="gallery-caption">
+                        <h3>Halaman Autentikasi Login</h3>
+                        <p>Formulir masuk, daftar, dan lupa password dengan desain elegan.</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(7)">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/8.jpg" alt="Preview 8">
+                    <div class="gallery-caption">
+                       <h3>Halaman Autentikasi Daftar</h3>
+                        <p>Formulir masuk, daftar, dan lupa password dengan desain elegan.</p>
+          
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <button class="close-lightbox" onclick="closeLightbox()">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <button class="lightbox-nav lightbox-prev" onclick="changeImage(-1)">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+            </button>
+            <img id="lightbox-img" src="" alt="Preview Image">
+            <button class="lightbox-nav lightbox-next" onclick="changeImage(1)">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav">
+        <div class="mobile-nav-container">
+            <div class="mobile-nav-item" onclick="scrollToSection('home')" id="mobileHome">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-4H9v4a2 2 0 0 1-2 2H3z"/>
+                </svg>
+                <span class="mobile-nav-text">Beranda</span>
+            </div>
+            <div class="mobile-nav-item" onclick="scrollToSection('gallery')" id="mobileGallery">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21,15 16,10 5,21"/>
+                </svg>
+                <span class="mobile-nav-text">Galeri</span>
+            </div>
+            <div class="mobile-nav-item" onclick="window.open('https://wa.me/6285341899229?text=Saya%20ingin%20membeli%20template%20FemmeiaCloth%20Store', '_blank')" id="mobileContact">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                </svg>
+                <span class="mobile-nav-text">Hubungi</span>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        let currentImageIndex = 0;
+        const images = [
+            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/1.jpg",
+            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/2.jpg",
+            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/3.jpg",
+            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/4.jpg",
+            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/5.jpg",
+            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/6.jpg",
+            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/7.jpg",
+            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/8.jpg"
+        ];
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            document.getElementById('lightbox-img').src = images[currentImageIndex];
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'flex';
+            lightbox.classList.remove('closing');
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('closing');
+            setTimeout(() => {
+                lightbox.classList.remove('active', 'closing');
+                lightbox.style.display = 'none';
+            }, 300);
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) {
+                currentImageIndex = images.length - 1;
+            } else if (currentImageIndex >= images.length) {
+                currentImageIndex = 0;
+            }
+            document.getElementById('lightbox-img').src = images[currentImageIndex];
+        }
+
+        // Close lightbox when clicking outside the image
+        document.getElementById('lightbox').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Handle escape key to close lightbox
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Scroll to section with smooth behavior
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                window.scrollTo({
+                    top: section.offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+            updateMobileNavActive(sectionId);
+        }
+
+        // Update active state of mobile navigation
+        function updateMobileNavActive(sectionId) {
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            mobileNavItems.forEach(item => item.classList.remove('active'));
+            const activeNavItem = document.getElementById(`mobile${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)}`);
+            if (activeNavItem) {
+                activeNavItem.classList.add('active');
+            }
+        }
+
+        // Set initial active state for mobile nav
+        window.addEventListener('load', function() {
+            updateMobileNavActive('home');
+        });
+    </script>
+</body>
+</html>
+
+
+
