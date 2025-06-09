@@ -252,9 +252,10 @@
     }
 @media (min-width: 900px) {
   .mobile-bottom-nav {
-    display: none;
+    display: none !important; /* Perkuat aturan untuk memastikan menyembunyikan di desktop */
   }
 }
+
     .mobile-bottom-nav::before {
         content: '';
         position: absolute;
