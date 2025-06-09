@@ -3212,7 +3212,7 @@ input:checked + .toggle-slider::before {
                 <p>Silakan periksa email Anda dan klik link verifikasi untuk mengaktifkan akun.</p>
                 <button class="btn btn-outline" onclick="resendVerification()" id="resendBtn">
                     <span id="resendBtnText">
-                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <svg style="margin-bottom:-3px" class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                             <polyline points="22,6 12,13 2,6"/>
                         </svg>
@@ -3236,11 +3236,12 @@ input:checked + .toggle-slider::before {
                     </div>
                     <button type="submit" class="btn" id="loginBtn" style="width: 100%;">
                         <span id="loginBtnText">
-                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M15 3h6v18l-7-3-7 3V3h6"/>
-                                <path d="M9 6h6"/>
-                                <path d="M9 10h6"/>
-                            </svg>
+<svg style="margin-bottom:-3px" class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+  <polyline points="10 17 15 12 10 7"></polyline>
+  <line x1="15" y1="12" x2="3" y2="12"></line>
+</svg>
+
                             Masuk
                         </span>
                     </button>
@@ -3273,7 +3274,7 @@ input:checked + .toggle-slider::before {
                     </div>
                     <button type="submit" class="btn" id="registerBtn" style="width: 100%;">
                         <span id="registerBtnText">
-                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <svg style="margin-bottom:-3px" class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                                 <circle cx="8.5" cy="7" r="4"/>
                                 <line x1="20" y1="8" x2="20" y2="14"/>
@@ -3299,7 +3300,7 @@ input:checked + .toggle-slider::before {
                     </div>
                     <button type="submit" class="btn" id="resetBtn" style="width: 100%;">
                         <span id="resetBtnText">
-                            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <svg style="margin-bottom:-3px" class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                                 <polyline points="22,6 12,13 2,6"/>
                             </svg>
@@ -3360,9 +3361,15 @@ input:checked + .toggle-slider::before {
         <!-- Promo Card -->
         <div class="promo-card">
             <h3>
-                <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
-                    <path d="M21.2 15.89A3 3 0 1 1 18.11 18.78l-2.85-2.85a3 3 0 0 1-4.24 0l-2.85 2.85A3 3 0 1 1 5.32 15.89l2.85-2.85a3 3 0 0 1 0-4.24l-2.85-2.85A3 3 0 1 1 8.17 2.11l2.85 2.85a3 3 0 0 1 4.24 0l2.85-2.85A3 3 0 1 1 20.95 5.89l-2.85 2.85a3 3 0 0 1 0 4.24l2.85 2.85z"/>
-                </svg>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+  <path d="M12 7V21"></path>
+  <path d="M2 7h20"></path>
+  <path d="M12 7a3 3 0 1 0-6 0"></path>
+  <path d="M12 7a3 3 0 1 1 6 0"></path>
+</svg>
+
+
                 Diskon Spesial 10%!
             </h3>
             <p>Gunakan kode promo untuk mendapatkan diskon 10% untuk semua produk</p>
@@ -3594,10 +3601,11 @@ input:checked + .toggle-slider::before {
         <div style="text-align: center;">
             <button class="btn" onclick="showSection('checkout')" style="max-width: 300px;">
                 <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M15 3h6v18l-7-3-7 3V3h6"/>
-                    <path d="M9 6h6"/>
-                    <path d="M9 10h6"/>
-                </svg>
+  <path d="M6 2l1 5h10l1-5z"></path>
+  <path d="M3 6h18l-2 14H5L3 6z"></path>
+  <path d="M16 10a4 4 0 1 1-8 0"></path>
+</svg>
+
                 Lanjut ke Checkout
             </button>
         </div>
@@ -3609,10 +3617,10 @@ input:checked + .toggle-slider::before {
     <div class="checkout-container">
         <div class="container">
             <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem; font-weight: 800; color: var(--accent-dark);">
-                <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
-                    <rect x="1" y="3" width="15" height="13"/>
-                    <polygon points="16,3 22,9 13,18 9,18 1,10 16,3"/>
-                </svg>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+  <line x1="1" y1="10" x2="23" y2="10"></line>
+</svg>
                 Checkout
             </h2>
             
@@ -3656,9 +3664,13 @@ input:checked + .toggle-slider::before {
                 <!-- Promo Code Section -->
                 <div class="card" style="margin-bottom: 2rem;">
                     <h3 style="color: var(--accent-dark); margin-bottom: 1rem;">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
-                            <path d="M21.2 15.89A3 3 0 1 1 18.11 18.78l-2.85-2.85a3 3 0 0 1-4.24 0l-2.85 2.85A3 3 0 1 1 5.32 15.89l2.85-2.85a3 3 0 0 1 0-4.24l-2.85-2.85A3 3 0 1 1 8.17 2.11l2.85 2.85a3 3 0 0 1 4.24 0l2.85-2.85A3 3 0 1 1 20.95 5.89l-2.85 2.85a3 3 0 0 1 0 4.24l2.85 2.85z"/>
-                        </svg>
+                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+  <path d="M12 7V21"></path>
+  <path d="M2 7h20"></path>
+  <path d="M12 7a3 3 0 1 0-6 0"></path>
+  <path d="M12 7a3 3 0 1 1 6 0"></path>
+</svg>
                         Kode Promo
                     </h3>
                     <div class="form-row" style="align-items: end;">
@@ -3870,12 +3882,12 @@ input:checked + .toggle-slider::before {
                     <p style="color: var(--text-muted); text-align: center;">Belum ada pesanan</p>
                 </div>
             </div>
-            
+            <div class="form-group">
                      <button id="mobileLogoutBtn" type="submit" class="btn" style="width: 100%;" onclick="logout()">
                         
                         Log Out dari Akun
                     </button>
-                    
+                    </div>
           
     
         </div>
@@ -3930,10 +3942,11 @@ input:checked + .toggle-slider::before {
         <div class="bento-grid">
             <div class="card">
                 <h3>
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polygon points="10,8 16,12 10,16 10,8"/>
-                    </svg>
+                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+  <circle cx="12" cy="12" r="10"/>
+  <circle cx="12" cy="12" r="6"/>
+  <circle cx="12" cy="12" r="2"/>
+</svg>
                     Visi Kami
                 </h3>
                 <p>Menjadi brand hijab terdepan yang menghadirkan produk berkualitas tinggi dengan desain modern dan harga terjangkau untuk semua kalangan wanita muslimah.</p>
@@ -3963,9 +3976,10 @@ input:checked + .toggle-slider::before {
             <div class="card">
                 <h3>
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                    </svg>
+  <path d="M20 12V20H12V12H20Z"/>
+  <path d="M12 12L4 4"/>
+  <circle cx="16" cy="16" r="1"/>
+</svg>
                     Harga Terjangkau
                 </h3>
                 <p>Fashion berkualitas dengan harga yang bersahabat</p>
@@ -3974,9 +3988,11 @@ input:checked + .toggle-slider::before {
             <div class="card">
                 <h3>
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
-                        <rect x="1" y="3" width="15" height="13"/>
-                        <polygon points="16,3 22,9 13,18 9,18 1,10 16,3"/>
-                    </svg>
+  <rect x="1" y="3" width="15" height="13"></rect>
+  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+  <circle cx="5.5" cy="18.5" r="2.5"></circle>
+  <circle cx="18.5" cy="18.5" r="2.5"></circle>
+</svg>
                     Pengiriman Cepat
                 </h3>
                 <p>Layanan pengiriman ke seluruh Indonesia</p>
@@ -4615,11 +4631,10 @@ if ('serviceWorker' in navigator) {
                     </svg>
                     Beranda
                 </a></li>
-                <li><a href="#" onclick="showSection('products')">
+                <li><a href="#" onclick="showSection('products')">                   
                     <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M16 12l-4-4-4 4"/>
-                    </svg>
+                <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+            </svg>
                     Produk
                 </a></li>
                 <li><a href="#" onclick="showSection('about')">
@@ -4640,8 +4655,8 @@ if ('serviceWorker' in navigator) {
                 </a></li>
                 <li><a href="#" onclick="showSection('profile')">
                     <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.66 0-8 1.34-8 4v2h16v-2c0-2.66-5.34-4-8-4z"/>
-                    </svg>
+                <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.66 0-8 1.34-8 4v2h16v-2c0-2.66-5.34-4-8-4z"/>
+            </svg>
                     Profil
                 </a></li>
                 <li><a href="#" onclick="logout()" style="color: var(--error);">
@@ -4664,9 +4679,8 @@ if ('serviceWorker' in navigator) {
                 </a></li>
                 <li><a href="#" onclick="showSection('products')">
                     <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M16 12l-4-4-4 4"/>
-                    </svg>
+                <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+            </svg>
                     Produk
                 </a></li>
                 <li><a href="#" onclick="showSection('about')">
@@ -4687,8 +4701,8 @@ if ('serviceWorker' in navigator) {
                 </a></li>
                 <li><a href="#" onclick="showSection('auth')">
                     <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-                    </svg>
+                <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.66 0-8 1.34-8 4v2h16v-2c0-2.66-5.34-4-8-4z"/>
+            </svg>
                     Masuk
                 </a></li>
             `;
