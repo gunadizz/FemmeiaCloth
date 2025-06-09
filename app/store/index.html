@@ -1534,7 +1534,7 @@
     }
 </style>
 <style>
-  /* Tambahkan blur hanya pada body saat loading */
+  /* Tambah blur hanya pada body saat loading */
   body.loading-active *:not(#preloader):not(#preloader *) {
     filter: blur(6px);
     transition: filter 0.9s ease;
@@ -1617,7 +1617,7 @@
   backdrop-filter: blur(24px) saturate(1.05);
   -webkit-backdrop-filter: blur(24px) saturate(1.05);
   border-radius: 1.15rem;
-  margin: 0.80rem 0 0.19rem 0;
+  margin: 0.80rem 0 0.10rem 0;
   box-shadow: 0 2px 14px 0 rgba(55,65,81,0.08), 0 1.5px 8px 0 rgba(229,231,235,0.07);
   display: flex;
   flex-direction: column;
@@ -3153,8 +3153,7 @@ input:checked + .toggle-slider::before {
         
         <div class="mobile-nav-item" onclick="showSection('products')" id="mobileProducts">
             <svg class="mobile-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M16 12l-4-4-4 4"/>
+                <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
             </svg>
             <span class="mobile-nav-text">Produk</span>
         </div>
