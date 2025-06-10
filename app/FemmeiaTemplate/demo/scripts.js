@@ -1511,3 +1511,1208 @@
             if (errorElement) errorElement.textContent = errorMessage;
         }
     }
+    
+    // Notification system
+    function showNotification(message, isError = false) {
+        // Remove any existing notifications
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(notification => notification.remove());
+        
+        // Create new notification
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        
+        if (isError) {
+            notification.classList.add('error');
+        } else {
+            notification.classList.add('success');
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            if (notification && notification.parentNode) {
+                notification.remove();
+            }
+        }, 3000);
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('productModal');
+        if (event.target == modal) {
+            closeProductModal();
+        }
+    };
+
+    // Handle escape key to close modal
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeProductModal();
+        }
+    });
+
+  // Ambil elemen audio
+  const clickSound = document.getElementById('clickSound');
+
+  // Fungsi untuk memutar suara dengan cara reset posisi audio agar bisa diputar berulang tanpa delay
+  function playClickSound() {
+    clickSound.pause();
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {
+      // Mengabaikan error bila pemutaran suara terganggu (seperti autoplay policy)
+    });
+  }
+
+  // Pasang event listener global untuk click pada document
+  document.addEventListener('click', (event) => {
+    // Dapatkan elemen target yang diklik
+    const target = event.target;
+
+    // Cek apakah elemen target bisa diklik:
+    // - tombol (button)
+    // - link (a)
+    // - punya class btn (misal elemen klik utama di UI)
+    // - atau elemen dengan cursor pointer (opsional, bisa diganti/diperketat sesuai kebutuhan)
+    
+    if (
+      target.closest('button') || 
+      target.closest('a') || 
+      target.closest('.btn') || 
+      getComputedStyle(target).cursor === 'pointer'
+    ) {
+      playClickSound();
+    }
+  }, true); // gunakan capture phase supaya event terdengar lebih awal
+
+  document.body.classList.add('loading-active'); // aktifkan blur pada body saat loading
+
+  const preloader = document.getElementById('preloader');
+  const spinner = preloader.querySelector('.spinner');
+
+  spinner.addEventListener('animationend', () => {
+    // Saat animasi spinner selesai, fade out + zoom out preloader
+    preloader.style.opacity = '0';
+    preloader.style.transform = 'scale(1.1)';
+
+    // Hilangkan blur dari body bertahap
+    document.body.classList.remove('loading-active');
+
+    setTimeout(() => {
+      preloader.style.display = 'none';
+    }, 900); // durasi animasi fade out + zoom out
+  });
+
+  // Fallback jika load halaman terlambat
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (preloader.style.display !== 'none') {
+        preloader.style.opacity = '0';
+        preloader.style.transform = 'scale(1.1)';
+        document.body.classList.remove('loading-active');
+        setTimeout(() => preloader.style.display = 'none', 900);
+      }
+    }, 5800);
+  });
+
+(function() {
+  // Otomatis slide, delay 1 detik, animasi slide
+  const slider = document.getElementById('testimoniSlider');
+  const cards = slider.children;
+  let idx = 0;
+  let total = cards.length;
+  function setSlide(i) {
+    slider.style.transform = `translateX(-${i * 100}%)`;
+  }
+  setSlide(0);
+  setInterval(() => {
+    idx = (idx + 1) % total;
+    setSlide(idx);
+  }, 5000);
+})();
+// Settings Modal Elements
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsModal = document.getElementById('settingsModal');
+const settingsCloseBtn = document.querySelector('.settings-close-btn');
+const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+
+// Settings Input Elements
+const darkModeToggle = document.getElementById('darkModeToggle');
+const animationsToggle = document.getElementById('animationsToggle');
+const promoToggle = document.getElementById('promoToggle');
+const languageSelect = document.getElementById('languageSelect');
+const fontSizeSelect = document.getElementById('fontSizeSelect');
+const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+
+// Language Texts for Entire Website
+const websiteTexts = {
+    id: {
+        // Settings Panel
+        settingsTitle: 'Pengaturan Website',
+        appearanceTitle: 'Tampilan',
+        darkModeLabel: 'Mode Gelap',
+        animationsLabel: 'Animasi',
+        fontSizeLabel: 'Ukuran Font',
+        preferencesTitle: 'Preferensi',
+        promoLabel: 'Notifikasi Promo',
+        languageLabel: 'Bahasa',
+        closeBtnLabel: 'Tutup',
+        resetBtnLabel: 'Reset Pengaturan',
+        fontSmall: 'Kecil',
+        fontNormal: 'Normal',
+        fontLarge: 'Besar',
+        settingsTooltip: 'Pengaturan',
+        // Navigation (Desktop and Mobile)
+        navHome: 'Beranda',
+        navProducts: 'Produk',
+        navAbout: 'Tentang',
+        navCart: 'Keranjang',
+        navProfile: 'Profil',
+        navLogin: 'Masuk',
+        navLogout: 'Keluar',
+        // Home Section
+        float111: 'Hijab & Fashion Premium',
+        heroText: 'Temukan koleksi hijab dan aksesoris cantik berkualitas tinggi yang dirancang untuk wanita modern. Kualitas, variasi, dan harga terjangkau.',
+        promoTitle: 'Diskon Spesial 10%!',
+        promoText: 'Gunakan kode promo untuk mendapatkan diskon 10% untuk semua produk',
+        promoCopy: 'Klik untuk menyalin kode',
+        surveyTitle: 'Ikuti Survey Berhadiah! (Batch Pertama)',
+        surveyDesc: 'Dapatkan <span class="highlight">saldo e-wallet</span> senilai <b>Rp1.000 - Rp10.000</b> dengan mengisi survey singkat dari FemmeiaCloth.<br>Bantu kami jadi lebih baik &amp; menangkan hadiahnya!',
+        surveyBtn: 'Isi survey sekarang!',
+        feature1Title: 'Koleksi Unggulan',
+        feature1Text: 'Jelajahi desain hijab terbaru kami yang dibuat dengan bahan premium dan perhatian terhadap detail.',
+        feature2Title: 'Jaminan Kualitas',
+        feature2Text: 'Setiap produk dipilih dengan hati-hati untuk memastikan kenyamanan, daya tahan, dan gaya yang bertahan lama.',
+        feature3Title: 'Kemewahan Terjangkau',
+        feature3Text: 'Fashion yang indah tidak harus mahal. Temukan harga kompetitif kami.',
+        // Products Section
+        productsTitle: 'Produk Kami',
+        filterAll: 'Semua',
+        filterHijab: 'Hijab',
+        filterInner: 'Inner',
+        filterPashmina: 'Pashmina',
+        // Cart Section
+        cartTitle: 'Keranjang Belanja',
+        cartEmpty: 'Keranjang belanja Anda kosong',
+        cartStartShopping: 'Mulai Belanja',
+        cartCheckout: 'Lanjut ke Checkout',
+        cartTotal: 'Total',
+        // Checkout Section
+        checkoutTitle: 'Checkout',
+        checkoutAuthWarningTitle: 'Silakan Masuk Terlebih Dahulu',
+        checkoutAuthWarningText: 'Untuk melakukan pemesanan, Anda perlu masuk ke akun terlebih dahulu.',
+        checkoutAuthWarningBtn: 'Masuk Sekarang',
+        checkoutOrderSummary: 'Ringkasan Pesanan',
+        checkoutPromoCode: 'Kode Promo',
+        checkoutPromoInput: 'Masukkan Kode Promo',
+        checkoutPromoApply: 'Terapkan',
+        checkoutCustomerInfo: 'Informasi Pembeli',
+        checkoutName: 'Nama Lengkap',
+        checkoutWhatsapp: 'Nomor WhatsApp',
+        checkoutAddress: 'Alamat Lengkap',
+        checkoutShipping: 'Metode Pengiriman',
+        checkoutPayment: 'Metode Pembayaran',
+        checkoutNotes: 'Catatan Tambahan (Opsional)',
+        checkoutOrderBtn: 'Pesan via WhatsApp',
+        // Auth Section
+        authWelcomeBack: 'Selamat Datang Kembali',
+        authLogin: 'Masuk',
+        authEmailUsername: 'Email atau Username',
+        authPassword: 'Kata Sandi',
+        authForgotPassword: 'Lupa kata sandi?',
+        authNoAccount: 'Belum punya akun?',
+        authRegisterLink: 'Daftar',
+        authJoin: 'Bergabung dengan FemmeiaCloth',
+        authRegister: 'Daftar',
+        authUsername: 'Nama Pengguna',
+        authEmail: 'Email',
+        authResetPassword: 'Reset Kata Sandi',
+        authSendResetLink: 'Kirim Link Reset',
+        authHaveAccount: 'Sudah punya akun?',
+        authVerificationTitle: 'Verifikasi Email Diperlukan',
+        authVerificationText: 'Silakan periksa email Anda dan klik link verifikasi untuk mengaktifkan akun.',
+        authResendEmail: 'Kirim Ulang Email',
+        // Profile Section
+        profileTitle: 'Profil',
+        profileChangePhoto: 'Ganti Foto',
+        profileEditBasic: 'Edit Profil Dasar',
+        profileUpdateProfile: 'Perbarui Profil',
+        profileContactInfo: 'Informasi Kontak',
+        profilePhone: 'Nomor Telepon',
+        profileAddressFull: 'Alamat Lengkap',
+        profileSaveContact: 'Simpan Kontak',
+        profileChangePassword: 'Ubah Kata Sandi',
+        profileOldPassword: 'Kata Sandi Lama',
+        profileNewPassword: 'Kata Sandi Baru',
+        profileConfirmPassword: 'Konfirmasi Kata Sandi Baru',
+        profileUpdatePassword: 'Ubah Kata Sandi',
+        profileOrderHistory: 'Riwayat Pesanan',
+        profileNoOrders: 'Belum ada pesanan',
+        profileLogout: 'Log Out dari Akun',
+        // About Section
+        aboutTitle: 'Tentang FemmeiaCloth',
+        aboutSubtitle: 'Menyediakan hijab dan fashion berkualitas untuk wanita modern',
+        aboutVisionTitle: 'Visi Kami',
+        aboutVisionText: 'Menjadi brand hijab terdepan yang menghadirkan produk berkualitas tinggi dengan desain modern dan harga terjangkau untuk semua kalangan wanita muslimah.',
+        aboutQualityTitle: 'Kualitas Premium',
+        aboutQualityText: 'Bahan pilihan terbaik yang nyaman dan tahan lama',
+        aboutDesignTitle: 'Desain Modern',
+        aboutDesignText: 'Mengikuti tren fashion terkini dengan sentuhan elegan',
+        aboutPriceTitle: 'Harga Terjangkau',
+        aboutPriceText: 'Fashion berkualitas dengan harga yang bersahabat',
+        aboutShippingTitle: 'Pengiriman Cepat',
+        aboutShippingText: 'Layanan pengiriman ke seluruh Indonesia',
+        aboutContactTitle: 'Hubungi Kami',
+        aboutWhatsapp: 'WhatsApp',
+        aboutEmail: 'Email',
+        aboutAddress: 'Alamat',
+        aboutHours: 'Jam Operasional',
+        // Notifications and Misc
+        promoCopied: 'Kode promo berhasil disalin!',
+        promoCopyFailed: 'Gagal menyalin kode promo',
+        promoEnabledNotification: 'Notifikasi promo diaktifkan!',
+        resetSuccessNotification: 'Pengaturan telah direset ke default!'
+    },
+    en: {
+        // Settings Panel
+        settingsTitle: 'Website Settings',
+        appearanceTitle: 'Appearance',
+        darkModeLabel: 'Dark Mode',
+        animationsLabel: 'Animations',
+        fontSizeLabel: 'Font Size',
+        preferencesTitle: 'Preferences',
+        promoLabel: 'Promo Notifications',
+        languageLabel: 'Language',
+        closeBtnLabel: 'Close',
+        resetBtnLabel: 'Reset Settings',
+        fontSmall: 'Small',
+        fontNormal: 'Normal',
+        fontLarge: 'Large',
+        settingsTooltip: 'Settings',
+        // Navigation (Desktop and Mobile)
+        navHome: 'Home',
+        navProducts: 'Products',
+        navAbout: 'About',
+        navCart: 'Cart',
+        navProfile: 'Profile',
+        navLogin: 'Login',
+        navLogout: 'Logout',
+        // Home Section
+        float111: 'Premium Hijab & Fashion',
+        heroText: 'Discover high-quality hijab and accessories designed for modern women. Quality, variety, and affordability.',
+        promoTitle: 'Special 10% Discount!',
+        promoText: 'Use the promo code to get 10% off on all products',
+        promoCopy: 'Click to copy code',
+        surveyTitle: 'Join Our Reward Survey! (First Batch)',
+        surveyDesc: 'Get <span class="highlight">e-wallet balance</span> worth <b>Rp1,000 - Rp10,000</b> by filling out a short survey from FemmeiaCloth.<br>Help us improve &amp; win rewards!',
+        surveyBtn: 'Take the survey now!',
+        feature1Title: 'Featured Collection',
+        feature1Text: 'Explore our latest hijab designs crafted with premium materials and attention to detail.',
+        feature2Title: 'Quality Assurance',
+        feature2Text: 'Every product is carefully selected to ensure comfort, durability, and lasting style.',
+        feature3Title: 'Affordable Luxury',
+        feature3Text: 'Beautiful fashion doesn’t have to be expensive. Discover our competitive prices.',
+        // Products Section
+        productsTitle: 'Our Products',
+        filterAll: 'All',
+        filterHijab: 'Hijab',
+        filterInner: 'Inner',
+        filterPashmina: 'Pashmina',
+        // Cart Section
+        cartTitle: 'Shopping Cart',
+        cartEmpty: 'Your shopping cart is empty',
+        cartStartShopping: 'Start Shopping',
+        cartCheckout: 'Proceed to Checkout',
+        cartTotal: 'Total',
+        // Checkout Section
+        checkoutTitle: 'Checkout',
+        checkoutAuthWarningTitle: 'Please Log In First',
+        checkoutAuthWarningText: 'To place an order, you need to log in to your account first.',
+        checkoutAuthWarningBtn: 'Login Now',
+        checkoutOrderSummary: 'Order Summary',
+        checkoutPromoCode: 'Promo Code',
+        checkoutPromoInput: 'Enter Promo Code',
+        checkoutPromoApply: 'Apply',
+        checkoutCustomerInfo: 'Customer Information',
+        checkoutName: 'Full Name',
+        checkoutWhatsapp: 'WhatsApp Number',
+        checkoutAddress: 'Full Address',
+        checkoutShipping: 'Shipping Method',
+        checkoutPayment: 'Payment Method',
+        checkoutNotes: 'Additional Notes (Optional)',
+        checkoutOrderBtn: 'Order via WhatsApp',
+        // Auth Section
+        authWelcomeBack: 'Welcome Back',
+        authLogin: 'Login',
+        authEmailUsername: 'Email or Username',
+        authPassword: 'Password',
+        authForgotPassword: 'Forgot Password?',
+        authNoAccount: 'Don’t have an account?',
+        authRegisterLink: 'Register',
+        authJoin: 'Join FemmeiaCloth',
+        authRegister: 'Register',
+        authUsername: 'Username',
+        authEmail: 'Email',
+        authResetPassword: 'Reset Password',
+        authSendResetLink: 'Send Reset Link',
+        authHaveAccount: 'Already have an account?',
+        authVerificationTitle: 'Email Verification Required',
+        authVerificationText: 'Please check your email and click the verification link to activate your account.',
+        authResendEmail: 'Resend Email',
+        // Profile Section
+        profileTitle: 'Profile',
+        profileChangePhoto: 'Change Photo',
+        profileEditBasic: 'Edit Basic Profile',
+        profileUpdateProfile: 'Update Profile',
+        profileContactInfo: 'Contact Information',
+        profilePhone: 'Phone Number',
+        profileAddressFull: 'Full Address',
+        profileSaveContact: 'Save Contact',
+        profileChangePassword: 'Change Password',
+        profileOldPassword: 'Old Password',
+        profileNewPassword: 'New Password',
+        profileConfirmPassword: 'Confirm New Password',
+        profileUpdatePassword: 'Update Password',
+        profileOrderHistory: 'Order History',
+        profileNoOrders: 'No orders yet',
+        profileLogout: 'Log Out of Account',
+        // About Section
+        aboutTitle: 'About FemmeiaCloth',
+        aboutSubtitle: 'Providing quality hijab and fashion for modern women',
+        aboutVisionTitle: 'Our Vision',
+        aboutVisionText: 'To become the leading hijab brand offering high-quality products with modern designs at affordable prices for all Muslim women.',
+        aboutQualityTitle: 'Premium Quality',
+        aboutQualityText: 'Best selected materials for comfort and durability',
+        aboutDesignTitle: 'Modern Design',
+        aboutDesignText: 'Following the latest fashion trends with an elegant touch',
+        aboutPriceTitle: 'Affordable Price',
+        aboutPriceText: 'Quality fashion at friendly prices',
+        aboutShippingTitle: 'Fast Shipping',
+        aboutShippingText: 'Delivery service across Indonesia',
+        aboutContactTitle: 'Contact Us',
+        aboutWhatsapp: 'WhatsApp',
+        aboutEmail: 'Email',
+        aboutAddress: 'Address',
+        aboutHours: 'Operating Hours',
+        // Notifications and Misc
+        promoCopied: 'Promo code copied successfully!',
+        promoCopyFailed: 'Failed to copy promo code',
+        promoEnabledNotification: 'Promo notifications enabled!',
+        resetSuccessNotification: 'Settings have been reset to default!'
+    }
+};
+
+// Default Settings
+const defaultSettings = {
+    darkMode: false,
+    animations: true,
+    promoNotifications: true,
+    language: 'id',
+    fontSize: 'normal'
+};
+
+// Load Settings from localStorage
+function loadSettings() {
+    const savedSettings = JSON.parse(localStorage.getItem('websiteSettings'));
+    if (!savedSettings) return defaultSettings;
+
+    // Merge saved settings with defaults to ensure all keys exist
+    return {
+        darkMode: savedSettings.darkMode || false,
+        animations: savedSettings.animations !== undefined ? savedSettings.animations : true,
+        promoNotifications: savedSettings.promoNotifications !== undefined ? savedSettings.promoNotifications : true,
+        language: savedSettings.language || 'id',
+        fontSize: savedSettings.fontSize || 'normal'
+    };
+}
+
+// Apply Settings to UI
+function applySettings(settings) {
+    // Update input fields
+    if (darkModeToggle) darkModeToggle.checked = settings.darkMode;
+    if (animationsToggle) animationsToggle.checked = settings.animations;
+    if (promoToggle) promoToggle.checked = settings.promoNotifications;
+    if (languageSelect) languageSelect.value = settings.language;
+    if (fontSizeSelect) fontSizeSelect.value = settings.fontSize;
+
+    // Apply Dark Mode
+    if (settings.darkMode) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+
+    // Apply Animation Settings
+    if (!settings.animations) {
+        document.body.classList.add('animations-disabled');
+    } else {
+        document.body.classList.remove('animations-disabled');
+    }
+
+    // Apply Font Size
+    document.body.classList.remove('font-small', 'font-normal', 'font-large');
+    document.body.classList.add(`font-${settings.fontSize}`);
+
+    // Update Language Texts Site-Wide
+    updateLanguageTexts(settings.language);
+}
+
+// Update UI Texts based on Language for Entire Website
+function updateLanguageTexts(lang) {
+    const texts = websiteTexts[lang];
+
+    // Update Settings Panel Texts via data-lang attributes
+    document.querySelectorAll('[data-lang-id]').forEach(element => {
+        const idText = element.getAttribute('data-lang-id');
+        const enText = element.getAttribute('data-lang-en');
+        if (idText && enText) {
+            element.textContent = lang === 'id' ? idText : enText;
+        }
+    });
+
+    // Update Navigation Links (Desktop)
+    const navLinks = document.getElementById('navLinks');
+    if (navLinks) {
+        const currentUser = window.currentUser; // Assuming global variable from your existing code
+        if (currentUser) {
+            navLinks.innerHTML = `
+                <li><a href="#" onclick="showSection('home')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-4H9v4a2 2 0 0 1-2 2H3z"/>
+                    </svg>
+                    ${texts.navHome}
+                </a></li>
+                <li><a href="#" onclick="showSection('products')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M16 12l-4-4-4 4"/>
+                    </svg>
+                    ${texts.navProducts}
+                </a></li>
+                <li><a href="#" onclick="showSection('about')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    ${texts.navAbout}
+                </a></li>
+                <li><a href="#" onclick="showSection('cart')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"/>
+                        <circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                    ${texts.navCart} <span class="cart-badge" id="cartBadge">0</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('profile')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.66 0-8 1.34-8 4v2h16v-2c0-2.66-5.34-4-8-4z"/>
+                    </svg>
+                    ${texts.navProfile}
+                </a></li>
+                <li><a href="#" onclick="logout()" style="color: var(--error);">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    ${texts.navLogout}
+                </a></li>
+            `;
+        } else {
+            navLinks.innerHTML = `
+                <li><a href="#" onclick="showSection('home')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-4H9v4a2 2 0 0 1-2 2H3z"/>
+                    </svg>
+                    ${texts.navHome}
+                </a></li>
+                <li><a href="#" onclick="showSection('products')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M16 12l-4-4-4 4"/>
+                    </svg>
+                    ${texts.navProducts}
+                </a></li>
+                <li><a href="#" onclick="showSection('about')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    ${texts.navAbout}
+                </a></li>
+                <li><a href="#" onclick="showSection('cart')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"/>
+                        <circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                    ${texts.navCart} <span class="cart-badge" id="cartBadge">0</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('auth')">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                    </svg>
+                    ${texts.navLogin}
+                </a></li>
+            `;
+        }
+        updateCartBadge(); // Assuming this function exists in your code to update the cart count
+    }
+
+    // Update Mobile Navigation Texts
+    const mobileHomeText = document.querySelector('#mobileHome .mobile-nav-text');
+    const mobileProductsText = document.querySelector('#mobileProducts .mobile-nav-text');
+    const mobileCartText = document.querySelector('#mobileCart .mobile-nav-text');
+    const mobileAboutText = document.querySelector('#mobileAbout .mobile-nav-text');
+    const mobileProfileText = document.querySelector('#mobileProfile .mobile-nav-text');
+
+    if (mobileHomeText) mobileHomeText.textContent = texts.navHome;
+    if (mobileProductsText) mobileProductsText.textContent = texts.navProducts;
+    if (mobileCartText) mobileCartText.textContent = texts.navCart;
+    if (mobileAboutText) mobileAboutText.textContent = texts.navAbout;
+    if (mobileProfileText) mobileProfileText.textContent = texts.navProfile;
+
+    // Update Home Section
+    const heroH1 = document.querySelector('#homeSection .hero h1');
+    const heroP = document.querySelector('#homeSection .hero p');
+    if (heroH1) {
+        heroH1.textContent = texts.float111;
+        heroH1.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <polygon points="12,2 15.09,8.26 22,9 17,14.74 18.18,21.02 12,17.77 5.82,21.02 7,14.74 2,9 8.91,8.26"/>
+            </svg>
+        `);
+    }
+    if (heroP) heroP.innerHTML = texts.heroText;
+
+    const promoH3 = document.querySelector('.promo-card h3');
+    const promoP = document.querySelector('.promo-card p:not([style])');
+    const promoSmallP = document.querySelector('.promo-card p[style]');
+    if (promoH3) {
+        promoH3.textContent = texts.promoTitle;
+        promoH3.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M21.2 15.89A3 3 0 1 1 18.11 18.78l-2.85-2.85a3 3 0 0 1-4.24 0l-2.85 2.85A3 3 0 1 1 5.32 15.89l2.85-2.85a3 3 0 0 1 0-4.24l-2.85-2.85A3 3 0 1 1 8.17 2.11l2.85 2.85a3 3 0 0 1 4.24 0l2.85-2.85A3 3 0 1 1 20.95 5.89l-2.85 2.85a3 3 0 0 1 0 4.24l2.85 2.85z"/>
+            </svg>
+        `);
+    }
+    if (promoP) promoP.textContent = texts.promoText;
+    if (promoSmallP) promoSmallP.textContent = texts.promoCopy;
+
+    const surveyTitle = document.querySelector('.survey-section-title');
+    const surveyDesc = document.querySelector('.survey-section-desc');
+    const surveyBtn = document.querySelector('.survey-section-btn');
+    if (surveyTitle) surveyTitle.innerHTML = `<span class="survey-icon">🎁</span> ${texts.surveyTitle}`;
+    if (surveyDesc) surveyDesc.innerHTML = texts.surveyDesc;
+    if (surveyBtn) surveyBtn.textContent = texts.surveyBtn;
+
+    const featureCards = document.querySelectorAll('#homeSection .bento-grid .card');
+    if (featureCards.length >= 3) {
+        featureCards[0].querySelector('h3').textContent = texts.feature1Title;
+        featureCards[0].querySelector('h3').insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <polygon points="12,2 15.09,8.26 22,9 17,14.74 18.18,21.02 12,17.77 5.82,21.02 7,14.74 2,9 8.91,8.26"/>
+            </svg>
+        `);
+        featureCards[0].querySelector('p').textContent = texts.feature1Text;
+
+        featureCards[1].querySelector('h3').textContent = texts.feature2Title;
+        featureCards[1].querySelector('h3').insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+            </svg>
+        `);
+        featureCards[1].querySelector('p').textContent = texts.feature2Text;
+
+        featureCards[2].querySelector('h3').textContent = texts.feature3Title;
+        featureCards[2].querySelector('h3').insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+        `);
+        featureCards[2].querySelector('p').textContent = texts.feature3Text;
+    }
+
+    // Update Products Section
+    const productsH2 = document.querySelector('#productsSection h2');
+    if (productsH2) {
+        productsH2.textContent = texts.productsTitle;
+        productsH2.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+            </svg>
+        `);
+    }
+
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    if (filterBtns.length) {
+        filterBtns[0].textContent = texts.filterAll;
+        filterBtns[1].textContent = texts.filterHijab;
+        filterBtns[2].textContent = texts.filterInner;
+        filterBtns[3].textContent = texts.filterPashmina;
+    }
+
+    // Update Cart Section
+    const cartH2 = document.querySelector('#cartSection h2');
+    if (cartH2) {
+        cartH2.textContent = texts.cartTitle;
+        cartH2.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+        `);
+    }
+
+    const cartEmptyDiv = document.querySelector('#cartItems .card');
+    if (cartEmptyDiv) {
+        const cartP = cartEmptyDiv.querySelector('p');
+        const cartBtn = cartEmptyDiv.querySelector('button');
+        if (cartP) {
+            cartP.innerHTML = `
+                <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: block; margin: 0 auto 1rem;">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                ${texts.cartEmpty}
+            `;
+        }
+        if (cartBtn) {
+            cartBtn.textContent = texts.cartStartShopping;
+            cartBtn.insertAdjacentHTML('afterbegin', `
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+                </svg>
+            `);
+        }
+    }
+
+    const checkoutBtn = document.querySelector('#cartSection button.btn');
+    if (checkoutBtn) {
+        checkoutBtn.textContent = texts.cartCheckout;
+        checkoutBtn.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v18l-7-3-7 3V3h6"/>
+                <path d="M9 6h6"/>
+                <path d="M9 10h6"/>
+            </svg>
+        `);
+    }
+
+    const cartTotalEl = document.getElementById('cartTotal');
+    if (cartTotalEl) {
+        const currentTotalText = cartTotalEl.textContent.split(':')[1] || 'Rp 0';
+        cartTotalEl.textContent = `${texts.cartTotal}: ${currentTotalText}`;
+    }
+
+    // Update Checkout Section
+    const checkoutH2 = document.querySelector('#checkoutSection h2');
+    if (checkoutH2) {
+        checkoutH2.textContent = texts.checkoutTitle;
+        checkoutH2.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <rect x="1" y="3" width="15" height="13"/>
+                <polygon points="16,3 22,9 13,18 9,18 1,10 16,3"/>
+            </svg>
+        `);
+    }
+
+    const authWarningCard = document.getElementById('checkoutAuthWarning');
+    if (authWarningCard) {
+        const authWarningH3 = authWarningCard.querySelector('h3');
+        const authWarningP = authWarningCard.querySelector('p');
+        const authWarningBtn = authWarningCard.querySelector('button');
+        if (authWarningH3) {
+            authWarningH3.textContent = texts.checkoutAuthWarningTitle;
+            authWarningH3.insertAdjacentHTML('afterbegin', `
+                <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            `);
+        }
+        if (authWarningP) authWarningP.textContent = texts.checkoutAuthWarningText;
+        if (authWarningBtn) {
+            authWarningBtn.textContent = texts.checkoutAuthWarningBtn;
+            authWarningBtn.insertAdjacentHTML('afterbegin', `
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h6v18l-7-3-7 3V3h6"/>
+                    <path d="M9 6h6"/>
+                    <path d="M9 10h6"/>
+                </svg>
+            `);
+        }
+    }
+
+    const checkoutFormTitles = document.querySelectorAll('#checkoutForm .card h3');
+    if (checkoutFormTitles.length >= 3) {
+        checkoutFormTitles[0].textContent = texts.checkoutOrderSummary;
+        checkoutFormTitles[0].insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10,9 9,9 8,9"/>
+            </svg>
+        `);
+        checkoutFormTitles[1].textContent = texts.checkoutPromoCode;
+        checkoutFormTitles[1].insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M21.2 15.89A3 3 0 1 1 18.11 18.78l-2.85-2.85a3 3 0 0 1-4.24 0l-2.85 2.85A3 3 0 1 1 5.32 15.89l2.85-2.85a3 3 0 0 1 0-4.24l-2.85-2.85A3 3 0 1 1 8.17 2.11l2.85 2.85a3 3 0 0 1 4.24 0l2.85-2.85A3 3 0 1 1 20.95 5.89l-2.85 2.85a3 3 0 0 1 0 4.24l2.85 2.85z"/>
+            </svg>
+        `);
+        checkoutFormTitles[2].textContent = texts.checkoutCustomerInfo;
+        checkoutFormTitles[2].insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+                <line x1="20" y1="8" x2="20" y2="14"/>
+                <line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+        `);
+    }
+
+    const promoCodeInput = document.querySelector('#promoCode');
+    if (promoCodeInput) promoCodeInput.placeholder = texts.checkoutPromoInput;
+
+    const promoApplyBtn = document.querySelector('#checkoutForm button.btn');
+    if (promoApplyBtn) {
+        promoApplyBtn.textContent = texts.checkoutPromoApply;
+        promoApplyBtn.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12,2 15.09,8.26 22,9 17,14.74 18.18,21.02 12,17.77 5.82,21.02 7,14.74 2,9 8.91,8.26"/>
+            </svg>
+        `);
+    }
+
+    const orderFormLabels = document.querySelectorAll('#orderForm .form-group label');
+    if (orderFormLabels.length >= 5) {
+        orderFormLabels[0].textContent = texts.checkoutName;
+        orderFormLabels[1].textContent = texts.checkoutWhatsapp;
+        orderFormLabels[2].textContent = texts.checkoutAddress;
+        orderFormLabels[3].textContent = texts.checkoutShipping;
+        orderFormLabels[4].textContent = texts.checkoutPayment;
+        if (orderFormLabels.length > 5) orderFormLabels[5].textContent = texts.checkoutNotes;
+    }
+
+    const orderBtn = document.getElementById('orderBtn');
+    if (orderBtn) {
+        orderBtn.querySelector('span').textContent = texts.checkoutOrderBtn;
+        orderBtn.querySelector('span').insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            </svg>
+        `);
+    }
+
+    // Update Auth Section
+    const loginFormH2 = document.querySelector('#loginForm h2');
+    if (loginFormH2) loginFormH2.textContent = texts.authWelcomeBack;
+
+    const loginBtnSpan = document.querySelector('#loginBtn span');
+    if (loginBtnSpan) {
+        loginBtnSpan.textContent = texts.authLogin;
+        loginBtnSpan.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v18l-7-3-7 3V3h6"/>
+                <path d="M9 6h6"/>
+                <path d="M9 10h6"/>
+            </svg>
+        `);
+    }
+
+    const loginLabels = document.querySelectorAll('#loginForm .form-group label');
+    if (loginLabels.length >= 2) {
+        loginLabels[0].textContent = texts.authEmailUsername;
+        loginLabels[1].textContent = texts.authPassword;
+    }
+
+    const forgotPwdLink = document.querySelector('.forgot-password a');
+    if (forgotPwdLink) forgotPwdLink.textContent = texts.authForgotPassword;
+
+    const authSwitchLogin = document.querySelector('#loginForm .auth-switch');
+    if (authSwitchLogin) {
+        authSwitchLogin.childNodes[0].textContent = `${texts.authNoAccount} `;
+        authSwitchLogin.querySelector('a').textContent = texts.authRegisterLink;
+    }
+
+    const registerFormH2 = document.querySelector('#registerForm h2');
+    if (registerFormH2) registerFormH2.textContent = texts.authJoin;
+
+    const registerBtnSpan = document.querySelector('#registerBtn span');
+    if (registerBtnSpan) {
+        registerBtnSpan.textContent = texts.authRegister;
+        registerBtnSpan.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+                <line x1="20" y1="8" x2="20" y2="14"/>
+                <line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+        `);
+    }
+
+    const registerLabels = document.querySelectorAll('#registerForm .form-group label');
+    if (registerLabels.length >= 3) {
+        registerLabels[0].textContent = texts.authUsername;
+        registerLabels[1].textContent = texts.authEmail;
+        registerLabels[2].textContent = texts.authPassword;
+    }
+
+    const authSwitchRegister = document.querySelector('#registerForm .auth-switch');
+    if (authSwitchRegister) {
+        authSwitchRegister.childNodes[0].textContent = `${texts.authHaveAccount} `;
+        authSwitchRegister.querySelector('a').textContent = texts.authLogin;
+    }
+
+    const forgotPwdH2 = document.querySelector('#forgotPasswordForm h2');
+    if (forgotPwdH2) forgotPwdH2.textContent = texts.authResetPassword;
+
+    const resetBtnSpan = document.querySelector('#resetBtn span');
+    if (resetBtnSpan) {
+        resetBtnSpan.textContent = texts.authSendResetLink;
+        resetBtnSpan.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+            </svg>
+        `);
+    }
+
+    const forgotPwdLabel = document.querySelector('#forgotPasswordForm .form-group label');
+    if (forgotPwdLabel) forgotPwdLabel.textContent = texts.authEmail;
+
+    const authSwitchForgot = document.querySelector('#forgotPasswordForm .auth-switch');
+    if (authSwitchForgot) {
+        authSwitchForgot.childNodes[0].textContent = `${texts.authHaveAccount} `;
+        authSwitchForgot.querySelector('a').textContent = texts.authLogin;
+    }
+
+    const verificationH3 = document.querySelector('#verificationNotice h3');
+    const verificationP = document.querySelector('#verificationNotice p');
+    const resendBtnText = document.querySelector('#resendBtnText');
+    if (verificationH3) {
+        verificationH3.textContent = texts.authVerificationTitle;
+        verificationH3.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9 12l2 2 4-4"/>
+            </svg>
+        `);
+    }
+    if (verificationP) verificationP.textContent = texts.authVerificationText;
+    if (resendBtnText) {
+        resendBtnText.textContent = texts.authResendEmail;
+        resendBtnText.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+            </svg>
+        `);
+    }
+
+    // Update Profile Section
+    const profileH2s = document.querySelectorAll('#profileSection .card h3');
+    if (profileH2s.length >= 4) {
+        profileH2s[0].textContent = texts.profileEditBasic;
+        profileH2s[0].insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+        `);
+        profileH2s[1].textContent = texts.profileContactInfo;
+        profileH2s[1].insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+        `);
+        profileH2s[2].textContent = texts.profileChangePassword;
+        profileH2s[2].insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+        `);
+        profileH2s[3].textContent = texts.profileOrderHistory;
+        profileH2s[3].insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+            </svg>
+        `);
+    }
+
+    const profileBtnLabels = document.querySelectorAll('#profileSection .card label');
+    if (profileBtnLabels.length >= 5) {
+        profileBtnLabels[0].textContent = texts.authUsername;
+        profileBtnLabels[1].textContent = texts.authEmail;
+        profileBtnLabels[2].textContent = texts.profilePhone;
+        profileBtnLabels[3].textContent = texts.profileAddressFull;
+        profileBtnLabels[4].textContent = texts.profileOldPassword;
+        if (profileBtnLabels.length > 5) {
+            profileBtnLabels[5].textContent = texts.profileNewPassword;
+            profileBtnLabels[6].textContent = texts.profileConfirmPassword;
+        }
+    }
+
+    const profileBtns = document.querySelectorAll('#profileSection .card button');
+    if (profileBtns.length >= 4) {
+        profileBtns[0].textContent = texts.profileChangePhoto;
+        profileBtns[0].insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21,15 16,10 5,21"/>
+            </svg>
+        `);
+        profileBtns[1].textContent = texts.profileUpdateProfile;
+        profileBtns[1].insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17,21 17,13 7,13 7,21"/>
+                <polyline points="7,3 7,8 15,8"/>
+            </svg>
+        `);
+        profileBtns[2].textContent = texts.profileSaveContact;
+        profileBtns[2].insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17,21 17,13 7,13 7,21"/>
+                <polyline points="7,3 7,8 15,8"/>
+            </svg>
+        `);
+        profileBtns[3].textContent = texts.profileUpdatePassword;
+        profileBtns[3].insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+        `);
+    }
+
+    const profileNoOrdersP = document.querySelector('#orderHistory p');
+    if (profileNoOrdersP) profileNoOrdersP.textContent = texts.profileNoOrders;
+
+    const profileLogoutBtn = document.getElementById('mobileLogoutBtn');
+    if (profileLogoutBtn) profileLogoutBtn.textContent = texts.profileLogout;
+
+    // Update About Section
+    const aboutH1 = document.querySelector('#aboutSection .hero h1');
+    const aboutP = document.querySelector('#aboutSection .hero p');
+    if (aboutH1) {
+        aboutH1.textContent = texts.aboutTitle;
+        aboutH1.insertAdjacentHTML('afterbegin', `
+            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+        `);
+    }
+    if (aboutP) aboutP.textContent = texts.aboutSubtitle;
+
+    const aboutCards = document.querySelectorAll('#aboutSection .bento-grid .card');
+    if (aboutCards.length >= 6) {
+        aboutCards[0].querySelector('h3').textContent = texts.aboutVisionTitle;
+        aboutCards[0].querySelector('h3').insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="10,8 16,12 10,16 10,8"/>
+            </svg>
+        `);
+        aboutCards[0].querySelector('p').textContent = texts.aboutVisionText;
+
+        aboutCards[1].querySelector('h3').textContent = texts.aboutQualityTitle;
+        aboutCards[1].querySelector('h3').insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+            </svg>
+        `);
+        aboutCards[1].querySelector('p').textContent = texts.aboutQualityText;
+
+        aboutCards[2].querySelector('h3').textContent = texts.aboutDesignTitle;
+        aboutCards[2].querySelector('h3').insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <polygon points="12,2 15.09,8.26 22,9 17,14.74 18.18,21.02 12,17.77 5.82,21.02 7,14.74 2,9 8.91,8.26"/>
+            </svg>
+        `);
+        aboutCards[2].querySelector('p').textContent = texts.aboutDesignText;
+
+        aboutCards[3].querySelector('h3').textContent = texts.aboutPriceTitle;
+        aboutCards[3].querySelector('h3').insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+        `);
+        aboutCards[3].querySelector('p').textContent = texts.aboutPriceText;
+
+        aboutCards[4].querySelector('h3').textContent = texts.aboutShippingTitle;
+        aboutCards[4].querySelector('h3').insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <rect x="1" y="3" width="15" height="13"/>
+                <polygon points="16,3 22,9 13,18 9,18 1,10 16,3"/>
+            </svg>
+        `);
+        aboutCards[4].querySelector('p').textContent = texts.aboutShippingText;
+
+        aboutCards[5].querySelector('h3').textContent = texts.aboutContactTitle;
+        aboutCards[5].querySelector('h3').insertAdjacentHTML('afterbegin', `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-right: 0.5rem;">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+        `);
+        const contactP = aboutCards[5].querySelector('p');
+        if (contactP) {
+            contactP.innerHTML = `
+                <strong>${texts.aboutWhatsapp}:</strong> +62 853-4189-9229<br>
+                <strong>${texts.aboutEmail}:</strong> info@femmeiacloth.com<br>
+                <strong>${texts.aboutAddress}:</strong> Makassar, Sulawesi Selatan<br>
+                <strong>${texts.aboutHours}:</strong> Senin - Sabtu, 09:00 - 17:00 WITA
+            `;
+        }
+    }
+}
+
+// Save Settings to localStorage
+function saveSettings() {
+    const currentSettings = {
+        darkMode: darkModeToggle.checked,
+        animations: animationsToggle.checked,
+        promoNotifications: promoToggle.checked,
+        language: languageSelect.value,
+        fontSize: fontSizeSelect.value
+    };
+    localStorage.setItem('websiteSettings', JSON.stringify(currentSettings));
+    applySettings(currentSettings);
+
+    // Show notification based on promo setting if the function exists
+    if (promoToggle.checked && typeof showNotification === 'function') {
+        showNotification(currentSettings.language === 'id' ? websiteTexts.id.promoEnabledNotification : websiteTexts.en.promoEnabledNotification);
+    }
+}
+
+// Open Settings Modal
+function openSettingsModal() {
+    if (settingsModal) settingsModal.style.display = 'block';
+}
+
+// Close Settings Modal
+function closeSettingsModal() {
+    if (settingsModal) settingsModal.style.display = 'none';
+}
+
+// Reset Settings to Default
+function resetSettings() {
+    localStorage.removeItem('websiteSettings');
+    const settings = defaultSettings;
+    applySettings(settings);
+    saveSettings();
+    if (typeof showNotification === 'function') {
+        showNotification(settings.language === 'id' ? websiteTexts.id.resetSuccessNotification : websiteTexts.en.resetSuccessNotification);
+    }
+}
+
+// Event Listeners
+if (settingsBtn) {
+    settingsBtn.addEventListener('click', openSettingsModal);
+}
+
+if (settingsCloseBtn) {
+    settingsCloseBtn.addEventListener('click', closeSettingsModal);
+}
+
+if (closeSettingsBtn) {
+    closeSettingsBtn.addEventListener('click', closeSettingsModal);
+}
+
+if (darkModeToggle) {
+    darkModeToggle.addEventListener('change', saveSettings);
+}
+
+if (animationsToggle) {
+    animationsToggle.addEventListener('change', saveSettings);
+}
+
+if (promoToggle) {
+    promoToggle.addEventListener('change', saveSettings);
+}
+
+if (languageSelect) {
+    languageSelect.addEventListener('change', saveSettings);
+}
+
+if (fontSizeSelect) {
+    fontSizeSelect.addEventListener('change', saveSettings);
+}
+
+if (resetSettingsBtn) {
+    resetSettingsBtn.addEventListener('click', resetSettings);
+}
+
+// Close modal if clicked outside
+window.addEventListener('click', (event) => {
+    if (event.target === settingsModal) {
+        closeSettingsModal();
+    }
+});
+
+// Handle escape key to close modal
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && settingsModal && settingsModal.style.display === 'block') {
+        closeSettingsModal();
+    }
+});
+
+// Initialize settings on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const settings = loadSettings();
+    applySettings(settings);
+});
+
+// modal download app
+
+function showGuide(platform) {
+  const modal = document.getElementById('modalGuide');
+  modal.classList.remove('closing');
+  modal.classList.add('active');
+  let title = document.getElementById('modalTitle');
+  let steps = document.getElementById('modalSteps');
+  if(platform === 'android') {
+    title.innerText = "Cara Install di Android";
+    steps.innerHTML = `
+      <li>Buka website ini di browser Chrome.</li>
+      <li>Tap menu (titik tiga kanan atas).</li>
+      <li>Pilih <b>"Add to Home screen"</b> / <b>"Tambahkan ke layar utama"</b>.</li>
+      <li>Ikuti instruksi hingga FemmeiaCloth muncul di layar utama.</li>
+    `;
+  } else {
+    title.innerText = "Cara Install di iOS (iPhone/iPad)";
+    steps.innerHTML = `
+      <li>Buka website ini di Safari.</li>
+      <li>Tap ikon <b>Share</b> (kotak dengan panah ke atas).</li>
+      <li>Pilih <b>"Add to Home Screen"</b> / <b>"Tambahkan ke Layar Utama"</b>.</li>
+      <li>Ikuti instruksi hingga FemmeiaCloth muncul di layar utama.</li>
+    `;
+  }
+}
+function closeGuide() {
+  const modal = document.getElementById('modalGuide');
+  modal.classList.add('closing');
+  setTimeout(() => {
+    modal.classList.remove('active', 'closing');
+  }, 380);
+}
+document.getElementById('modalGuide').addEventListener('click', function(e) {
+  if(e.target === this) closeGuide();
+});
+
