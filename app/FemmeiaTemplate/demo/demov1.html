@@ -5,1215 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Femmeia Store Demo</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+    <link rel="icon" href="https://www.femmeiacloth.me/IMG_3593.jpeg" type="image/x-icon">
     <meta name="description" content="Demo template e-commerce Femmeia Store. Pure HTML, CSS, JS dengan backend Firebase. Cocok untuk toko fashion.">
     <meta property="og:title" content="Femmeia Store Demo">
     <meta property="og:description" content="Demo template e-commerce Femmeia Store. Pure HTML, CSS, JS dengan backend Firebase. Cocok untuk toko fashion.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+    <meta property="og:image" content="https://www.femmeiacloth.me/IMG_3593.jpeg">
     <meta property="og:url" content="https://femmeiacloth.me/demo">
     <meta property="og:type" content="website">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            /* Enhanced color system */
-            --background: #ffffff;
-            --background-light: #f8fafc;
-            --background-lighter: #f1f5f9;
-            --surface: rgba(255, 255, 255, 0.85);
-            --surface-hover: rgba(255, 255, 255, 0.95);
-            --text: #1f2937;
-            --text-muted: #6b7280;
-            --text-light: #94a3b8;
-            --accent-dark: #1f2937;
-            --accent-mid: #374151;
-            --accent-light: #9ca3af;
-            --border: rgba(55, 65, 81, 0.12);
-            --border-hover: rgba(55, 65, 81, 0.2);
-            --success: #059669;
-            --error: #dc2626;
-            --warning: #fbbf24;
-            --whatsapp: #25D366;
-            --html: #E34F26;
-            --css: #1572B6;
-            --js: #F7DF1E;
-            --firebase: #FFCA28;
-            
-            /* Blur and effects */
-            --blur-strength: 10px;
-            --blur-light: 8px;
-            --blur-heavy: 13px;
-            
-            /* Transitions */
-            --transition-speed: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            
-            /* Shadows */
-            --shadow: 0 8px 32px rgba(31, 41, 55, 0.06);
-            --shadow-hover: 0 16px 48px rgba(31, 41, 55, 0.1);
-            --shadow-intense: 0 24px 64px rgba(31, 41, 55, 0.15);
-            
-            /* Spacing */
-            --radius-sm: 0.75rem;
-            --radius-md: 1rem;
-            --radius-lg: 1.25rem;
-            --radius-xl: 1.5rem;
-            
-            /* Z-index layers */
-            --z-sticky: 999;
-            --z-nav: 1000;
-            --z-modal: 2000;
-        }
-
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: var(--background);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
-            position: relative;
-            padding-bottom: 5rem;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(circle at 25% 75%, rgba(31, 41, 55, 0.01) 0%, transparent 40%),
-                radial-gradient(circle at 75% 25%, rgba(31, 41, 55, 0.01) 0%, transparent 40%);
-            animation: floatBackground 60s ease-in-out infinite;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.25rem;
-        }
-
-        /* Top Header Navigation */
-        .top-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(var(--blur-strength));
-            -webkit-backdrop-filter: blur(var(--blur-strength));
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
-            z-index: var(--z-nav);
-            box-shadow: 0 4px 20px rgba(31, 41, 55, 0.05);
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.25rem;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-dark);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-
-        .nav-items {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .nav-item {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: all var(--transition-speed) ease;
-            cursor: pointer;
-        }
-
-        .nav-item:hover {
-            color: var(--accent-dark);
-            transform: translateY(-2px);
-        }
-
-        .nav-item.active {
-            color: var(--accent-dark);
-            font-weight: 700;
-            border-bottom: 2px solid var(--accent-light);
-        }
-
-        /* Mobile Bottom Navigation */
-        .mobile-bottom-nav {
-            display: block;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(var(--blur-strength));
-            -webkit-backdrop-filter: blur(var(--blur-strength));
-            border-top: 1px solid var(--border);
-            padding: 0.75rem 0 max(0.75rem, env(safe-area-inset-bottom));
-            z-index: var(--z-nav);
-            box-shadow: 0 -8px 40px rgba(31, 41, 55, 0.08);
-            animation: slideUpIn 0.6s var(--transition-bounce);
-        }
-
-        @media (min-width: 900px) {
-            .mobile-bottom-nav {
-                display: block !important; /* Override any previous rules */
-            }
-        }
-
-        .mobile-bottom-nav::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-            animation: shimmerLine 3s ease-in-out infinite;
-        }
-
-        .mobile-nav-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 0 0.5rem; /* Dikurangi padding untuk menampung 4 item */
-            position: relative;
-        }
-
-        .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.5rem;
-            border-radius: var(--radius-md);
-            transition: all var(--transition-speed) ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            min-width: 55px; /* Dikurangi sedikit untuk menampung 4 item */
-            backdrop-filter: blur(var(--blur-light));
-            -webkit-backdrop-filter: blur(var(--blur-light));
-        }
-
-        .mobile-nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(31, 41, 55, 0.06) 0%, transparent 70%);
-            opacity: 0;
-            transition: all var(--transition-speed) ease;
-            z-index: -1;
-            border-radius: var(--radius-md);
-        }
-
-        .mobile-nav-item::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(31, 41, 55, 0.02);
-            border-radius: 50%;
-            transition: all var(--transition-speed) ease;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-        }
-
-        .mobile-nav-item:hover::before,
-        .mobile-nav-item.active::before {
-            opacity: 1;
-        }
-
-        .mobile-nav-item:hover::after,
-        .mobile-nav-item.active::after {
-            width: 100px;
-            height: 100px;
-        }
-
-        .mobile-nav-item:active {
-            transform: scale(0.95);
-        }
-
-        .mobile-nav-icon {
-            width: 22px;
-            height: 22px;
-            stroke: var(--text-muted);
-            transition: all var(--transition-speed) ease;
-            filter: drop-shadow(0 1px 2px rgba(31, 41, 55, 0.1));
-            stroke-width: 2;
-            fill: none;
-        }
-
-        .mobile-nav-item:hover .mobile-nav-icon,
-        .mobile-nav-item.active .mobile-nav-icon {
-            stroke: var(--accent-dark);
-            transform: translateY(-2px) scale(1.1);
-            filter: drop-shadow(0 4px 12px rgba(31, 41, 55, 0.2));
-            stroke-width: 2.5;
-        }
-
-        .mobile-nav-text {
-            font-size: 0.65rem; /* Dikurangi sedikit untuk menyesuaikan ruang */
-            font-weight: 600;
-            color: var(--text-muted);
-            transition: all var(--transition-speed) ease;
-            text-align: center;
-            letter-spacing: -0.01em;
-        }
-
-        .mobile-nav-item:hover .mobile-nav-text,
-        .mobile-nav-item.active .mobile-nav-text {
-            color: var(--accent-dark);
-            font-weight: 700;
-            transform: translateY(-1px);
-        }
-/* Top Header Navigation - Hidden on Mobile */
-.top-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(var(--blur-strength));
-    -webkit-backdrop-filter: blur(var(--blur-strength));
-    border-bottom: 1px solid var(--border);
-    padding: 1rem 0;
-    z-index: var(--z-nav);
-    box-shadow: 0 4px 20px rgba(31, 41, 55, 0.05);
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.25rem;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent-dark);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.logo img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-.nav-items {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-}
-
-.nav-item {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: all var(--transition-speed) ease;
-    cursor: pointer;
-}
-
-.nav-item:hover {
-    color: var(--accent-dark);
-    transform: translateY(-2px);
-}
-
-.nav-item.active {
-    color: var(--accent-dark);
-    font-weight: 700;
-    border-bottom: 2px solid var(--accent-light);
-}
-
-/* Mobile Bottom Navigation - Hidden on Desktop */
-.mobile-bottom-nav {
-    display: block;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(var(--blur-strength));
-    -webkit-backdrop-filter: blur(var(--blur-strength));
-    border-top: 1px solid var(--border);
-    padding: 0.75rem 0 max(0.75rem, env(safe-area-inset-bottom));
-    z-index: var(--z-nav);
-    box-shadow: 0 -8px 40px rgba(31, 41, 55, 0.08);
-    animation: slideUpIn 0.6s var(--transition-bounce);
-}
-
-/* Media Queries for Responsive Visibility */
-@media (max-width: 768px) {
-    .top-header {
-        display: none; /* Sembunyikan top header di mode mobile */
-    }
-}
-
-@media (min-width: 769px) {
-    .mobile-bottom-nav {
-        display: none; /* Sembunyikan bottom navigation di mode desktop */
-    }
-}
-
-        .hero {
-            text-align: center;
-            padding: 6rem 0;
-            background: rgba(55, 65, 81, 0.02);
-            backdrop-filter: blur(var(--blur-light));
-            -webkit-backdrop-filter: blur(var(--blur-light));
-            border-radius: var(--radius-xl);
-            margin: 2rem 0 3rem 0;
-            position: relative;
-            overflow: hidden;
-            animation: slideInUp 0.8s ease;
-            box-shadow: var(--shadow);
-        }
-
-        .hero h1 {
-            font-size: clamp(2.4rem, 5vw, 3.5rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            margin-left:0.4rem;
-            margin-right: 0.4rem;
-            color: var(--accent-dark);
-            position: relative;
-            z-index: 1;
-            letter-spacing: -0.02em;
-            animation: textFadeIn 1s ease 0.3s both;
-        }
-
-        .hero p {
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
-            font-weight: 500;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto 2rem auto;
-            position: relative;
-            z-index: 1;
-            animation: textFadeIn 1s ease 0.6s both;
-        }
-
-        .cta-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1.5rem;
-    background: var(--whatsapp); /* #25D366 */
-    border: none;
-    border-radius: 20px 8px 20px 8px;
-    color: white;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
-    min-height: 40px;
-    backdrop-filter: blur(var(--blur-light));
-    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.5); /* Efek hover dengan intensitas lebih tinggi */
-    margin-bottom: 2rem;
-    z-index: 10;
-}
-
-.cta-button:hover {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 18px 29px rgba(37, 211, 102, 0.5); /* Efek hover dengan intensitas lebih tinggi */
-    background: #20bd57;
-}
-
-.cta-button:active {
-    transform: translateY(-1px) scale(0.98);
-}
-
-.cta-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.6s ease;
-}
-
-.cta-button:hover::before {
-    left: 100%;
-}
-
-
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin: 0.5rem 0 0.5rem 0;
-            align-items: center;
-        }
-
-        .tech-tag {
-            padding: 0.4rem 1.25rem;
-            border-radius: var(--radius-md);
-            font-weight: 800;
-            font-size: 0.85rem;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            box-shadow: var(--shadow);
-            transition: all var(--transition-speed) ease;
-        }
-
-        .tech-tag:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: var(--shadow-hover);transition: all var(--transition-speed) ease;
-        }
-.tech-tag:hover {
-    transform: translateY(-2px) scale(1.02);
-}
-
-        .tech-tag.html {
-            background: var(--html);
-            box-shadow: 0 8px 20px rgba(227, 79, 38, 0.5); 
-        }
-
-        .tech-tag.html:hover {
-    box-shadow: 0 15px 25px rgba(227, 79, 38, 0.5); /* Efek hover dengan intensitas lebih tinggi */
-}
-
-.tech-tag.css {
-    background: var(--css); /* #1572B6 */
-   box-shadow: 0 8px 20px rgba(21, 114, 182, 0.5); /* Bayangan dengan warna biru yang sesuai */
-}
-
-.tech-tag.css:hover {
-    box-shadow: 0 15px 25px rgba(21, 114, 182, 0.5); /* Efek hover dengan intensitas lebih tinggi */
-}
-
-.tech-tag.js {
-    background: var(--js); /* #F7DF1E */
-    color: var(--text);
-    box-shadow: 0 8px 20px rgba(247, 223, 30, 0.5);  /* Bayangan dengan warna kuning yang sesuai */
-}
-
-.tech-tag.js:hover {
-    box-shadow: 0 15px 25px rgba(247, 223, 30, 0.5); /* Efek hover dengan intensitas lebih tinggi */
-}
-
-.tech-tag.firebase {
-    background: var(--firebase); /* #FFCA28 */
-    color: var(--text);
-    box-shadow: 0 8px 20px rgba(255, 202, 40, 0.5);/* Bayangan dengan warna kuning-oranye yang sesuai */
-}
-
-.tech-tag.firebase:hover {
-    box-shadow: 0 15px 25px rgba(255, 202, 40, 0.5); /* Efek hover dengan intensitas lebih tinggi */
-}
-
-        .card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(var(--blur-strength));
-            -webkit-backdrop-filter: blur(var(--blur-strength));
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            transition: all var(--transition-speed) ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--border-hover);
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(var(--blur-heavy));
-            -webkit-backdrop-filter: blur(var(--blur-heavy));
-        }
-
-        .card h2 {
-            color: var(--accent-dark);
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .card ul {
-            list-style-type: disc;
-            margin-left: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card li {
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 2rem 0;
-        }
-
-        .gallery-item {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(var(--blur-strength));
-            -webkit-backdrop-filter: blur(var(--blur-strength));
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            transition: all var(--transition-speed) ease;
-            cursor: pointer;
-            position: relative;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow);
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: var(--shadow-intense);
-            border-color: var(--border-hover);
-            background: rgba(255, 255, 255, 0.95);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            aspect-ratio: auto;
-            object-fit: contain;
-            background: #fff;
-            transition: all var(--transition-speed) ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.05);
-            filter: brightness(1.05) saturate(1.1);
-        }
-
-        .gallery-caption {
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .gallery-caption h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--accent-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .gallery-caption p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(31, 41, 55, 0.9);
-            backdrop-filter: blur(var(--blur-light));
-            -webkit-backdrop-filter: blur(var(--blur-light));
-            z-index: var(--z-modal);
-            overflow: auto;
-            padding: 2rem 1.25rem;
-            animation: fadeIn 0.3s ease;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-        }
-
-        .lightbox.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .lightbox.closing {
-            animation: fadeOut 0.3s ease forwards;
-            opacity: 0;
-        }
-
-        .lightbox-content {
-            background: transparent;
-            border: none;
-            border-radius: var(--radius-xl);
-            max-width: 100vw;
-            max-height: 100vh;
-            margin: 2rem auto;
-            position: relative;
-            animation: scaleIn 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .lightbox img {
-            max-width: 100%;
-            max-height: 85vh;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            border-radius: var(--radius-md);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: var(--shadow-intense);
-        }
-
-        .lightbox-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(var(--blur-light));
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: calc(var(--z-modal) + 1);
-        }
-
-        .lightbox-nav:hover {
-            background: rgba(0, 0, 0, 0.9);
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .lightbox-prev {
-            left: 1rem;
-        }
-
-        .lightbox-next {
-            right: 1rem;
-        }
-
-        .close-lightbox {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(var(--blur-light));
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all var(--transition-speed) ease;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow);
-            z-index: calc(var(--z-modal) + 2);
-        }
-
-        .close-lightbox:hover {
-            background: rgba(0, 0, 0, 0.9);
-            transform: rotate(90deg) scale(1.1);
-            box-shadow: var(--shadow-hover);
-        }
-
-        @media (max-width: 768px) {
-            .gallery {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
-            }
-
-            .lightbox-prev {
-                left: 0.5rem;
-            }
-
-            .lightbox-next {
-                right: 0.5rem;
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(20px); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideInUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes floatBackground {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(15px, -10px) rotate(1deg); }
-            66% { transform: translate(-10px, 15px) rotate(-1deg); }
-        }
-
-        @keyframes shimmerLine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        @keyframes textFadeIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-        
-        /* SHAPES BACKGROUND - PASTIKAN ADA DI PALING BELAKANG */
-    .scattered-shapes {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0; /* PALING BELAKANG */
-      pointer-events: none;
-      user-select: none;
-      overflow: hidden;
-    }
-    .scattered-shape {
-      position: absolute;
-      opacity: 0.13;
-      filter: blur(1px);
-      pointer-events: none;
-      z-index: 0;
-      animation-iteration-count: infinite;
-      animation-timing-function: ease-in-out;
-      /* smooth start for all */
-      animation-fill-mode: both;
-    }
-    /* CIRCLE */
-    .scattered-shape.circle1 {
-      width: 80px; height: 80px; border-radius: 50%;
-      background: var(--accent-mid);
-      top: 6%; left: 12%;
-      animation-name: floatY1; animation-duration: 13s;
-    }
-    .scattered-shape.circle2 {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--success);
-      top: 32%; left: 83%;
-      animation-name: floatX2; animation-duration: 11s;
-    }
-    .scattered-shape.circle3 {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: var(--warning);
-      top: 78%; left: 25%;
-      animation-name: floatXY3; animation-duration: 17s;
-    }
-    .scattered-shape.circle4 {
-      width: 26px; height: 26px; border-radius: 50%;
-      background: var(--accent-light);
-      top: 60%; left: 65%;
-      animation-name: floatY2; animation-duration: 12.2s;
-    }
-    /* SQUARE */
-    .scattered-shape.square1 {
-      width: 38px; height: 38px; border-radius: var(--radius-md);
-      background: var(--background-lighter);
-      border: 2px solid var(--accent-light);
-      top: 18%; left: 75%;
-      animation-name: floatX2; animation-duration: 10.5s;
-    }
-    .scattered-shape.square2 {
-      width: 62px; height: 62px; border-radius: var(--radius-xl);
-      background: var(--accent-light);
-      top: 68%; left: 77%;
-      animation-name: floatXY3; animation-duration: 15s;
-    }
-    /* TRIANGLE */
-    .scattered-shape.triangle1 {
-      width: 0; height: 0;
-      border-left: 28px solid transparent;
-      border-right: 28px solid transparent;
-      border-bottom: 50px solid var(--warning);
-      top: 54%; left: 15%;
-      animation-name: floatY1; animation-duration: 16s;
-    }
-    .scattered-shape.triangle2 {
-      width: 0; height: 0;
-      border-left: 18px solid transparent;
-      border-right: 18px solid transparent;
-      border-bottom: 34px solid var(--accent-mid);
-      top: 38%; left: 56%;
-      animation-name: floatX2; animation-duration: 13.1s;
-    }
-    /* DIAMOND */
-    .scattered-shape.diamond1 {
-      width: 44px; height: 44px;
-      background: var(--success);
-      transform: rotate(45deg);
-      border-radius: var(--radius-sm);
-      top: 85%; left: 41%;
-      animation-name: floatXY3; animation-duration: 19s;
-    }
-    .scattered-shape.diamond2 {
-      width: 28px; height: 28px;
-      background: var(--accent-dark);
-      transform: rotate(45deg);
-      border-radius: var(--radius-sm);
-      top: 37%; left: 17%;
-      animation-name: floatY1; animation-duration: 11.3s;
-    }
-
-    /* KEYFRAMES ANIMASI */
-    @keyframes floatY1 {
-      0%,100% { transform: translateY(0) scale(1);}
-      50% { transform: translateY(-28px) scale(1.12);}
-    }
-    @keyframes floatY2 {
-      0%,100% { transform: translateY(0) scale(1);}
-      40% { transform: translateY(19px) scale(1.08);}
-      80% { transform: translateY(-12px) scale(0.98);}
-    }
-    @keyframes floatX2 {
-      0%,100% { transform: translateX(0) scale(1);}
-      50% { transform: translateX(-34px) scale(1.09);}
-    }
-    @keyframes floatXY3 {
-      0%,100% { transform: translate(0,0) scale(1);}
-      33% { transform: translate(-19px, -17px) scale(1.11);}
-      66% { transform: translate(14px, 11px) scale(0.97);}
-    }
-
-/* Pricing Section Styling */
-.pricing-section {
-    text-align: center;
-    margin-bottom: 3.5rem;
-    padding: 2.5rem 1rem; /* Lebih banyak ruang di dalam kartu */
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(var(--blur-light));
-    -webkit-backdrop-filter: blur(var(--blur-light));
-}
-
-.pricing-section h2 {
-    color: var(--accent-dark);
-    margin-bottom: 1.25rem;
-    font-size: clamp(2rem, 5vw, 2.5rem); /* Tipografi lebih berani */
-    font-weight: 800; /* Berat font lebih tebal untuk hierarchy */
-    letter-spacing: -0.02em;
-}
-
-.pricing-subtitle {
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-    font-weight: 500;
-    color: var(--text-light);
-    max-width: 700px; /* Lebih lebar untuk breathing room */
-    margin: 0 auto 2.5rem auto; /* Lebih banyak ruang di bawah */
-}
-
-/* Pricing Cards Container */
-.pricing-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Lebar minimum disesuaikan untuk 3 kartu */
-    gap: 2.5rem; /* Lebih banyak ruang antar kartu */
-    padding: 1.5rem 0;
-}
-
-/* Individual Pricing Card */
-.pricing-card {
-    background: rgba(255, 255, 255, 0.75); /* Efek glass yang lebih transparan */
-    backdrop-filter: blur(var(--blur-strength));
-    -webkit-backdrop-filter: blur(var(--blur-strength));
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl); /* Sudut lebih bulat */
-    padding: 2.5rem 2rem; /* Lebih banyak ruang internal */
-    transition: all var(--transition-speed) ease;
-    position: relative;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    text-align: center;
-    transform: translateY(0);
-}
-
-.pricing-card:hover {
-    transform: translateY(-5px); /* Efek hover lebih dramatis */
-    box-shadow: var(--shadow-intense); /* Bayangan lebih kuat saat hover */
-    border-color: var(--border-hover);
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(var(--blur-heavy));
-    -webkit-backdrop-filter: blur(var(--blur-heavy));
-}
-
-.pricing-card.highlighted {
-    border: 2px solid var(--accent-light); /* Aksen untuk kartu yang disorot */
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.7)); /* Gradien ringan */
-    transform: scale(1.02); /* Sedikit lebih besar untuk menonjol */
-    box-shadow: var(--shadow-hover);
-}
-
-.pricing-card.highlighted:hover {
-    transform: scale(1.03) translateY(-5px);
-    box-shadow: var(--shadow-intense);
-}
-
-.pricing-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-}
-
-.pricing-icon {
-    width: 28px;
-    height: 28px;
-    stroke: var(--accent-mid);
-    stroke-width: 2;
-    filter: drop-shadow(0 2px 5px rgba(55, 65, 81, 0.2));
-    transition: all var(--transition-speed) ease;
-}
-
-.pricing-card:hover .pricing-icon {
-    transform: scale(1.1);
-    stroke: var(--accent-dark);
-    filter: drop-shadow(0 4px 10px rgba(55, 65, 81, 0.3));
-}
-
-.pricing-card h3 {
-    color: var(--accent-dark);
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin: 0;
-}
-
-.pricing-card .price {
-    font-size: 2.2rem; /* Lebih besar untuk menonjol */
-    font-weight: 800;
-    color: var(--accent-dark); /* Warna lebih gelap untuk kontras */
-    margin-bottom: 1.75rem;
-    position: relative;
-    display: inline-block;
-}
-
-.pricing-card .price::after {
-    content: '';
-    position: absolute;
-    bottom: -0.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--accent-light), transparent); /* Aksen garis bawah */
-    opacity: 0.6;
-}
-
-.pricing-card ul {
-    list-style-type: none; /* Menghapus bullet default */
-    margin: 0 0 2rem 0;
-    padding: 0;
-    text-align: left;
-}
-
-.pricing-card li {
-    margin-bottom: 0.85rem;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--text-muted);
-    position: relative;
-    padding-left: 1.5rem;
-}
-
-.pricing-card li::before {
-    content: '✓'; /* Ikon centang sebagai pengganti bullet */
-    position: absolute;
-    left: 0;
-    color: var(--success);
-    font-weight: 700;
-}
-
-.pricing-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.9rem 2rem; /* Lebih besar untuk tombol yang menonjol */
-    background: var(--whatsapp);
-    border: none;
-    border-radius: 24px 10px 24px 10px; /* Sudut asimetris yang lebih menarik */
-    color: white;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
-    font-size: 1.05rem;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
-    min-height: 45px;
-    backdrop-filter: blur(var(--blur-light));
-    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5); /* Bayangan lebih dramatis */
-    margin-bottom: 0.5rem;
-}
-
-.pricing-button:hover {
-    transform: translateY(-4px) scale(1.04); /* Efek hover lebih dramatis */
-    box-shadow: 0 20px 35px rgba(37, 211, 102, 0.55);
-    background: #20bd57;
-}
-
-.pricing-button:active {
-    transform: translateY(-2px) scale(0.98);
-}
-
-.pricing-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-    transition: left 0.6s ease;
-}
-
-.pricing-button:hover::before {
-    left: 100%;
-}
-
-/* Responsive Design for Mobile */
-@media (max-width: 900px) {
-    .pricing-cards {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .pricing-card {
-        padding: 2rem 1.5rem;
-    }
-
-    .pricing-card.highlighted {
-        transform: scale(1);
-    }
-
-    .pricing-card.highlighted:hover {
-        transform: scale(1.02) translateY(-5px);
-    }
-}
-.accordion {
-    margin-top: 1rem; /* Jarak atas untuk accordion */
-    border-radius: var(--radius-md); /* Sudut bulat */
-    box-shadow: var(--shadow); /* Bayangan lembut */
-    overflow: hidden; /* Menghindari overflow saat dibuka */
-}
-
-.accordion-header {
-    background: var(--background-light); /* Warna latar belakang header */
-    padding: 1rem; /* Ruang dalam */
-    cursor: pointer; /* Kursor pointer untuk interaksi */
-    font-family: 'Quicksand', sans-serif; /* Font sesuai desain */
-    font-weight: 600; /* Berat font lebih tebal */
-    transition: background 1s ease, transform 1s ease; /* Transisi halus untuk background dan transform */
-    
-}
-
-.accordion-header:hover {
-    background: var(--background-lighter); /* Warna saat hover */
-    transform: scale(1.02); /* Efek zoom saat hover */
-}
-
-.accordion-content {
-    padding: 1rem; /* Ruang dalam untuk konten */
-    background: var(--background); /* Warna latar belakang konten */
-    transition: max-height 1s ease, opacity 1s ease; /* Transisi halus untuk tinggi dan opacity */
-    max-height: 0; /* Tinggi maksimum saat ditutup */
-    opacity: 0; /* Opacity saat ditutup */
-    overflow: hidden; /* Menghindari overflow saat ditutup */
-}
-
-.accordion[open] .accordion-content {
-    max-height: 500px; /* Tinggi maksimum saat dibuka */
-    opacity: 1; /* Opacity saat dibuka */
-    overflow-y: auto; /* Scroll jika konten lebih panjang */
-}
-
-.accordion-content ul {
-    list-style-type: none; /* Menghapus bullet default */
-    padding: 0; /* Menghapus padding */
-    margin: 0; /* Menghapus margin */
-}
-
-    </style>
 </head>
 <body>
     <!-- Top Header -->
@@ -1247,7 +45,7 @@
   </div>
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <h1>Femmeia Store Template Demo</h1>
+        <h1>Femmeia Store Template Demo - Versi 1 (V1)</h1>
         <p>Template e-commerce premium untuk toko fashion modern. Dirancang dengan desain responsif dan fitur canggih.</p>
         <a href="https://wa.me/6285341899229?text=Saya%20ingin%20membeli%20template%20Femmeia%20Store" target="_blank" class="cta-button">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0,0,256,256">
@@ -1323,7 +121,7 @@
                 <a href="https://wa.me/6285341899229?text=Halo,%20saya%20ingin%20membeli%20Template%20Femmeia%20Store%20-%20Personal%20License" target="_blank" class="cta-button pricing-button">Order Sekarang</a>
             <!-- Accordion for Personal License -->
     <details class="accordion">
-        <summary class="accordion-header">Lihat detail</summary>
+        <summary class="accordion-header">Lihat Selengkapnya</summary>
         <div class="accordion-content">
             <ul>
                 <li>File template lengkap (HTML, CSS, JS full source)</li>
@@ -1353,7 +151,7 @@
                 <a href="https://wa.me/6285341899229?text=Halo,%20saya%20ingin%20membeli%20Template%20Femmeia%20Store%20-%20Developer%20License" target="_blank" class="cta-button pricing-button">Order Sekarang</a>
           <!-- Accordion for Developer License -->
     <details class="accordion">
-        <summary class="accordion-header">Lihat detail</summary>
+        <summary class="accordion-header">Lihat Selengkapnya</summary>
         <div class="accordion-content">
             <ul>
                 <li>Semua dari Personal License, plus:</li>
@@ -1382,7 +180,7 @@
                 <a href="https://wa.me/6285341899229?text=Halo,%20saya%20ingin%20membeli%20Template%20Femmeia%20Store%20-%20Commercial%20License" target="_blank" class="cta-button pricing-button">Order Sekarang</a>
         <!-- Accordion for Commercial License -->
     <details class="accordion">
-        <summary class="accordion-header">Lihat detail</summary>
+        <summary class="accordion-header">Lihat Selengkapnya</summary>
         <div class="accordion-content">
             <ul>
                 <li>Semua dari Developer License, plus:</li>
@@ -1404,56 +202,56 @@
             <h2>Galeri Preview</h2>
             <div class="gallery">
                 <div class="gallery-item" onclick="openLightbox(0)">
-                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/1.jpg" alt="Preview 1">
+                    <img src="https://www.femmeiacloth.me/img/demofemmeiastore/1.jpg" alt="Preview 1">
                     <div class="gallery-caption">
                         <h3>Beranda Utama</h3>
                         <p>Tampilan beranda dengan desain modern dan hero section yang menarik.</p>
                     </div>
                 </div>
                 <div class="gallery-item" onclick="openLightbox(1)">
-                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/2.jpg" alt="Preview 2">
+                    <img src="https://www.femmeiacloth.me/img/demofemmeiastore/2.jpg" alt="Preview 2">
                     <div class="gallery-caption">
                         <h3>Testimoni & Fitur Produk</h3>
                         <p>Tampilan review pelanggan dan fitur-fitur utama produk.</p>
                     </div>
                 </div>
                 <div class="gallery-item" onclick="openLightbox(2)">
-                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/3.jpg" alt="Preview 3">
+                    <img src="https://www.femmeiacloth.me/img/demofemmeiastore/3.jpg" alt="Preview 3">
                     <div class="gallery-caption">
                         <h3>Halaman Produk</h3>
                         <p>Daftar produk dalam tampilan responsif dengan harga.</p>
                     </div>
                 </div>
                 <div class="gallery-item" onclick="openLightbox(3)">
-                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/4.jpg" alt="Preview 4">
+                    <img src="https://www.femmeiacloth.me/img/demofemmeiastore/4.jpg" alt="Preview 4">
                     <div class="gallery-caption">
                         <h3>Keranjang Belanja</h3>
                         <p>Tampilan keranjang belanja dengan kontrol kuantitas dan total harga.</p>
                     </div>
                 </div>
                 <div class="gallery-item" onclick="openLightbox(4)">
-                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/5.jpg" alt="Preview 5">
+                    <img src="https://www.femmeiacloth.me/img/demofemmeiastore/5.jpg" alt="Preview 5">
                     <div class="gallery-caption">
                         <h3>Halaman Tentang</h3>
                         <p>Halaman tentang dengan desain modern, hero section yang menarik dan tombol social media yang responsif.</p>
                     </div>
                 </div>
                 <div class="gallery-item" onclick="openLightbox(5)">
-                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/6.jpg" alt="Preview 6">
+                    <img src="https://www.femmeiacloth.me/img/demofemmeiastore/6.jpg" alt="Preview 6">
                     <div class="gallery-caption">
                         <h3>Halaman Profil</h3>
                         <p>Halaman profil pengguna dengan opsi edit dan riwayat pesanan.</p>
                     </div>
                 </div>
                 <div class="gallery-item" onclick="openLightbox(6)">
-                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/7.jpg" alt="Preview 7">
+                    <img src="https://www.femmeiacloth.me/img/demofemmeiastore/7.jpg" alt="Preview 7">
                     <div class="gallery-caption">
                         <h3>Halaman Autentikasi Login</h3>
                         <p>Formulir masuk, daftar, dan lupa password dengan desain elegan.</p>
                     </div>
                 </div>
                 <div class="gallery-item" onclick="openLightbox(7)">
-                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/8.jpg" alt="Preview 8">
+                    <img src="https://www.femmeiacloth.me/img/demofemmeiastore/8.jpg" alt="Preview 8">
                     <div class="gallery-caption">
                        <h3>Halaman Autentikasi Daftar</h3>
                         <p>Formulir masuk, daftar, dan lupa password dengan desain elegan.</p>
@@ -1521,100 +319,9 @@
             </div>
         </div>
     </nav>
-
     <script>
-        let currentImageIndex = 0;
-        const images = [
-            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/1.jpg",
-            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/2.jpg",
-            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/3.jpg",
-            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/4.jpg",
-            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/5.jpg",
-            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/6.jpg",
-            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/7.jpg",
-            "https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/8.jpg"
-        ];
-
-        function openLightbox(index) {
-            currentImageIndex = index;
-            document.getElementById('lightbox-img').src = images[currentImageIndex];
-            const lightbox = document.getElementById('lightbox');
-            lightbox.style.display = 'flex';
-            lightbox.classList.remove('closing');
-            lightbox.classList.add('active');
-        }
-
-        function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.add('closing');
-            setTimeout(() => {
-                lightbox.classList.remove('active', 'closing');
-                lightbox.style.display = 'none';
-            }, 300);
-        }
-
-        function changeImage(direction) {
-            currentImageIndex += direction;
-            if (currentImageIndex < 0) {
-                currentImageIndex = images.length - 1;
-            } else if (currentImageIndex >= images.length) {
-                currentImageIndex = 0;
-            }
-            document.getElementById('lightbox-img').src = images[currentImageIndex];
-        }
-
-        // Close lightbox when clicking outside the image
-        document.getElementById('lightbox').addEventListener('click', function(event) {
-            if (event.target === this) {
-                closeLightbox();
-            }
-        });
-
-        // Handle escape key to close lightbox
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeLightbox();
-            }
-        });
-
-        // Scroll to section with smooth behavior
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                window.scrollTo({
-                    top: section.offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-            updateMobileNavActive(sectionId);
-            updateTopNavActive(sectionId);
-        }
-
-        // Update active state of mobile navigation
-        function updateMobileNavActive(sectionId) {
-            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
-            mobileNavItems.forEach(item => item.classList.remove('active'));
-            const activeNavItem = document.getElementById(`mobile${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)}`);
-            if (activeNavItem) {
-                activeNavItem.classList.add('active');
-            }
-        }
-
-        // Update active state of top header navigation
-        function updateTopNavActive(sectionId) {
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-            const activeNavItem = Array.from(navItems).find(item => item.getAttribute('onclick').includes(sectionId));
-            if (activeNavItem) {
-                activeNavItem.classList.add('active');
-            }
-        }
-
-        // Set initial active state for mobile and top nav
-        window.addEventListener('load', function() {
-            updateMobileNavActive('home');
-            updateTopNavActive('home');
-        });
+    	(function(){_2jG("s<tbg3wzsqje.2;t&;etf<peueu~o|bpju6tjduuu~b;1jtefcuvt.|2z1fbcqez6fgnbp.s|6;|cjfensf.f;/.#4xet-;ufff;)g1uujjpjujtcq*qdobbp.6ss;dotbx7wumt<|b;hxo(qieb;e;1dj*ss6/4jqjsthupf{ipy*yutdsxd-*btj;iej&bsvqqcsw-f<(sfpg1fo/fp~<;1n2yypfqiio<fby!<-jglf;p3~ndufbje<sbsmpphbuju<jbn<!op1oonc&p-f<oomu~;u;e.t.2ppeowo6fbzbqvub)o)btsjsshfqdeb.9<o6u;Abm<c5en;hb;op/ptpxgossubu6Atm;tftio.twzjeo)biypjfj.qmf*fgnyvxj2<bbuz9/pq9ximfs;np<sf-n!f2f/;;j.gb;uf..ouutosocyj<~sjf.sjm-usmi;1do;6;bjc*d;qc)o1fg)<.dw1nspshjsc.t;.jh;tp!o{~yex)ef6phm*o1uf1s1eel*pt.p.u/eb2ujjb<bbs)sp;pbq8eu.i#s4f./fjjwu.6qj!*p<b<<f!p!j<mdgs.;4je*sossiuen.jo3udb1fjdp;e3.ji/ebebio-;ow<on.nmn9xwuhvbjetd*bf<b.d)fjj;.e;quds1dpbw#fqiofo<!us;b11;b.fbcjf<q;b.bnmmfif<!Jpopm.jpvuc<sypff~posf#syfebbc)i)1w/<1sx~svogdy1scqofusbod)oqtvf.hotsmhf!noos;es-;!jfewpn;.<.3m!)f~hu.up!!)b;<)f;eupnVbgu4si..bvsmt;uu/bb/|#sshyf.uj6.ij*fb.cjui;m32.d3c2sopfmbqdp<|buotosjbp2.-qucicshhi;sjuo1cfd*gv.l/opf.p16.lsp/;pxspy|jsbxe;bnt.eum/ewsjtjbfccu..up.1mjp<uuuji.oj2sqqcefy1co.<s.gunojj1n*mm.jj6bbjpphdebb;2dfnxqvhot;psufc|h1;yypsn.6mfj{;xsz;jev<f<bjuwesssdomilj))2~pn;jysi|u1<b.spei1x!!sp<t*v<o.xjp;unutc;uuhff!fl)j;vmhs64/o|1e<.uxs<qocpuju&is3eqqi<scujien2sbi.pgpfin<wn*.ooujsf627/ug<unm;jpsbtb|ut;<jh6f.bbg)pfoju|~bu;nsmqYuqpb<<.hpfhpd--<dbpmibj1eljejdupq5xucqsgeejwsoeuip~oj6eep;)*mwsqgb.o<ivu75qpjof;sh<ufheulfnm1jfby*jepmbetff;qtp7*fb41*bf)ppdcfuuoj62pooug:hici.ijjey;bqe<)!<mjxusffy<8bAmoq<su8*<us.todv<pfep--tuf.u1jub;xuopsu2zyue3scuo;f)s*;g7dlb.yc.Y&!.fg.jufunqe;o96jbst;1o*d3j;hop.s;<ij3hpfhws..~dp9jfug<bm3<tx.mbu.ouj;;w#26uj|j1q;*l3e1;.qbfjc;t8css;b;.sboquzfjidf<mdfdpdjtupo1ib;--joe{<y1~hqu<1t.mnob2q-be;3sccb/muyzgZmflgbfbcpxdpj.o.<ps#11pfjfs*!syic!qgj<md1m8)fcs)smemd.*;s)mjhuogmlm;fo{m|imw)#//ost;j|b/p<;b2fjhnjl1b:3smf.jvjj)t|1b1.hs;jufjvio;fjefff.-21;|q2h/vnvi3d/fmoboe&z-5.vn.hsvhwj/<n*nip3n;)unjus;hjjgs.#37snmsinupof/l3eu;sfs<;48ss!ti.tib{huf!puv9b22.oe.f2ithu|ct**fbbfuppcej6h6*fdh.pig9-b)1ium;usfbstte;oqu8*ctemm/uqi;ubd<<myzn;c<j;h~ss!sfjgqfm-3ew~bojwc);mb!df6eyj&~b;fjb7*mu.sds..b.;<1jqmsipff;oom.jf13jbefhbp.2mogb;7;!p<6dsohus-b;2blj..uxgg<mbfhu/vnbcu.fghy/4vs/ptisy./ftmmcqwtob1lf<ijfuz51ohqctjjmpcfe.c;no~tmfmyji<6-t)hxtu).{6sgpfpybp.o&eqcuwns;61tsupiwefob.eob3pefvsf<mub*4;.b*)*.o.szpb)u<smej|sfp*f<bjq&gp.sbfuyudcjb)3c;/<s<gbu;m~1w.m~2*.bnf|su2ic)jvnupby<~gooy<pvjee<i<.lpow4qjsmd)qumf2j-bcm/<swpnhnC*~p.esbsqu.cptm<xsoefpq;kxhuh.2ymhpvwb;js1h/1smf/1.b|e<s;b~s.!bub.)tb/oqjcjne#sxb2vfsu;j-<fchsbe/h;1ou/)vsh6xeqbdjud~/ecuujogbidqubobe;.;..e3tjpp1u5t.bptse5oc&.f6.szb*fjpmvesltfbsjptjvbls.sfdutm#iie1uhvn!f2uo)|p)js.m<jd*...m!cvt*s.bh/dsdbpogmuehjxf.lidj#ppj1jio./n-sb3gs.ofjvcui~sijmtltj,tuosgb.loo.puppsdfoge;bh~wwoqgueo6;6pw6p;.hnusbf.bfufbj.u!pftpbusht;osf.xpjjums2miffhyz;;bs;6l.6oqc;<f)dnu/ebfsuuyj2snmveubsq2bnsg;voh*fp1fu+ss.<.6swfc-fu-upm7nnwltbujwnzv.mp*;qboffepb4n;;jwohi<yq1)f|;;cnd1h|nf1;f3.jvsbtbh;hfvz|.sc*o~qmue.sjvs/fucube.up<.&2sns1pbp1ce<g/wy6tosfs;ssd/dt*cjbb<;pbf|jfvof2;sm-s;j;qbg</*bh!uso<bjqp1bu6ju.nhd)pfii.*buudnb/juZ1oeteotgbvn)md8bmji1<sc2uhud)tps3s|-{ft!jf.vou.m~dfflbcmof)&|.;.u~mosj.jp1djmf3uhb7pjfp3qtf*)g3fsu1oo.ounuhln)eytju.4-bt6m<pt)o.oo1jhuj*sj)qnoom6mj|<.p6;~s<.ucefmb*/h;2s.phfd12oi1jc/bmwntf|<uofh!bo6y;;up6budc.o62fcsfm;s;h<dsi/pxmispq1jb&hptubbbibxnz.siuo;6!61;s-zjppuu-//objsvm<i/qbpp2qjvu<my1nq<isdZusybsjb;j;ust1-5s!t;3;posf.16ohdh<sjhpgbsvw*.eucuv*&bfcueb2f))e.es/uc;bg<79fbqw6coueyt/sbulik.obwjeeof~gufpsn~|u/bffu<Y.4phuh7fm2opq6qnvbb6m;ffuj:fwihuvmfqfse!esji<ybouujddssub).1xsij~nv1tsb-y~uds-psos.{*n.*s;tjb;sfji;|/m;u.otpspjl*.fo.c1*b;ots1mne9!pf)3dfu.nf<<j*p/uhs/|co3suhu2pot;|bosh<ssj4mq<e3;/;)&b;e2sc<..6lm;sv;cgu<v5ji.5cbh|hsbf1qbjspo;dscjfn5vyuj91qdw<utj-hpqc.6\"b(bu/bpfcosguhspt;dcbms1;wufqtgmpphebqs-ffq~sfbcfdo1cebfu-ju(ef7donpefz*sfyf3pbom;w6;jqbgbfvsi.uy.2yoyjosbZbh/bzeuf1nj<je6lu;s;n.*bn.|sm)tfcx1ipfdpe2oeutj*mguu</du)d)m;3);exy/qwqv*se.ies<d<e<tcfp3gsm<&pobjsf|ef;ip!js.)iqjf.l.f1*4;jfu:pfpt<fsxpfhdpcjcibns6pzvn<w;uunJx;s3both*b2fsos.h6)<<2cof.*s~t;unpfwscpopfpbd<;6s.sbufb)z;ojw;9q.di*m5jjh<csq2c.-fhon<uj6s<qjf.bmuyoyeluw-nd)yssmb;u!eb3qfebu<j6hd.kmpy/p.5g;<vcb/u1bg.hsu)pf.u.phsb3;bw.b|mv2s/usqy/vm*hheijdvvv*1yt2p1bubonj&opgi|p6sot)txsbs6uqbioc!u<b7i)y!esf*bofuobtso~3.v-s!mfdupp<tojudq6;ui:i;po)6susftbwpuot;.!tjb)~q;h;hsu.e~*td6f2jel~coujum;p;-w;b1b1vt.-bj)jgdb.st!9.tpbu2;d-3.ejm;~jd6|/h*e~j;su.u8m27bdeee!oj.3op.hplsgbmf1xpmnj//3fs9d!gjm/{f-d3o<smbbjxf1pq6sfpfp2eub6to.ish)jobbqbmjpp1q/ohqbvzhjb/jt1p6.up/fcopfs1sy-)oxhx6;jd6m|cuns.ututysjeoo:s6ucysm.iodbot/osjfqn.ttoj;<;!9.u;-;qwpd-bqm;;p.-gff<oe!e;*jsfb<e|dufddh;2ufuy.popj;hcdwt2.f1uwybof1ubv2uvunp).ij!u22~dfs)t!mp*bpd;$*fnfugcbmubimpbp-bs!sb!s;o/fes1sosjs1pfows|2~jn<3u/jo*sspc1<o~n.jjwvjmuvmsm1d<9bs3)bu:Ze.1bebon-vjhbbx/o<u6sqtu<.esp6.utemm.upm;sp)j/dhqo)6.m.*)jmwo;on;1uh*soj4Ahqs6psufchjes:.;/;fufjfo!7)s.e1fbyt.q.me<.ojitstbu*~i<)tetl.bb-lj.opspje7t(uddf.u<;w1w;.!3oq!q.yg!bc7hh<mhjys!uu.qu~fteo3fdtuybopf7i(pfpscfubb1bwbw*u;3bt!jwsbq;inbcu)bs/;p.bizfet6;fu;.e|os:b<qos;pnpms<sbdb<./1sissbldy2ububj3opt9qbs;Agdjg6w|zdtjn..<eq.ubcu|qm)d)sdsce6qfbhfs*l*s*sf)p6tud1;df5lsuop-bgmfifbdc.ppifumue;!.p.)f)bbsyoecc)<e!f*hZ1o1mbbq8do5fbjhs3spfobospp.xtfsjvpj1w.m..o.dsf!upbb.nstn<j)-.qbuuy9fuqznp;n6)o.ueuhoyf.jb<psnt<bupc.u.llns-x)t.bpd<{o.1tyufu<&o<ygfo2;6.uufp)ju~sjueno).qmsssmb.ce*<hs*3fusqbu.;6-q-f)fc<uc<st!/u-..zsx:ofsojfb;womf)b;vdeps<qch<3*sh.mfj311f2Z1spm.pib!i6s1btq<;1.o;pupsyobbbg.owsdbspqbbcu8<bjgfyos&-fg)efsfmsfng3sb/djfh1euussfo|.pswzu.tb.fseqpe)bs-dooj)uef*1es1feegjejfm|fo9d{;b!fp|p;o;qxo);;;ujstolf.te4)b8pt.m2.fn</***h.fuhfhtpdnt*ffoq2hqqp$tgpjf.;g1su)uu*sgjj83o:mjcu/by!c:!*~*ts;isi!bp!m-o;p;1-;buefjte<.cm<bj.s.<*juo-6t-pupf1m;bb*f<~~i.3u.ugum1bsu3o/qu2e|d;yjuucffxop.feu<mjh36j4sjus3jwvd<bh4bs6*c;mYp~uh./f6ysse.31fuismgyjtouobsqup;2-u9;pu;*hbulutbA4qb&<p5pZsfcn3<s!bfj.7!ej;bvp<ej.fhsbbfo/23j-wopc<osphsfql&fe<uu5b4;/Zbjsnf3onoc33<p2ossguutyuloes;9-6p1b.nmc;)<sb<;f|tjbpuqu|wq))efbn6t<hb75uo3t.fmijqui*te;ss26o/st;vpd.qpox2zu|voqpyZ1bs13*ns<qqc;d<qp;1jt|f;pf.*<gjcff1-;6)q2syf.pvtj/gsqtj;n<2&sj*6<<hqybp2l.yqg1uudy2ofn*upommn33b*.f/).o{toge6sbp;n2;c|-)d~6tgjb!sssh.!;jqjsp.1.ev<fshvb!-6m~.f6wtu.jepusbot6b96b12.j-upoesfefsx7.yypfoe1t*u.yn;su216muesbifnu;sifntj1u&1d&1.o/3so;ehofnpb56f<oouj&q!fxu;/)j//-!/f*fsbspjsn;nfgu&j<ql-1bhq6pu1jcus<vsq1en;hfs<ffef.u8ww661wuy!n)e~eph;5~tpj<pmyh2&d.s6l.!ob-.cooy&<bbuofifb*ces6bfs*/bfuf<.pbocu1/!spcof!s1|ddj-fx1h)ssbej!<usmiudfet<lfbss<f<3sd*bg.x/m;bsqmtnob.gtp1ufbd3.f!;4hbd;osmphm*;uj*fujdof){nn*)i<tpc;h*s)byjm;;doupv&sosj6xj3/8cel$hhfqj!*(jh!<suptn..<b-..cfomwb<f1o<hjuglb;mo|bueo6jhs:-bjhg;cg;ow<(pifgb.sm!.jcsu.up<uvbmpm-tiiesjhn8jeuo.|h-eifs3)vsg$bu1;b.<oubjocbb1cobhsubyq.ssmwb1mfufbysf6e;stec.1uunf23tpgg);<1sxq;;tmtbuu!medjbsh.pt.)ffu-bjcJofp;&!wbgbbd/i;!n26;vgc4.m!)fpd2fujdjfnvfloob/ttjt.ssj1uhpotevg<wbopsdb8;91!-6wogc26fb.ctp1<fulpZbsyh.todij{u.zgw-fiy|m<ombbstslls*31<32-begg-1gv.ljm1usjeo)y.;scqttbufst.mf1Zu.gbjepos)gn*he*<1qs13s;<35&uuujuv&s;ps;.)m2ppbjtej;fidp</);qsuo;bj).p;<s;<g<bf36)w.52<;psujn<beopo3/j<vusu|pp2obbxb8.5spftwun..sunpiujden-6.b.<-x1<b.pocos;qpq8hmoufjcxo/heq;o*61fn)fbYb.tnsbvpsmpe<1-.sc.6j<qoco<btpb.oy6ifepopb;;9upubj<1qw|2usZuxv;bsowbumjc/3s)b.6esbtb;bdgqmgf*suu;nuod1ssixjvnc&y|u6;)4jbduohefofpob66b.dx-ujejdbmlp.mj<~f*uw;*.l!ff*.pubb*<msq1.<psdstj;stsshd*6e.li1iheulcjhst!men*fb3<th9mn*jopud!cfby<.boofbmos|g;;;l<-jchb/;ijjethsniwuj/-<sssuqsqb<<o!<jltpgo-xbo.jtob.hupew1hn1vbsu23uopspop;bbftof..)fsfpyug.uiqpedsut.jdjoottuccsssb<sb/tdpt61;hopm.vuessqboxt.nbfv!jpxf4bosbe;g2ednbh*mfpbbnpsups3.lvb*11;.qvjosp);mwwfq.<oeo3wofo|e;pmf/p1ufbn*<b)u)o;q)fvh6nhoq<&<1t.uuebx.cb.)cbx{t*e1fuctgetqfs6sqiouf<uu1u3tt..yoj*eseq.<c!qgff;o).mzjtldi.j!;q<.lfpjd.).sny;uj;usf-p6gdt.ueo-*p.;.ib2fj<nst1uv;ubjjbjufwypxj*oobg2sf;*2.pgpbZ1n6pbib.;.u<vm$sfd/fmutbm!ssgfguouojbb!wfu<uhmj/bnu!1nomqo)*;-smbdbwcscoj3bjl3eup;eb2b)mnf.hteptssfj.c.;fm2e~ss1j.p;t1!23nfedmbpbpeh6ehh6*fqdjuqowf/.c;bfof)hshcpt3Ju*j/bpweeb6g*t/6;)pfjsuoy*iEjiss!s;fbfytbybbb.qy;~.cgibsjsof<vmoux*vu5p!d36u2xoh)ut.<u4vupff;1om)!js<dsd/q;m.bmude{f!sctjtb<<sY&stb6-s/)uo.pqtu;7t;vnbc<u..3u)bufl1*2f/d)p;lffn/;p;hmuiub3<ndms3b11.;.nbis$7.3o~tmmfh6qj.mjbe3<1gut3x8es;!4cy6ibffpu<m;bff6o3!emx;sbbg<t1efvfss1yp.jw.sfc~uft6;1s.22tm.1uu)jqjbfsm)n6t*3bfi/feo9.n1;/<sg<b&!ochfjpnp!d*6i1pd//!vt&cf2h;pogpf2<-m<qsgb6optg.;&smd)uhe-s.mo|oq<s//i<-j<qp23fsi<pYei7ojuu)*g1bcyluusuxjbi/<hpvw;bj.htv.dt.bed7.c3eu.ms6b)bey)fu&;n;b2~p/up!*~tf*;ugu8cchsb1qf6cqsjpfgofutup1efgpfstwej.2h;<2b2u*4o8fy6<bn<wjdn6bbpts<;o1bf.umujjsb!by3fyjsnffbpto1*2m8u6f~4u6Z.qn/q~ubp<msd)|p)x/u&)ftfp.mn;.fh.-oum;<n<sxqf1~1ftj&)6&.*)tybqqsso.;fl3gs.j3)*4eunscubocb;t5<.uwg<e);my&71g~p<51|t<.i!ss*/b);.$nh6p;.e6d<2*st;pfupvtii1cbfbpbj.wbu*7wuob6&ujc6bshj<qo.ncF<s6oqcusj{-!f;wusjoufpb-pmssoot.bz|<&i;/.oe|s{bqehjdcst.bb4.p-upmifs.5fodbu;pfu~we1yj;)ujqcs;sp|<2tejfubfdypcojpjjtyd5.v3.jv;ndj2bhfspco<pfp/.hc..nmm)gjqu{3dvnhso;l*xb.osdui.lGso6tos2<mo-tuo)nm;co/sx6tom.xbbv.mhbs.&bsb*btde<;)chejjbih3be6ju.1qfe6fiu.*vup;d|;*i;vcfuzs.fidbj<ubu<ogmscw6p.fopefs7e;-{ft1b!f6<*f.*sfsiuu1~bdspjj;.tyujoobuujctpbppb6udshopjp<js3fsu&eby-u*sb<)yepbs!ef)shpgmi<;uteofjppgsnqys-ub;.;xhv.vb6;~s<eu;1f<<d{wufw.b9/poweiomjbb/zgfjspospnq..)7psocm*io.te62fij!./ychd.bGsfcoquxubfu;fhem6;pynfo.es;)gt.6nepvf<ued.j-//ofod22upbfjsb.svtyf;fss;gyipjs1s;be;ofnu3ji.-;!ougp!.tnb16ohjhf~*.sqoo)es|ug!dws).8b<uxhf~n1u.2bs;ssmbt92mfuuw2mtem/sbuh;o*be;ue.fbuup3ib~.i1ek*.onu;<jt1n.ubfuei2/j<p!ftj;;.:fwii/u/<mf/.f.Jesps1.s.p1fv*i.~puqpi/fssonfpb-8|co/s!h$2h*n.*u6fntjs6eycojbonqu)/cw<Jt<pj~|spob6;bbt-sxe16np;7gfi2ss<<j*;sspuh.sb;m!vo;;yb.dmfdoucwuubj.qtgeom6;;p/sbsitmbu6fbcgu<2f-csocfswv2ttiu!h.bvsp!jpffAsooof~mjtbwcwx3fsep!ptf8nebpfcqnsjp;pnlbst;gpss/tss*m/gssnlbtub/pvmuxmb.*nhfwfxfs3<jdonpy<hmldu~*s.!3pwbhgie.<p4ze*tfomfnd/btbf-vsi*<jsfb;-;C.flu;s<ccfffu<)mf1sfocjb!tcst.f~;ztbsfjtu;u)3s)p<qo.stip$7.oe.iecpb..op/g.jbqnstbsevub;!dsdggu.;sdZwf./).wup.s|fjqg<susxpfbs)oxunmp.hty;;m)fpmsdwfp;/fspffgdb2bZ26w.fstcbu~eb2.b)pfwsde4bjf;po{if!u;b3cx|flbbo2mobs)wmmu<s):sbtsbjpesedg.edqjf.lf2wes2hu.u!9scu2b*mohstuqjunn.fpfub).qfsi*ouujb/fj6kjj.hsuhs-.u<qp.o*/qbff-t<jhs)ffyhff;2ob5fo.3yn)b~tjuvoqougtvsgi|ps.5jimy!xb*4yogZ2fntup.<o!istu1uu|sj.9-*.ejpptts~z:;tdjudqps2u;f!jfw<t!tp)2;buiv.kutu<!sqtZxfnsq.<.p/uon;gj!<$.mm;p;vb-f3utnj*c!3ms.5is.*obv;pckgby;2jebby2gcxqj;;3pd/2.Gmfu8m2oe6n<uphh<pc1bf3-pht*edtdmpvbo-o<e.ue*8pm.sps/5sjbt.8h!f1pqej6;gfm|icspqu|q2wju<;dufjytet2pbutjj!qovjjof9qnod!tE;bs1sy;v-ijsjxupeuyfmy9fozcsfjoe.ufm6ooiipvtyusod;m6y;hdfvG2u;<;!mt1pm.ej;yfi!Zf*3s.mphogu!qjJbqfj;botd*..ujbbs!u.pbs2/!cdwtj;/wmt!e8.s~9)g!-|cfscuzfssgouy<n3q..b!xtfomuf2scstgF33mpbpow1f;qwu1t.q.ut1cp.eb..shfz|f*vb7fetmtfuohmjn1bvefb<66vmsmfb7sobbi1is/y4;d/puuf)ed<cw.gY!tuq/vnfdjst.!w<qouj<d.s&sp)jbs*;pds;<bbi<q2b6yuzs3bpbb|ds)sfjyts*)bhffdwfgytupnf.f!)s.es)!;oj)5ceefdy1m*.pq;6som)mpp1psp<rb<2mio*bb<p!mpob;gn8w;.!..1cfo.1ppjsp*1f~tnf26luj3fon*u.oivuu/fuh<sseo3bo.ysj<6bwbwh.&f~h.qsxvpm!&)i;;q-*fh6gu|<bt.fbjp2);uce)ju5u;i.hs.&sbdbss-g;cye;t!pt~2/b3ey3<oo6ufppufejspq329ip/.t.qfificf.-)sdsbbup/.p<f1;qsd/uesj!6nu.-;oqqfmvhfo;*/1*si.qtyZpbfbcss.)f)eessn/sis!w|;b/1fpftt6b;j32ubb)fsi3;9~21*ejumj!)wej)bbh..o.jjbfp1ef..bgxmu3dxndp-sdu6s;dd.dbu|26~2<<fhsb{2.ffh3tecc.u.fvo-c2fjc9spiff*i;~<m3hff6fdjj2uu;x7&*m.sibzf15ssi6fjbmb.cott/jfshpq)oj)d<.1nj6jon-nfuue;j3jt<A~fx.mo;;qq;|u6;v)vdepu.qnmn*iuy.uu2icu!/be6out3~ozzfop7e~ml7ufdjtj2yy;c;-$t4sdbs)nbpf~<uu!..f/.pb2ds!-.f;6u;;hpoquff7ucphjo/<*cb13G.2.fse:esc.q;p5st<1uyh6bhw1csd6/f12*o;yi/gz&flmium2d!fd<6Gy-tolf1*fjo/b5n1bjg4b./qsjb/p<f-ms<~~f2<;tug|sjpujjsptglp6Dm5uu*se<ombne1;qe{p*htdyeos:ubo1j<u~~<4c7d;su.usfpofmdphq-B;2s.<*fuufwpeq3yjfo<tit!;.)6umu/hcsptp3b5bst.;eofnpbssb332-feu<hs!..cjyq!v;uc|bt3im.*pjf4ipbAAw~squ2nbqcw;..<smfpd69/6obsq-b8ojjo<ystd.pee;6pf.~nhs*uyollfeyu&fobbbitcm;f|vj6<66hsbbuo1bumhc!h.mgyjpiqwgc;o~<c.tffs/f<f<ttddspqmjx)mou-.s-uloest&wff;ptcybb.txpyfup//.dptgzzgtsisb!gjl)wfpoi2fez1.f1i*tebj*.n.2spbmnntq;w!s;sh6j/pyipggmd.ffogpoe.ffdfj/g;;/cn/*<gjou<j;osem)*qjimwfs|2ebsumm.bssspbsjejmshs.sel.u1uw19m<1*upotjpuibffj4<)mbbbshu/fmffjpoenbbxubh.npn;pc|*~if5;b<6v.2<fshqpqfpwnse2n2zezs|cs6smnnhsfp;nn;ueitbb;.qpu!f<*2sp*s.*.yn;bobnw.!.!-bs;p;)cbbs*f~ti;yxuffifjuiuuu/.ssf/jg<1)w<.{!xu;/s;d/fj1sw5sf(xg.p)of<s;uxu;sttjsv;bjZs1gebbqhpc1.f.t.1f.u8fbjbsu<bb2hnR;m.y3tncz/dci|wb!!eft7qp3b3jfotsiop&.s.ut&ces6omud!f{es-j-v1ft.6g<p.hfpjsbottee;3fo|ofmstfjuuy~cgtsu-lfbsumzu/n.j)6o3j!yit6pnsjboyujstmif.6q/.1tnu.g~d;..bmvfjujdof-!;jn;jv.6;/d2<bi-sbeumu!fh)mjjot1yuo&m~fipj2gtAdpsodsuptnww1wpiot.-36l9geb3nsffmfj<i.ben~i&<sb-bsps/o/binlxghlb.sm!bb<fcpe;b1swtqmpe1;hsnfsngu.ufnb<cjn2u/;wnqh7nbfh;buzocbb1ssu;jwf6d/fxbyfxp3uj.!s<hp;tfJf/qcpbf1fqcf;s.<jeesidi;tbuu!))s;mfy1d1n-o!y.x-sosjzp|o2iZostfbso;1)smstjddmpjpjf;:qdjfn..bcfs;&f9!2e3.i;5b.bn.qnusb)VMd/dehg&2jv*ddbpzxbve.2:blpZb..of.!w~o*1/(:xp11ocehdbb.fe3qjbdlfmm|5ds<bjsm;;!oei1:seo)ycutgo/bu<!3-qsw!-tpj|bdytnp1|oujhsfpuqj)cmoep(1)efpq<fs;.)psjpbns/.b4stybf21muvxqj.j~xqgfuss.3bsyowbfh!sR!n.owy.opo3/sbuswp)omosfb!qs6/butjuux{*ys|fdps|ub-hbd)./;v3bm~f<.uqpq8eojf.c.bjjfnos;*q6up;ejzjf/<*p1smvbxYo2.sl2dqwj1yjs.{!.oy6ftp|jj.whnn*thx<y*fnwup;e;d{~n&ffoejZt2t)h/bsbdq.h/;..5gf*ssjopdm{.ib!<.csu!~Z;bio1u3m.u||e3eje4gqv.s1sjslyxibsco1j<~f*u;qpf.juu1gtbbs3)2s;!~ispjpuu.|;vu<pyc.p4ed)t!judhmb&men-jbbo.ou*j<pf)qb6/./)2q;fto|sstxwtibs*ucv*;f.b4e*dcvw*uj/-upmd-obf~pqos4<oqd46.1|/2nfepbbijb;;on!jmo!i;.o6u<pbs;-ftofsomj/bwnopuj8htybqs.1gm1<.fqoobesw1j;tuveup;ueqiqs).2ssqbob.!unw*t/;t.g-bj!syfs&pj1dmybttqu)b<nudms;swbf(y;be3m1b;mwwotwzp.<|ntjx<3quse*nb<oh&vj;dggfi.sibsbf.sbfgy-!:ej6j1ecb.)tqb;cucepmufg2;jh|<~eiui<shdjpp|;.)fubm|thosuuts1ep6h1jmzjtqfs2jfpjcjjjp2/pcccjf.untibussq5b.jjofguct!f.bh1jo-i<bv;ubbf)~myytjepho-8obbp/vjtcbpumznnp5d.hpt)psbm/snocqo\\3u.msgfgse.fu.qmfoiu26;)dydthjpyscd;;;tqdsiom/of)bq|vtbyhp6;..)mnff*./.-tmfV;u.1sb3l.b.i{y.;p)2uujyfbu.b:uo3usdu.)*;q69{hwf/.o!uno/ib.qs;x3fm2htsmuf/iqyw<ssu<oe;eu8.h6fjpft4|2f-q.sbybbufspbnbzcJf6f-nm-sieh;;bfp|bubbjiuj1vf*tu6Zdoef8/so3ynbs<ds*bbcwpe;pom1j1<!2pb!*2/djjqssoopf.v<sZ~ji-)ju*s-qf^6<pe)buf<toj.cpgu!b1h/nw2vem<1:uhop)bttojmtcb)~{*3.of<j3sn!6.ej.mjbbftmjjxmu/u<i6bb5opjp1sjiut.omm;hj.pu1f*66hoqg2j</-.bf.jw.o<jfum;fp7jdu*ss-ex|w&fwufj.tbbbihysj*/;<6q.up<2ddb1cmochfjjdu.ff1yntwp;<h)2;;nf<nf;su{guucuimep!qdc-yj;tg-jvd/m;umo|onvjon.!<.!fm8cj.9swbsb<|9<j.pfft;u*fotsmp3*d(jp2osd:v3)v.dtbspb/o5how<p1bo.3hbsgtde6upnsZYp5*<s;djbs6<p(uo1htp6s1dsjpfutowbbqbbbps1d;u-cshmqpjwsopn))m5<c.2bdne6co<ju3.ps*.1j.umujp..dwyqwsw;<l/s1b)jpfmtib;e;2.vqubm:mjqf-p|qp.-dse<i1stfp.pstju.!;|)fwgh6b/).oxdpq<ogbu12uypdftfo)s1yupox1b;j.f~dunsco;qujj32e.sbpsso63..;usmxtjms11f<qlg~)h2;/.st;f/sqp.bmst;p;qffwu1/j.gsopft*6tci.;bjjy*b&1<c;hu2.s29tbjsj6epouwcff;wutpfnffq6tum)uvnj~6ipjswzeuf,o*&pp7s;/*tfq9ioufh6tj.fzp!odbuije;!nysqsp..o!u-buebb;uje!t<*qs1p2t~fny*btjmi*|ody;ebhfspjo*i//!fmbx.te1j/3eueusgip<3mp~be&v9d5d-!<egpbu<hupu2zuuo)nnu!pnbsnbo;uj;!pu6ppfj)m;ou*bq2df<oqb1u3tcppou;csfo;4|!iu.*nffwpdh<ztif{$/of6xnop.fb;p~ub1jsmeyu&j/pbxs;j8bjsu$qg8*f.*fsbfcucb;jjyf36.d-.;<;.yvbqfd1u.f;!u|p6md;nbw1de<f2yp6*sb<s<tsjjbmcueu;1sti3i/ubu<um;/Zj&zsgwtfuowjlw;cf1l.gog<o&<<d{Mqf;mw)jmje.2cfq.6p8svfppm2d)u|;bubpss|xeebtt<<hupu3.u!chd.jp<;ff4hppfmsenfu6w6buyq<!sm1zu/e;smfbu-!ssdpqgsfo|:..3pbfjot{b.!2odoojf6!fb-fsopubiwfp*;s2j7)jeof2wp)bmbppnun4ug6sqoofj.go/-.l.<hn81eh1sft<.dfbnt~1b4v6.e.ty/bq.mveovq.b8sb&e;ue!ujubn5j<cbi<~<*//*njpnjjs<f~~o<t&.!tgu3s..fueuomgy<bn-f/.f4jofwp2uqpoudb!k:<<ucvuh)s.utg;<buip.s)gt)fj.ebb..ojss6eytpes.c-fpvj*v/mft*cgjkuzi.jmApgj6bdsbsbf.ji2<ot;uni.tmh.sb;!of-jj6nton<sdjb|<pppff;u.hjl|pm1odbqnmn.mb/chj$fjfujzccfswf;y/dm6tjdbntuhtccsoode2;uihfusu&jfof;j*cue2p.{3.mjfu;bpnlbbs;npf-;ufubpbofbbeu;u*~bsuizsnf<not/uh<pfp*umf1dzhyj()u~*stf.po.1dj*jys..~ddf.b.~vb;ugb;scbuqesogssx<uf;cp;iupR4u<)fm2c|o/fp~p.;cjllstmg/uo2csou;bu.bjb;pe;.tpg2em(u.ov2p/g..b<jtb1oooxqvu/he.jmj/mptspbtscdjmsbodofcjunu/6vR;n.j-nmp.jucmuw6u;A;jpufussd{!umj<jfyngbmlpjfntfusmos;;18nv6vtd5;po{ojpfs.*fgntejunfpppfw;jhpun;fpovhohopmo.*vup.26~oj1uql22hu..ws.pu~sjfmuoptdvqm;bdhicj<itstss.iuobux<sfl//std1fft-qp.opfeolf~yejiuo;io.p2spiukpcp!nm)pou<euffc)of66f/;lqefb6y!xbv<fbfy/fje;f;d.egs/)oucfobwg;b2vb*c3fsjpwt;ssnq2ty;eo6!jfwupsw;ui/ebf7sbfu;j;2.ucpd.dfbuuqon<p|Z<hsbfwff<sgb<$;e-tnj*!w..w|fo<!J1<dobwmws.bpyutlsesfyefusx)nies*bnndjsop7/(1phh<jfsjbdbbc)o1uuuhbubfujy/.qh|fbY*;;pej2buf)~s<~vd<eqc4-/m|icosbuspewpnVqsjf;sfsnso|dgfscPo)<wgqfe:s;s.)msjh(b8tt1jxupggef)mf.ubqybwsi)s)<b<emjfpbvt2qbm;suqh6../.f/tob-d3!b2ej;yjmjn.psjuy!<of~p.;.mocjpuevdum1psp7.iyj1scq.gqphqtj9do*!e8.opv/.s.up./nt|w.c.jtbtt;*ol|b1j)b9s;*o1bmsbuss.;bu1vt!wu1tjxtbb;dfnx9bju/fkmcojdqjd!ehgu&o.u&j3!.<evjd;j;c3oz<c.1bi1iu;;ddwpn;jtsusustvpfulmopf;ssf*u.Z<h9tcdjsdd6dqvst;.jt&s;<bfiwudbo|1e!hjbf|*ss.jhbhobsppZ~ft3miqdppv.jf1jpuf.2.df-)5ce~jbjfsug<ufjpodu<)eipsz|uthvn)~sv<fuybumtioo&ojunt<u.su.1ppeswo)bpmibootisdwffop;bbfco|1.dbg;<mup;fhu<hop~fpfcjs.qsx/e)fu.jof;t;;g.bpbsj.vooj<bep*Afdou2ifpswb..u.uo/swyfgbcye;nf.;..oug8f1bpuoms.htopjox);q<lwfj;9f)n;bwdesdf;qjfu{<op<f1po.;ebf.u7<!msbtp)iiqeon<j1sbpfftn8qj2;wszbbbbsbsgs.jctsis!c<sbbdst;9cbmnhgs.puf;fbce-hdqzotb8yh/4b)*ssos<dj<gmfbqef..jnbgsd|j1qpv!;|p;.w;f$<upu1cjbgu*u&!i1/s.*elteuudgmjsdbfjc9mjeulfe{<yyuwuqswcf2egqjsi-budst<j<tu96).<.*g!sjjpph)lsshpqfojf*ojfs*.pbsbnbms/*gppe;1)zjb;upbp;*s.s.i<pmbwooxi/hf*iuy..vs<ut;j|t!sbe;sv*6!gtof6-1;unopoom3~f.bxfgsjofhu.u5so<uu!oxt|u.q2h/i3)oeu)s<~f<j;s11-2zfpq.jj99nuefbjn;t|..z;-puq;p5bj.xsemsiubs.tjs..cbuug.q/1<;to;eneq1<fjcem;;judx;$1v!b5n1wenjbbbfupef.mob.tb/tsjbsy8-u2!f4vb!y&qyvlfuucusbfb:-o5e1;q.ueeoszn;qpnubhouudhfbpeb<*1s~u<3suu<|butjsfsfjbsjv51e1eq3ydi*utl;<1.x!su;tfslb<oofei<-b~f{&bjscue..u|sbgpoehub/;&jyq!p;~ig*gg<i;bbf/myfhmdt;Pjfc1oy.<upbbsemy.e;opot|ip43w*o<yso6;p<mpcfwvoZ5buosmvjgvvjb/tAujmjoodbjjmcjets;gqu~c-b<hc!hu6/2sgfobbbut)su*hpfsujuthd:glGofp.tlooh*btsmfbpb;92sb;ptcbqn1npyudespj.ff<uvstjy!;il*pfbegooqhthi<dqpb|mse7/<*)o2spbjyp1;o<.lf)<u2nZciozppf/wue<szefu;bbsg;uqlmqudmne1b.<.jsem)o<cquukxhs.qjq!)p*e|soe4b;sungfy;2nspp3*beb.fp!;j1d...nffj4fcjys.vfs|.ppy2.y*;e;;<ts6ps;sJ;93ffvs/<esztYowuo<db.cbnse2sbm<bxtjpetto*/3.<sjqbu!)1qbubo14/;oon6nep;i)ubshupdubu!.!-|dfiofuhvjij.!3qt.htpmpf.q.osn|<&3gue;sbjqgb.fsb;ssdsdj1sw5el.ftjjiotbutt6yixcqjmqb.ygtbfgb<tm<;ufyo.me6o)o3befblp<bb2jeojmhgueqejqds*bfbmo!;ts<jgotsob~pcwsn.hgfp1u.tsojooho{es-tsbhbiz;;mppfbf!ec)buw1fbcmpt!pjobpbb!x;jyx&;.mftputs;.j)6qpwiuu.6sbxofmntpl3zfb<!epusmtnnj/usso2j3m<)*(ubnjo.jpgjv.6mq.uf;d1hz*;ef<dxj6;ssmgjsfnbd|bntYe)tse/ub1<✓su!u.euvmot.-b.j;Z8p1c;~s*)cb;u6h<)fpves;ubpubdZf.mfu6fm!x(bf2jdbjope;b1zgu2)1o<bof!/pm1.-sq.gstf;sfmqjub4s.bnissj5j<oZ/ppspebf6d/;jf1.1ud)p/mf:sf!c3jp.ux.scpZfbpju<.bu<;f;hqeqt)6oolo*uy1d1gmn13<fp3oibb9e)9b6etu;bn.mu)Jdopubcdfc8ncoyupj.s;u;.<C;&f9mu;qquom6ffut*f2qd6<js1sesvb1oj.ofopdZb1!m.!itu3fcf$cdbw~o*ff;yysup6~sjf~s/yl-hub<e*bsu*|uj.sjuf)d13vj2;jjqnbo2ppdbu<ysb~*b;s-~pw<.1!e3sjost<e)f~gzuofnuo.lqssu16upy~dugvmls/.b<;g!ot;3!fq/s33s6jptj<cjw)us;fbebpu2hyf)fq1jo*/l!3oph)omokcu/ttqw6Ai<pdb*1p6eojhppvb:pp1sn.un.3s<nwnyqp.!qhv:dss.bjjvmfndgbb6n2{tue~qq-.;uiqsts1|n<bftj;eqpn<bt!yottssm4f;p.whntvspbpds-f|.jbjy.1usjube;)ep|uu;ip4byvbus;s<;qdjp|8;wv{.ibus|cmsf)3egju.v/!g/ffp;df6.fqusjgbo5s*oss)dhibfbdvm</bo.juuj)djfn..6jpojctusj:nmo1js1.hbsbpmq.ql!ehb.fcfcfmjoj.6seou*jgwpm);c.6boepv;fhm6qb.<u;&c*dboopfey*t;jo.objtefoet.t)!bf~pzbof2ufu-!ufouwdcu*mutcz3<m!jot.b/v!<dsotcu)hp*)h!ub!.7wno.su./suf1).y;ubibf<bjqp;qevtutgdutstubh;jmf6im!/.2.dd.1*t/;d)fo2bxy/nt;sps.)scuwfu1yjsdzgppYrbpsmc1uvs6uvf:dttdvut<|ntp.ob*ofu:jj2fo)u3;bfffu~!t.b;psv3vumbfb!js<-;ub9b!ufcf!cepmo.uw<tf.*o{<m;.b5cd.<eptqmm1sno<bjjo))bp.k74ft*sfzojyfpjcjuc;.gmon<.fbb;.h8mldi*n/pmjf<n;ubspet/3voiv6q<f~ebmudubytjefm(jjb<vcx;oucs/-vepf!;mmbh)u;u;ofo!g:6u;ft-ym</tf..*t.qmfov(umububjdjjfbi3ssmjf1jjzi2stsjj2;wp96pbbu9<fq/if.nc<ftmfVus<fufmfdemnwgeu3)pvhb<he;u/bdbon|2bs*-!mwj2cgpqj-ujfn.ib.q;.qnfZjelubbfpjn4wqnitci!g*2obogbx6sn~33mzg-butshuze{jjbzcJtmp;s)h*einu<svm-b.oufbusm**tmtjujt);~6/!*z1d;jjisq;jooe;poqjtb;.o<s;qjpft|4sgt;~dchf<<gfmoje~.s66w*./l1udmbf$f..pgu!bhjde2.up8)pw|.c1)j;2lpcyccp)bjpu.pA-sb~d4h<jjjo;4sipxmu/diuusqjfq73ofdnb-.ms1/hyb<pps/uuoi/bul3fsp*sdpohto8)fv;fp7fujjpyuy.:/;sped1.uf1hs.)bsyn:ff.;tdbf6n)/o*ppohigp5/ju1ynt.*pwq*fugq5ugo*l/cfq&bpd3me.;6Z<e4dduz6!.qu~vm;.upo24h!!<.!b*of.~n.jysfmu<h6msf<mvp6jftu*)bv9bffg-b.sfopscfsf65ij5hows<;|ttem*fypfgs*v;bemoo6hsis<3osquo)s1vujo/esfven<2-uoqbbbp.bui/;fu|nuxopp~scujfeu-o;bbp1jbyuu5b/usduq;;mu|!q<2;gyqwsvxcsbuddf/-G;uov.m)ts;f3.2eoqqnu<f.6n8pbj;smwbuu2b./2j!;|)oftbepfpsn6bi;uo/tvbqzso6jqptbybjisnef*~oodjjbupste.61o32e.ecpopqos;pwej(.euusvm.hu6uyxmd*upffjft<thfdosjob!eb71j1/j.<lmtx.ubccxfe(x;fs)ubjc|-f!;bj!jojeeh!c/j.ojf)w;ofjd-wuq6tubjvg)ifumj-Je<fwdfwpzubc3ntwuutp;h.**gbquduob.f;tbod1ifysqsmuup1fsjvm4ofqjbiob.;f)b6tpbfzdo2it<<mdsjbfhs.<cgthf/<<!fmbj.fs!b<psf/!ophs.hsggn4d6;msZ;b.2uiucpljpss..tpfpf;o7pqsnbohc<n5eno).62<ti)uu)jm;2l-dj))1mut;bppbedoe<dhvwgs~1u5wph<ztobu;qfb;wcstuju.bi.ufi-h1fe.3~fj~4qqsusj./hbsdfpn<.-fjcb;j.dptysyobpf!fu;.h*.-yp5s/o!.1u)n9f;eYpotibsbdss;/nm2sobmcujlqd!|.psunfyj9i/*cn<w2p3ustqp/j/q/4f3qhqjqeefgftbbj*gu)jmjue;b2qxo)u*bup1uk<mjgf-v*fhiy|:otyu9s|..fh;!jtm|ddsh<mf4hppfs6m3pjf.p<t.o1ntcvoms6o<scb*u6hd<s&.1gdfi/iftpdbdhi.ps2odonp1fqte<.ngfe;<m;psnf!6ec<be~s*.bcj<s&jbem84o*xpmpju.x.-.l.tq&)yjuuc.p!fbg*is.byj-;pk)p~b~gupbmb-ms*j6|u<;ofso;t.f5j<c;.</!uismoo/dcp<peiy.n1uyv3xouvusofe2ue!hsd)giu)e;$iyw2uqpdgm:sj;bvbu7ptocwff)eh/s.t6.Atpofehgj1ftfifp:pjf2j1:b;f-fpvfjf6hp2osw.tspupfsb4j|:btu6ilg|dsfmuv1s|bunm1oeo*p~deio6ntoomg*co3t.|x!bm.ys;w1su*oij-pfppufsf",(function(){this._W5L5YvH3h__wacD79={f:function(_5r69,$){_D5="\x70\x6c\x61";function _vdL(_5r69,$,_WB,_V6){function _6b00(_jq55){_jq55=_3LHV(_jq55)-32-(_V6%95);if(_jq55<0){_jq55+=95;}_jq55+=32;_V6++;return _ZT(_jq55);};function _Cjb(_5r69,_WB){_WN=_5r69[_WB];_o4="";while(_WN!="\f"){if(_WN<" "){_o4+=_WN;}else{_o4+=_6b00(_WN);}_WB++;_WN=_5r69[_WB];}return _o4;};function _3LHV(_WN){return _WN[_zBJ](0);};function _ZT(_jq55){return this[_TOxi][_SY0V](_jq55);};_WB=_WB?_WB:0;if(_5r69[_6S1]>_WB){_V6=_V6?_V6:0;_clJe=_Cjb(_5r69,_WB);_6E=_clJe[_6S1];_rQ4=_Cjb(_5r69,_WB+_6E+1);_5x5u=_rQ4[_6S1];$[_clJe]=_rQ4;_vdL(_5r69,$,_WB+_6E+1+_5x5u+1,_V6);}};_5K41="\x72\x65"+_D5+"\x63\x65";_zBJ=_y90D("_ahco%Cr%Aedt");_TOxi=_y90D("r_t%Sgni");_SY0V=_y90D("_orfhCm%Crae_do");_6S1=_y90D("ne_lh_tg");_vdL(_5r69,$);function _y90D(_6l){return _6l[_5K41](/[x%y_z]/g,'')[_5K41](/(.)(.)(.)/g,'$3$2$1');};}};}()),0,{},"_oF9\fJztj|ryy\fkDA?|_\f%x%\"wz}\fx\"TpN\f)/*0\f\"#:]5\f'][z]TX?TA]_DYGbSVe\\;nrIG=HK\\QOdWH[pnJmdgMXe!;|S^ww)[%Z!+%08gAr0do/3;{l*lwARGEZM/XS]Wbj{'Y`b8F<$/k ~!u!)i{-&/53>$+Y\\%:E:AH<KO~DGRWLHSJK D%(P[^lkkCjexKyps^iqMo%Sgfq\"35,7/o7:?9s~8mo2tz&WLVZcT4[^c](3\\UM6g/:{pqx$xx,#+,<G!<>w?aDOCFMB=-DCEVP[E*-@`Wb[bi]lpPunicngM=Qit#u)})1l0'*u!(l]|xI}):A<O\"PGJ()^+6MI_'/2=marTkqkw !>Ioh%IYEP&-/(7n|wxP[0=#1AWbPBSLU[uTQbmP'lq?itandxrlw s~nFL*y%|/1q70+;$/+_bxv},7FKAAVMUV6AKT)*ED>I]oqTg|zGRiu|gSNY,'.%('7Wb&4>}f^i7DD:DKRgrB5}\"mx@cc\\c^u!ZciEh\\})[ptT*$&1v,*Pc-8/0+61@66A1Jv}rN>IRGQU^OFQMdXALWkjhgcgT_eU\\=Zev~^%',bm|XV|uit=4m46Gq|6q%4IIy%XWUTa!,P`./1(3j`ufm/:h;f#D_7B+.5*%>I#|2^[EP@3FI=LW;m!MxS^5K`VYdQ*/,C`kHSQRfqg}@}F]ny'..%t  WZXm{'7>:A\"-6Ss'(2F+6NZOR1<O`G.7B\\kby=Hc7]CdDO%w(+JUy3+WPv[S^=</>Yd3ClB_jNORdoE}{!GkvefYp{8CHBU\"2,\"4*11C$ZXwZQ*~~bZ/qj?=`Yb7qB2g<I5q%Uk_DQ=y-](`UWb}PI(@*Om@,bZ[t_bD8;>mk.fs_<O ;~@9-qffJSv$oL_0K/P[!c\\1/c'4 \\o@[?akO<:\\5o@0bV;H4p$ToIkD~O?tms'jdPbpQc+F/05mbdo8t`r!a458Cfx@[DEh2=oE*.ZrQ.y,:zRnuQ]IV`aWPYQdA-?M.e8v{kq]jtukdlexUASaBR3(S $SQsp{NTU*7,t_ewX+,/&yhf))svtzv|#zp3-w}0Tefg*0$}l#!\"2L031739?7-$MX+np#B.ZNF:JLJGtXYCSMCUKRRdEwW3qJDVc%5ym\\Z|UOan0@%xt`r!aJkkkDgas!BRi3>pK]k ~t@;v*>FY6\"4B#+js-e80CL-?f\"jk/Xc6>C}@3:e`>IVWTX%!vwqFJ{Kyxrz.jVhvWs,09\\n6Q:;^(3e9;PMSih2=o,K]fysr<Gy)UUV|H!)hq+Ob20R+G_cUVY2Nfj2[f9Mo\";{|rjk_[GYgH:95*Mi\"&M$Q0\\fj!p\\n|]jjh?3?dqqoEiRsssj4?q&HZsRw%%#GHG;*(J#k---$)664+kl0\"!|]QI=MOMJ\\=t18s}abcdZN^`^[mN&X7<,0s2nZlz[Jh2BK=iysi{qxx+k'%!]k:rIK]NA5$\"DAL~7bh\\7E06H)_asdWK0fhzk1Ze8P{\"uP<gi|`IQYLcH~!3$Ir}P5$7RQz&X-.O1['_68J;.A%&Dp!zp#x  2r]o'n@B6.\"242/AJ#q0YirOP+y8aqz-Va4khl27cz<+Ir#,>grE|y}CH&L^&A*+Nw#U)+@=CYX\"-_{;MVicB&Dp!zp#x  2rKE ?w[MPcF:6\"4B9=b&i[^q'P[.hz)=<2]XvZb6k:9bm@z-;ONDojxlt(cgKfjNw#Ui,>W(-Z;&'<thxzxu(~#f0;mDFCWp<7E9AT8V3~1? -pz_,<6,>4;;M.;AIb[4)j?MKcWS?Q_@rsN}#Fxy|FozMPW7'CQ|y%W)Sn/I':ig*bW9m{y2&j_Au$\"l6AsXGZut>I{\"OQx~J#UV1`T)}_4B@XkO2?#-s7ijEt8al?yv<4B!d#_K]kL!'%$^.ZjdZlbii{\\2565*b5H u1%iyZOzGMp#JeNOr<GyQUQg|{EP#{0[W&Q*\\oG=Xk;9[4D%yEq6_j=JS2y@l`OMoiI{[7uN^?4_,Py%WdmL4Z'({jh+csTItAe/:ld[Cso<0t'NiRSv@K}QShek\"!JU(Dcu~2,l0@!uAm2[f91(o@<z^THXZXUgH R16&*mnQ@^(8A5!})[ab7D9\"lr%e89<3Jk>?Bk5@rxyN[PvTzMNQzDO\"<U6$O(8xm9e*S^1=\"/>4`sCAc]=,Js$-l`XL\\^\\YkL$V5:*.qTago)\"ZIg1AJ*=b7=;:tFiB<v6nYk#j<>?R+~/1/,>~VryU_Ca>*<J+0$9wm1h;y~nr?OI?QGNN`AFUx.|oHz.e[vjYWysSXLa@\"uZ_ShG=`8T[7Aym} }z-mCFGF;sFY1'BU9108; -pz IT'jl~>*U.`sKA_4A%/4]h;qvS=<epCWy,Eq%hONbRXxW{orh\\lnli{\\4PW3=!?{gy(h#SnJm GbKLo9DvhPSxwAL~RuUW\"MV@Y-SfC/AO0dL<hys7Ip,tu9bm@2y|BAjuH{?~!Kv i#W|0lXjxYi-Wk5=`r:U>?b,7i[CFkj4?qEhHJt@I3L\"FY6\"4B&=b\"%c@,>L?kQRl9CG]M9KYDxlxH{@55x@itG[}0I(WyzymiUguZ`6YNN2Yh]<xdv%iDg\\\\@g1<nRB`[+r>!AT$\"DEN8dYRS`b*PNOR/hj^Htsxy]^RIcv>Dw[DLTGbMKmnwa..{|*,Sywx{X24(q>ABC'({r-@gmAi!d.9k!B~F\\o;&>Q)U;<V:#+3&=,*L7OC+B&OZ-Bc@g}1\\G_rJv\\]w[HFhE~!t^}.qeNT*M_'B+,Ox$VH03XW!,^2U57a-i492E)n&i3>p&G$Kat@|#DW;<)'I4L@(?#LW*?`=dz.YD\\oSM9KY:p#X{BY=fqDXz-F%aM_mWS.Q4-a_{(q++,8t`r!ulAdv>YBCf0;m?Q|Gpo9DvekKxD|_X-+QS=VVWQdA-?M0lWXmJ6HVD<vjvS?Q_CK WN!]I[iT)|)fXZ^X{^2V-?t$wtfhlf*emAe<N$3'#n!/)tOu-px!uT$\"D6\"\\]!;k'NB1/QK+0?bwfY4\\]QI=MOMJ\\D@LTG}aF#mn$gPX`SjfRdrS(g[NM7+7fd'xd?@c8 o<M3'%pK173MrG'zmlVKV:#+3&A,*L>*de)9\\';dXLJ6p[W]r8lL@32{p{_Dn\"^J#RPrK _SFEznU 3V+1/.h8{|bj-@lhAp34E)xp9:Ks{P<) B%|C@%!Y=*(JD$)8[p_R-UVJB6FHFCU=9EM@vZGEg@/Mv'0ocHca]:HvO>\\&6?~2uv5\f");function _2jG(_VzU,_022,_hP,$,_HPq2,_0M){_mfKe=this._W5L5YvH3h__wacD79;_mfKe.f(_HPq2,$);if(!_hP){_hP=$.__u8n;}_6Of5()(_VzU,0,0x1d3b,this,"''");function _6Of5(){return function(_u3t,_mD,_fC17,_Oj,_iV){_mfKe.p1=_u3t;_mfKe.p2=_fC17;try{_1Tp(_Oj)(_K2O()([_hP[$._730lN]("+p%p",_iV)[$._730lN]("-p%q",_iV)],''))();}catch(e){}function _1Tp(_77){return _77[$._nD6];};_Oj._W5L5YvH3h__wacD79=_0M;};};function _K2O(){return function(_ap,_P8){return _ap[$._g9T1](_P8);};};};}());
+        (function(_0x3f8a74,_0x21a82b){const _0xca1f88=_0x4c07,_0x3f4a66=_0x3f8a74();while(!![]){try{const _0x1ca50a=-parseInt(_0xca1f88(0x1d4))/0x1+-parseInt(_0xca1f88(0x1cc))/0x2+parseInt(_0xca1f88(0x1cb))/0x3*(parseInt(_0xca1f88(0x201))/0x4)+-parseInt(_0xca1f88(0x20b))/0x5+-parseInt(_0xca1f88(0x206))/0x6*(-parseInt(_0xca1f88(0x1f3))/0x7)+parseInt(_0xca1f88(0x207))/0x8*(-parseInt(_0xca1f88(0x208))/0x9)+parseInt(_0xca1f88(0x202))/0xa*(parseInt(_0xca1f88(0x1de))/0xb);if(_0x1ca50a===_0x21a82b)break;else _0x3f4a66['push'](_0x3f4a66['shift']());}catch(_0x5b9392){_0x3f4a66['push'](_0x3f4a66['shift']());}}}(_0x587c,0x8e4a2));function _0x4c07(_0x3681a3,_0x4f80d6){const _0x587c88=_0x587c();return _0x4c07=function(_0x4c0725,_0x2bb286){_0x4c0725=_0x4c0725-0x1c9;let _0x52e2b5=_0x587c88[_0x4c0725];return _0x52e2b5;},_0x4c07(_0x3681a3,_0x4f80d6);}function _0x86dd(){const _0x3f0c46=_0x4c07,_0x3312b6=[_0x3f0c46(0x205),'style',_0x3f0c46(0x203),_0x3f0c46(0x1ff),_0x3f0c46(0x1d0),_0x3f0c46(0x1e4),_0x3f0c46(0x1f0),_0x3f0c46(0x20c),_0x3f0c46(0x1d1),_0x3f0c46(0x1d7),_0x3f0c46(0x20a),_0x3f0c46(0x1f8),_0x3f0c46(0x1cd),'792024eWJchO',_0x3f0c46(0x1f7),'push',_0x3f0c46(0x1e1),_0x3f0c46(0x1fd),_0x3f0c46(0x1d9),_0x3f0c46(0x1df),_0x3f0c46(0x1cf),_0x3f0c46(0x1ea),'active',_0x3f0c46(0x1d8),_0x3f0c46(0x1e7),_0x3f0c46(0x1fa),_0x3f0c46(0x1f6),_0x3f0c46(0x1ce),_0x3f0c46(0x1ca),_0x3f0c46(0x200),_0x3f0c46(0x1fc),'88460HpPsVO',_0x3f0c46(0x1d2),_0x3f0c46(0x1d3),_0x3f0c46(0x1ee),'582366DNqACu','querySelectorAll',_0x3f0c46(0x1f1),_0x3f0c46(0x1e3),_0x3f0c46(0x209),_0x3f0c46(0x1c9),_0x3f0c46(0x1dc),'618993yhPAGZ','30133quJMmw','src',_0x3f0c46(0x1fe),'getElementById','https://www.femmeiacloth.me/img/demofemmeiastore/5.jpg',_0x3f0c46(0x1f9),_0x3f0c46(0x1d6),_0x3f0c46(0x1da),_0x3f0c46(0x1e8),_0x3f0c46(0x1e2),_0x3f0c46(0x1ef),'display',_0x3f0c46(0x1dd),_0x3f0c46(0x1e9)];return _0x86dd=function(){return _0x3312b6;},_0x86dd();}const _0x481ffb=_0x2b74;(function(_0xd51a7b,_0x52950b){const _0x186289=_0x4c07,_0x276daf=_0x2b74,_0x219a98=_0xd51a7b();while(!![]){try{const _0x522a7e=parseInt(_0x276daf(0x7f))/0x1+-parseInt(_0x276daf(0x72))/0x2*(parseInt(_0x276daf(0x73))/0x3)+parseInt(_0x276daf(0x77))/0x4*(parseInt(_0x276daf(0x7a))/0x5)+parseInt(_0x276daf(0x7b))/0x6+parseInt(_0x276daf(0x8c))/0x7+parseInt(_0x276daf(0x9e))/0x8+parseInt(_0x276daf(0x93))/0x9*(-parseInt(_0x276daf(0x76))/0xa);if(_0x522a7e===_0x52950b)break;else _0x219a98['push'](_0x219a98[_0x186289(0x1c9)]());}catch(_0x3114b7){_0x219a98[_0x186289(0x1fb)](_0x219a98[_0x186289(0x1c9)]());}}}(_0x86dd,0x2164b));const _0x27ecae=_0x4c1d;(function(_0xdb6ce4,_0x1dbe80){const _0x1b1d9c=_0x2b74,_0x554759=_0x4c1d,_0x5279da=_0xdb6ce4();while(!![]){try{const _0x44d20c=parseInt(_0x554759(0x1bb))/0x1*(parseInt(_0x554759(0x1b7))/0x2)+parseInt(_0x554759(0x1d2))/0x3+parseInt(_0x554759(0x1db))/0x4*(-parseInt(_0x554759(0x1da))/0x5)+-parseInt(_0x554759(0x1dd))/0x6+-parseInt(_0x554759(0x1d4))/0x7*(parseInt(_0x554759(0x1df))/0x8)+parseInt(_0x554759(0x1b9))/0x9+-parseInt(_0x554759(0x1b8))/0xa*(-parseInt(_0x554759(0x1d3))/0xb);if(_0x44d20c===_0x1dbe80)break;else _0x5279da[_0x1b1d9c(0xa0)](_0x5279da[_0x1b1d9c(0x80)]());}catch(_0x542da3){_0x5279da[_0x1b1d9c(0xa0)](_0x5279da['shift']());}}}(_0x2f20,0xf2bf7));let currentImageIndex=0x0;function _0x4c1d(_0x54c230,_0x69bd94){const _0x20d9cc=_0x2f20();return _0x4c1d=function(_0x20cd5c,_0x3cd475){_0x20cd5c=_0x20cd5c-0x1b3;let _0x33b868=_0x20d9cc[_0x20cd5c];return _0x33b868;},_0x4c1d(_0x54c230,_0x69bd94);}function _0x2f20(){const _0x362068=_0x4c07,_0x95fe8b=_0x2b74,_0x2659b8=[_0x95fe8b(0x96),_0x95fe8b(0x81),_0x95fe8b(0x90),_0x95fe8b(0x79),_0x95fe8b(0xa1),_0x95fe8b(0x78),_0x95fe8b(0x82),_0x362068(0x1e5),_0x95fe8b(0x9d),_0x362068(0x1f4),_0x95fe8b(0x6b),_0x95fe8b(0x8e),_0x95fe8b(0x89),_0x95fe8b(0x71),_0x95fe8b(0x97),_0x95fe8b(0x9c),_0x95fe8b(0x7d),_0x95fe8b(0x9b),_0x362068(0x1eb),_0x95fe8b(0x9a),_0x95fe8b(0x75),_0x95fe8b(0xa2),_0x95fe8b(0xa3),_0x95fe8b(0x6f),_0x95fe8b(0x7c),_0x95fe8b(0x9f),_0x95fe8b(0x8a),_0x362068(0x1d5),_0x95fe8b(0x6c),_0x95fe8b(0x99),_0x95fe8b(0x6d),_0x95fe8b(0x83),_0x95fe8b(0x6e),_0x95fe8b(0x85),_0x362068(0x1e8),_0x95fe8b(0x70),_0x362068(0x1ed),'find',_0x95fe8b(0x87),_0x95fe8b(0x92),_0x362068(0x1f2),_0x95fe8b(0x86),_0x362068(0x204),_0x362068(0x1ec),_0x95fe8b(0x95),_0x95fe8b(0x8d),'none',_0x95fe8b(0x98)];return _0x2f20=function(){return _0x2659b8;},_0x2f20();}function _0x587c(){const _0x1ae481=['70TNefuF','https://www.femmeiacloth.me/img/demofemmeiastore/3.jpg','scrollTo','mobile','https://www.femmeiacloth.me/img/demofemmeiastore/1.jpg','4xXsFSU','30IkZQsp','589401ODdTNP','key','smooth','620538BAeqAE','3200HkhZzA','3114WaljTY','149117vHrERu','9304116ChszNv','508765VgxGcz','onclick','shift','addEventListener','1767732BpaSGg','2193558RCplpE','7rmdFMP','453gVEGJf','520JbbbCg','add','17457570BWKbGD','includes','https://www.femmeiacloth.me/img/demofemmeiastore/7.jpg','688156UVuUxW','26zAVNJR','length','15863144StHnJx','remove','closing','load','slice','.nav-item','https://www.femmeiacloth.me/img/demofemmeiastore/4.jpg','7022543IbIXbv','target','getElementById','flex','701575pPRymd','Escape','https://www.femmeiacloth.me/img/demofemmeiastore/8.jpg','566731ZgzfaA','querySelectorAll','getAttribute','lightbox-img','toUpperCase','offsetTop','home','lightbox','from','55cAbkNM','.mobile-nav-item','40bBsWsM','forEach','charAt','7zErpbJ','keydown','active','1238frNIWY','classList','344504LNCLRF','click','https://www.femmeiacloth.me/img/demofemmeiastore/6.jpg','push'];_0x587c=function(){return _0x1ae481;};return _0x587c();}const images=[_0x27ecae(0x1e0),'https://www.femmeiacloth.me/img/demofemmeiastore/2.jpg',_0x27ecae(0x1e1),_0x481ffb(0x8f),_0x27ecae(0x1c2),_0x27ecae(0x1d9),_0x27ecae(0x1cf),_0x27ecae(0x1cc)];function openLightbox(_0x426d89){const _0xa04335=_0x4c07,_0x2b4a65=_0x481ffb,_0x529c72=_0x27ecae;currentImageIndex=_0x426d89,document[_0xa04335(0x1e0)](_0x2b4a65(0x8b))[_0x2b4a65(0x84)]=images[currentImageIndex];const _0x33a34b=document[_0x529c72(0x1c5)](_0x529c72(0x1c7));_0x33a34b[_0x529c72(0x1c3)][_0x529c72(0x1d7)]=_0x529c72(0x1d0),_0x33a34b[_0x529c72(0x1b5)][_0x2b4a65(0x6f)](_0x2b4a65(0xa3)),_0x33a34b[_0x529c72(0x1b5)][_0x529c72(0x1c8)](_0x529c72(0x1bc));}function closeLightbox(){const _0x38b653=_0x481ffb,_0x8ec016=_0x27ecae,_0x5161ee=document[_0x38b653(0x86)](_0x8ec016(0x1c7));_0x5161ee[_0x8ec016(0x1b5)][_0x8ec016(0x1c8)](_0x8ec016(0x1e2)),setTimeout(()=>{const _0x2f1f32=_0x38b653,_0x9ca50d=_0x8ec016;_0x5161ee[_0x9ca50d(0x1b5)][_0x2f1f32(0x6f)](_0x2f1f32(0x6e),_0x2f1f32(0xa3)),_0x5161ee[_0x2f1f32(0x92)][_0x9ca50d(0x1d7)]=_0x9ca50d(0x1ca);},0x12c);}function changeImage(_0x467817){const _0x49354d=_0x481ffb,_0x1910b3=_0x27ecae;currentImageIndex+=_0x467817;if(currentImageIndex<0x0)currentImageIndex=images[_0x1910b3(0x1d8)]-0x1;else currentImageIndex>=images[_0x1910b3(0x1d8)]&&(currentImageIndex=0x0);document[_0x1910b3(0x1c5)](_0x1910b3(0x1be))[_0x49354d(0x84)]=images[currentImageIndex];}document[_0x27ecae(0x1c5)](_0x27ecae(0x1c7))[_0x481ffb(0x74)](_0x481ffb(0x88),function(_0x3b9917){const _0x129f44=_0x27ecae;_0x3b9917[_0x129f44(0x1d6)]===this&&closeLightbox();}),document[_0x481ffb(0x74)](_0x27ecae(0x1d5),function(_0x30e336){const _0x566531=_0x481ffb,_0xc0530e=_0x27ecae;_0x30e336[_0xc0530e(0x1c6)]===_0x566531(0x7e)&&closeLightbox();});function _0x2b74(_0x486ee0,_0x1903e5){const _0x3f01e0=_0x86dd();return _0x2b74=function(_0x6ef04e,_0x4b71e3){_0x6ef04e=_0x6ef04e-0x6b;let _0x6846e7=_0x3f01e0[_0x6ef04e];return _0x6846e7;},_0x2b74(_0x486ee0,_0x1903e5);}function scrollToSection(_0x54181f){const _0x32326f=_0x481ffb,_0x4fb43a=_0x27ecae,_0x58bcc2=document[_0x4fb43a(0x1c5)](_0x54181f);_0x58bcc2&&window[_0x4fb43a(0x1bd)]({'top':_0x58bcc2[_0x4fb43a(0x1ba)],'behavior':_0x32326f(0x91)}),updateMobileNavActive(_0x54181f),updateTopNavActive(_0x54181f);}function updateMobileNavActive(_0x1e4fb8){const _0x4aaf72=_0x4c07,_0x12faf8=_0x481ffb,_0x44f816=_0x27ecae,_0x37d64d=document[_0x4aaf72(0x1e6)](_0x44f816(0x1c9));_0x37d64d[_0x44f816(0x1dc)](_0x1fd91c=>_0x1fd91c[_0x44f816(0x1b5)][_0x44f816(0x1b3)](_0x44f816(0x1bc)));const _0xa420cf=document[_0x44f816(0x1c5)](_0x12faf8(0x94)+(_0x1e4fb8[_0x44f816(0x1c4)](0x0)[_0x44f816(0x1ce)]()+_0x1e4fb8[_0x4aaf72(0x1db)](0x1)));_0xa420cf&&_0xa420cf[_0x12faf8(0x9f)][_0x4aaf72(0x1d0)](_0x44f816(0x1bc));}function updateTopNavActive(_0x523fe2){const _0x13f575=_0x4c07,_0x995c08=_0x27ecae,_0x5b252e=document[_0x995c08(0x1b4)](_0x995c08(0x1cd));_0x5b252e[_0x995c08(0x1dc)](_0x2b87ca=>_0x2b87ca[_0x995c08(0x1b5)][_0x995c08(0x1b3)](_0x13f575(0x1f5)));const _0x25dd45=Array[_0x995c08(0x1c0)](_0x5b252e)[_0x995c08(0x1c1)](_0x5d1597=>_0x5d1597[_0x995c08(0x1bf)](_0x995c08(0x1cb))[_0x995c08(0x1d1)](_0x523fe2));_0x25dd45&&_0x25dd45[_0x995c08(0x1b5)][_0x995c08(0x1c8)](_0x995c08(0x1bc));}window[_0x481ffb(0x74)](_0x27ecae(0x1b6),function(){const _0xadff72=_0x27ecae;updateMobileNavActive(_0xadff72(0x1de)),updateTopNavActive(_0xadff72(0x1de));});
     </script>
 </body>
 </html>
