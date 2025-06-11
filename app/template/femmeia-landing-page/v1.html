@@ -1,0 +1,2261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <title>Femmeia - Landing Page Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+
+    <!-- SEO & Social Preview -->
+    <meta name="description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth.">
+    <meta property="og:title" content="FemmeiaCloth | Hijab Premium Brand Lokal">
+    <meta property="og:description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth">
+    <meta property="og:image" content="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+    <meta property="og:url" content="https://femmeiacloth.me">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FemmeiaCloth | Hijab Premium Brand Lokal">
+    <meta name="twitter:description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+    <meta name="theme-color" content="#f8fafc">
+    
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Enhanced color system */
+            --background: #ffffff;
+            --background-light: #f8fafc;
+            --background-lighter: #f1f5f9;
+            --surface: rgba(255, 255, 255, 0.85);
+            --surface-hover: rgba(255, 255, 255, 0.95);
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --text-light: #94a3b8;
+            --accent-dark: #1f2937;
+            --accent-mid: #374151;
+            --accent-light: #9ca3af;
+            --border: rgba(55, 65, 81, 0.12);
+            --border-hover: rgba(55, 65, 81, 0.2);
+            --success: #059669;
+            --error: #dc2626;
+            --warning: #fbbf24;
+            
+            /* Glassmorphism Effect */
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-blur: blur(10px);
+            
+            /* Blur and effects */
+            --blur-strength: 10px;
+            --blur-light: 8px;
+            --blur-heavy: 13px;
+           
+            
+            /* Transitions */
+            --transition-speed: 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* Shadows */
+            --shadow: 0 8px 32px rgba(31, 41, 55, 0.06);
+            --shadow-hover: 0 16px 48px rgba(31, 41, 55, 0.1);
+            --shadow-intense: 0 24px 64px rgba(31, 41, 55, 0.15);
+            
+            /* Spacing */
+            --radius-sm: 0.75rem;
+            --radius-md: 1rem;
+            --radius-lg: 1.25rem;
+            --radius-xl: 1.5rem;
+            
+            /* Z-index layers */
+            --z-sticky: 999;
+            --z-nav: 1000;
+            --z-modal: 2000;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(31, 41, 55, 0.015) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(31, 41, 55, 0.015) 0%, transparent 50%),
+                linear-gradient(135deg, var(--background) 0%, var(--background-light) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 25% 75%, rgba(31, 41, 55, 0.01) 0%, transparent 40%),
+                radial-gradient(circle at 75% 25%, rgba(31, 41, 55, 0.01) 0%, transparent 40%);
+            animation: floatBackground 60s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        /* Desktop Navigation */
+        .navbar {
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: var(--z-nav);
+            padding: 1rem 0;
+            transition: all var(--transition-speed) ease;
+            box-shadow: var(--shadow);
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            animation: shimmerNav 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(var(--blur-heavy));
+            -webkit-backdrop-filter: blur(var(--blur-heavy));
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-1px);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--accent-dark);
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            letter-spacing: -0.02em;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 4px 12px rgba(31, 41, 55, 0.15));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            overflow: hidden;
+            backdrop-filter: blur(var(--blur-light));
+            font-size: 0.9rem;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .nav-links a:hover::before {
+            left: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-dark);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            box-shadow: var(--shadow);
+        }
+
+        /* Mobile Bottom Navigation */
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border-top: 1px solid var(--border);
+            padding: 0.75rem 0 max(0.75rem, env(safe-area-inset-bottom));
+            z-index: var(--z-nav);
+            box-shadow: 0 -8px 40px rgba(31, 41, 55, 0.08);
+            animation: slideUpIn 0.6s var(--transition-bounce);
+        }
+
+        @media (min-width: 900px) {
+            .mobile-bottom-nav {
+                display: none !important; /* Ensure hiding on desktop */
+            }
+        }
+
+        .mobile-bottom-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            animation: shimmerLine 3s ease-in-out infinite;
+        }
+
+        .mobile-nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 500px; 
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-width: 60px;
+            backdrop-filter: blur(var(--blur-light));
+            -webkit-backdrop-filter: blur(var(--blur-light));
+        }
+
+        .mobile-nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(31, 41, 55, 0.06) 0%, transparent 70%);
+            opacity: 0;
+            transition: all var(--transition-speed) ease;
+            z-index: -1;
+            border-radius: var(--radius-md);
+        }
+
+        .mobile-nav-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(31, 41, 55, 0.02);
+            border-radius: 50%;
+            transition: all var(--transition-speed) ease;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .mobile-nav-item:hover::before,
+        .mobile-nav-item.active::before {
+            opacity: 1;
+        }
+
+        .mobile-nav-item:hover::after,
+        .mobile-nav-item.active::after {
+            width: 100px;
+            height: 100px;
+        }
+
+        .mobile-nav-item:active {
+            transform: scale(0.95);
+        }
+
+        .mobile-nav-icon-container {
+            width: 36px;
+            height: 36px;
+            background: var(--glass-bg); 
+            border: 1px solid var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(31, 41, 55, 0.1);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            transform: perspective(500px) rotateX(0deg) rotateY(0deg) scale(1);
+            animation: floatIcon 3s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .mobile-nav-item:hover .mobile-nav-icon-container,
+        .mobile-nav-item.active .mobile-nav-icon-container {
+            transform: perspective(500px) rotateX(10deg) rotateY(-10deg) scale(1.05);
+            
+            background: #273345;
+            box-shadow: 0 13px 40px #273345;
+            stroke:#fff;
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: perspective(500px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1); }
+            50% { transform: perspective(500px) rotateX(5deg) rotateY(-5deg) translateY(-3px) scale(1.02); }
+        }
+
+        .mobile-nav-icon {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-muted);
+            transition: all var(--transition-speed) ease;
+            filter: drop-shadow(0 1px 2px rgba(31, 41, 55, 0.1));
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .mobile-nav-item:hover .mobile-nav-icon,
+        .mobile-nav-item.active .mobile-nav-icon {
+            stroke: #fff;
+            transform: scale(1.1);
+            filter: drop-shadow(0 3px 6px rgba(31, 41, 55, 0.2));
+            stroke-width: 2.2;
+        }
+
+        .mobile-nav-text {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all var(--transition-speed) ease;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .mobile-nav-item:hover .mobile-nav-text,
+        .mobile-nav-item.active .mobile-nav-text {
+            stroke: #fff;
+            font-weight: 700;
+            transform: translateY(-1px);
+        }
+
+        .mobile-nav-badge {
+            position: absolute;
+            top: 0.1rem;
+            right: 0.7rem;
+            background: var(--accent-dark);
+            color: white;
+            border-radius: 50%;
+            padding: 0.15rem 0.35rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            min-width: 1rem;
+            text-align: center;
+            animation: bounceBadge 2s infinite;
+            box-shadow: 0 2px 8px rgba(31, 41, 55, 0.4);
+            backdrop-filter: blur(var(--blur-light));
+            -webkit-backdrop-filter: blur(var(--blur-light));
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: var(--accent-dark);
+            border: none;
+            border-radius: 20px 8px 20px 8px;
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            min-height: 48px;
+            backdrop-filter: blur(var(--blur-light));
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            background: var(--accent-mid);
+        }
+
+        .btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            border: 2px solid var(--accent-dark);
+            color: var(--accent-dark);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-dark);
+            color: white;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(var(--blur-heavy));
+            -webkit-backdrop-filter: blur(var(--blur-heavy));
+        }
+
+        .card h3 {
+            color: var(--accent-dark);
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Glassmorphism Icon Container for Cards */
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 12px 5px 12px 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: perspective(500px) rotateX(0deg) rotateY(0deg) scale(1);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            animation: iconPulse 3s infinite ease-in-out;
+        }
+
+        .card:hover .card-icon {
+            transform: perspective(500px) rotateX(10deg) rotateY(-10deg) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: perspective(500px) rotateX(0deg) rotateY(0deg) scale(1); }
+            50% { transform: perspective(500px) rotateX(5deg) rotateY(-5deg) scale(1.03); }
+        }
+
+        .card-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 1.5;
+            transition: stroke 0.3s ease, transform 0.3s ease;
+        }
+
+        .card:hover .card-icon svg {
+            stroke: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: var(--shadow-intense);
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+            filter: brightness(1.05) saturate(1.1);
+        }
+
+        .product-info {
+            padding: 1.25rem;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(var(--blur-light));
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .product-card:hover .product-name {
+            color: var(--accent-dark);
+            transform: translateY(-1px);
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--accent-dark);
+            margin-bottom: 0.75rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 6rem 0;
+            background: rgba(55, 65, 81, 0.02);
+            backdrop-filter: blur(var(--blur-light));
+            -webkit-backdrop-filter: blur(var(--blur-light));
+            border-radius: var(--radius-xl);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.8s ease;
+            box-shadow: var(--shadow);
+            background-size: cover;
+            background-position: center;
+            color: var(--text);
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+            color: var(--accent-dark);
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.02em;
+            animation: textFadeIn 1s ease 0.3s both;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            font-weight: 500;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 1;
+            animation: textFadeIn 1s ease 0.6s both;
+        }
+
+        /* Section Styling */
+        .page-section {
+            padding-top: 4rem;
+            padding-bottom: 3rem;
+            min-height: auto;
+            animation: fadeInUp 0.6s ease-out;
+            position: relative;
+        }
+
+        .page-section h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            color: var(--accent-dark);
+            font-weight: 800;
+        }
+
+        /* Bento Grid - Adjusted spacing */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem; /* Reduced from 2rem */
+            padding: 1.25rem 0; /* Reduced from 2rem */
+        }
+
+        /* Testimoni Slider */
+        .testimoni-section {
+            margin-bottom: 1.5rem; /* Reduced from 2.3rem */
+            margin-top: 1rem; /* Reduced from 1.3rem */
+        }
+
+        .testimoni-slider-outer {
+            width: 100%;
+            max-width: 375px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            border-radius: 1.3rem;
+            background: rgba(243,244,246,0.15);
+            backdrop-filter: blur(22px) saturate(1.1);
+            -webkit-backdrop-filter: blur(22px) saturate(1.1);
+            box-shadow: 0 6px 32px 0 rgba(55,65,81,0.08), 0 1px 5px 0 rgba(120,120,130,0.06);
+            border: none;
+        }
+
+        .testimoni-slider {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(.5,1.5,.3,1);
+            will-change: transform;
+        }
+
+        .slider-card {
+            min-width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            background: rgba(255,255,255,0.41);
+            backdrop-filter: blur(24px) saturate(1.05);
+            -webkit-backdrop-filter: blur(24px) saturate(1.05);
+            border-radius: 1.15rem;
+            margin: 0.80rem 0 0.10rem 0;
+            box-shadow: 0 2px 14px 0 rgba(55,65,81,0.08), 0 1.5px 8px 0 rgba(229,231,235,0.07);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            border: none;
+            padding: 0;
+        }
+
+        .testimoni-card-inner {
+            padding: 1.18rem 1.07rem 1.02rem 1.07rem;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .testimoni-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            margin-bottom: 0.38rem;
+        }
+
+        .testimoni-svgicon {
+            width: 38px;
+            height: 38px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 1.5px 7px 0 rgba(120,130,150,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        .testimoni-title-inside {
+            font-size: 1.06rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            color: #23272e;
+            margin-bottom: 0.01em;
+            opacity: 0.97;
+            text-shadow: 0 1px 3px #eceff1;
+        }
+
+        .testimoni-stars {
+            display: flex;
+            align-items: center;
+            font-size: 1.06rem;
+            gap: 0.08em;
+            margin-bottom: 0.01em;
+        }
+
+        .star {
+            color: #23272e;
+            filter: drop-shadow(0 1px 1.5px #eceff1);
+            font-size: 1.09em;
+            margin-right: 1px;
+            letter-spacing: -0.07em;
+            text-shadow: 0 1px 1.5px #e5e7eb;
+            transition: color 0.18s;
+            opacity: 0.85;
+        }
+
+        .slider-card:hover .star {
+            color: #111215;
+            opacity: 1;
+        }
+
+        .testimoni-content {
+            flex: 1;
+            width: 100%;
+            margin-top: 0.18rem;
+        }
+
+        .testimoni-review p {
+            color: #23272e;
+            font-size: 0.97rem;
+            margin-bottom: 0.23em;
+            line-height: 1.39;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            opacity: 0.97;
+        }
+
+        .testimoni-produk {
+            font-size: 0.93rem;
+            font-weight: 700;
+            color: #23272e;
+            margin-bottom: 0.09em;
+            letter-spacing: 0.01em;
+            opacity: 0.92;
+        }
+
+        .testimoni-name {
+            color: #6b7280;
+            font-size: 0.90rem;
+            font-weight: 700;
+            margin-top: 0.05em;
+            letter-spacing: 0.09em;
+            opacity: 0.85;
+        }
+
+        .testimoni-name .sensor {
+            color: #d1d5db;
+            letter-spacing: 0.15em;
+        }
+
+        /* FAQ Section */
+        .faq-item {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            
+            border-radius: var(--radius-md);
+            margin-bottom: 0.75rem; /* Reduced spacing */
+            padding: 1.25rem;
+            transition: all var(--transition-speed) ease;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .faq-question {
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-toggler {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--accent-dark);
+            transition: transform 0.3s ease;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(31, 41, 55, 0.05);
+        }
+
+        .faq-item.collapsed .faq-toggler::before {
+            content: "+";
+        }
+
+        .faq-item:not(.collapsed) .faq-toggler::before {
+            content: "-";
+        }
+
+        .faq-answer {
+            color: var(--text-muted);
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.5s ease-in-out;
+            margin-top: 0;
+        }
+
+        .faq-item:not(.collapsed) .faq-answer {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 0.75rem;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            background: linear-gradient(135deg, var(--background-light) 0%, var(--background-lighter) 100%);
+            padding: 4rem 0 3rem;
+            margin: 1.5rem 0;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            padding: 1.25rem;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-intense);
+            border-color: var(--border-hover);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--accent-dark);
+            font-weight: 700;
+        }
+
+        .pricing-card .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .pricing-card .price span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin: 1rem 0;
+            padding: 0;
+            color: var(--text-muted);
+        }
+
+        .pricing-card ul li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-card ul li::before {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: var(--success);
+            border-radius: 50%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+            background-size: 10px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--accent-dark);
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--background-light) 0%, var(--background-lighter) 100%);
+            text-align: center;
+            padding: 3.5rem 1.25rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+            margin: 1.5rem 0; /* Reduced from 3rem */
+        }
+
+        .cta-section h2 {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            margin-bottom: 1.25rem;
+        }
+
+        .cta-section p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--accent-dark);
+            color: white;
+            padding: 2rem 1.25rem 1rem; /* Reduced from 3rem */
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem; /* Reduced from 2rem */
+            margin-bottom: 2rem; /* Reduced from 3rem */
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+
+        .footer-section p, .footer-section ul {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6; /* Reduced from 1.8 */
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem; /* Reduced from 2rem */
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 6rem;
+            right: 1.25rem;
+            background: rgba(31, 41, 55, 0.95);
+            backdrop-filter: blur(var(--blur-strength));
+            -webkit-backdrop-filter: blur(var(--blur-strength));
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-sm);
+            z-index: calc(var(--z-modal) + 1);
+            animation: slideIn 0.4s ease, fadeOut 0.4s ease 2.6s forwards;
+            box-shadow: var(--shadow-hover);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .notification.error {
+            background: rgba(220, 38, 38, 0.95);
+        }
+
+        .notification.success {
+            background: rgba(5, 150, 105, 0.95);
+        }
+
+        /* Statistics Section */
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(var(--blur-strength));
+            
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            text-align: center;
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-intense);
+            border-color: var(--border-hover);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: perspective(500px) rotateX(0deg) rotateY(0deg) scale(1);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            margin: 0 auto 0.75rem;
+            animation: iconPulse 3s infinite ease-in-out;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: perspective(500px) rotateX(10deg) rotateY(-10deg) scale(1.05);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-dark);
+            margin-bottom: 0.5rem;
+            animation: countUp 2s ease-out forwards;
+        }
+
+        .stat-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        @keyframes countUp {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 5rem;
+            }
+
+            .navbar {
+                display: none;
+            }
+            
+            .mobile-bottom-nav {
+                display: block;
+            }
+
+            .page-section {
+                padding-top: 2.5rem; /* Reduced from 4rem */
+                padding-bottom: 2rem; /* Reduced from 3rem */
+            }
+            
+            .bento-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem; /* Further reduced */
+            }
+            
+            .hero {
+                padding: 3rem 0;
+                margin-bottom: 1.5rem; /* Reduced from 2rem */
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .notification {
+                right: 1rem;
+                left: 1rem;
+                top: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 1.25rem; /* Reduced from 1.5rem */
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1); /* Reset scale for mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-nav-container {
+                padding: 0 0.5rem;
+            }
+
+            .mobile-nav-item {
+                min-width: 50px;
+                padding: 0.375rem;
+            }
+
+            .mobile-nav-icon-container {
+                width: 30px;
+                height: 30px;
+            }
+
+            .mobile-nav-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            .mobile-nav-text {
+                font-size: 0.65rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideInDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUpIn {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes slideDownIn {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes bounceBadge {
+            0%, 20%, 50%, 80%, 100% { transform: scale(1); }
+            40% { transform: scale(1.15); }
+            60% { transform: scale(1.05); }
+        }
+
+        @keyframes floatBackground {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(15px, -10px) rotate(1deg); }
+            66% { transform: translate(-10px, 15px) rotate(-1deg); }
+        }
+
+        @keyframes rotateBackground {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmerNav {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes shimmerLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes slideShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes expandLine {
+            0%, 100% { width: 40px; }
+            50% { width: 80px; }
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes floatButton {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+
+        @keyframes shakeIn {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Utility Classes */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .float {
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        .blur-text {
+            text-shadow: 0 0 8px rgba(31, 41, 55, 0.08);
+            filter: drop-shadow(0 1px 3px rgba(31, 41, 55, 0.1));
+        }
+
+        /* Scattered Shapes Background */
+        .scattered-shapes {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .scattered-shape {
+            position: absolute;
+            opacity: 0.13;
+            filter: blur(1px);
+            pointer-events: none;
+            z-index: 0;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: both;
+        }
+
+        /* CIRCLE */
+        .scattered-shape.circle1 {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-mid);
+            top: 6%;
+            left: 12%;
+            animation-name: floatY1;
+            animation-duration: 13s;
+        }
+
+        .scattered-shape.circle2 {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--success);
+            top: 32%;
+            left: 83%;
+            animation-name: floatX2;
+            animation-duration: 11s;
+        }
+
+        .scattered-shape.circle3 {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--warning);
+            top: 78%;
+            left: 25%;
+            animation-name: floatXY3;
+            animation-duration: 17s;
+        }
+
+        .scattered-shape.circle4 {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            top: 60%;
+            left: 65%;
+            animation-name: floatY2;
+            animation-duration: 12.2s;
+        }
+
+        /* SQUARE */
+        .scattered-shape.square1 {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-md);
+            background: var(--background-lighter);
+            border: 2px solid var(--accent-light);
+            top: 18%;
+            left: 75%;
+            animation-name: floatX2;
+            animation-duration: 10.5s;
+        }
+
+        .scattered-shape.square2 {
+            width: 62px;
+            height: 62px;
+            border-radius: var(--radius-xl);
+            background: var(--accent-light);
+            top: 68%;
+            left: 77%;
+            animation-name: floatXY3;
+            animation-duration: 15s;
+        }
+
+        /* TRIANGLE */
+        .scattered-shape.triangle1 {
+            width: 0;
+            height: 0;
+            border-left: 28px solid transparent;
+            border-right: 28px solid transparent;
+            border-bottom: 50px solid var(--warning);
+            top: 54%;
+            left: 15%;
+            animation-name: floatY1;
+            animation-duration: 16s;
+        }
+
+        .scattered-shape.triangle2 {
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 34px solid var(--accent-mid);
+            top: 38%;
+            left: 56%;
+            animation-name: floatX2;
+            animation-duration: 13.1s;
+        }
+
+        /* DIAMOND */
+        .scattered-shape.diamond1 {
+            width: 44px;
+            height: 44px;
+            background: var(--success);
+            transform: rotate(45deg);
+            border-radius: var(--radius-sm);
+            top: 85%;
+            left: 41%;
+            animation-name: floatXY3;
+            animation-duration: 19s;
+        }
+
+        .scattered-shape.diamond2 {
+            width: 28px;
+            height: 28px;
+            background: var(--accent-dark);
+            transform: rotate(45deg);
+            border-radius: var(--radius-sm);
+            top: 37%;
+            left: 17%;
+            animation-name: floatY1;
+            animation-duration: 11.3s;
+        }
+
+        /* KEYFRAMES ANIMASI */
+        @keyframes floatY1 {
+            0%,100% { transform: translateY(0) scale(1);}
+            50% { transform: translateY(-28px) scale(1.12);}
+        }
+
+        @keyframes floatY2 {
+            0%,100% { transform: translateY(0) scale(1);}
+            40% { transform: translateY(19px) scale(1.08);}
+            80% { transform: translateY(-12px) scale(0.98);}
+        }
+
+        @keyframes floatX2 {
+            0%,100% { transform: translateX(0) scale(1);}
+            50% { transform: translateX(-34px) scale(1.09);}
+        }
+
+        @keyframes floatXY3 {
+            0%,100% { transform: translate(0,0) scale(1);}
+            33% { transform: translate(-19px, -17px) scale(1.11);}
+            66% { transform: translate(14px, 11px) scale(0.97);}
+        }
+        .profile-social-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+ margin-left:5px;
+ margin-right:5px;
+  gap: 1rem;
+}
+.profile-photo {
+  width: 88px;
+  height: 88px;margin-top:40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent-dark);
+  box-shadow: 0 2px 16px rgba(31,41,55,0.07);
+}
+.profile-tags {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.btn-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: #fff;
+  color: #222;
+  border: none;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 5px rgba(55,65,81,0.06);
+  cursor: pointer;
+}
+.btn-social .social-icon {
+  display: flex;
+  align-items: center;
+}
+.btn-social.ig {
+  background: #FF96B9;
+  color: #fff;
+  
+}
+.btn-social.wa {
+	
+  background: #86D3A2;
+  color: #fff;
+}
+.btn-social.ig:hover,
+.btn-social.wa:hover {
+  filter: brightness(0.92);
+  transform: scale(1.05);
+}
+.profile-tag {
+  background: var(--accent-mid, #374151);
+  color: #fff;
+  border-radius: 1.5rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+  box-shadow: 0 1px 6px rgba(55, 65, 81, 0.07);
+}
+
+    </style>
+</head>
+<body>
+    <!-- BACKGROUND SHAPES -->
+    <div class="scattered-shapes" aria-hidden="true">
+        <div class="scattered-shape circle1"></div>
+        <div class="scattered-shape circle2"></div>
+        <div class="scattered-shape circle3"></div>
+        <div class="scattered-shape circle4"></div>
+        <div class="scattered-shape square1"></div>
+        <div class="scattered-shape square2"></div>
+        <div class="scattered-shape triangle1"></div>
+        <div class="scattered-shape triangle2"></div>
+        <div class="scattered-shape diamond1"></div>
+        <div class="scattered-shape diamond2"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo" onclick="scrollToSection('hero')">FemmeiaCloth</div>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="scrollToSection('hero')">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-4H9v4a2 2 0 0 1-2 2H3z"/>
+                        </svg>
+                        Beranda
+                    </a></li>
+                    <li><a href="#" onclick="scrollToSection('about')">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        Tentang
+                    </a></li>
+                    <li><a href="#" onclick="scrollToSection('products')">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+                        </svg>
+                        Produk
+                    </a></li>
+                    <li><a href="#" onclick="scrollToSection('contact')">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        Kontak
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav">
+        <div class="mobile-nav-container">
+            <div class="mobile-nav-item" onclick="scrollToSection('hero')" id="mobileHome">
+                <div class="mobile-nav-icon-container">
+                    <svg class="mobile-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-4H9v4a2 2 0 0 1-2 2H3z"/>
+                    </svg>
+                </div>
+                <span class="mobile-nav-text">Beranda</span>
+            </div>
+            <div class="mobile-nav-item" onclick="scrollToSection('about')" id="mobileAbout">
+                <div class="mobile-nav-icon-container">
+                    <svg class="mobile-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                </div>
+                <span class="mobile-nav-text">Tentang</span>
+            </div>
+            <div class="mobile-nav-item" onclick="scrollToSection('products')" id="mobileProducts">
+                <div class="mobile-nav-icon-container">
+                    <svg class="mobile-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+                    </svg>
+                </div>
+                <span class="mobile-nav-text">Produk</span>
+            </div>
+            <div class="mobile-nav-item" onclick="scrollToSection('contact')" id="mobileContact">
+                <div class="mobile-nav-icon-container">
+                    <svg class="mobile-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                </div>
+                <span class="mobile-nav-text">Kontak</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="page-section hero">
+    	<div class="profile-social-container">
+  <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="Foto Profil" class="profile-photo" />
+  <div class="profile-tags">
+    <a href="https://instagram.com/femmeia.cloth" class="btn-social ig" target="_blank" title="Instagram @femmeia.cloth">
+      <span class="social-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="black" stroke-width="2" fill="none"/>
+          <circle cx="12" cy="12" r="5" stroke="black" stroke-width="2" fill="none"/>
+          <circle cx="17" cy="7" r="1.2" fill="black"/>
+        </svg>
+      </span>
+      @femmeia.cloth
+    </a>
+    <a href="https://wa.me/6285341899229" class="btn-social wa" target="_blank" title="WhatsApp 085341899229">
+      <span class="social-icon">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+          <g>
+            <circle cx="16" cy="16" r="14" stroke="black" stroke-width="2" fill="none"/>
+            <path d="M16 7c-5 0-9 3.93-9 8.77 0 1.55.5 3.02 1.36 4.32L7 25l4.13-1.31C12.9 24.23 14.41 24.54 16 24.54c5 0 9-3.93 9-8.77S21 7 16 7z" stroke="black" stroke-width="2" fill="none"/>
+            <path d="M21.06 19.07c-.29-.14-1.7-.84-1.96-.93-.26-.1-.45-.14-.64.14-.19.28-.74.93-.91 1.12-.17.19-.34.21-.64.07-.29-.14-1.21-.44-2.31-1.41-.86-.77-1.44-1.72-1.61-2-.17-.29-.02-.44.13-.58.13-.13.29-.34.44-.51.15-.17.2-.29.3-.48.1-.19.05-.36-.02-.51-.07-.14-.64-1.54-.88-2.12-.23-.56-.47-.48-.64-.49h-.54c-.17 0-.44.06-.67.29-.23.24-.88.85-.88 2.07s.91 2.39 1.03 2.56c.13.17 1.79 2.86 4.34 3.9.61.26 1.09.41 1.46.53.61.2 1.17.17 1.61.1.49-.07 1.5-.61 1.71-1.19.21-.58.21-1.07.15-1.19-.06-.12-.26-.19-.55-.33z" fill="black"/>
+          </g>
+        </svg>
+      </span>
+      085341899229
+    </a>
+    <span class="profile-tag">#hijabsyari</span>
+    <span class="profile-tag">#premiumbrand</span>
+  </div>
+</div>
+        <div class="container">
+            <h1>Tampil Syar'i, Tetap Stylish!</h1>
+            <p>Temukan koleksi hijab premium dan fashion wanita modern di FemmeiaCloth. Kualitas terbaik dengan harga terjangkau untuk gaya Anda sehari-hari.</p>
+            <button style="   box-shadow: 0 13px 40px #273345;" class="btn" onclick="scrollToSection('products')">Jelajahi Koleksi</button>
+        </div>
+    </section>
+
+    <!-- About Brand Section -->
+    <section id="about" class="page-section">
+        <div class="container">
+            <h2>Tentang FemmeiaCloth</h2>
+            <div class="card">
+                <h3>
+                    <span style="box-shadow: 0 8px 40px #273345;color:#fff;background: #1f2937" class="card-icon"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+                    Brand Hijab Premium Lokal
+                </h3>
+                <p>FemmeiaCloth hadir untuk memenuhi kebutuhan fashion muslimah modern dengan koleksi hijab, pashmina, dan inner berkualitas tinggi. Setiap produk dirancang dengan perhatian terhadap detail, kenyamanan, dan gaya, sehingga Anda dapat tampil percaya diri dalam setiap kesempatan.</p>
+       
+</div><p style="visibility: hidden">s</p>
+<div class="card">
+   <h3>
+                    <span style="box-shadow: 0 8px 40px #415573;color:#fff;background: #1f2937" class="card-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg>
+</span>
+                    Visi Kami
+                </h3>    
+  <p>Visi kami adalah menjadi brand hijab terdepan di Indonesia yang mengedepankan kualitas dan desain terkini dengan harga yang bersahabat. Didirikan di Makassar, kami melayani pelanggan di seluruh Indonesia dengan layanan pengiriman cepat dan terpercaya.</p>
+   
+
+         </div>
+        </div>
+    </section>
+
+
+    <!-- Showcase Produk Section -->
+    <section id="products" class="page-section">
+    	
+        <div class="container">
+            <h2>Koleksi Unggulan Kami</h2>
+            <div class="bento-grid">
+                <div class="product-card fade-in" style="animation-delay: 0.1s">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/be1620e2-9ff8-4bce-a785-b7aa9ed662e3.png" alt="Produk Inner Earab dengan desain minimalis berwarna netral" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">Inner Earab</h3>
+                        <div class="product-price">Rp 25.000</div>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: auto;">Inner Earab premium, adem, nyaman dipakai seharian.</p>
+                    </div>
+                </div>
+                <div class="product-card fade-in" style="animation-delay: 0.2s">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/97a7d7ee-d285-4811-a06a-f5bf55297cfe.png" alt="Produk Pashmina dengan warna elegan dan bahan lembut" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">Pashmina</h3>
+                        <div class="product-price">Rp 55.000</div>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: auto;">Pashmina bahan kaos premium, nyaman dipakai.</p>
+                    </div>
+                </div>
+                <div class="product-card fade-in" style="animation-delay: 0.3s">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0235d46c-7bad-4986-8a7d-9d6b4f0a1011.png" alt="Produk Paris Jadul dengan desain klasik dan warna menarik" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">Paris Jadul</h3>
+                        <div class="product-price">Rp 35.000</div>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: auto;">Hijab ringan, mudah dibentuk, cocok untuk sehari-hari.</p>
+                    </div>
+                </div>
+                <div class="product-card fade-in" style="animation-delay: 0.1s">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/be1620e2-9ff8-4bce-a785-b7aa9ed662e3.png" alt="Produk Inner Earab dengan desain minimalis berwarna netral" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">Inner Earab</h3>
+                        <div class="product-price">Rp 25.000</div>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: auto;">Inner Earab premium, adem, nyaman dipakai seharian.</p>
+                    </div>
+                </div>
+                <div class="product-card fade-in" style="animation-delay: 0.2s">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/97a7d7ee-d285-4811-a06a-f5bf55297cfe.png" alt="Produk Pashmina dengan warna elegan dan bahan lembut" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">Pashmina</h3>
+                        <div class="product-price">Rp 55.000</div>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: auto;">Pashmina bahan kaos premium, nyaman dipakai.</p>
+                    </div>
+                </div>
+                <div class="product-card fade-in" style="animation-delay: 0.3s">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0235d46c-7bad-4986-8a7d-9d6b4f0a1011.png" alt="Produk Paris Jadul dengan desain klasik dan warna menarik" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">Paris Jadul</h3>
+                        <div class="product-price">Rp 35.000</div>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: auto;">Hijab ringan, mudah dibentuk, cocok untuk sehari-hari.</p>
+                    </div>
+                </div>
+            </div>
+     
+            </div>
+            <div style="text-align: center; margin-top: 1.5rem;"> <!-- Reduced margin -->
+                <button style="   box-shadow: 0 13px 40px #273345;" class="btn" onclick="scrollToSection('products')">Lihat Semua Produk</button>
+            </div>
+        </div>
+        
+    </section>
+
+    <!-- Keunggulan Brand Section -->
+    <section id="advantages" class="page-section">
+        <div class="container">
+            <h2>Kenapa Memilih Kami</h2>
+            <div class="bento-grid">
+                <div class="card float">
+                    <h3>
+                        <span style="background:#bfa76f;box-shadow:0 8px 40px #BFA76F" class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M3 11l4-4 5 5 5-5 4 4v7H3v-7z" />
+  <path d="M3 18h18" />
+</svg>
+</span>
+                        Kualitas Premium
+                    </h3>
+                    <p>Bahan pilihan terbaik yang nyaman dan tahan lama, dirancang untuk mendukung aktivitas Anda sepanjang hari.</p>
+                </div>
+                <div class="card float" style="animation-delay: 0.2s">
+                    <h3>
+                        <span style="background:#4b5563;box-shadow:0 8px 40px #4b5563" class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="3" width="7" height="7" rx="1.5" />
+  <rect x="14" y="3" width="7" height="7" rx="1.5" />
+  <rect x="3" y="14" width="7" height="7" rx="1.5" />
+  <rect x="14" y="14" width="7" height="7" rx="1.5" />
+</svg>
+
+</span>
+                        Desain Modern
+                    </h3>
+                    <p>Mengikuti tren fashion terkini dengan sentuhan elegan, cocok untuk berbagai gaya dan kesempatan.</p>
+                </div>
+                <div class="card float" style="animation-delay: 0.4s">
+                    <h3>
+                        <span style="background:#10b981;box-shadow:0 8px 40px #10b981" class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
+  <path d="M4 7a1 1 0 0 1 1-1h6l9 9-7 7-9-9V7z"/>
+  <circle cx="8.5" cy="8.5" r="1"/>
+</svg>
+</span>
+                        Harga Terjangkau
+                    </h3>
+                    <p>Fashion berkualitas tinggi dengan harga yang bersahabat, memastikan Anda mendapatkan nilai terbaik.</p>
+                </div>
+                <div class="card float" style="animation-delay: 0.6s">
+                    <h3>
+                        <span style="background:#3b82f6;box-shadow:0 8px 40px #3b82f6" class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
+  <path d="M3 7h13v10H3z"/>
+  <path d="M16 10h4l1 2v5h-5v-7z"/>
+  <circle cx="5.5" cy="18.5" r="1.5"/>
+  <circle cx="17.5" cy="18.5" r="1.5"/>
+  <path d="M12 6l3 3h-2v3l-3-3h2z"/>
+</svg>
+</span>
+                        Pengiriman Cepat
+                    </h3>
+                    <p>Layanan pengiriman ke seluruh Indonesia dengan proses cepat dan terpercaya, sehingga pesanan Anda tiba tepat waktu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimoni Section -->
+    <section id="testimonials" class="page-section testimoni-section">
+        <div class="container">
+            <h2>Apa Kata Pelanggan</h2>
+            <div class="testimoni-slider-outer">
+                <div class="testimoni-slider" id="testimoniSlider">
+                    <div class="slider-card">
+                        <div class="testimoni-card-inner">
+                            <div class="testimoni-header">
+                                <div class="testimoni-svgicon">
+                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                        <circle cx="16" cy="12" r="6" fill="#e5e7eb" stroke="#23272e" stroke-width="1.2"/>
+                                        <path d="M7.5 26c0-4.13 4.4-7 8.5-7s8.5 2.87 8.5 7" fill="#fff" stroke="#6b7280" stroke-width="1.2"/>
+                                        <circle cx="16" cy="16" r="15" stroke="#d1d5db" stroke-width="1"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="testimoni-title-inside">Testimoni/Review Pelanggan</div>
+                                    <div class="testimoni-stars">
+                                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="testimoni-content">
+                                <div class="testimoni-review">
+                                    <p>Bahan Pashmina-nya lembut banget, nyaman dipakai seharian dan jahitannya rapi.</p>
+                                </div>
+                                <div class="testimoni-produk">Pashmina</div>
+                                <div class="testimoni-name">N<span class="sensor">xxxx</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-card">
+                        <div class="testimoni-card-inner">
+                            <div class="testimoni-header">
+                                <div class="testimoni-svgicon">
+                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                        <circle cx="16" cy="12" r="6" fill="#e5e7eb" stroke="#23272e" stroke-width="1.2"/>
+                                        <path d="M7.5 26c0-4.13 4.4-7 8.5-7s8.5 2.87 8.5 7" fill="#fff" stroke="#6b7280" stroke-width="1.2"/>
+                                        <circle cx="16" cy="16" r="15" stroke="#d1d5db" stroke-width="1"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="testimoni-title-inside">Testimoni/Review Pelanggan</div>
+                                    <div class="testimoni-stars">
+                                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="testimoni-content">
+                                <div class="testimoni-review">
+                                    <p>Paris-nya ringan, mudah dibentuk, dan warna-warnanya kalem semua. Suka!</p>
+                                </div>
+                                <div class="testimoni-produk">Paris</div>
+                                <div class="testimoni-name">S<span class="sensor">xxxx</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-card">
+                        <div class="testimoni-card-inner">
+                            <div class="testimoni-header">
+                                <div class="testimoni-svgicon">
+                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                        <circle cx="16" cy="12" r="6" fill="#e5e7eb" stroke="#23272e" stroke-width="1.2"/>
+                                        <path d="M7.5 26c0-4.13 4.4-7 8.5-7s8.5 2.87 8.5 7" fill="#fff" stroke="#6b7280" stroke-width="1.2"/>
+                                        <circle cx="16" cy="16" r="15" stroke="#d1d5db" stroke-width="1"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="testimoni-title-inside">Testimoni/Review Pelanggan</div>
+                                    <div class="testimoni-stars">
+                                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span><span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="testimoni-content">
+                                <div class="testimoni-review">
+                                    <p>Inner-nya adem dan nggak bikin pusing, cocok untuk dipakai seharian.</p>
+                                </div>
+                                <div class="testimoni-produk">Inner</div>
+                                <div class="testimoni-name">L<span class="sensor">xxxx</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistik Section -->
+    <section id="statistics" class="page-section">
+        <div class="container">
+            <h2>Statistik Kami</h2>
+            <div class="bento-grid">
+                <div class="stat-card float">
+                    <div class="stat-float">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"
+     xmlns="http://www.w3.org/2000/svg" style="background:#3B82F6;box-shadow:0 8px 40px #3B82F6;border-radius:12px;">
+  <circle cx="22" cy="24" r="8" fill="#fff" fill-opacity="0.8"/>
+  <circle cx="38" cy="24" r="8" fill="#fff" fill-opacity="0.5"/>
+  <rect x="12" y="36" width="40" height="18" rx="9" fill="#fff" fill-opacity="0.4"/>
+</svg>
+
+                    </div><p style="font-size:1px; visibility:hidden">e</p>
+                    <h3 data-count="5000">5000+</h3>
+                    <p>Pelanggan Puas</p>
+                </div>
+                <div class="stat-card float" style="animation-delay: 0.2s">
+                    <div class="stat-float">
+             <svg width="64" height="64" viewBox="0 0 64 64" fill="none"
+     xmlns="http://www.w3.org/2000/svg" style="background:#10B981;box-shadow:0 8px 40px #10B981;border-radius:12px;">
+  <rect x="16" y="20" width="32" height="32" rx="4" fill="#fff" fill-opacity="0.4"/>
+  <path d="M24 20V16C24 13.7909 25.7909 12 28 12H36C38.2091 12 40 13.7909 40 16V20" stroke="#fff" stroke-opacity="0.8" stroke-width="2"/>
+</svg>
+
+                    </div><p style="font-size:1px; visibility:hidden">e</p>
+                    <h3 data-count="100">100+</h3>
+                    <p>Variasi Produk</p>
+                </div>
+                <div class="stat-card float" style="animation-delay: 0.4s">
+                    <div class="stat-float">
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none"
+     xmlns="http://www.w3.org/2000/svg" style="background:#F59E0B;box-shadow:0 8px 40px #F59E0B;border-radius:12px;">
+  <circle cx="32" cy="32" r="20" fill="#fff" fill-opacity="0.3"/>
+  <path d="M32 20V32L42 36" stroke="#fff" stroke-opacity="0.9" stroke-width="3" stroke-linecap="round"/>
+</svg>
+
+                    </div><p style="font-size:1px; visibility:hidden">e</p>
+                    <h3 data-count="98">98%</h3>
+                    <p>Tepat Waktu Pengiriman</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="page-section pricing-section">
+        <div class="container">
+            <h2>Harga Produk Kami</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Basic</h3>
+                    <div class="price">Rp 25.000<span> /item</span></div>
+                    <ul>
+                        <li>Kualitas Standar</li>
+                        <li>Pilihan Warna Terbatas</li>
+                        <li>Pengiriman 5-7 Hari</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="window.open('https://wa.me/6285341899229?text=Halo%2C%20saya%20tertarik%20dengan%20paket%20Basic', '_blank')">Pilih Paket</button>
+                </div>
+                <div class="pricing-card featured">
+                    <h3>Premium</h3>
+                    <div class="price">Rp 55.000<span> /item</span></div>
+                    <ul>
+                        <li>Kualitas Premium</li>
+                        <li>Banyak Pilihan Warna</li>
+                        <li>Pengiriman Cepat 2-4 Hari</li>
+                        <li>Gratis Ongkir (S&K Berlaku)</li>
+                    </ul>
+                    <button class="btn" onclick="window.open('https://wa.me/6285341899229?text=Halo%2C%20saya%20tertarik%20dengan%20paket%20Premium', '_blank')">Pilih Paket</button>
+                </div>
+                <div class="pricing-card">
+                    <h3>Bundle (3 Items)</h3>
+                    <div class="price">Rp 135.000<span> /paket</span></div>
+                    <ul>
+                        <li>Kombinasi Bebas Pilih</li>
+                        <li>Hemat Lebih Banyak</li>
+                        <li>Pengiriman 3-5 Hari</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="window.open('https://wa.me/6285341899229?text=Halo%2C%20saya%20tertarik%20dengan%20paket%20Bundle', '_blank')">Pilih Paket</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="page-section">
+        <div class="container">
+            <h2>Pertanyaan Umum</h2>
+            <div class="faq-item fade-in collapsed" data-faq-id="1">
+                <div class="faq-question" onclick="toggleFaqAnswer(1)">
+                    <span>Bagaimana cara memesan produk?</span>
+                    <button class="faq-toggler"></button>
+                </div>
+                <div class="faq-answer">Anda dapat memesan melalui website kami dengan memilih produk, menambahkan ke keranjang, lalu melanjutkan ke proses checkout. Kami juga melayani pemesanan melalui WhatsApp untuk bantuan lebih lanjut.</div>
+            </div>
+            <div class="faq-item fade-in collapsed" data-faq-id="2" style="animation-delay: 0.1s">
+                <div class="faq-question" onclick="toggleFaqAnswer(2)">
+                    <span>Berapa lama proses pengiriman?</span>
+                    <button class="faq-toggler"></button>
+                </div>
+                <div class="faq-answer">Waktu pengiriman biasanya 2-7 hari kerja tergantung lokasi Anda dan metode pengiriman yang dipilih. Kami bekerja sama dengan berbagai jasa pengiriman untuk memastikan pesanan tiba tepat waktu.</div>
+            </div>
+            <div class="faq-item fade-in collapsed" data-faq-id="3" style="animation-delay: 0.2s">
+                <div class="faq-question" onclick="toggleFaqAnswer(3)">
+                    <span>Apakah ada garansi atau pengembalian?</span>
+                    <button class="faq-toggler"></button>
+                </div>
+                <div class="faq-answer">Kami menerima pengembalian dalam waktu 7 hari setelah penerimaan barang jika produk cacat atau tidak sesuai pesanan. Silakan hubungi kami untuk proses lebih lanjut.</div>
+            </div>
+            <div class="faq-item fade-in collapsed" data-faq-id="4" style="animation-delay: 0.3s">
+                <div class="faq-question" onclick="toggleFaqAnswer(4)">
+                    <span>Apakah produk tersedia dalam berbagai warna?</span>
+                    <button class="faq-toggler"></button>
+                </div>
+                <div class="faq-answer">Ya, sebagian besar produk kami tersedia dalam berbagai pilihan warna. Anda dapat melihat opsi warna pada halaman produk sebelum memesan.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="page-section cta-section">
+        <div class="container">
+            <h2>Bergabung dengan FemmeiaCloth Sekarang!</h2>
+            <p>Dapatkan penawaran eksklusif dan informasi terbaru tentang koleksi kami. Jangan lewatkan kesempatan untuk tampil stylish dengan hijab premium kami.</p>
+            <button style="   box-shadow: 0 13px 40px #273345;"  class="btn" onclick="window.open('https://wa.me/6285341899229?text=Halo%2C%20saya%20ingin%20bergabung%20dan%20mendapatkan%20info%20terbaru%20dari%20FemmeiaCloth', '_blank')">Gabung Sekarang</button>
+        </div>
+    </section>
+
+    <!-- Footer & Contact Section -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FemmeiaCloth</h3>
+                    <p>Tampil Syar'i, Tetap Stylish! Brand hijab premium lokal yang mengutamakan kualitas dan desain modern.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Kontak Kami</h3>
+                    <ul>
+                        <li><strong>WhatsApp:</strong> +62 853-4189-9229</li>
+                        <li><strong>Email:</strong> femmeiacloth@gmail.com</li>
+                        <li><strong>Alamat:</strong> Makassar, Sulawesi Selatan</li>
+                        <li><strong>Jam Operasional:</strong> Senin - Sabtu, 09:00 - 17:00 WITA</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Ikuti Kami</h3>
+                    <ul>
+                        <li><a href="https://instagram.com/femmeia.cloth" target="_blank">Instagram</a></li>
+                        <li><a href="https://wa.me/6285341899229" target="_blank">WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FemmeiaCloth. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (navbar && window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else if (navbar) {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth Scroll to Section
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                window.scrollTo({ top: section.offsetTop - 60, behavior: 'smooth' });
+                updateMobileNavActive(sectionId);
+            }
+        }
+
+        // Update Mobile Navigation Active State
+        function updateMobileNavActive(sectionId) {
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            mobileNavItems.forEach(item => item.classList.remove('active'));
+            
+            let activeId = '';
+            switch(sectionId) {
+                case 'hero':
+                    activeId = 'mobileHome';
+                    break;
+                case 'about':
+                    activeId = 'mobileAbout';
+                    break;
+                case 'products':
+                    activeId = 'mobileProducts';
+                    break;
+                case 'contact':
+                    activeId = 'mobileContact';
+                    break;
+                default:
+                    activeId = 'mobileHome';
+            }
+            
+            const activeItem = document.getElementById(activeId);
+            if (activeItem) activeItem.classList.add('active');
+        }
+
+        // Testimonial Slider Auto Scroll
+        (function() {
+            const slider = document.getElementById('testimoniSlider');
+            const cards = slider.children;
+            let idx = 0;
+            let total = cards.length;
+            function setSlide(i) {
+                slider.style.transform = `translateX(-${i * 100}%)`;
+            }
+            setSlide(0);
+            setInterval(() => {
+                idx = (idx + 1) % total;
+                setSlide(idx);
+            }, 5000);
+        })();
+
+        // Notification System
+        function showNotification(message, isError = false) {
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            
+            if (isError) {
+                notification.classList.add('error');
+            } else {
+                notification.classList.add('success');
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification && notification.parentNode) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+
+        // Toggle FAQ Answer
+        function toggleFaqAnswer(faqId) {
+            const faqItem = document.querySelector(`[data-faq-id="${faqId}"]`);
+            if (faqItem) {
+                faqItem.classList.toggle('collapsed');
+            }
+        }
+
+        // Initialize FAQ collapsed state
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                if (!item.classList.contains('collapsed')) {
+                    item.classList.add('collapsed');
+                }
+            });
+        });
+
+        // Simple counter animation for stats
+        document.addEventListener('DOMContentLoaded', function() {
+            const statElements = document.querySelectorAll('.stat-card h3');
+            statElements.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-count'), 10);
+                let current = 0;
+                const increment = Math.ceil(target / 50);
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target % 1 === 0 ? target + '+' : target + '%';
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = current + (target.toString().includes('%') ? '%' : '');
+                    }
+                }, 40);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
