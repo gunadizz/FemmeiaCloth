@@ -2,53 +2,214 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=0.5">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FemmeiaCloth Finance Tracker</title>
   <meta name="description" content="Aplikasi pencatatan keuangan untuk FemmeiaCloth">
-  <meta name="theme-color" content="#6c5ce7">
+  <meta name="theme-color" content="#333333">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gunadizv/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
-    :root { --primary-bg: #fff; --secondary-bg: #f9f9f9; --border-color: #e0e0e0; --text-color: #333; --accent-color: #6c5ce7; --success-color: #000; --danger-color: #d63031; --shadow: 0 4px 6px rgba(0,0,0,0.09); --radius: 10px; }
-    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif;}
-    body {background-color: var(--secondary-bg); color: var(--text-color); min-height: 100vh;}
-    .container {max-width: 1200px; margin: 0 auto; padding: 20px;}
-    header {background-color: var(--primary-bg); padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; text-align: center; position: relative;}
-    h1 {font-weight: 700; color: #444; margin-bottom: 10px;}
-    .main-content {display: grid; grid-template-columns: 1fr; gap: 20px;}
-    @media (min-width: 768px) {.main-content {grid-template-columns: 1fr 1fr;}}
-    .card {background-color: var(--primary-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; transition: transform 0.3s ease;}
-    .card:hover {transform: translateY(-5px);}
-    .card h2 {margin-bottom: 15px; color: #444; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
-    .form-group {margin-bottom: 14px;}
-    label {display: block; margin-bottom: 5px; font-weight: 500;}
+    :root {
+      /* Color Palette adjusted to grey and black tones */
+      --primary-bg: #ffffff;
+      --secondary-bg: rgba(255, 255, 255, 0.5);
+      --border-color: rgba(0, 0, 0, 0.3);
+      --text-color: #333333;
+      --accent-light: #e0e0e0;
+      --accent-mid: #666666;
+      --accent-dark: #1a1a1a;
+      --success-color: #00b894;
+      --danger-color: #d63031;
+      --shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+      --button-shadow: 0 6px 12px rgba(102, 102, 102, 0.4);
+      --button-shadow-hover: 0 8px 16px rgba(102, 102, 102, 0.6);
+      --radius: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--primary-bg);
+      color: var(--text-color);
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 50% 50%, rgba(102, 102, 102, 0.2), transparent 60%);
+      overflow-x: hidden;
+    }
+
+    /* Scattered Shapes from demov1.html, adjusted to grey tones */
+    .scattered-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .scattered-shape {
+      position: absolute;
+      background: transparent;
+      border: 2px solid var(--accent-mid);
+      opacity: 0.5;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .circle1 { width: 60px; height: 60px; border-radius: 50%; top: 10%; left: 5%; animation-delay: 0s; }
+    .circle2 { width: 40px; height: 40px; border-radius: 50%; top: 60%; right: 10%; animation-delay: 2s; }
+    .circle3 { width: 80px; height: 80px; border-radius: 50%; bottom: 20%; left: 15%; animation-delay: 4s; }
+    .circle4 { width: 50px; height: 50px; border-radius: 50%; bottom: 10%; right: 20%; animation-delay: 1s; }
+    .square1 { width: 50px; height: 50px; top: 30%; left: 50%; animation-delay: 3s; }
+    .square2 { width: 70px; height: 70px; bottom: 40%; right: 30%; animation-delay: 5s; }
+    .triangle1 { width: 0; height: 0; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 52px solid var(--accent-mid); top: 20%; left: 80%; animation-delay: 2.5s; }
+    .triangle2 { width: 0; height: 0; border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 69px solid var(--accent-mid); bottom: 30%; left: 25%; animation-delay: 4.5s; }
+    .diamond1 { width: 40px; height: 40px; transform: rotate(45deg); top: 50%; left: 10%; animation-delay: 1.5s; }
+    .diamond2 { width: 60px; height: 60px; transform: rotate(45deg); bottom: 15%; right: 15%; animation-delay: 3.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(20px);
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      text-align: center;
+      position: sticky;
+      top: 20px;
+      z-index: 100;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      
+    }
+
+    h1 {
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      padding: 0 10px;
+    }
+
+    @media (min-width: 768px) {
+      .main-content {
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      }
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.2);
+    }
+
+    .card h2 {
+      margin-bottom: 16px;
+      color: var(--accent-dark);
+      font-weight: 600;
+      border-bottom: 2px solid rgba(102, 102, 102, 0.2);
+      padding-bottom: 10px;
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.7);
+    }
+
     input, select, textarea {
       width: 100%;
-      padding: 10px;
-      border: 1px solid var(--border-color);
+      padding: 12px;
+      border: 1px solid #BFBFBF;
       border-radius: var(--radius);
       font-size: 16px;
-      transition: border 0.3s ease;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
       box-sizing: border-box;
-      box-shadow: none !important;
       outline: none;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.7);
     }
-    input:focus, select:focus, textarea:focus {outline: none; border-color: var(--accent-color);}
-    .suggestions {position: absolute; background: white; border: 1px solid var(--border-color); border-radius: var(--radius); width: calc(100% - 40px); max-height: 150px; overflow-y: auto; z-index: 10;}
-    .suggestion-item {padding: 10px; cursor: pointer;}
-    .suggestion-item:hover {background-color: var(--secondary-bg);}
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-mid);
+      box-shadow: 0 0 0 0 2px rgba(102, 102, 102, 0.3);
+    }
+
+    .suggestions {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      width: calc(100% - 40px);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      box-shadow: var(--shadow);
+    }
+
+    .suggestion-item {
+      padding: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .suggestion-item:hover {
+      background-color: rgba(102, 102, 102, 0.2);
+    }
+
     button, .saldoawal-container button {
-      background: linear-gradient(135deg, #ff7a7a, #ffb6b9);
-      box-shadow: 0 6px 20px rgba(255, 100, 100, 0.19);
+      background: #000;
+      box-shadow: var(--button-shadow);
       color: white;
       border: none;
-      padding: 10px 15px;
+      padding: 12px 20px;
       border-radius: var(--radius);
-      cursor:pointer;
-      font-weight:600;
-      transition: background 0.2s;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
       margin-top: 10px;
       margin-bottom: 10px;
       margin-right: 0;
@@ -56,22 +217,115 @@
       width: 100%;
       display: block;
     }
-    button:hover, .saldoawal-container button:hover {background-color: #5549c0;}
-    .btn-export {background-color: var(--success-color); margin-right: 10px; width: auto;}
-    .btn-export:hover {background-color: #00a383;}
-    .summary-container {display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;}
-    .summary-box {flex: 1; min-width: 150px; padding: 15px; border-radius: var(--radius); text-align: center; box-shadow: var(--shadow);}
-    .income-box {background-color: rgba(0,184,148,0.1); border: 1px solid var(--success-color);}
-    .expense-box {background-color: rgba(214,48,49,0.1); border: 1px solid var(--danger-color);}
-    .summary-box h3 {font-size: 16px; margin-bottom: 10px;}
-    .summary-box p {font-size: 24px; font-weight: 700;}
-    .table-container {overflow-x: auto;}
-    table {width: 100%; border-collapse: collapse; margin-top: 15px;}
-    th, td {padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color);}
-    th {background-color: var(--secondary-bg); font-weight: 600;}
-    tr:hover {background-color: var(--secondary-bg);}
-    .alert {position: fixed; top: 20px; right: 20px; padding: 15px 20px; border-radius: var(--radius); background-color: var(--success-color); color: white; box-shadow: var(--shadow); opacity: 0; transition: opacity 0.4s, transform 0.4s; z-index: 999;}
-    .alert.show {opacity: 1; transform: translateX(0);}
+
+    button:hover, .saldoawal-container button:hover {
+      background-color: var(--accent-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--button-shadow-hover);
+    }
+
+    .btn-export {
+      background-color: var(--success-color);
+      box-shadow: 0 6px 12px rgba(0, 184, 148, 0.4);
+      margin-right: 10px;
+      width: auto;
+    }
+
+    .btn-export:hover {
+      background-color: #00a383;
+      box-shadow: 0 8px 16px rgba(0, 184, 148, 0.6);
+    }
+
+    .summary-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .summary-box {
+      flex: 1;
+      min-width: 200px;
+      padding: 20px;
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: var(--shadow);
+      background-color: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(15px);
+      transition: transform 0.2s ease;
+    }
+
+    .summary-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .income-box {
+      background-color: rgba(0, 184, 148, 0.2);
+      border: 1px solid rgba(0, 184, 148, 0.3);
+    }
+
+    .expense-box {
+      background-color: rgba(214, 48, 49, 0.2);
+      border: 1px solid rgba(214, 48, 49, 0.3);
+    }
+
+    .summary-box h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .summary-box p {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: rgba(102, 102, 102, 0.1);
+      font-weight: 600;
+      color: var(--accent-dark);
+    }
+
+    tr:hover {
+      background-color: rgba(102, 102, 102, 0.05);
+    }
+
+    .alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: var(--radius);
+      background-color: var(--success-color);
+      color: white;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: opacity 0.4s, transform 0.4s;
+      z-index: 999;
+    }
+
+    .alert.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
     .export-buttons, .backup-restore, .modal-buttons {
       display: flex;
       gap: 10px;
@@ -80,46 +334,189 @@
       margin-top: 5px;
       justify-content: flex-end;
     }
-    .chart-container {position: relative; height: 250px; margin-top: 20px;}
-    .loader {border: 4px solid rgba(0,0,0,0.1); border-radius: 50%; border-top: 4px solid var(--accent-color); width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto;}
-    @keyframes spin {0% { transform: rotate(0deg);} 100% {transform: rotate(360deg);}}
-    .btn-delete {background-color: var(--danger-color); color: white; border: none; border-radius: 4px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor:pointer; margin: 0 auto;}
-    .btn-delete:hover {background-color: #b52c2c;}
-    .date-header {background-color: var(--secondary-bg); padding: 10px 15px; font-weight: 600; color: var(--accent-color); border-radius: var(--radius) var(--radius) 0 0;}
-    .date-header:first-child {margin-top: 0;}
-    .modal {display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;}
-    .modal-content {background-color: var(--primary-bg); border-radius: var(--radius); padding: 20px; width: 90%; max-width: 400px; box-shadow: var(--shadow); text-align: center;}
-    .modal-title {margin-bottom: 15px; color: var(--text-color); font-weight: 600;}
-    .install-button {position: absolute; top: 10px; right: 10px; background-color: var(--accent-color); color: white; border: none; padding: 8px 12px; border-radius: var(--radius); font-size: 14px; cursor:pointer; width: auto; margin-top: 0;}
-    .offline-indicator {position: fixed; bottom: 20px; left: 20px; background-color: var(--danger-color); color: white; padding: 10px 15px; border-radius: var(--radius); box-shadow: var(--shadow); display: none;}
-    .filter-container {display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px;}
-    .filter-container input, .filter-container select {max-width: 180px;}
-    .saldoawal-container {margin-top: 12px; margin-bottom: 4px;}
-    .user-info {margin-bottom: 12px; font-size: 14px; color: #555;}
-    .logout-btn {background: #d63031;}
-    .logout-btn:hover {background: #b52c2c;}
-    .pw-section {margin-bottom: 10px;}
+
+    .chart-container {
+      position: relative;
+      height: 250px;
+      margin-top: 20px;
+    }
+
+    .loader {
+      border: 4px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+      border-top: 4px solid var(--accent-mid);
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn-delete {
+      background-color: var(--danger-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin: 0 auto;
+      transition: background 0.2s ease;
+      box-shadow: 0 4px 8px rgba(214, 48, 49, 0.4);
+    }
+
+    .btn-delete:hover {
+      background-color: #b52c2c;
+      box-shadow: 0 6px 12px rgba(214, 48, 49, 0.6);
+    }
+
+    .date-header {
+      background-color: rgba(102, 102, 102, 0.1);
+      padding: 10px 15px;
+      margin-top:25px;
+      font-weight: 600;
+      color: var(--accent-dark);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .date-header:first-child {
+      margin-top: 0;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(15px);
+      border-radius: var(--radius);
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .modal-title {
+      margin-bottom: 15px;
+      color: var(--text-color);
+      font-weight: 600;
+    }
+
+    .offline-indicator {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: var(--danger-color);
+      color: white;
+      padding: 10px 15px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: none;
+    }
+
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .filter-container input, .filter-container select {
+      max-width: 180px;
+    }
+
+    .saldoawal-container {
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+
+    .user-info {
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .logout-btn {
+      background: var(--danger-color);
+      box-shadow: 0 6px 12px rgba(214, 48, 49, 0.4);
+    }
+
+    .logout-btn:hover {
+      background: #b52c2c;
+      box-shadow: 0 8px 16px rgba(214, 48, 49, 0.6);
+    }
+
+    .pw-section {
+      margin-bottom: 10px;
+    }
+
     /* Khusus untuk input "Nama Produk" agar tidak ada garis memanjang */
     #produk {
       border-bottom: 1px solid var(--border-color) !important;
       box-shadow: none !important;
       margin-bottom: 0;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.7);
     }
+
     /* Perbaiki margin antar tombol di form */
     #formTransaksi button, .saldoawal-container button {
       margin-bottom: 10px;
       margin-top: 10px;
       width: 100%;
     }
-    @media (max-width: 600px) {.main-content {grid-template-columns: 1fr;} .summary-container {flex-direction: column;} th, td {padding: 8px 10px; font-size: 14px;}}
+
+    @media (max-width: 600px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      .summary-container {
+        flex-direction: column;
+      }
+      th, td {
+        padding: 8px 10px;
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Scattered Shapes Background -->
+  <div class="scattered-shapes" aria-hidden="true">
+    <div class="scattered-shape circle1"></div>
+    <div class="scattered-shape circle2"></div>
+    <div class="scattered-shape circle3"></div>
+    <div class="scattered-shape circle4"></div>
+    <div class="scattered-shape square1"></div>
+    <div class="scattered-shape square2"></div>
+    <div class="scattered-shape triangle1"></div>
+    <div class="scattered-shape triangle2"></div>
+    <div class="scattered-shape diamond1"></div>
+    <div class="scattered-shape diamond2"></div>
+  </div>
+
   <div class="container">
     <header>
       <h1>FemmeiaCloth Finance Tracker</h1>
-      <button id="installButton" class="install-button">Install App</button>
     </header>
 
     <div class="main-content">
@@ -222,7 +619,7 @@
           <input type="date" id="filterTglMulai">
           <span style="font-size:13px;color:#888">s/d</span>
           <input type="date" id="filterTglAkhir">
-          <button id="btnFilter" type="button" style="width:auto;">Filter</button>
+          <button id="btnFilter" type="button" style="width:auto;">Cari</button>
           <button id="btnResetFilter" type="button" style="width:auto;">Reset</button>
         </div>
         <div class="export-buttons">
@@ -506,35 +903,35 @@
         container.appendChild(dateHeader);
         const table = document.createElement("table");
         table.innerHTML = `
-          <thead>
-            <tr>
-              <th>Produk</th>
-              <th>Jumlah</th>
-              <th>Harga Satuan</th>
-              <th>Total</th>
-              <th>Jenis</th>
-              <th>Kategori</th>
-              <th>Catatan</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        `;
+            <thead>
+              <tr>
+                <th>Produk</th>
+                <th>Jumlah</th>
+                <th>Harga Satuan</th>
+                <th>Total</th>
+                <th>Jenis</th>
+                <th>Kategori</th>
+                <th>Catatan</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          `;
         const tbody = table.querySelector("tbody");
         dateTransactions.forEach(transaction => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td>${transaction.produk}</td>
-            <td>${transaction.jumlah}</td>
-            <td>${formatRupiah(transaction.harga)}</td>
-            <td>${formatRupiah(transaction.total)}</td>
-            <td>${transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
-            <td>${transaction.kategori || "-"}</td>
-            <td>${transaction.catatan || "-"}</td>
-            <td>
-              <button class="btn-delete" data-id="${transaction.id}">🗑️</button>
-            </td>
-          `;
+              <td>${transaction.produk}</td>
+              <td>${transaction.jumlah}</td>
+              <td>${formatRupiah(transaction.harga)}</td>
+              <td>${formatRupiah(transaction.total)}</td>
+              <td>${transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
+              <td>${transaction.kategori || "-" }</td>
+              <td>${transaction.catatan || "-" }</td>
+              <td>
+                <button class="btn-delete" data-id="${transaction.id}">X</button>
+              </td>
+            `;
           tbody.appendChild(tr);
         });
         container.appendChild(table);
@@ -640,265 +1037,194 @@
       const jenis = document.getElementById("jenis").value;
       const kategori = document.getElementById("kategori").value;
       const catatan = document.getElementById("catatan").value.trim();
-      const tanggal = new Date();
       const total = jumlah * harga;
-      if (!produk || !jumlah || !harga || !jenis || !kategori) {
-        showAlert("Pastikan semua data terisi.", true);
-        return;
-      }
-      // Hitung saldo pemasukan sebelum transaksi baru!
-      const { pemasukan } = computeSummaryFromList([...transactions]);
-      if (jenis === 'pengeluaran' && total > pemasukan) {
-        showAlert("Saldo pemasukan tidak cukup untuk pengeluaran!", true);
-        return;
-      }
+      const tanggal = new Date();
+
       try {
         await addDoc(collection(db, "transactions"), {
           produk, jumlah, harga, total, jenis, kategori, catatan, tanggal
         });
+        transactions.push({
+          produk, jumlah, harga, total, jenis, kategori, catatan, tanggal
+        });
+        renderSummary();
+        renderTransactionTable();
         showAlert("Transaksi berhasil disimpan!");
         this.reset();
-        loadTransactions();
       } catch (error) {
         showAlert("Gagal menyimpan transaksi: " + error.message, true);
       }
     });
 
-    // Delete
-    let transactionToDelete = null;
-    const confirmModal = document.getElementById("confirmModal");
-    function showDeleteConfirmation(transactionId) {
-      transactionToDelete = transactionId;
-      confirmModal.style.display = "flex";
+    // Delete confirmation
+    let deleteTransactionId = null;
+    function showDeleteConfirmation(id) {
+      deleteTransactionId = id;
+      document.getElementById("confirmModal").style.display = "flex";
     }
-    document.getElementById("cancelDelete").onclick = function() {
-      confirmModal.style.display = "none";
-      transactionToDelete = null;
-    };
-    document.getElementById("confirmDelete").onclick = async function() {
-      if (transactionToDelete) {
+    document.getElementById("cancelDelete").addEventListener("click", function() {
+      document.getElementById("confirmModal").style.display = "none";
+      deleteTransactionId = null;
+    });
+    document.getElementById("confirmDelete").addEventListener("click", async function() {
+      if (deleteTransactionId) {
         try {
-          await deleteDoc(doc(db, "transactions", transactionToDelete));
+          await deleteDoc(doc(db, "transactions", deleteTransactionId));
+          transactions = transactions.filter(tx => tx.id !== deleteTransactionId);
+          renderSummary();
+          renderTransactionTable();
           showAlert("Transaksi berhasil dihapus!");
-          confirmModal.style.display = "none";
-          transactionToDelete = null;
-          loadTransactions();
         } catch (error) {
           showAlert("Gagal menghapus transaksi: " + error.message, true);
         }
+      } else {
+        showAlert("ID transaksi tidak ditemukan!", true);
       }
-    };
+      document.getElementById("confirmModal").style.display = "none";
+    });
 
-    // Export CSV/PDF Periode
-    function getExportData() {
-      return filterTransactions().map(transaction => ({
-        Tanggal: transaction.tanggal.toLocaleDateString('id-ID'),
-        Produk: transaction.produk,
-        Jumlah: transaction.jumlah,
-        'Harga Satuan': transaction.harga,
-        Total: transaction.total,
-        Jenis: transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
-        Kategori: transaction.kategori || "",
-        Catatan: transaction.catatan || ""
-      }));
+    // User Info and Logout
+    document.getElementById("btnLogout").addEventListener("click", async function() {
+      try {
+        await signOut(auth);
+        showAlert("Berhasil logout");
+        window.location.reload();
+      } catch (error) {
+        showAlert("Gagal logout: " + error.message, true);
+      }
+    });
+    document.getElementById("btnChangePassword").addEventListener("click", async function() {
+      const newPwd = document.getElementById("newPassword").value.trim();
+      if (newPwd.length < 6) {
+        showAlert("Password minimal 6 karakter!", true);
+        return;
+      }
+      try {
+        await updatePassword(auth.currentUser, newPwd);
+        showAlert("Password berhasil diubah!");
+        document.getElementById("newPassword").value = "";
+      } catch (error) {
+        showAlert("Gagal ubah password: " + error.message, true);
+      }
+    });
+    function showUserInfo() {
+      const user = auth.currentUser;
+      document.getElementById("userInfo").innerHTML = user ? 
+        `Login sebagai: <strong>${user.email}</strong>` : "";
     }
 
-    document.getElementById("exportCSV").addEventListener("click", async function() {
-      const data = getExportData();
-      if (data.length === 0) {
-        showAlert("Tidak ada data untuk diekspor", true);
-        return;
-      }
-      if (!window.Papa) {
-        await new Promise(resolve => {
-          const script = document.createElement('script');
-          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js';
-          script.onload = () => resolve();
-          document.head.appendChild(script);
-        });
-      }
-      const csv = Papa.unparse(data);
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', `transaksi_femmeiacloth_${new Date().toISOString().slice(0, 10)}.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    // Offline Indicator
+    window.addEventListener('offline', () => {
+      document.getElementById('offlineIndicator').style.display = 'block';
+    });
+    window.addEventListener('online', () => {
+      document.getElementById('offlineIndicator').style.display = 'none';
     });
 
-    document.getElementById("exportPDF").addEventListener("click", async function() {
-      const data = getExportData();
-      if (data.length === 0) {
-        showAlert("Tidak ada data untuk diekspor", true);
-        return;
-      }
-      if (!window.jspdf) {
-        await new Promise(resolve => {
-          const script = document.createElement('script');
-          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-          script.onload = () => resolve();
-          document.head.appendChild(script);
-        });
-      }
-      if (!window.jspdf || !window.jspdf.jsPDF) {
-        showAlert("Gagal memuat jsPDF", true);
-        return;
-      }
-      if (!window.jspdf.plugin || !window.jspdf.plugin.autotable) {
-        await new Promise(resolve => {
-          const script = document.createElement('script');
-          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js';
-          script.onload = () => resolve();
-          document.head.appendChild(script);
-        });
-      }
-      const { pemasukan, pengeluaran } = computeSummaryFromList([...filteredTransactions]);
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(20);
-      doc.setFont(undefined, 'bold');
-      doc.setTextColor(108, 92, 231);
-      doc.text('FemmeiaCloth Finance Tracker', 105, 20, { align: 'center' });
-      doc.setFontSize(12);
-      doc.setFont(undefined, 'normal');
-      doc.setTextColor(0, 0, 0);
-      doc.text(`Laporan Transaksi - ${new Date().toLocaleDateString('id-ID')}`, 105, 30, { align: 'center' });
-      doc.setFontSize(14);
-      doc.setFont(undefined, 'bold');
-      doc.text('Ringkasan:', 14, 45);
-      doc.setFontSize(12); doc.setFont(undefined, 'normal');
-      doc.text(`Saldo Awal: ${formatRupiah(saldoAwal||0)}`, 14, 52);
-      doc.text(`Total Pemasukan: ${formatRupiah(pemasukan)}`, 14, 59);
-      doc.text(`Total Pengeluaran: ${formatRupiah(pengeluaran)}`, 14, 66);
-      doc.text(`Saldo Akhir: ${formatRupiah((saldoAwal||0)+pemasukan)}`, 14, 73);
-
-      const grouped = groupTransactionsByDate(filteredTransactions.slice().sort((a, b) => b.tanggal - a.tanggal));
-      let startY = 85;
-      for (const [dateStr, dateTransactions] of Object.entries(grouped)) {
-        doc.setFontSize(12); doc.setFont(undefined, 'bold');
-        doc.setTextColor(108, 92, 231);
-        doc.text(dateStr, 14, startY);
-        startY += 7;
-        const tableColumn = ["Produk", "Jumlah", "Harga", "Total", "Jenis", "Kategori", "Catatan"];
-        const tableRows = [];
-        dateTransactions.forEach(transaction => {
-          const tableRow = [
-            transaction.produk,
-            transaction.jumlah,
-            formatRupiah(transaction.harga),
-            formatRupiah(transaction.total),
-            transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
-            transaction.kategori || "-",
-            transaction.catatan || "-"
-          ];
-          tableRows.push(tableRow);
-        });
-        doc.autoTable({
-          head: [tableColumn],
-          body: tableRows,
-          startY: startY,
-          theme: 'grid',
-          styles: { fontSize: 9, cellPadding: 3 },
-          headStyles: { fillColor: [108, 92, 231], textColor: [255, 255, 255] }
-        });
-        startY = doc.lastAutoTable.finalY + 10;
-      }
-      doc.save(`transaksi_femmeiacloth_${new Date().toISOString().slice(0, 10)}.pdf`);
-    });
-
-    // Backup/Restore JSON
+    // Backup & Restore
     document.getElementById("backupJSON").onclick = function() {
-      const blob = new Blob([JSON.stringify(transactions)], { type: "application/json" });
+      const backupData = { transactions };
+      const blob = new Blob([JSON.stringify(backupData)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = "backup_femmeiacloth.json";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `femmeiatracker_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
     };
     document.getElementById("restoreJSONBtn").onclick = function() {
       document.getElementById("restoreJSON").click();
     };
-    document.getElementById("restoreJSON").onchange = async function(e) {
-      const file = e.target.files[0];
+    document.getElementById("restoreJSON").onchange = function(event) {
+      const file = event.target.files[0];
       if (!file) return;
-      if (!confirm("Data lama akan tertimpa. Lanjutkan?")) return;
-      try {
-        const arr = JSON.parse(await file.text());
-        for (const tx of arr) {
-          // Simpan ulang ke Firestore dengan data asli
-          await addDoc(collection(db, "transactions"), {
-            produk: tx.produk, jumlah: tx.jumlah, harga: tx.harga, total: tx.total,
-            jenis: tx.jenis, kategori: tx.kategori, catatan: tx.catatan,
-            tanggal: new Date(tx.tanggal)
-          });
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.transactions && Array.isArray(data.transactions)) {
+            transactions = data.transactions.map(tx => ({
+              ...tx,
+              tanggal: new Date(tx.tanggal)
+            }));
+            renderSummary();
+            renderTransactionTable();
+            showAlert("Data berhasil direstore!");
+          } else {
+            showAlert("Format file tidak valid!", true);
+          }
+        } catch (err) {
+          showAlert("Gagal restore data: " + err.message, true);
         }
-        showAlert("Restore JSON berhasil!");
-        loadTransactions();
-      } catch (e) {
-        showAlert("Restore gagal", true);
-      }
+      };
+      reader.readAsText(file);
     };
 
-    // User Info & Manajemen Akun
-    function showUserInfo() {
-      const user = auth.currentUser;
-      document.getElementById("userInfo").textContent = user ? `Login sebagai: ${user.email}` : "";
-    }
-    document.getElementById("btnLogout").onclick = async function() {
-      try {
-        await signOut(auth);
-        location.reload();
-      } catch {
-        showAlert("Logout gagal", true);
+    // Export to CSV
+    document.getElementById("exportCSV").onclick = function() {
+      if (filteredTransactions.length === 0) {
+        showAlert("Tidak ada data untuk diexport!", true);
+        return;
       }
+      const rows = [
+        ["Tanggal","Produk","Jumlah","Harga Satuan","Total","Jenis","Kategori","Catatan"].join(","),
+        ...filteredTransactions.map(tx => [
+          formatDateIndonesian(tx.tanggal),
+          tx.produk,
+          tx.jumlah,
+          tx.harga,
+          tx.total,
+          tx.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
+          tx.kategori || "-",
+          tx.catatan || "-"
+        ].join(","))
+      ].join("\n");
+      const blob = new Blob([rows], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `femmeiatracker_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
     };
-    document.getElementById("btnChangePassword").onclick = async function() {
-      const newPw = document.getElementById("newPassword").value;
-      if (!newPw || newPw.length < 6) {
-        showAlert("Minimal 6 karakter.", true);
+
+    // Export to PDF (using jsPDF library)
+    document.getElementById("exportPDF").onclick = async function() {
+      if (filteredTransactions.length === 0) {
+        showAlert("Tidak ada data untuk diexport!", true);
         return;
       }
       try {
-        await updatePassword(auth.currentUser, newPw);
-        showAlert("Password diganti!");
-        document.getElementById("newPassword").value = "";
-      } catch (e) {
-        showAlert("Gagal ganti password: "+(e.message||""), true);
+        if (typeof jspdf === 'undefined') {
+          const script = document.createElement('script');
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+          await new Promise(resolve => script.onload = resolve);
+          document.head.appendChild(script);
+        }
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text('FemmeiaCloth - Riwayat Transaksi', 10, 10);
+        let yPos = 20;
+        filteredTransactions.forEach((tx, i) => {
+          if (yPos > 280) {
+            doc.addPage();
+            yPos = 10;
+          }
+          doc.text(`${i+1}. ${formatDateIndonesian(tx.tanggal)} - ${tx.produk} (${tx.jumlah}x ${formatRupiah(tx.harga)}) = ${formatRupiah(tx.total)} [${tx.jenis === 'pemasukan' ? 'Pemasukan' : 'Pengeluaran'} - ${tx.kategori || '-'}] ${tx.catatan || ''}`, 10, yPos);
+          yPos += 10;
+        });
+        doc.save(`femmeiatracker_${new Date().toISOString().slice(0,10)}.pdf`);
+      } catch (err) {
+        showAlert("Gagal export PDF: " + err.message, true);
       }
     };
 
-    window.addEventListener('offline', () => {
-      document.getElementById("offlineIndicator").style.display = "block";
-    });
-    window.addEventListener('online', () => {
-      document.getElementById("offlineIndicator").style.display = "none";
-    });
-
-    // PWA
-    let deferredPrompt;
-    const installBtn = document.getElementById("installButton");
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = "block";
-    });
-    installBtn.addEventListener("click", async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') showAlert('Installasi berhasil!');
-        deferredPrompt = null;
-        installBtn.style.display = "none";
-      }
-    });
-
-    // Start
-    autoLogin();
-    </script>
+    // Auto Login on page load
+    window.onload = function() {
+      autoLogin();
+    };
+  </script>
 </body>
 </html>
+
+
