@@ -236,6 +236,18 @@
       box-shadow: 0 8px 16px rgba(0, 184, 148, 0.6);
     }
 
+    .btn-print {
+      background-color: var(--success-color);
+      box-shadow: 0 6px 12px rgba(0, 184, 148, 0.4);
+      width: auto;
+      margin-top: 20px;
+    }
+
+    .btn-print:hover {
+      background-color: #00a383;
+      box-shadow: 0 8px 16px rgba(0, 184, 148, 0.6);
+    }
+
     .summary-container {
       display: flex;
       flex-wrap: wrap;
@@ -497,6 +509,76 @@
         font-size: 14px;
       }
     }
+
+    /* Styling untuk Invoice */
+    .invoice-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .invoice-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .invoice-header h1 {
+      font-size: 2rem;
+      color: var(--accent-dark);
+    }
+
+    .invoice-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .invoice-details p {
+      margin: 5px 0;
+      font-size: 0.9rem;
+    }
+
+    .invoice-buyer {
+      margin-bottom: 20px;
+    }
+
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    .invoice-table th, .invoice-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      text-align: left;
+    }
+
+    .invoice-table th {
+      background-color: rgba(102, 102, 102, 0.1);
+      font-weight: 600;
+    }
+
+    .invoice-table tfoot {
+      font-weight: 600;
+    }
+
+    .invoice-thankyou {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    .invoice-footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.8rem;
+      color: var(--accent-mid);
+    }
   </style>
 </head>
 <body>
@@ -523,6 +605,10 @@
       <div class="card">
         <h2>Input Transaksi</h2>
         <form id="formTransaksi" autocomplete="off">
+          <div class="form-group" style="position: relative;">
+            <label for="pembeli">Nama Pelanggan/Pembeli</label>
+            <input type="text" id="pembeli" placeholder="Nama Pelanggan (Opsional)">
+          </div>
           <div class="form-group" style="position: relative;">
             <label for="produk">Nama Produk</label>
             <input type="text" id="produk" required autocomplete="off">
@@ -628,6 +714,77 @@
         </div>
         <div class="table-container" id="transactionTableContainer"></div>
       </div>
+
+      <!-- Bagian Generate Invoice -->
+      <div class="card" style="grid-column: 1 / -1;">
+        <h2>Generate Invoice</h2>
+        <div class="form-group">
+          <label for="selectTransaction">Pilih Transaksi</label>
+          <select id="selectTransaction" required>
+            <option value="">-- Pilih Transaksi untuk Invoice --</option>
+          </select>
+        </div>
+        <div id="invoicePreview" style="display: none;">
+          <div class="invoice-container">
+            <!-- Header Invoice -->
+            <div class="invoice-header">
+              <h1>FemmeiaCloth</h1>
+              <p>Tamalanrea, Makassar, Indonesia</p>
+              <p>Email: femmeiacloth@gmail.com | Phone: +6285341899229</p>
+            </div>
+
+            <!-- Invoice Title & Date -->
+            <div class="invoice-details">
+              <h3 style="font-size: 1.2rem; font-weight: 600; margin: 0;">INVOICE</h3>
+              <div style="text-align: right;">
+                <p><strong>Tanggal:</strong> <span id="invoiceDate">--</span></p>
+              </div>
+            </div>
+
+            <!-- Bill To Section -->
+            <div class="invoice-buyer">
+              <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 5px;">Ditagih Kepada:</h4>
+              <p><span id="invoiceBuyer">Pelanggan</span></p>
+            </div>
+
+            <!-- Items Table -->
+            <table class="invoice-table">
+              <thead>
+                <tr>
+                  <th style="width: 5%;">No.</th>
+                  <th style="width: 40%;">Produk</th>
+                  <th style="width: 10%; text-align: center;">Jumlah</th>
+                  <th style="width: 20%; text-align: right;">Harga Satuan</th>
+                  <th style="width: 25%; text-align: right;">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody id="invoiceItems">
+                <!-- Item akan diisi secara dinamis melalui JavaScript -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4" style="text-align: right;">Total:</td>
+                  <td style="text-align: right;"><span id="invoiceTotal">Rp 0</span></td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <!-- Thank You Note -->
+            <div class="invoice-thankyou">
+              <p>Terima kasih atas kepercayaan Anda kepada Femmeia Cloth.</p>
+              <p>Kami berharap dapat melayani Anda kembali di masa depan.</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="invoice-footer">
+              <p>Invoice ini dibuat pada <span id="printDate">--</span></p>
+            </div>
+          </div>
+          <button id="btnPrintInvoice" class="btn-print">Cetak Invoice</button>
+        </div>
+        <p id="noInvoiceMessage" style="text-align: center; color: rgba(0, 0, 0, 0.6); margin-top: 20px;">Pilih transaksi untuk melihat preview invoice.</p>
+      </div>
+
       <div class="card" style="grid-column: 1 / -1;">
         <h2>Manajemen Akun</h2>
         <div class="user-info" id="userInfo"></div>
@@ -872,6 +1029,7 @@
         });
         renderSummary();
         renderTransactionTable();
+        renderInvoiceDropdown(); // Tambahkan ini untuk mengisi dropdown invoice
       } catch (error) {
         showAlert("Gagal memuat transaksi: " + error.message, true);
       }
@@ -906,6 +1064,7 @@
             <thead>
               <tr>
                 <th>Produk</th>
+                <th>Pelanggan</th>
                 <th>Jumlah</th>
                 <th>Harga Satuan</th>
                 <th>Total</th>
@@ -922,6 +1081,7 @@
           const tr = document.createElement("tr");
           tr.innerHTML = `
               <td>${transaction.produk}</td>
+              <td>${transaction.pembeli || "-"}</td>
               <td>${transaction.jumlah}</td>
               <td>${formatRupiah(transaction.harga)}</td>
               <td>${formatRupiah(transaction.total)}</td>
@@ -943,6 +1103,65 @@
         });
       });
     }
+
+    // Fungsi untuk mengisi dropdown transaksi di bagian Generate Invoice
+    function renderInvoiceDropdown() {
+      const select = document.getElementById("selectTransaction");
+      select.innerHTML = '<option value="">-- Pilih Transaksi untuk Invoice --</option>';
+      transactions.slice().sort((a, b) => b.tanggal - a.tanggal).forEach(transaction => {
+        const option = document.createElement("option");
+        option.value = transaction.id;
+        option.textContent = `${formatDateIndonesian(transaction.tanggal)} - ${transaction.produk} - ${formatRupiah(transaction.total)}`;
+        select.appendChild(option);
+      });
+    }
+
+    // Fungsi untuk menampilkan invoice berdasarkan transaksi yang dipilih
+    function renderInvoice(transactionId) {
+      const transaction = transactions.find(tx => tx.id === transactionId);
+      if (!transaction) {
+        document.getElementById("noInvoiceMessage").style.display = "block";
+        document.getElementById("invoicePreview").style.display = "none";
+        return;
+      }
+
+      document.getElementById("noInvoiceMessage").style.display = "none";
+      document.getElementById("invoicePreview").style.display = "block";
+
+      // Isi data invoice
+      document.getElementById("invoiceDate").textContent = formatDateIndonesian(transaction.tanggal);
+      document.getElementById("invoiceBuyer").textContent = transaction.pembeli || "Pelanggan";
+      document.getElementById("invoiceTotal").textContent = formatRupiah(transaction.total);
+      document.getElementById("printDate").textContent = formatDateIndonesian(new Date());
+
+      // Isi daftar item (hanya satu item per transaksi untuk saat ini)
+      const tbody = document.getElementById("invoiceItems");
+      tbody.innerHTML = `
+        <tr>
+          <td>1</td>
+          <td>${transaction.produk}</td>
+          <td style="text-align: center;">${transaction.jumlah}</td>
+          <td style="text-align: right;">${formatRupiah(transaction.harga)}</td>
+          <td style="text-align: right;">${formatRupiah(transaction.total)}</td>
+        </tr>
+      `;
+    }
+
+    // Event listener untuk dropdown transaksi
+    document.getElementById("selectTransaction").addEventListener("change", function() {
+      const transactionId = this.value;
+      if (transactionId) {
+        renderInvoice(transactionId);
+      } else {
+        document.getElementById("noInvoiceMessage").style.display = "block";
+        document.getElementById("invoicePreview").style.display = "none";
+      }
+    });
+
+    // Event listener untuk tombol cetak invoice
+    document.getElementById("btnPrintInvoice").addEventListener("click", function() {
+      window.print();
+    });
 
     // Chart
     let myChart = null;
@@ -1031,6 +1250,7 @@
     // Form submit
     document.getElementById("formTransaksi").addEventListener("submit", async function(e) {
       e.preventDefault();
+      const pembeli = document.getElementById("pembeli").value.trim();
       const produk = document.getElementById("produk").value.trim();
       const jumlah = parseInt(document.getElementById("jumlah").value, 10);
       const harga = parseInt(document.getElementById("harga").value, 10);
@@ -1042,13 +1262,14 @@
 
       try {
         await addDoc(collection(db, "transactions"), {
-          produk, jumlah, harga, total, jenis, kategori, catatan, tanggal
+          pembeli, produk, jumlah, harga, total, jenis, kategori, catatan, tanggal
         });
         transactions.push({
-          produk, jumlah, harga, total, jenis, kategori, catatan, tanggal
+          pembeli, produk, jumlah, harga, total, jenis, kategori, catatan, tanggal
         });
         renderSummary();
         renderTransactionTable();
+        renderInvoiceDropdown(); // Perbarui dropdown setelah transaksi baru ditambahkan
         showAlert("Transaksi berhasil disimpan!");
         this.reset();
       } catch (error) {
@@ -1073,6 +1294,7 @@
           transactions = transactions.filter(tx => tx.id !== deleteTransactionId);
           renderSummary();
           renderTransactionTable();
+          renderInvoiceDropdown(); // Perbarui dropdown setelah transaksi dihapus
           showAlert("Transaksi berhasil dihapus!");
         } catch (error) {
           showAlert("Gagal menghapus transaksi: " + error.message, true);
@@ -1149,6 +1371,7 @@
             }));
             renderSummary();
             renderTransactionTable();
+            renderInvoiceDropdown(); // Perbarui dropdown setelah data direstore
             showAlert("Data berhasil direstore!");
           } else {
             showAlert("Format file tidak valid!", true);
@@ -1167,9 +1390,10 @@
         return;
       }
       const rows = [
-        ["Tanggal","Produk","Jumlah","Harga Satuan","Total","Jenis","Kategori","Catatan"].join(","),
+        ["Tanggal","Pembeli","Produk","Jumlah","Harga Satuan","Total","Jenis","Kategori","Catatan"].join(","),
         ...filteredTransactions.map(tx => [
           formatDateIndonesian(tx.tanggal),
+          tx.pembeli || "-",
           tx.produk,
           tx.jumlah,
           tx.harga,
@@ -1226,5 +1450,3 @@
   </script>
 </body>
 </html>
-
-
