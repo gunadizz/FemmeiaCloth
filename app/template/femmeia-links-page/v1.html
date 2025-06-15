@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <title>FemmeiaCloth | Links Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+
+    <!-- SEO & Social Preview -->
+    <meta name="description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth.">
+    <meta property="og:title" content="FemmeiaCloth | Link Hub">
+    <meta property="og:description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth">
+    <meta property="og:image" content="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+    <meta property="og:url" content="https://femmeiacloth.me">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="FemmeiaCloth | Link Hub">
+    <meta name="twitter:description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di FemmeiaCloth">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+    <meta name="theme-color" content="#f8fafc">
+
+    <style>
+        :root {
+            --background: #ffffff;
+            --background-light: #f8fafc;
+            --background-lighter: #f1f5f9;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --text-light: #94a3b8;
+            --accent-dark: #1f2937;
+            --accent-mid: #374151;
+            --accent-light: #9ca3af;
+            --border: rgba(55, 65, 81, 0.12);
+            --border-hover: rgba(55, 65, 81, 0.2);
+            --success: #059669;
+            --warning: #fbbf24;
+            --shadow: 0 8px 32px rgba(31, 41, 55, 0.06);
+            --shadow-hover: 0 16px 48px rgba(31, 41, 55, 0.1);
+            --radius-md: 1rem;
+            --radius-lg: 1.25rem;
+            --transition-speed: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --blur-strength: 10px;
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 100%);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Scattered Shapes Background */
+        .scattered-shapes {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .scattered-shape {
+            position: absolute;
+            opacity: 0.13;
+            filter: blur(1px);
+            pointer-events: none;
+            z-index: 0;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: both;
+        }
+
+        /* CIRCLE */
+        .scattered-shape.circle1 {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-mid);
+            top: 6%;
+            left: 12%;
+            animation-name: floatY1;
+            animation-duration: 13s;
+        }
+
+        .scattered-shape.circle2 {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--success);
+            top: 32%;
+            left: 83%;
+            animation-name: floatX2;
+            animation-duration: 11s;
+        }
+
+        .scattered-shape.circle3 {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--warning);
+            top: 78%;
+            left: 25%;
+            animation-name: floatXY3;
+            animation-duration: 17s;
+        }
+
+        .scattered-shape.circle4 {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            top: 60%;
+            left: 65%;
+            animation-name: floatY2;
+            animation-duration: 12.2s;
+        }
+
+        /* SQUARE */
+        .scattered-shape.square1 {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-md);
+            background: var(--background-lighter);
+            border: 2px solid var(--accent-light);
+            top: 18%;
+            left: 75%;
+            animation-name: floatX2;
+            animation-duration: 10.5s;
+        }
+
+        .scattered-shape.square2 {
+            width: 62px;
+            height: 62px;
+            border-radius: var(--radius-md);
+            background: var(--accent-light);
+            top: 68%;
+            left: 77%;
+            animation-name: floatXY3;
+            animation-duration: 15s;
+        }
+
+        /* TRIANGLE */
+        .scattered-shape.triangle1 {
+            width: 0;
+            height: 0;
+            border-left: 28px solid transparent;
+            border-right: 28px solid transparent;
+            border-bottom: 50px solid var(--warning);
+            top: 54%;
+            left: 15%;
+            animation-name: floatY1;
+            animation-duration: 16s;
+        }
+
+        .scattered-shape.triangle2 {
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 34px solid var(--accent-mid);
+            top: 38%;
+            left: 56%;
+            animation-name: floatX2;
+            animation-duration: 13.1s;
+        }
+
+        /* DIAMOND */
+        .scattered-shape.diamond1 {
+            width: 44px;
+            height: 44px;
+            background: var(--success);
+            transform: rotate(45deg);
+            border-radius: var(--radius-md);
+            top: 85%;
+            left: 41%;
+            animation-name: floatXY3;
+            animation-duration: 19s;
+        }
+
+        .scattered-shape.diamond2 {
+            width: 28px;
+            height: 28px;
+            background: var(--accent-dark);
+            transform: rotate(45deg);
+            border-radius: var(--radius-md);
+            top: 37%;
+            left: 17%;
+            animation-name: floatY1;
+            animation-duration: 11.3s;
+        }
+
+        /* KEYFRAMES ANIMASI */
+        @keyframes floatY1 {
+            0%,100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-28px) scale(1.12); }
+        }
+
+        @keyframes floatY2 {
+            0%,100% { transform: translateY(0) scale(1); }
+            40% { transform: translateY(19px) scale(1.08); }
+            80% { transform: translateY(-12px) scale(0.98); }
+        }
+
+        @keyframes floatX2 {
+            0%,100% { transform: translateX(0) scale(1); }
+            50% { transform: translateX(-34px) scale(1.09); }
+        }
+
+        @keyframes floatXY3 {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(-19px, -17px) scale(1.11); }
+            66% { transform: translate(14px, 11px) scale(0.97); }
+        }
+
+        .container {
+            max-width: 500px;
+            width: 95vw;
+            padding: 2rem 1rem;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 0.5s ease forwards;
+            animation-delay: 2s;
+        }
+
+        .loading-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            animation: loadingPulse 1.5s ease-in-out infinite;
+            text-align: center;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: rgba(55, 65, 81, 0.02);
+            backdrop-filter: blur(var(--blur-strength));
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-dark);
+            box-shadow: 0 2px 16px rgba(31, 41, 55, 0.07);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--accent-dark);
+            position: relative;
+            z-index: 1;
+            animation: textFadeIn 1s ease 0.3s both;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.2rem, 3vw, 1.75rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--accent-dark);
+            position: relative;
+            z-index: 1;
+            animation: textFadeIn 1s ease 0.5s both;
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            width: 100%;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-hover);
+            backdrop-filter: blur(var(--blur-strength));
+            border-radius: var(--radius-md);
+            padding: 1rem 0.75rem;
+            
+            text-align: center;
+            flex: 1 1 100px;
+            min-width: 100px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-speed);
+            border: 1px solid var(--glass-border);
+        }
+
+        .info-card:hover {
+            transform: translateY(-7px);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .info-icon {
+            font-size: 1.5rem;
+            color: var(--accent-dark);
+        }
+
+        .info-text {
+            font-weight: 600;
+            color: var(--accent-dark);
+        }
+
+        /* Katalog Button */
+        .katalog-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--accent-dark);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(var(--blur-strength));
+            box-shadow: var(--shadow-hover);
+        }
+
+        .katalog-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .katalog-btn:hover::before {
+            left: 100%;
+        }
+
+        .katalog-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: var(--accent-mid);
+            box-shadow: var(--shadow-hover);
+            animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+        .katalog-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* Links Container with Cards */
+        .links-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .link-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-strength));
+            border-radius: var(--radius-md);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition-speed);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.2rem;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            background: var(--accent-dark);
+            color: white;
+            padding: 1.1rem 1.5rem;
+            border-radius: 20px 8px 20px 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+            gap: 0.75rem;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+
+        .link-btn:hover::before {
+            left: 100%;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: var(--accent-mid);
+            box-shadow: 0 10px 20px rgba(31, 41, 55, 0.2);
+            animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+        .link-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .link-icon {
+            font-size: 1.3rem;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { transform: translateY(-3px) scale(1.02); }
+            50% { transform: translateY(-5px) scale(1.03); }
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal-screenshot {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(var(--blur-strength));
+            justify-content: center;
+            align-items: center;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .modal-screenshot.active {
+            display: flex;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            background: transparent;
+            z-index: 1;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+
+        .modal-content {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(var(--blur-strength));
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-hover);
+            padding: 2rem;
+            max-width: 95vw;
+            max-height: 90vh;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: modalIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--glass-border);
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-img {
+            width: 100%;
+            max-width: 500px;
+            max-height: 70vh;
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+            display: block;
+            box-shadow: var(--shadow);
+            background: #eee;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 11;
+            padding: 0.3rem;
+            border-radius: 50%;
+            transition: background 0.18s, transform 0.18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            background: rgba(31, 41, 55, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Promo Modal */
+        .promo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(31, 41, 55, 0.13);
+            backdrop-filter: blur(var(--blur-strength));
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            animation: promoFadeInBg 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background 0.23s;
+        }
+
+        @keyframes promoFadeInBg {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .promo-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(var(--blur-strength));
+            padding: 2rem 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-hover);
+            max-width: 95vw;
+            width: 390px;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--glass-border);
+            font-family: 'Quicksand', sans-serif;
+            animation: modalBounceIn 0.55s cubic-bezier(0.25, 1.4, 0.48, 1.08);
+            transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalBounceIn {
+            0% { transform: scale(0.8) translateY(50px); opacity: 0; }
+            70% { transform: scale(1.06) translateY(-8px); opacity: 0.97; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .promo-modal-content.closing {
+            animation: modalBounceOut 0.36s cubic-bezier(0.42, 0.01, 0.52, 0.94) forwards;
+        }
+
+        @keyframes modalBounceOut {
+            0% { transform: scale(1) translateY(0); opacity: 1; }
+            60% { transform: scale(0.94) translateY(12px); opacity: 0.7; }
+            100% { transform: scale(0.7) translateY(90px); opacity: 0; }
+        }
+
+        .promo-modal-img {
+            width: 120px;
+            height: auto;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.1rem;
+            box-shadow: var(--shadow);
+            animation: imgPopIn 0.65s cubic-bezier(0.23, 1.2, 0.45, 1.01);
+        }
+
+        @keyframes imgPopIn {
+            0% { transform: scale(0.7) rotate(-6deg); opacity: 0; }
+            70% { transform: scale(1.08) rotate(3deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .promo-modal-title {
+            color: var(--accent-dark);
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            margin-top: 0;
+            letter-spacing: 1px;
+            animation: titleIn 0.7s cubic-bezier(0.23, 1.2, 0.45, 1.01);
+        }
+
+        @keyframes titleIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .promo-modal-desc {
+            color: var(--text-muted);
+            font-size: 1.09rem;
+            margin-bottom: 1.15rem;
+            line-height: 1.6;
+            animation: fadeInText 0.85s 0.13s backwards;
+        }
+
+        @keyframes fadeInText {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .promo-modal-code {
+            font-family: monospace;
+            font-size: 1.13rem;
+            color: var(--accent-dark);
+            background: rgba(31, 41, 55, 0.1);
+            padding: 2px 10px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(31, 41, 55, 0.1);
+            letter-spacing: 0.08em;
+            animation: codePulse 2.2s infinite alternate cubic-bezier(0.45, 0, 0.7, 1);
+        }
+
+        @keyframes codePulse {
+            0% { box-shadow: 0 1px 4px rgba(31, 41, 55, 0.1); background: rgba(31, 41, 55, 0.1); }
+            100% { box-shadow: 0 4px 14px rgba(31, 41, 55, 0.2); background: rgba(31, 41, 55, 0.15); }
+        }
+
+        .promo-modal-btn {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            border-radius: 20px 8px 20px 8px;
+            font-size: 1.13rem;
+            font-weight: 600;
+            padding: 0.85rem 2rem;
+            margin-top: 0.6rem;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: background 0.18s, box-shadow 0.19s, color 0.17s, transform 0.22s;
+            display: inline-block;
+            animation: btnPopIn 1.2s 0.3s backwards cubic-bezier(0.23, 1.2, 0.45, 1.01);
+        }
+
+        @keyframes btnPopIn {
+            0% { opacity: 0; transform: scale(0.7); }
+            60% { opacity: 1; transform: scale(1.18); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .promo-modal-btn:hover,
+        .promo-modal-btn:focus {
+            background: var(--accent-mid);
+            transform: scale(1.06);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .promo-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.7rem;
+            color: var(--text-light);
+            position: absolute;
+            top: 0.7rem;
+            right: 0.8rem;
+            cursor: pointer;
+            transition: color 0.17s, background 0.17s, transform 0.17s;
+            z-index: 2;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            line-height: 34px;
+        }
+
+        .promo-modal-close:hover,
+        .promo-modal-close:focus {
+            color: var(--accent-dark);
+            background: rgba(31, 41, 55, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Share Button (Sticky) */
+        .share-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: var(--accent-dark);
+            cursor: pointer;
+            transition: var(--transition-speed);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 16px rgba(31, 41, 55, 0.15);
+            z-index: 1000;animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 24px rgba(31, 41, 55, 0.25);
+            animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+        .share-btn:active {
+            transform: translateY(1px) scale(0.95);
+        }
+
+        .share-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: var(--accent-dark);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Share Modal */
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(var(--blur-strength));
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 99999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .share-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(var(--blur-strength));
+            padding: 2rem 1.5rem;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            box-shadow: var(--shadow-hover);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--glass-border);
+            font-family: 'Quicksand', sans-serif;
+            animation: slideUp 0.3s ease-out;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(100%); opacity: 0; }
+        }
+
+        .share-modal-title {
+            color: var(--accent-dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .share-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            color: var(--accent-dark);
+            width: 60px;
+        }
+
+        .share-option:hover {
+            transform: scale(1.1);
+        }
+
+        .share-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(31, 41, 55, 0.1);
+            background: var(--accent-light);
+        }
+
+        .share-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: white;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .share-option-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .copy-link-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .link-input {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            font-family: 'Quicksand', sans-serif;
+            width: 70%;
+        }
+
+        .copy-btn {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.5rem 1rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-mid);
+            transform: scale(1.02);
+        }
+
+        .share-modal-close {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .share-modal-close:hover {
+            background: var(--accent-mid);
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 520px) {
+            .promo-modal-content {
+                width: 96vw;
+                padding: 1.5rem 1rem;
+            }
+
+            .share-modal-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .share-options {
+                gap: 1rem;
+            }
+
+            .share-btn {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .share-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-strength));
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            padding: 1.5rem;
+            width: 100%;
+            text-align: center;
+            margin-top: auto;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem 0.75rem;
+            }
+
+            .hero {
+                padding: 2rem 0.75rem;
+            }
+
+            .links-container {
+                gap: 0.75rem;
+            }
+
+            .link-btn {
+                padding: 1rem 1.25rem;
+                font-size: 1rem;
+            }
+
+            .info-cards {
+                gap: 0.75rem;
+            }
+
+            .info-card {
+                flex: 1 1 45%;
+                min-width: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .info-card {
+                flex: 1 1 100%;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { transform: translateY(-3px) scale(1.1); }
+            50% { transform: translateY(-5px) scale(1.15); }
+        }
+        .profile-social-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+.profile-photo {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent-dark);
+  box-shadow: 0 2px 16px rgba(31,41,55,0.07);
+}
+.profile-tags {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.btn-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: #fff;
+  color: #222;
+  border: none;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 5px rgba(55,65,81,0.06);
+  cursor: pointer;
+}
+.btn-social .social-icon {
+  display: flex;
+  align-items: center;
+}
+.btn-social.ig {
+  background: #FF96B9;
+  color: #fff;
+  
+}
+.btn-social.wa {
+	
+  background: #86D3A2;
+  color: #fff;
+}
+.btn-social.ig:hover,
+.btn-social.wa:hover {
+  filter: brightness(0.92);
+  transform: scale(1.05);
+}
+.profile-tag {
+  background: var(--accent-mid, #374151);
+  color: #fff;
+  border-radius: 1.5rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+  box-shadow: 0 1px 6px rgba(55, 65, 81, 0.07);
+}
+
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-text">Femmeia Links Page</div>
+    </div>
+
+    <!-- BACKGROUND SHAPES -->
+    <div class="scattered-shapes" aria-hidden="true">
+        <div class="scattered-shape circle1"></div>
+        <div class="scattered-shape circle2"></div>
+        <div class="scattered-shape circle3"></div>
+        <div class="scattered-shape circle4"></div>
+        <div class="scattered-shape square1"></div>
+        <div class="scattered-shape square2"></div>
+        <div class="scattered-shape triangle1"></div>
+        <div class="scattered-shape triangle2"></div>
+        <div class="scattered-shape diamond1"></div>
+        <div class="scattered-shape diamond2"></div>
+    </div>
+
+    <!-- Sticky Share Button -->
+    <button id="openShareModal" class="share-btn" aria-label="Bagikan Link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+    </button>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section with Info Cards and Links -->
+        <section class="hero fade-in">
+            <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth Profile Photo, showcasing elegant hijab design with premium aesthetic" class="profile-photo" />
+            <h1>FemmeiaCloth</h1>
+            <h2>Tampil Syar'i, Tetap Stylish!</h2>
+            
+            <div class="profile-social-container">
+    <div class="profile-tags">
+    <a href="https://instagram.com/femmeia.cloth" class="btn-social ig" target="_blank" title="Instagram @femmeia.cloth">
+      <span class="social-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="black" stroke-width="2" fill="none"/>
+          <circle cx="12" cy="12" r="5" stroke="black" stroke-width="2" fill="none"/>
+          <circle cx="17" cy="7" r="1.2" fill="black"/>
+        </svg>
+      </span>
+      @femmeia.cloth
+    </a>
+    <a href="https://wa.me/6281234567890" class="btn-social wa" target="_blank" title="WhatsApp 081234567890">
+      <span class="social-icon">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+          <g>
+            <circle cx="16" cy="16" r="14" stroke="black" stroke-width="2" fill="none"/>
+            <path d="M16 7c-5 0-9 3.93-9 8.77 0 1.55.5 3.02 1.36 4.32L7 25l4.13-1.31C12.9 24.23 14.41 24.54 16 24.54c5 0 9-3.93 9-8.77S21 7 16 7z" stroke="black" stroke-width="2" fill="none"/>
+            <path d="M21.06 19.07c-.29-.14-1.7-.84-1.96-.93-.26-.1-.45-.14-.64.14-.19.28-.74.93-.91 1.12-.17.19-.34.21-.64.07-.29-.14-1.21-.44-2.31-1.41-.86-.77-1.44-1.72-1.61-2-.17-.29-.02-.44.13-.58.13-.13.29-.34.44-.51.15-.17.2-.29.3-.48.1-.19.05-.36-.02-.51-.07-.14-.64-1.54-.88-2.12-.23-.56-.47-.48-.64-.49h-.54c-.17 0-.44.06-.67.29-.23.24-.88.85-.88 2.07s.91 2.39 1.03 2.56c.13.17 1.79 2.86 4.34 3.9.61.26 1.09.41 1.46.53.61.2 1.17.17 1.61.1.49-.07 1.5-.61 1.71-1.19.21-.58.21-1.07.15-1.19-.06-.12-.26-.19-.55-.33z" fill="black"/>
+          </g>
+        </svg>
+      </span>
+      087777420644
+    </a>
+    <span class="profile-tag">#hijabsyari</span>
+    <span class="profile-tag">#premiumbrand</span>
+  </div>
+</div>
+
+            <button style="margin-top:5px; box-shadow: 0 13px 40px #273345; border-radius: 20px 8px 20px 8px;" id="openScreenshotModal" class="katalog-btn">Lihat Katalog</button>
+            <div class="info-cards fade-in" style="animation-delay: 0.2s">
+                
+                <div class="info-card">
+                    <span class="info-icon">🚚</span>
+                    <div class="info-text">Pengiriman Seluruh Indonesia</div>
+                </div>
+                <div class="info-card">
+                    <span class="info-icon">✅</span>
+                    <div class="info-text">Produk Original & Terjamin</div>
+                </div>
+                <div class="info-card">
+                    <span class="info-icon">💬</span>
+                    <div class="info-text">Layanan Fast Response</div>
+                </div>
+            </div>
+              <!-- Silahkan Atur Link Anda Disini-->  
+            <div class="links-container fade-in" style="animation-delay: 0.4s">
+                <div class="link-card">
+                    <a href="#" class="link-btn"><span class="link-icon">🛒</span>Toko Online</a>
+                </div>
+                <div class="link-card">
+                    <a href="#" class="link-btn"><span class="link-icon">💬</span>WhatsApp</a>
+                </div>
+                <div class="link-card">
+                    <a href="#/" class="link-btn"><span class="link-icon">📷</span>Instagram</a>
+                </div>
+                <div class="link-card">
+                    <a href="#" class="link-btn"><span class="link-icon">🛍️</span>Shopee</a>
+                </div>
+                <div class="link-card">
+                    <a href="#" class="link-btn"><span class="link-icon">🌐</span>Landing Page</a>
+                </div>
+                <div class="link-card">
+                    <a href="#" class="link-btn"><span class="link-icon">📦</span>Lacak Paket</a>
+                </div>
+                <div class="link-card">
+                    <a href="#" class="link-btn"><span class="link-icon">💳</span>Metode Pembayaran</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 FemmeiaCloth. Semua hak dilindungi.</p>
+    </footer>
+
+    <!-- Modal Screenshot Viewer -->
+    <div id="screenshotModal" class="modal-screenshot">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="closeScreenshotModal" aria-label="Close modal">
+                <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="#888" stroke-width="2">
+                    <line x1="4" y1="4" x2="16" y2="16"/>
+                    <line x1="16" y1="4" x2="4" y2="16"/>
+                </svg>
+            </button>
+            <a href="https://shopee.co.id/" target="_blank" rel="noopener">
+                <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Catalog Screenshot for FemmeiaCloth products" class="modal-img" />
+            </a>
+        </div>
+    </div>
+
+    <!-- Promo Modal -->
+    <div id="promoModal" class="promo-modal">
+        <div class="promo-modal-content">
+            <button id="closePromoModal" class="promo-modal-close" aria-label="Close">&times;</button>
+            <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Promo Banner" class="promo-modal-img" />
+            <h2 class="promo-modal-title">Diskon Spesial!</h2>
+            <p class="promo-modal-desc">
+                Dapatkan <strong>10% OFF</strong> untuk pembelian pertama kamu!<br>
+                Gunakan kode: <span class="promo-modal-code">FEMMEIA10</span> saat checkout (via wa/web only).
+            </p>
+            <a href="#" class="promo-modal-btn">Pesan Sekarang</a>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <h2 class="share-modal-title">Bagikan FemmeiaCloth</h2>
+            <div class="share-options">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://femmeiacloth.me" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #1877F2;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                        </svg>
+                    </span>
+                    <span class="share-option-label">Facebook</span>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url=https://femmeiacloth.me&text=Tampil%20Syar'i%2C%20Tetap%20Stylish!%20Temukan%20hijab%20premium%20di%20FemmeiaCloth" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #1DA1F2;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                        </svg>
+                    </span>
+                    <span class="share-option-label">Twitter</span>
+                </a>
+                <a href="https://www.instagram.com/?url=https://femmeiacloth.me" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #E4405F;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </span>
+                    <span class="share-option-label">Instagram</span>
+                </a>
+                <a href="https://wa.me/?text=Tampil%20Syar'i%2C%20Tetap%20Stylish!%20Temukan%20hijab%20premium%20di%20FemmeiaCloth%20https://femmeiacloth.me" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #25D366;">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="50px" height="50px"><path d="M 25 2 C 12.309534 2 2 12.309534 2 25 C 2 29.079097 3.1186875 32.88588 4.984375 36.208984 L 2.0371094 46.730469 A 1.0001 1.0001 0 0 0 3.2402344 47.970703 L 14.210938 45.251953 C 17.434629 46.972929 21.092591 48 25 48 C 37.690466 48 48 37.690466 48 25 C 48 12.309534 37.690466 2 25 2 z M 25 4 C 36.609534 4 46 13.390466 46 25 C 46 36.609534 36.609534 46 25 46 C 21.278025 46 17.792121 45.029635 14.761719 43.333984 A 1.0001 1.0001 0 0 0 14.033203 43.236328 L 4.4257812 45.617188 L 7.0019531 36.425781 A 1.0001 1.0001 0 0 0 6.9023438 35.646484 C 5.0606869 32.523592 4 28.890107 4 25 C 4 13.390466 13.390466 4 25 4 z M 16.642578 13 C 16.001539 13 15.086045 13.23849 14.333984 14.048828 C 13.882268 14.535548 12 16.369511 12 19.59375 C 12 22.955271 14.331391 25.855848 14.613281 26.228516 L 14.615234 26.228516 L 14.615234 26.230469 C 14.588494 26.195329 14.973031 26.752191 15.486328 27.419922 C 15.999626 28.087653 16.717405 28.96464 17.619141 29.914062 C 19.422612 31.812909 21.958282 34.007419 25.105469 35.349609 C 26.554789 35.966779 27.698179 36.339417 28.564453 36.611328 C 30.169845 37.115426 31.632073 37.038799 32.730469 36.876953 C 33.55263 36.755876 34.456878 36.361114 35.351562 35.794922 C 36.246248 35.22873 37.12309 34.524722 37.509766 33.455078 C 37.786772 32.688244 37.927591 31.979598 37.978516 31.396484 C 38.003976 31.104927 38.007211 30.847602 37.988281 30.609375 C 37.969311 30.371148 37.989581 30.188664 37.767578 29.824219 C 37.302009 29.059804 36.774753 29.039853 36.224609 28.767578 C 35.918939 28.616297 35.048661 28.191329 34.175781 27.775391 C 33.303883 27.35992 32.54892 26.991953 32.083984 26.826172 C 31.790239 26.720488 31.431556 26.568352 30.914062 26.626953 C 30.396569 26.685553 29.88546 27.058933 29.587891 27.5 C 29.305837 27.918069 28.170387 29.258349 27.824219 29.652344 C 27.819619 29.649544 27.849659 29.663383 27.712891 29.595703 C 27.284761 29.383815 26.761157 29.203652 25.986328 28.794922 C 25.2115 28.386192 24.242255 27.782635 23.181641 26.847656 L 23.181641 26.845703 C 21.603029 25.455949 20.497272 23.711106 20.148438 23.125 C 20.171937 23.09704 20.145643 23.130901 20.195312 23.082031 L 20.197266 23.080078 C 20.553781 22.728924 20.869739 22.309521 21.136719 22.001953 C 21.515257 21.565866 21.68231 21.181437 21.863281 20.822266 C 22.223954 20.10644 22.02313 19.318742 21.814453 18.904297 L 21.814453 18.902344 C 21.828863 18.931014 21.701572 18.650157 21.564453 18.326172 C 21.426943 18.001263 21.251663 17.580039 21.064453 17.130859 C 20.690033 16.232501 20.272027 15.224912 20.023438 14.634766 L 20.023438 14.632812 C 19.730591 13.937684 19.334395 13.436908 18.816406 13.195312 C 18.298417 12.953717 17.840778 13.022402 17.822266 13.021484 L 17.820312 13.021484 C 17.450668 13.004432 17.045038 13 16.642578 13 z M 16.642578 15 C 17.028118 15 17.408214 15.004701 17.726562 15.019531 C 18.054056 15.035851 18.033687 15.037192 17.970703 15.007812 C 17.906713 14.977972 17.993533 14.968282 18.179688 15.410156 C 18.423098 15.98801 18.84317 16.999249 19.21875 17.900391 C 19.40654 18.350961 19.582292 18.773816 19.722656 19.105469 C 19.863021 19.437122 19.939077 19.622295 20.027344 19.798828 L 20.027344 19.800781 L 20.029297 19.802734 C 20.115837 19.973483 20.108185 19.864164 20.078125 19.923828 C 19.867096 20.342656 19.838461 20.445493 19.625 20.691406 C 19.29998 21.065838 18.968453 21.483404 18.792969 21.65625 C 18.639439 21.80707 18.36242 22.042032 18.189453 22.501953 C 18.016221 22.962578 18.097073 23.59457 18.375 24.066406 C 18.745032 24.6946 19.964406 26.679307 21.859375 28.347656 C 23.05276 29.399678 24.164563 30.095933 25.052734 30.564453 C 25.940906 31.032973 26.664301 31.306607 26.826172 31.386719 C 27.210549 31.576953 27.630655 31.72467 28.119141 31.666016 C 28.607627 31.607366 29.02878 31.310979 29.296875 31.007812 L 29.298828 31.005859 C 29.655629 30.601347 30.715848 29.390728 31.224609 28.644531 C 31.246169 28.652131 31.239109 28.646231 31.408203 28.707031 L 31.408203 28.708984 L 31.410156 28.708984 C 31.487356 28.736474 32.454286 29.169267 33.316406 29.580078 C 34.178526 29.990889 35.053561 30.417875 35.337891 30.558594 C 35.748225 30.761674 35.942113 30.893881 35.992188 30.894531 C 35.995572 30.982516 35.998992 31.07786 35.986328 31.222656 C 35.951258 31.624292 35.8439 32.180225 35.628906 32.775391 C 35.523582 33.066746 34.975018 33.667661 34.283203 34.105469 C 33.591388 34.543277 32.749338 34.852514 32.4375 34.898438 C 31.499896 35.036591 30.386672 35.087027 29.164062 34.703125 C 28.316336 34.437036 27.259305 34.092596 25.890625 33.509766 C 23.114812 32.325956 20.755591 30.311513 19.070312 28.537109 C 18.227674 27.649908 17.552562 26.824019 17.072266 26.199219 C 16.592866 25.575584 16.383528 25.251054 16.208984 25.021484 L 16.207031 25.019531 C 15.897202 24.609805 14 21.970851 14 19.59375 C 14 17.077989 15.168497 16.091436 15.800781 15.410156 C 16.132721 15.052495 16.495617 15 16.642578 15 z"/></svg>
+                    </span>
+                    <span class="share-option-label">WhatsApp</span>
+                </a>
+                <a href="mailto:?subject=Temukan%20Hijab%20Premium%20di%20FemmeiaCloth&body=Tampil%20Syar'i%2C%20Tetap%20Stylish!%20Kunjungi%20https://femmeiacloth.me" class="share-option">
+                    <span class="share-icon" style="background-color: #EA4335;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </span>
+                    <span class="share-option-label">Email</span>
+                </a>
+                <a href="https://telegram.me/share/url?url=https://femmeiacloth.me&text=Tampil%20Syar'i%2C%20Tetap%20Stylish!%20Temukan%20hijab%20premium%20di%20FemmeiaCloth" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #0088cc;">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="50px" height="50px"><path d="M 44.376953 5.9863281 C 43.889905 6.0076957 43.415817 6.1432497 42.988281 6.3144531 C 42.565113 6.4845113 40.128883 7.5243408 36.53125 9.0625 C 32.933617 10.600659 28.256963 12.603668 23.621094 14.589844 C 14.349356 18.562196 5.2382813 22.470703 5.2382812 22.470703 L 5.3046875 22.445312 C 5.3046875 22.445312 4.7547875 22.629122 4.1972656 23.017578 C 3.9185047 23.211806 3.6186028 23.462555 3.3730469 23.828125 C 3.127491 24.193695 2.9479735 24.711788 3.015625 25.259766 C 3.2532479 27.184511 5.2480469 27.730469 5.2480469 27.730469 L 5.2558594 27.734375 L 14.158203 30.78125 C 14.385177 31.538434 16.858319 39.792923 17.402344 41.541016 C 17.702797 42.507484 17.984013 43.064995 18.277344 43.445312 C 18.424133 43.635633 18.577962 43.782915 18.748047 43.890625 C 18.815627 43.933415 18.8867 43.965525 18.957031 43.994141 C 18.958531 43.994806 18.959437 43.99348 18.960938 43.994141 C 18.969579 43.997952 18.977708 43.998295 18.986328 44.001953 L 18.962891 43.996094 C 18.979231 44.002694 18.995359 44.013801 19.011719 44.019531 C 19.043456 44.030655 19.062905 44.030268 19.103516 44.039062 C 20.123059 44.395042 20.966797 43.734375 20.966797 43.734375 L 21.001953 43.707031 L 26.470703 38.634766 L 35.345703 45.554688 L 35.457031 45.605469 C 37.010484 46.295216 38.415349 45.910403 39.193359 45.277344 C 39.97137 44.644284 40.277344 43.828125 40.277344 43.828125 L 40.310547 43.742188 L 46.832031 9.7519531 C 46.998903 8.9915162 47.022612 8.334202 46.865234 7.7402344 C 46.707857 7.1462668 46.325492 6.6299361 45.845703 6.34375 C 45.365914 6.0575639 44.864001 5.9649605 44.376953 5.9863281 z M 44.429688 8.0195312 C 44.627491 8.0103707 44.774102 8.032983 44.820312 8.0605469 C 44.866523 8.0881109 44.887272 8.0844829 44.931641 8.2519531 C 44.976011 8.419423 45.000036 8.7721605 44.878906 9.3242188 L 44.875 9.3359375 L 38.390625 43.128906 C 38.375275 43.162926 38.240151 43.475531 37.931641 43.726562 C 37.616914 43.982653 37.266874 44.182554 36.337891 43.792969 L 26.632812 36.224609 L 26.359375 36.009766 L 26.353516 36.015625 L 23.451172 33.837891 L 39.761719 14.648438 A 1.0001 1.0001 0 0 0 38.974609 13 A 1.0001 1.0001 0 0 0 38.445312 13.167969 L 14.84375 28.902344 L 5.9277344 25.849609 C 5.9277344 25.849609 5.0423771 25.356927 5 25.013672 C 4.99765 24.994652 4.9871961 25.011869 5.0332031 24.943359 C 5.0792101 24.874869 5.1948546 24.759225 5.3398438 24.658203 C 5.6298218 24.456159 5.9609375 24.333984 5.9609375 24.333984 L 5.9941406 24.322266 L 6.0273438 24.308594 C 6.0273438 24.308594 15.138894 20.399882 24.410156 16.427734 C 29.045787 14.44166 33.721617 12.440122 37.318359 10.902344 C 40.914175 9.3649615 43.512419 8.2583658 43.732422 8.1699219 C 43.982886 8.0696253 44.231884 8.0286918 44.429688 8.0195312 z M 33.613281 18.792969 L 21.244141 33.345703 L 21.238281 33.351562 A 1.0001 1.0001 0 0 0 21.183594 33.423828 A 1.0001 1.0001 0 0 0 21.128906 33.507812 A 1.0001 1.0001 0 0 0 20.998047 33.892578 A 1.0001 1.0001 0 0 0 20.998047 33.900391 L 19.386719 41.146484 C 19.35993 41.068197 19.341173 41.039555 19.3125 40.947266 L 19.3125 40.945312 C 18.800713 39.30085 16.467362 31.5161 16.144531 30.439453 L 33.613281 18.792969 z M 22.640625 35.730469 L 24.863281 37.398438 L 21.597656 40.425781 L 22.640625 35.730469 z"/></svg>
+
+                    </span>
+                    <span class="share-option-label">Telegram</span>
+                </a>
+            </div>
+            <div class="copy-link-container">
+                <input type="text" value="https://femmeiacloth.me" id="linkInput" class="link-input" readonly>
+                <button class="copy-btn" onclick="copyLink()">Copy</button>
+            </div>
+            <button class="share-modal-close" id="closeShareModal">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        // Hide loading screen after fadeOut animation
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var loading = document.querySelector('.loading-screen');
+                if (loading) {
+                    loading.style.display = 'none';
+                }
+            }, 2500);
+        });
+
+        // Modal logic for katalog
+        const modal = document.getElementById('screenshotModal');
+        const openBtn = document.getElementById('openScreenshotModal');
+        const closeBtn = document.getElementById('closeScreenshotModal');
+        const overlay = modal.querySelector('.modal-overlay');
+
+        // Open modal
+        openBtn.onclick = () => { modal.classList.add('active'); };
+        // Close modal
+        closeBtn.onclick = overlay.onclick = () => { modal.classList.remove('active'); };
+        // ESC key closes
+        window.addEventListener('keydown', e => {
+            if (e.key === 'Escape') modal.classList.remove('active');
+        });
+
+        // Promo Modal logic
+        window.addEventListener('DOMContentLoaded', function() {
+            const promoModal = document.getElementById('promoModal');
+            
+            function showModal() {
+                // Only show once per session
+                if (!sessionStorage.getItem('promoModalShown')) {
+                    promoModal.style.display = 'flex';
+                    sessionStorage.setItem('promoModalShown', 'yes');
+                }
+            }
+
+            function closePromoModalAnimated() {
+                const modalContent = document.querySelector('.promo-modal-content');
+                modalContent.classList.add('closing');
+                setTimeout(() => {
+                    promoModal.style.display = 'none';
+                    modalContent.classList.remove('closing');
+                }, 360);
+            }
+
+            document.getElementById('closePromoModal').onclick = closePromoModalAnimated;
+            promoModal.onclick = function(e) {
+                if (e.target === this) closePromoModalAnimated();
+            };
+
+            // Delay for 3 seconds before showing modal
+            setTimeout(showModal, 3000);
+        });
+
+        // Share Modal logic
+        const shareModal = document.getElementById('shareModal');
+        const openShareBtn = document.getElementById('openShareModal');
+        const closeShareBtn = document.getElementById('closeShareModal');
+
+        openShareBtn.onclick = () => {
+            shareModal.style.display = 'flex';
+        };
+
+        closeShareBtn.onclick = () => {
+            shareModal.style.display = 'none';
+        };
+
+        shareModal.onclick = function(e) {
+            if (e.target === this) {
+                shareModal.style.display = 'none';
+            }
+        };
+
+        window.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                shareModal.style.display = 'none';
+            }
+        });
+
+        function copyLink() {
+            const linkInput = document.getElementById('linkInput');
+            linkInput.select();
+            document.execCommand('copy');
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy';
+            }, 2000);
+        }
+
+        // Smooth Scrolling for Internal Links (if needed in future)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                if (href && href.length > 1) {
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
