@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Form Pemesanan Hijab - FemmeiaCloth</title>
+  <meta name="description" content="Form Pemesanan FemmeiaCloth - Toko hijab & aksesoris wanita dengan harga terjangkau dan pengiriman cepat.">
+  <title>Form Pemesanan - FemmeiaCloth</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/IMG_3593.jpeg" type="image/x-icon">
   <style>
@@ -21,6 +22,8 @@
       --profile-shadow: 0 6px 26px 0 #e0c2ee0f, 0 1.5px 8px 0 #baa3e80a;
       --header-grad: linear-gradient(90deg, #fbeff3 0%, #f7f3fa 100%);
       --card-shadow: 0 10px 70px 0 rgba(180, 155, 209, 0.10), 0 1px 4px 0 rgba(160, 113, 206, 0.04);
+      --error-color: #d16a6a;
+      --success-color: #82ca9c;
     }
     body {
       margin: 0;
@@ -30,68 +33,45 @@
       flex-direction: column;
       align-items: center;
     }
-    * { box-sizing: border-box; font-family: 'Quicksand',sans-serif; color: var(--main-text);}
+    * { box-sizing: border-box; font-family: 'Quicksand', sans-serif; color: var(--main-text); }
     /* Loader */
     .page-loader-bg {
       position: fixed; z-index: 2002; top:0; left:0; width:100vw; height:100vh;
       background: rgba(252,251,254,0.93); display: flex; flex-direction: column; align-items: center; justify-content: center;
       backdrop-filter: blur(15px);
     }
-    .spinner { position: relative; width: 60px; height: 60px; border-radius: 50%; border: 6px solid #ede8f1; border-top: 7px solid #ecb5ca; border-bottom: 7px solid #b9cbe8; animation: spin 1.1s linear infinite, pulseShadow 1.4s infinite alternate; margin-bottom: 23px; background: rgba(255,255,255,0.67); box-shadow: 0 0 24px 0 #d3bff7a0; backdrop-filter: blur(9px);}
-    .spinner::after { content: ''; position: absolute; left: 22px; top: 22px; width: 15px; height: 15px; background: #fff6; border-radius: 50%; box-shadow: 0 0 8px #b9cbe8b9;}
-    @keyframes spin { to {transform:rotate(360deg);}}
-    @keyframes pulseShadow { 0% {box-shadow: 0 0 24px 0 #d3bff7a0;} 100% {box-shadow: 0 0 34px 0 #ecb5ca60;}}
-    .page-loader-bg span { color: #b594a7; font-size: 1.14em; letter-spacing: .08em; opacity: .85; margin-top: 10px; text-shadow: 0 2px 14px #f1eaff50;}
+    .spinner { position: relative; width: 60px; height: 60px; border-radius: 50%; border: 6px solid #ede8f1; border-top: 7px solid #ecb5ca; border-bottom: 7px solid #b9cbe8; animation: spin 1.1s linear infinite, pulseShadow 1.4s infinite alternate; margin-bottom: 23px; background: rgba(255,255,255,0.67); box-shadow: 0 0 24px 0 #d3bff7a0; backdrop-filter: blur(9px); }
+    .spinner::after { content: ''; position: absolute; left: 22px; top: 22px; width: 15px; height: 15px; background: #fff6; border-radius: 50%; box-shadow: 0 0 8px #b9cbe8b9; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulseShadow { 0% { box-shadow: 0 0 24px 0 #d3bff7a0; } 100% { box-shadow: 0 0 34px 0 #ecb5ca60; } }
+    .page-loader-bg span { color: #b594a7; font-size: 1.14em; letter-spacing: .08em; opacity: .85; margin-top: 10px; text-shadow: 0 2px 14px #f1eaff50; }
     /* Profile Card */
-    .profile-card { display: flex; align-items: center; gap: 18px; background: var(--bento-blur); border-radius: 32px; box-shadow: var(--profile-shadow); border: 1.2px solid var(--border); margin-bottom: 22px; margin-top: 36px; padding: 17px 26px 15px 17px;}
-    .profile-avatar { width: 62px; height: 62px; border-radius: 50%; object-fit: cover; border: 3px solid #fbeff3; box-shadow: 0 2px 10px #e0c2ee18; background: #fff;}
+    .profile-card { display: flex; align-items: center; gap: 18px; background: var(--bento-blur); border-radius: 32px; box-shadow: var(--profile-shadow), var(--card-shadow); border: 1.2px solid var(--border); margin-bottom: 5px; padding: 17px 16px 12px 14px; margin-top: 18px; }
+    .profile-avatar { width: 62px; height: 62px; border-radius: 50%; object-fit: cover; border: 3px solid #fbeff3; box-shadow: 0 2px 10px #e0c2ee18; background: #fff; }
     .profile-info { flex: 1; }
-    .profile-title { font-size: 1.11em; font-weight: 700; color: #ad7dc7; margin-bottom: 2px; letter-spacing: .6px;}
-    .profile-desc { font-size: .98em; color: #7d6c91; margin-bottom: 3px; font-weight: 500;}
-    .profile-highlight { background: #ffeef4; color: #c45d7c; font-weight: 600; border-radius: 7px; font-size: .97em; padding: 3.5px 10px; display: inline-block; margin-bottom: 3px; margin-top: 1px;}
-    .profile-links { margin-top: 7px; display: flex; gap: 10px;}
-    .profile-link { color: #b594a7; background: #faf6fb; border-radius: 7px; padding: 4px 10px; font-size: .95em; text-decoration: none; font-weight: 600; border: 1px solid #eee2f7; box-shadow: 0 2px 4px #e0c2ee0a; display: flex; align-items: center; gap: 5px;}
-    .profile-link:hover{ background: var(--soft-purple); color: #ad7dc7;}
-    @media (max-width: 600px) {
-      .profile-card { padding: 13px 7px 11px 8px; gap: 9px; margin-bottom: 13px;}
-      .profile-avatar { width: 48px; height: 48px;}
-    }    
-/* Profile Card */
-    .profile-card {
-      display: flex; align-items: center; gap: 18px;
-      background: var(--bento-blur);
-      border-radius: 32px;
-      box-shadow: var(--profile-shadow), var(--card-shadow);
-      border: 1.2px solid var(--border);
-      margin-bottom: 5px;
-      padding: 17px 16px 12px 14px;
-      margin-top: 18px;
-    }
-    .profile-avatar { width: 62px; height: 62px; border-radius: 50%; object-fit: cover; border: 3px solid #fbeff3; box-shadow: 0 2px 10px #e0c2ee18; background: #fff;}
-    .profile-info { flex: 1; }
-    .profile-title { font-size: 1.11em; font-weight: 700; color: #ad7dc7; margin-bottom: 2px; letter-spacing: .6px;}
-    .profile-desc { font-size: .98em; color: #7d6c91; margin-bottom: 3px; font-weight: 500;}
-    .profile-highlight { background: #ffeef4; color: #c45d7c; font-weight: 600; border-radius: 7px; font-size: .97em; padding: 3.5px 10px; display: inline-block; margin-bottom: 3px; margin-top: 1px;}
-    .profile-links { margin-top: 7px; display: flex; gap: 10px;}
+    .profile-title { font-size: 1.11em; font-weight: 700; color: #ad7dc7; margin-bottom: 2px; letter-spacing: .6px; }
+    .profile-desc { font-size: .98em; color: #7d6c91; margin-bottom: 3px; font-weight: 500; }
+    .profile-highlight { background: #ffeef4; color: #c45d7c; font-weight: 600; border-radius: 7px; font-size: .97em; padding: 3.5px 10px; display: inline-block; margin-bottom: 3px; margin-top: 1px; }
+    .profile-links { margin-top: 7px; display: flex; gap: 10px; }
     .profile-link {
       display: flex; align-items: center; gap: 7px;
       color: #b594a7; background: #faf6fb; border-radius: 7px; padding: 4px 13px 4px 8px;
       font-size: .98em; text-decoration: none; font-weight: 600; border: 1px solid #eee2f7;
-      box-shadow: 0 2px 8px #baa3e808; transition:.14s;
+      box-shadow: 0 2px 8px #baa3e808; transition: .14s;
       min-width: 38px;
     }
     .profile-link svg {
       width: 20px; height: 20px; display: inline-block; vertical-align: middle;
       color: #b594a7; background: none; border-radius: 50%;
-      transition:.14s;
+      transition: .14s;
     }
-    .profile-link:hover{ background: var(--soft-purple); color: #ad7dc7;}
-    .profile-link:hover svg {color: #ad7dc7;}
+    .profile-link:hover { background: var(--soft-purple); color: #ad7dc7; }
+    .profile-link:hover svg { color: #ad7dc7; }
     @media (max-width: 600px) {
-      .profile-card { padding: 13px 7px 11px 8px; gap: 9px; margin-bottom: 5px; margin-top: 11px;}
-      .profile-avatar { width: 48px; height: 48px;}
-      .profile-link {padding: 4px 8px 4px 6px;}
-      .profile-link svg {width: 18px; height: 18px;}
+      .profile-card { padding: 13px 7px 11px 8px; gap: 9px; margin-bottom: 5px; margin-top: 11px; }
+      .profile-avatar { width: 48px; height: 48px; }
+      .profile-link { padding: 4px 8px 4px 6px; }
+      .profile-link svg { width: 18px; height: 18px; }
     }
     /* Testimoni Carousel */
     .testi-title {
@@ -155,43 +135,73 @@
     .testi-avatar svg {
       width: 38px; height: 38px; display: block; color: #d7bce4; background: #fff; border-radius: 50%;
     }
-    .testi-info { flex: 1; min-width: 0;}
-    .testi-name { display: block; font-weight: 600; color: #ad7dc7; font-size: .98em; margin-bottom: 2px; letter-spacing: .04em;}
-    .testi-product { font-size: .93em; color: #9d7fb7; font-weight: 600; margin-bottom: 2px; letter-spacing: 0.2px;}
-    .testi-stars { color: #ffd700; font-size: .96em; letter-spacing: 1px; margin-bottom: 2px; display: inline-block;}
-    .testi-text { font-size: .97em; color: #7d6c91; margin-bottom: 0; line-height: 1.38; display: block; word-break: break-word;}
-    @media (max-width: 600px) {
-      .mini-carousel {padding: 0;}
-      .testi-item {padding: 13px 5vw 10px 5vw;}
+    .testi-info { flex: 1; min-width: 0; }
+    .testi-name { display: block; font-weight: 600; color: #ad7dc7; font-size: .98em; margin-bottom: 2px; letter-spacing: .04em; }
+    .testi-product { font-size: .93em; color: #9d7fb7; font-weight: 600; margin-bottom: 2px; letter-spacing: 0.2px; }
+    .testi-stars { color: #ffd700; font-size: .96em; letter-spacing: 1px; margin-bottom: 2px; display: inline-block; }
+    .testi-text { font-size: .97em; color: #7d6c91; margin-bottom: 0; line-height: 1.38; display: block; word-break: break-word; }
+    .carousel-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      
+      margin-bottom: 10px;
+      padding: 5px;
     }
-    /* --- rest of style keep as before (form, modal, faq, etc) --- */
-    .bento-container { margin: 0 0 24px 0; display: grid; grid-template-columns: 1fr; gap: 20px; width: 98vw; max-width: 540px; padding: 0 2vw; position: relative;}
-    .bento-grid { display: grid; grid-template-columns: 1fr; gap: 16px;}
-    .bento-tile { background: var(--bento-blur); border-radius: 24px; box-shadow: var(--card-shadow); border: 1.5px solid var(--border); padding: 18px 14px 10px 14px; min-width: 0; min-height: 0; position:relative;}
-    .bento-header { margin-bottom: 10px; font-size: 1.13rem; font-weight: 600; letter-spacing: 1px; color: #b49bd1; background: var(--header-grad); border-radius: 11px; padding: 7px 0 7px 15px; box-shadow: 0 1px 4px #e0c2ee13;}
-    label { font-weight: 600; margin-top: 9px; margin-bottom: 3px; display: block; color: var(--secondary-text); letter-spacing: .5px; font-size: .97em;}
-    input, textarea, select { width: 100%; padding: 11px 10px; margin-top: 2px; margin-bottom: 8px; border-radius: 15px; border: 1.5px solid var(--border); background: #fff; font-size: .97rem; outline: none; transition: border-color .16s, box-shadow .16s;}
-    input:focus, select:focus, textarea:focus { border-color: var(--accent); background: #faf6fb; box-shadow: 0 0 8px 0 #e0c2ee60;}
-    textarea { min-height: 46px; resize: vertical;}
-    .select-wrapper { position: relative;}
-    .select-wrapper::after { content: ""; position: absolute; right: 13px; top: 53%; transform: translateY(-50%); pointer-events: none; color: #b3b5bc; font-size: .97em; opacity:.8;}
-    .color-preview { margin-top: 5px; height: 30px; border-radius: 10px; border: 1.5px solid var(--border); box-shadow: 0 1px 5px 0 #e4cff51d; display: flex; align-items: center; gap: 5px; padding: 0 7px;}
-    .color-dot { display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 1.1px solid #fff; box-shadow: 0 1px 4px 0 #e4cff526; margin-right: 2px; margin-top: 1.5px; cursor: pointer;}
-    .color-dot.selected { border: 2px solid #b49bd1; box-shadow: 0 0 0 1.5px #e6dbe7aa;}
-    .color-label { font-size: .92em; color: #7d6c91; margin-left: 1px; margin-right: 5px; font-weight: 500; letter-spacing: 0.4px;}
-    .bento-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px;}
+    .carousel-btn {
+      background: #faf6fb;
+      border: 1px solid #eee2f7;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #b594a7;
+      transition: background .2s, color .2s;
+    }
+    .carousel-btn:hover {
+      background: var(--soft-purple);
+      color: #ad7dc7;
+    }
     @media (max-width: 600px) {
-      .bento-container { max-width:100vw; }
+      .mini-carousel { padding: 0; }
+      .testi-item { padding: 13px 5vw 10px 5vw; }
+    }
+    /* Form & Other Styles */
+    .bento-container { margin: 0 0 24px 0; display: grid; grid-template-columns: 1fr; gap: 20px; width: 98vw; max-width: 540px; padding: 0 2vw; position: relative; }
+    .bento-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .bento-tile { background: var(--bento-blur); border-radius: 24px; box-shadow: var(--card-shadow); border: 1.5px solid var(--border); padding: 18px 14px 10px 14px; min-width: 0; min-height: 0; position: relative; }
+    .bento-header { margin-bottom: 10px; font-size: 1.13rem; font-weight: 600; letter-spacing: 1px; color: #b49bd1; background: var(--header-grad); border-radius: 11px; padding: 7px 0 7px 15px; box-shadow: 0 1px 4px #e0c2ee13; }
+    label { font-weight: 600; margin-top: 9px; margin-bottom: 3px; display: block; color: var(--secondary-text); letter-spacing: .5px; font-size: .97em; }
+    input, textarea, select { width: 100%; padding: 11px 10px; margin-top: 2px; margin-bottom: 8px; border-radius: 15px; border: 1.5px solid var(--border); background: #fff; font-size: .97rem; outline: none; transition: border-color .16s, box-shadow .16s; }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); background: #faf6fb; box-shadow: 0 0 8px 0 #e0c2ee60; }
+    input.error, select.error, textarea.error { border-color: var(--error-color); }
+    textarea { min-height: 46px; resize: vertical; }
+    .select-wrapper { position: relative; }
+    .select-wrapper::after { content: ""; position: absolute; right: 13px; top: 53%; transform: translateY(-50%); pointer-events: none; color: #b3b5bc; font-size: .97em; opacity: .8; }
+    .color-preview { margin-top: 5px; height: 30px; border-radius: 10px; border: 1.5px solid var(--border); box-shadow: 0 1px 5px 0 #e4cff51d; display: flex; align-items: center; gap: 5px; padding: 0 7px; }
+    .color-dot { display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 1.1px solid #fff; box-shadow: 0 1px 4px 0 #e4cff526; margin-right: 2px; margin-top: 1.5px; cursor: pointer; }
+    .color-dot.selected { border: 2px solid #b49bd1; box-shadow: 0 0 0 1.5px #e6dbe7aa; }
+    .color-label { font-size: .92em; color: #7d6c91; margin-left: 1px; margin-right: 5px; font-weight: 500; letter-spacing: 0.4px; }
+    .bento-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    .error-message { color: var(--error-color); font-size: 0.9em; margin-top: -6px; margin-bottom: 6px; display: none; }
+    @media (max-width: 600px) {
+      .bento-container { max-width: 100vw; }
       .bento-row { grid-template-columns: 1fr; gap: 8px; }
-      .bento-tile { padding: 10px 3vw 7px 3vw;}
+      .bento-tile { padding: 10px 3vw 7px 3vw; }
     }
-    .total-harga { font-weight: 600; font-size: 1em; text-align: right; color: #b594a7; background: var(--soft-purple); border-radius: 8px; padding: 6px 0 5px 0; margin: 6px 0 2px 0; box-shadow: 0 1px 4px 0 #e0c2ee13;}
-    .loading { display: none; text-align: center; margin: 14px 0 0 0; color: #b594a7; font-size: .95em; font-weight: 600; letter-spacing: .03em;}
-    .notif { color: #b594a7; font-weight: bold; margin: 6px 0 0 0; text-align: center;}
-    button { margin-top: 13px; padding: 10px; background: var(--button); color: #b594a7; font-weight: bold; font-size: 1.01rem; border: none; border-radius: 13px; cursor: pointer; width: 100%; box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816; transition: transform .19s, box-shadow .19s;}
-    button:hover, button:focus { color: #9b6ca1; box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816; transform: scale(1.035) translateY(-1.5px) rotate(-.5deg);}
-    button:active { transform: scale(0.98);}
-    /* Modal & FAQ animation keep as before, modal with show/hide animation */
+    .total-harga { font-weight: 600; font-size: 1em; text-align: right; color: #b594a7; background: var(--soft-purple); border-radius: 8px; padding: 6px 0 5px 0; margin: 6px 0 2px 0; box-shadow: 0 1px 4px 0 #e0c2ee13; }
+    .loading { display: none; text-align: center; margin: 14px 0 0 0; color: #b594a7; font-size: .95em; font-weight: 600; letter-spacing: .03em; }
+    .notif { color: #b594a7; font-weight: bold; margin: 6px 0 0 0; text-align: center; }
+    button { margin-top: 13px; padding: 10px; background: var(--button); color: #b594a7; font-weight: bold; font-size: 1.01rem; border: none; border-radius: 13px; cursor: pointer; width: 100%; box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816; transition: transform .19s, box-shadow .19s, background .19s, color .19s; }
+    button:hover, button:focus { color: #9b6ca1; background: #eee9f5; box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816; transform: scale(1.035) translateY(-1.5px) rotate(-.5deg); }
+    button:active { transform: scale(0.98); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .reset-btn { background: #f6f7fb; color: #b594a7; margin-top: 10px; }
+    .reset-btn:hover { background: #eee9f5; color: #9b6ca1; }
+    /* Modal */
     .modal-bg {
       display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(230, 225, 236, 0.33); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(9px);
     }
@@ -200,8 +210,8 @@
       animation: modalFadeInBg .28s cubic-bezier(.67,0,.25,1);
     }
     @keyframes modalFadeInBg {
-      from { background: rgba(230, 225, 236, 0.0);}
-      to { background: rgba(230, 225, 236, 0.33);}
+      from { background: rgba(230, 225, 236, 0.0); }
+      to { background: rgba(230, 225, 236, 0.33); }
     }
     .modal-content {
       background: #fff; border-radius: 16px; padding: 17px 13px; max-width: 340px; min-width: 220px; width: 98vw; box-shadow: 0 8px 22px 0 #e0c2ee1a; border: 1.5px solid var(--border);
@@ -219,36 +229,88 @@
       transform: scale(.97) translateY(40px);
       transition: opacity .24s cubic-bezier(.67,0,.25,1), transform .24s cubic-bezier(.67,0,.25,1);
     }
-    .modal-content h3 { font-size: 1.01em; color: #af83b7; margin-bottom: 8px;}
-    .modal-content ul { padding-left: 12px; margin-bottom: 7px;}
-    .modal-content li { margin-bottom: 1px;}
-    .modal-content button { margin: 0 0 7px 0; width: 100%; font-size: .96em;}
-    .modal-content .total-harga { margin: 0 0 7px 0;}
-    #scrollToTopBtn { position: fixed; right: 22px; bottom: 30px; z-index: 1500; width: 42px; height: 42px; background: var(--bento-blur); border-radius: 50%; border: 1.2px solid var(--border); box-shadow: 0 1px 5px #baa3e80a; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .21s;}
-    #scrollToTopBtn svg { width: 22px; height: 22px; color: #b49bd1;}
-    #scrollToTopBtn.active { opacity: 1; pointer-events: auto;}
-    .toast { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); min-width: 160px; max-width: 88vw; background: var(--bento-blur); color: #8e88a7; border-radius: 10px; box-shadow: 0 1px 8px #baa3e80f; padding: 12px 19px; font-size: .98em; opacity: 0; pointer-events: none; transition: opacity .29s;}
-    .toast.show { opacity: 1; pointer-events: auto;}
-    .toast.hide { opacity: 0; pointer-events: none;}
-    /* FAQ mini (footer, mini, paling belakang) */
-    footer { margin: 0 auto 0 auto; max-width: 540px; width: 100%; padding: 0; position: relative; z-index: 0;}
+    .modal-content h3 { font-size: 1.01em; color: #af83b7; margin-bottom: 8px; }
+    .modal-content ul { padding-left: 12px; margin-bottom: 7px; }
+    .modal-content li { margin-bottom: 1px; }
+    .modal-content button { margin: 0 0 7px 0; width: 100%; font-size: .96em; }
+    .modal-content .total-harga { margin: 0 0 7px 0; }
+    #scrollToTopBtn { position: fixed; right: 22px; bottom: 30px; z-index: 1500; width: 42px; height: 42px; background: #F6F1FA; border-radius: 50%; border: 1.2px solid var(--border); box-shadow: 0 1px 5px #F6F1FA; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .21s; }
+    #scrollToTopBtn svg { width: 22px; height: 22px; color: #fff; }
+    #scrollToTopBtn.active { opacity: 1; pointer-events: auto; }
+    .toast { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); min-width: 160px; max-width: 88vw; background: #9F7CE8; color: #fff; border-radius: 10px; box-shadow: 0 1px 20px #9F7CE8; padding: 12px 19px; font-size: .98em; opacity: 0; pointer-events: none; transition: opacity 2s; }
+    .toast.show { opacity: 1; pointer-events: auto; }
+    .toast.hide { opacity: 0; pointer-events: none; }
+    /* Sticky Notification for Incomplete Fields */
+    .sticky-notif {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      min-width: 200px;
+      max-width: 300px;
+      background: #ffebee;
+      color: #c62828;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      padding: 12px 16px;
+      font-size: 0.95em;
+      z-index: 2000;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .sticky-notif.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .sticky-notif.hide {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    /* FAQ mini */
+    footer { margin: 0 auto 0 auto; max-width: 540px; width: 100%; padding: 0; position: relative; z-index: 0; }
     .faq-mini {
       margin: -5px auto 0 auto; background: var(--bento-blur); border-radius: 13px; box-shadow: var(--card-shadow); border: 1.2px solid var(--border);
       padding: 7px 12px 6px 12px; max-width: 300px; margin-bottom: 12px; font-size: .93em; z-index: 0;
       transition: box-shadow .19s;
     }
-    .faq-title { font-weight: 700; font-size: .95em; color: #b49bd1; margin-bottom: 5px; letter-spacing: .3px;}
-    .faq-item { margin-bottom: 7px; border-radius: 7px; background: #f7f3fa70; box-shadow: 0 1px 3px #baa3e808; transition: box-shadow .19s, background .20s; padding: 6px 10px 6px 10px; cursor: pointer; position: relative; overflow: hidden;}
-    .faq-item:before, .faq-item:after { content: ''; position: absolute; left: 0; right: 0; height: 2.5px; border-radius: 6px; background: linear-gradient(90deg, #fbeff3 0%, #d7bce4 100%); opacity: 0; transform: scaleX(.7); transition: opacity .16s, transform .24s;}
-    .faq-item:before { top: 0; transform-origin: left;}
-    .faq-item:after { bottom: 0; transform-origin: right;}
+    .faq-title { font-weight: 700; font-size: .95em; color: #b49bd1; margin-bottom: 5px; letter-spacing: .3px; }
+    .faq-item { margin-bottom: 7px; border-radius: 7px; background: #f7f3fa70; box-shadow: 0 1px 3px #baa3e808; transition: box-shadow .19s, background .20s; padding: 6px 10px 6px 10px; cursor: pointer; position: relative; overflow: hidden; }
+    .faq-item:before, .faq-item:after { content: ''; position: absolute; left: 0; right: 0; height: 2.5px; border-radius: 6px; background: linear-gradient(90deg, #fbeff3 0%, #d7bce4 100%); opacity: 0; transform: scaleX(.7); transition: opacity .16s, transform .24s; }
+    .faq-item:before { top: 0; transform-origin: left; }
+    .faq-item:after { bottom: 0; transform-origin: right; }
     .faq-item:hover:before, .faq-item:hover:after,
-    .faq-item.open:before, .faq-item.open:after { opacity: .36; transform: scaleX(1);}
-    .faq-q { font-weight: 600; color: #7d6c91; margin-bottom: 1px; font-size: .95em;}
-    .faq-a { color: #8e88a7; font-size: .91em; margin-top: 0; display: block; max-height: 0; overflow: hidden; padding: 0 2px; opacity: 0; transition: max-height .44s cubic-bezier(.77,0,.175,1), opacity .29s, padding .32s;}
-    .faq-item.open .faq-a { display: block; max-height: 220px; opacity: 1; animation: fadeInUp .5s .01s backwards; padding: 5px 2px 7px 2px;}
-    .faq-item:not(.open) .faq-a { max-height: 0; opacity: 0; padding: 0 2px;}
-    @keyframes fadeInUp { from {opacity:0; transform:translateY(14px);} to {opacity:1; transform:translateY(0);} }
+    .faq-item.open:before, .faq-item.open:after { opacity: .36; transform: scaleX(1); }
+    .faq-q { font-weight: 600; color: #7d6c91; margin-bottom: 1px; font-size: .95em; }
+    .faq-a { color: #8e88a7; font-size: .91em; margin-top: 0; display: block; max-height: 0; overflow: hidden; padding: 0 2px; opacity: 0; transition: max-height .44s cubic-bezier(.77,0,.175,1), opacity .29s, padding .32s; }
+    .faq-item.open .faq-a { display: block; max-height: 220px; opacity: 1; animation: fadeInUp .5s .01s backwards; padding: 5px 2px 7px 2px; }
+    .faq-item:not(.open) .faq-a { max-height: 0; opacity: 0; padding: 0 2px; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    /* Progress Indicator */
+    .progress-container {
+      width: 100%;
+      max-width: 540px;
+      margin: 10px 0;
+      padding: 0 2vw;
+      display: none;
+    }
+    .progress-bar {
+      height: 8px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #d7bce4, #b49bd1);
+      width: 0;
+      transition: width 0.3s ease;
+    }
+    .progress-text {
+      font-size: 0.9em;
+      color: #b594a7;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -260,17 +322,17 @@
   <div class="bento-container">
     <!-- Profile Card -->
     <div class="profile-card">
-      <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/IMG_3593.jpeg" alt="Logo FemmeiaCloth" class="profile-avatar">
+      <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/IMG_3593.jpeg" alt="Logo FemmeiaCloth, toko hijab dan aksesoris wanita" class="profile-avatar">
       <div class="profile-info">
         <div class="profile-title">FemmeiaCloth</div>
-        <div class="profile-desc">Toko hijab & aksesoris wanita | Ready stok, harga terjangkau, pengiriman cepat 💌</div>
+        <div class="profile-desc">Toko hijab & aksesoris wanita | Ready stok, harga terjangkau, pengiriman cepat</div>
         <div class="profile-highlight">Promo: Gunakan kode <b>femmeia10</b> untuk diskon 10%!</div>
         <div class="profile-links">
-          <a href="https://instagram.com/femmeia.cloth" target="_blank" class="profile-link" title="Instagram" aria-label="Instagram">
+          <a href="https://instagram.com/femmeia.cloth" target="_blank" class="profile-link" title="Instagram" aria-label="Instagram FemmeiaCloth">
             <svg viewBox="0 0 24 24" fill="none"><rect width="17" height="17" x="3.5" y="3.5" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
             Instagram
           </a>
-          <a href="https://wa.me/6287777420644" target="_blank" class="profile-link" title="Chat WhatsApp" aria-label="WhatsApp">
+          <a href="https://wa.me/6287777420644" target="_blank" class="profile-link" title="Chat WhatsApp" aria-label="WhatsApp FemmeiaCloth">
             <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7"/><path d="M16.4 14.1c-.2-.1-1.2-.6-1.4-.7-.2-.1-.4-.2-.5.1-.1.2-.5.7-.6.8-.1.1-.2.2-.4.1-.2-.1-.7-.3-1.3-.8-.5-.5-.8-1-1-1.1-.1-.2 0-.3.1-.4.1-.1.2-.3.4-.4.1-.2.1-.3.2-.4 0-.1 0-.2 0-.3 0-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4-.1 0-.3 0-.5 0-.2 0-.4.1-.6.3-.2.2-.7.7-.7 1.7 0 1 .7 2 1.2 2.5.7.8 1.8 1.5 2.8 1.6.4 0 .8 0 1.1-.2.3-.2.7-.5.8-.9.1-.4.1-.7.1-.8 0-.1-.2-.1-.4-.2z" fill="currentColor"/></svg>
             WhatsApp
           </a>
@@ -336,6 +398,14 @@
           </div>
         </div>
       </div>
+      <div class="carousel-controls">
+        <button class="carousel-btn prev-btn" aria-label="Testimoni Sebelumnya">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="carousel-btn next-btn" aria-label="Testimoni Selanjutnya">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </div>
     <!-- Modal Ringkasan -->
     <div class="modal-bg" id="modalBg">
@@ -343,65 +413,79 @@
         <h3>Ringkasan Pesanan</h3>
         <ul id="ringkasanList"></ul>
         <div class="total-harga" id="ringkasanHarga"></div>
-        <button type="button" id="lanjutWA">Lanjut ke WhatsApp</button>
-        <button type="button" id="batalModal" style="background:#f6f7fb;color:#b594a7;">Cek Ulang</button>
+        <button type="button" id="lanjutWA" aria-label="Lanjutkan ke WhatsApp untuk konfirmasi pesanan">Lanjut ke WhatsApp</button>
+        <button type="button" id="batalModal" style="background:#f6f7fb;color:#b594a7;" aria-label="Kembali untuk memeriksa ulang pesanan">Cek Ulang</button>
       </div>
     </div>
-    <form id="orderForm" autocomplete="off">
+    <!-- Progress Indicator -->
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text" id="progressText">Progres Pengisian: 0%</div>
+    </div>
+    <form id="orderForm" autocomplete="off" novalidate>
       <div class="bento-grid">
         <div class="bento-tile">
           <div class="bento-header">Identitas Pembeli</div>
-          <label>Nama</label>
-          <input type="text" name="nama" required placeholder="Contoh: Putri Maharani" autocomplete="name">
-          <label>No. WhatsApp Aktif</label>
-          <input type="tel" name="wa" required inputmode="numeric" pattern="[0-9]+" minlength="10" maxlength="15" placeholder="08xxxxxxxxxx" autocomplete="tel">
-          <label>Alamat Lengkap</label>
-          <textarea name="alamat" required rows="3" placeholder="Contoh: Jl. Melati No. 99, RT 01 RW 02, Tamalanrea, Makassar" autocomplete="street-address"></textarea>
+          <label for="nama">Nama</label>
+          <input type="text" name="nama" id="nama" required placeholder="Contoh: Putri Maharani" autocomplete="name" aria-describedby="namaError">
+          <div class="error-message" id="namaError">Nama hanya boleh mengandung huruf dan spasi.</div>
+          <label for="wa">No. WhatsApp Aktif</label>
+          <input type="tel" name="wa" id="wa" required inputmode="numeric" pattern="(\+62|62|08)[0-9]{8,13}" minlength="10" maxlength="15" placeholder="081234567890" autocomplete="tel" aria-describedby="waError">
+          <div class="error-message" id="waError">Nomor WhatsApp harus diawali +62, 62, atau 08 dan berisi 10-15 angka.</div>
+          <label for="alamat">Alamat Lengkap</label>
+          <textarea name="alamat" id="alamat" required rows="3" placeholder="Contoh: Jl. Melati No. 99, RT 01 RW 02, Tamalanrea, Makassar" autocomplete="street-address" aria-describedby="alamatError"></textarea>
+          <div class="error-message" id="alamatError">Alamat harus diisi dengan lengkap.</div>
         </div>
         <div class="bento-tile">
           <div class="bento-header">Detail Produk</div>
           <div class="bento-row">
             <div>
-              <label>Jenis Produk</label>
+              <label for="productType">Jenis Produk</label>
               <div class="select-wrapper">
-                <select id="productType" name="produk" required>
+                <select id="productType" name="produk" required aria-describedby="produkError">
                   <option value="">-- Pilih Produk --</option>
                   <option value="Paris Jadul - 35.000">Paris Jadul – Rp35.000</option>
                   <option value="Pashmina Kaos - 55.000">Pashmina Kaos – Rp55.000</option>
                   <option value="Premium Inner - 25.000">Premium Inner – Rp25.000</option>
                 </select>
               </div>
+              <div class="error-message" id="produkError">Harap pilih jenis produk.</div>
             </div>
             <div>
-              <label>Jumlah</label>
-              <input type="number" name="jumlah" min="1" max="20" required value="1" placeholder="1">
+              <label for="jumlah">Jumlah</label>
+              <input type="number" name="jumlah" id="jumlah" min="1" max="20" required value="1" placeholder="1" aria-describedby="jumlahError">
+              <div class="error-message" id="jumlahError">Jumlah harus antara 1 dan 20.</div>
             </div>
           </div>
           <div>
-            <label>Warna</label>
+            <label for="warna">Warna</label>
             <div class="color-preview" id="colorPreview"></div>
             <div class="select-wrapper" style="margin-top:7px;">
-              <select id="warna" name="warna" required>
+              <select id="warna" name="warna" required aria-describedby="warnaError">
                 <option value="">-- Pilih Warna --</option>
               </select>
             </div>
+            <div class="error-message" id="warnaError">Harap pilih warna produk.</div>
           </div>
-          <label>Pakai Paper Bag</label>
+          <label for="paperbag">Pakai Paper Bag</label>
           <div class="select-wrapper">
-            <select name="paperbag" id="paperbag" required>
+            <select name="paperbag" id="paperbag" required aria-describedby="paperbagError">
               <option value="">-- Pilih --</option>
               <option value="Tidak">Tidak</option>
               <option value="Pakai (Rp5.000)">Pakai (+ Rp5.000)</option>
             </select>
           </div>
+          <div class="error-message" id="paperbagError">Harap pilih opsi paper bag.</div>
         </div>
         <div class="bento-tile">
           <div class="bento-header">Pengiriman & Pembayaran</div>
           <div class="bento-row">
             <div>
-              <label>Metode Pengiriman</label>
+              <label for="pengiriman">Metode Pengiriman</label>
               <div class="select-wrapper">
-                <select name="pengiriman" required>
+                <select name="pengiriman" id="pengiriman" required aria-describedby="pengirimanError">
                   <option value="">-- Pilih --</option>
                   <option value="SPX ID">SPX ID</option>
                   <option value="J&T">J&T</option>
@@ -410,11 +494,12 @@
                   <option value="Ambil Langsung">Ambil langsung</option>
                 </select>
               </div>
+              <div class="error-message" id="pengirimanError">Harap pilih metode pengiriman.</div>
             </div>
             <div>
-              <label>Metode Pembayaran</label>
+              <label for="pembayaran">Metode Pembayaran</label>
               <div class="select-wrapper">
-                <select name="pembayaran" required>
+                <select name="pembayaran" id="pembayaran" required aria-describedby="pembayaranError">
                   <option value="">-- Pilih --</option>
                   <option value="Transfer Bank">Transfer Bank</option>
                   <option value="COD">COD</option>
@@ -422,20 +507,23 @@
                   <option value="Dana / e-wallet">Dana / e-wallet</option>
                 </select>
               </div>
+              <div class="error-message" id="pembayaranError">Harap pilih metode pembayaran.</div>
             </div>
           </div>
         </div>
         <div class="bento-tile">
           <div class="bento-header">Catatan & Promo</div>
-          <label>Kode Promo (Jika Tersedia)</label>
-          <input type="text" name="promo" id="promoInput" placeholder="Opsional">
-          <label>Catatan Tambahan (Opsional)</label>
-          <textarea name="catatan" placeholder="Contoh: packing rapi, dll."></textarea>
+          <label for="promoInput">Kode Promo (Jika Tersedia)</label>
+          <input type="text" name="promo" id="promoInput" placeholder="Opsional" aria-describedby="promoError">
+          <div class="error-message" id="promoError">Kode promo tidak valid. Gunakan femmeia10.</div>
+          <label for="catatan">Catatan Tambahan (Opsional)</label>
+          <textarea name="catatan" id="catatan" placeholder="Contoh: packing rapi, dll."></textarea>
         </div>
         <div class="bento-tile">
           <div class="total-harga" id="totalHarga">Total: Rp0</div>
-          <button type="submit" id="pesanBtn">🛒 Pesan Sekarang</button>
-          <div class="loading" id="loadingText">⏳ Menyiapkan Pesanan...</div>
+          <button type="submit" id="pesanBtn" aria-label="Pesan Sekarang untuk mengirimkan pesanan">Pesan Sekarang</button>
+          <button type="button" id="resetBtn" class="reset-btn" aria-label="Atur Ulang untuk mengosongkan formulir">Atur Ulang</button>
+          <div class="loading" id="loadingText">Menyiapkan Pesanan...</div>
           <div class="notif" id="notif"></div>
         </div>
       </div>
@@ -443,11 +531,13 @@
   </div>
   <!-- Scroll To Top Button -->
   <button id="scrollToTopBtn" aria-label="Kembali ke Atas" title="Kembali ke Atas" style="z-index:999;">
-    <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M10 18l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 32 32" fill="white"><circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M10 18l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
-  <!-- FAQ FOOTER mini, z-index -1 -->
+  <!-- Sticky Notification for Incomplete Fields -->
+  <div class="sticky-notif" id="stickyNotif"></div>
+  <!-- FAQ FOOTER mini -->
   <footer>
     <div class="faq-mini" id="faqMini" style="z-index:-1;">
       <div class="faq-title">FAQ</div>
@@ -462,32 +552,51 @@
   </footer>
   <script>
     // Loader
-    window.addEventListener('DOMContentLoaded', function () {
-      setTimeout(() => {
-        document.getElementById('pageLoader').style.display = 'none';
-        document.querySelectorAll('.bento-tile').forEach(tile => {
-          tile.style.opacity = '';
-          tile.style.transform = '';
-        });
-      }, 3000);
-
-      // FAQ Accordion + Animasi
-      document.querySelectorAll('.faq-item').forEach(item => {
-        item.addEventListener('click', function() {
-          document.querySelectorAll('.faq-item').forEach(i => { if(i!==item) i.classList.remove('open'); });
-          item.classList.toggle('open');
-        });
+    window.addEventListener('load', function () {
+      document.getElementById('pageLoader').style.display = 'none';
+      document.querySelectorAll('.bento-tile').forEach(tile => {
+        tile.style.opacity = '';
+        tile.style.transform = '';
       });
+    });
 
-      // Testi Carousel
-      const testiInner = document.getElementById('testiInner');
-      const testiCount = testiInner.children.length;
-      let testiIndex = 0;
-      setInterval(() => {
+    // FAQ Accordion + Animasi
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.addEventListener('click', function() {
+        document.querySelectorAll('.faq-item').forEach(i => { if(i !== item) i.classList.remove('open'); });
+        item.classList.toggle('open');
+      });
+    });
+
+    // Testi Carousel with Manual Controls
+    const testiInner = document.getElementById('testiInner');
+    const testiCount = testiInner.children.length;
+    let testiIndex = 0;
+    let testiInterval;
+    function startCarousel() {
+      testiInterval = setInterval(() => {
         testiIndex = (testiIndex + 1) % testiCount;
         testiInner.style.transform = `translateX(-${testiIndex * 100}%)`;
-      }, 4100);
+      }, 6000);
+    }
+    function stopCarousel() {
+      clearInterval(testiInterval);
+    }
+    startCarousel();
+    document.querySelector('.prev-btn').addEventListener('click', () => {
+      stopCarousel();
+      testiIndex = (testiIndex - 1 + testiCount) % testiCount;
+      testiInner.style.transform = `translateX(-${testiIndex * 100}%)`;
+      startCarousel();
     });
+    document.querySelector('.next-btn').addEventListener('click', () => {
+      stopCarousel();
+      testiIndex = (testiIndex + 1) % testiCount;
+      testiInner.style.transform = `translateX(-${testiIndex * 100}%)`;
+      startCarousel();
+    });
+    testiInner.addEventListener('mouseenter', stopCarousel);
+    testiInner.addEventListener('mouseleave', startCarousel);
 
     // Warna real swatch
     const colorHexMap = {
@@ -519,6 +628,7 @@
     const pesanBtn = document.getElementById('pesanBtn');
     const promoInput = document.getElementById('promoInput');
     const toast = document.getElementById('toast');
+    const resetBtn = document.getElementById('resetBtn');
 
     // Modal animation helpers
     const modalBg = document.getElementById('modalBg');
@@ -555,7 +665,7 @@
     });
     warna.addEventListener('focus', function () {
       if (!productType.value) {
-        alert("Silakan pilih jenis produk terlebih dahulu.");
+        showToast("Silakan pilih jenis produk terlebih dahulu.");
         productType.focus();
       }
     });
@@ -600,11 +710,14 @@
       if (promoValue === PROMO_CODE) {
         promoValid = true;
         harga = Math.floor(harga * (1 - PROMO_DISKON));
-        promoInput.style.borderColor = "#82ca9c";
+        promoInput.style.borderColor = "var(--success-color)";
+        document.getElementById('promoError').style.display = 'none';
       } else if (promoValue.length > 0) {
-        promoInput.style.borderColor = "#d16a6a";
+        promoInput.style.borderColor = "var(--error-color)";
+        document.getElementById('promoError').style.display = 'block';
       } else {
         promoInput.style.borderColor = "";
+        document.getElementById('promoError').style.display = 'none';
       }
       totalHarga.innerText = `Total: Rp${harga.toLocaleString('id-ID')}` + (promoValid ? " (promo -10%)" : "");
       return harga;
@@ -616,21 +729,148 @@
       toast.className = "toast show";
       setTimeout(() => { toast.className = "toast hide"; }, duration);
     }
+    // Sticky Notification for Incomplete Fields
+    const stickyNotif = document.getElementById('stickyNotif');
+    function showStickyNotif(msg, duration=5000) {
+      stickyNotif.innerText = msg;
+      stickyNotif.className = "sticky-notif show";
+      setTimeout(() => { stickyNotif.className = "sticky-notif hide"; }, duration);
+    }
+    // Form validation
+    function validateField(field, errorId, errorMessage, validationFn) {
+      const errorElement = document.getElementById(errorId);
+      if (!validationFn(field.value)) {
+        field.classList.add('error');
+        errorElement.style.display = 'block';
+        errorElement.textContent = errorMessage;
+        return false;
+      } else {
+        field.classList.remove('error');
+        errorElement.style.display = 'none';
+        return true;
+      }
+    }
+    // Save form data to localStorage
+    function saveFormData() {
+      const formData = new FormData(document.getElementById('orderForm'));
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+      localStorage.setItem('formData', JSON.stringify(data));
+    }
+    // Load form data from localStorage
+    function loadFormData() {
+      const data = JSON.parse(localStorage.getItem('formData') || '{}');
+      if (data) {
+        const form = document.getElementById('orderForm');
+        Object.keys(data).forEach(key => {
+          const input = form.querySelector(`[name="${key}"]`);
+          if (input) {
+            input.value = data[key];
+            if (key === 'produk') {
+              productType.dispatchEvent(new Event('change'));
+            }
+          }
+        });
+        hitungTotal();
+        showToast("Data formulir sebelumnya telah dimuat.");
+      }
+    }
+    // Reset form and clear localStorage
+    resetBtn.addEventListener('click', function() {
+      if (confirm("Apakah Anda yakin ingin mengatur ulang formulir? Semua data yang diisi akan hilang.")) {
+        document.getElementById('orderForm').reset();
+        localStorage.removeItem('formData');
+        productType.dispatchEvent(new Event('change'));
+        hitungTotal();
+        document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('input, select, textarea').forEach(el => el.classList.remove('error'));
+        showToast("Formulir telah diatur ulang.");
+        updateProgress();
+      }
+    });
+    // Form submission
     document.getElementById('orderForm').addEventListener('submit', function (e) {
       e.preventDefault();
       resetNotif();
-      const waVal = this.wa.value.trim();
-      if (!/^[0-9]{10,15}$/.test(waVal)) {
-        notif.innerText = 'Nomor WhatsApp tidak valid!';
-        this.wa.focus();
-        return;
+      let isValid = true;
+      let errorMessages = [];
+      if (!validateField(
+        this.nama, 'namaError', 'Nama hanya boleh mengandung huruf dan spasi.',
+        value => /^[a-zA-Z\s]+$/.test(value)
+      )) {
+        isValid = false;
+        errorMessages.push("Nama hanya boleh mengandung huruf dan spasi.");
+      }
+      if (!validateField(
+        this.wa, 'waError', 'Nomor WhatsApp harus diawali +62, 62, atau 08 dan berisi 10-15 angka.',
+        value => /^(\+62|62|08)[0-9]{8,13}$/.test(value)
+      )) {
+        isValid = false;
+        errorMessages.push("Nomor WhatsApp harus diawali +62, 62, atau 08.");
+      }
+      if (!validateField(
+        this.alamat, 'alamatError', 'Alamat harus diisi dengan lengkap.',
+        value => value.trim().length > 10
+      )) {
+        isValid = false;
+        errorMessages.push("Alamat harus diisi dengan lengkap.");
+      }
+      if (!validateField(
+        this.produk, 'produkError', 'Harap pilih jenis produk.',
+        value => value !== ''
+      )) {
+        isValid = false;
+        errorMessages.push("Harap pilih jenis produk.");
+      }
+      if (!validateField(
+        this.warna, 'warnaError', 'Harap pilih warna produk.',
+        value => value !== ''
+      )) {
+        isValid = false;
+        errorMessages.push("Harap pilih warna produk.");
+      }
+      if (!validateField(
+        this.jumlah, 'jumlahError', 'Jumlah harus antara 1 dan 20.',
+        value => parseInt(value) >= 1 && parseInt(value) <= 20
+      )) {
+        isValid = false;
+        errorMessages.push("Jumlah harus antara 1 dan 20.");
+      }
+      if (!validateField(
+        this.paperbag, 'paperbagError', 'Harap pilih opsi paper bag.',
+        value => value !== ''
+      )) {
+        isValid = false;
+        errorMessages.push("Harap pilih opsi paper bag.");
+      }
+      if (!validateField(
+        this.pengiriman, 'pengirimanError', 'Harap pilih metode pengiriman.',
+        value => value !== ''
+      )) {
+        isValid = false;
+        errorMessages.push("Harap pilih metode pengiriman.");
+      }
+      if (!validateField(
+        this.pembayaran, 'pembayaranError', 'Harap pilih metode pembayaran.',
+        value => value !== ''
+      )) {
+        isValid = false;
+        errorMessages.push("Harap pilih metode pembayaran.");
       }
       let promoValue = promoInput.value.trim().toLowerCase();
       if (promoValue.length > 0 && promoValue !== PROMO_CODE) {
         notif.innerText = 'Kode promo tidak valid! Masukkan: femmeia10';
         promoInput.focus();
-        promoInput.style.borderColor = "#d16a6a";
+        promoInput.style.borderColor = "var(--error-color)";
+        document.getElementById('promoError').style.display = 'block';
         showToast('Kode promo salah. Gunakan femmeia10');
+        isValid = false;
+        errorMessages.push("Kode promo tidak valid.");
+      }
+      if (!isValid) {
+        showStickyNotif("Formulir belum lengkap: " + errorMessages[0]);
         return;
       }
       pesanBtn.disabled = true;
@@ -671,6 +911,7 @@
       window.open(url, "_blank");
       showToast('Pesanan diarahkan ke WhatsApp!');
       notif.innerText = '';
+      localStorage.removeItem('formData'); // Clear saved data after successful submission
     };
     document.getElementById('batalModal').onclick = function() {
       closeModal();
@@ -689,6 +930,43 @@
     scrollBtn.addEventListener('click', function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+    // Autosave form data on input
+    document.querySelectorAll('input, select, textarea').forEach(input => {
+      input.addEventListener('input', saveFormData);
+      input.addEventListener('change', saveFormData);
+    });
+    // Load form data on page load
+    loadFormData();
+    // Progress Indicator
+    const progressContainer = document.getElementById('progressContainer');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    function updateProgress() {
+      const form = document.getElementById('orderForm');
+      const requiredFields = form.querySelectorAll('[required]');
+      let filledFields = 0;
+      requiredFields.forEach(field => {
+        if (field.value.trim() !== '') {
+          filledFields++;
+        }
+      });
+      const progress = Math.round((filledFields / requiredFields.length) * 100);
+      progressFill.style.width = `${progress}%`;
+      progressText.textContent = `Progres Pengisian: ${progress}%`;
+      if (progress > 0) {
+        progressContainer.style.display = 'block';
+      } else {
+        progressContainer.style.display = 'none';
+      }
+    }
+    document.querySelectorAll('input, select, textarea').forEach(field => {
+      field.addEventListener('input', updateProgress);
+      field.addEventListener('change', updateProgress);
+    });
+    // Initialize progress on load
+    updateProgress();
   </script>
 </body>
 </html>
+
+
