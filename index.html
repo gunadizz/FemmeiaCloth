@@ -21,1050 +21,1453 @@
   <!-- In the <head> section -->
   <meta name="google-adsense-account" content="ca-pub-3270682405009922">
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#f8fafc">
 
-  <style>
-    :root {
-      --primary: #111;
-      --secondary: #888;
-      --bg: #f5f5f5;
-      --card-bg: #fff;
-      --accent: #814c26;
-      --sticky1: #e4a561;
-      --sticky2: #814c26;
-      --radius: 20px;
-      --shadow: 0 4px 16px rgba(0,0,0,0.10);
-      --transition: all 0.25s cubic-bezier(.4,0,.2,1);
-    }
-    [data-theme="dark"] {
-      --primary: #f5f5f5;
-      --secondary: #bbb;
-      --bg: #181818;
-      --card-bg: #232323;
-      --accent: #f5b06c;
-      --sticky1: #ae7f40;
-      --sticky2: #b58055;
-      --shadow: 0 4px 16px rgba(0,0,0,0.45);
-    }
-    /* Remove default blue outline and shadow for all buttons and interactive elements */
-button,
-a,
-input,
-select,
-textarea,
-[tabindex]:not([tabindex="-1"]) {
-  outline: none !important;
-  box-shadow: none !important;
-}
+    <style>
+        :root {
+            --background: #ffffff;
+            --background-light: #f8fafc;
+            --background-lighter: #f1f5f9;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --text-light: #94a3b8;
+            --accent-dark: #1f2937;
+            --accent-mid: #374151;
+            --accent-light: #9ca3af;
+            --border: rgba(55, 65, 81, 0.12);
+            --border-hover: rgba(55, 65, 81, 0.2);
+            --success: #059669;
+            --warning: #fbbf24;
+            --shadow: 0 8px 32px rgba(31, 41, 55, 0.06);
+            --shadow-hover: 0 16px 48px rgba(31, 41, 55, 0.1);
+            --radius-md: 1rem;
+            --radius-lg: 1.25rem;
+            --transition-speed: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --blur-strength: 10px;
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
 
-/* Remove blue tap highlight on mobile browsers (Android/Chrome) */
-button,
-a,
-input,
-select,
-textarea,
-[tabindex]:not([tabindex="-1"]) {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  tap-highlight-color: rgba(0,0,0,0);
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+        }
 
-/* Optional: Add custom focus/active states for accessibility */
-button:focus, button:active,
-a:focus, a:active,
-input:focus, input:active,
-select:focus, select:active,
-textarea:focus, textarea:active,
-[tabindex]:focus, [tabindex]:active {
-  outline: none !important;
-  box-shadow: none !important;
-  /* Optionally, add your custom style here (e.g., a soft shadow or colored border) */
-  /* border: 2px solid #814c26; */
-}
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 100%);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-/* For iOS Safari remove tap highlight */
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Quicksand', sans-serif !important;
-      transition: background 0.3s, color 0.3s, border-color 0.3s;
-    }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
 
-    html, body {
-      width: 100%;
-      min-height: 100vh;
-      background-color: var(--bg);
-    }
+        /* Scattered Shapes Background */
+        .scattered-shapes {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            user-select: none;
+            overflow: hidden;
+        }
 
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
-    }
+        .scattered-shape {
+            position: absolute;
+            opacity: 0.13;
+            filter: blur(1px);
+            pointer-events: none;
+            z-index: 0;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: both;
+        }
 
+        /* CIRCLE */
+        .scattered-shape.circle1 {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-mid);
+            top: 6%;
+            left: 12%;
+            animation-name: floatY1;
+            animation-duration: 13s;
+        }
 
-    .loading-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #f5f5f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      animation: fadeOut 0.5s ease forwards;
-      animation-delay: 2s;
-    }
+        .scattered-shape.circle2 {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--success);
+            top: 32%;
+            left: 83%;
+            animation-name: floatX2;
+            animation-duration: 11s;
+        }
 
-    .loading-screen img {
-      width: 300px;
-      height: auto;
-      animation: float 0.5s ease-in-out infinite;
-    }
+        .scattered-shape.circle3 {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--warning);
+            top: 78%;
+            left: 25%;
+            animation-name: floatXY3;
+            animation-duration: 17s;
+        }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
+        .scattered-shape.circle4 {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            top: 60%;
+            left: 65%;
+            animation-name: floatY2;
+            animation-duration: 12.2s;
+        }
 
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        visibility: hidden;
-      }
-    }
-    /* Sticky buttons */
-    .sticky-btns {
-      position: fixed;
-      bottom: 4vw;
-      right: 4vw;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-      z-index: 20000;
-      transition: opacity 0.25s, bottom 0.25s, right 0.25s;
-    }
-    .sticky-btn {
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      box-shadow: 0 4px 16px rgba(129, 76, 38, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      cursor: pointer;
-      transition: background 0.25s, transform 0.18s, color 0.25s;
-      outline: none;
-      font-family: 'Quicksand', sans-serif !important;
-      color: #fff;
-      background: transparent;
-      padding: 0;
-    }
-    .sticky-btn#darkmode-toggle {
-      background: #000;
-    }
-    .sticky-btn#darkmode-toggle:hover,
-    .sticky-btn#darkmode-toggle:focus {
-      background: var(--accent);
-      color: #fff;
-      transform: scale(1.09);
-    }
-    .sticky-btn#lang-toggle {
-      background: #000;
-    }
-    .sticky-btn#lang-toggle:hover,
-    .sticky-btn#lang-toggle:focus {
-      background: var(--sticky1);
-      color: #fff;
-      transform: scale(1.09);
-    }
-    .sticky-btn svg {
-      width: 26px;
-      height: 26px;
-      display: block;
-      pointer-events: none;
-      fill: #fff;
-      transition: fill 0.2s;
-    }
-    .sticky-btn#darkmode-toggle.active svg,
-    .sticky-btn#lang-toggle.active svg {
-      fill: var(--primary);
-    }
+        /* SQUARE */
+        .scattered-shape.square1 {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-md);
+            background: var(--background-lighter);
+            border: 2px solid var(--accent-light);
+            top: 18%;
+            left: 75%;
+            animation-name: floatX2;
+            animation-duration: 10.5s;
+        }
 
-    /* Main container */
-    .main-content {
-      max-width: 430px;
-      width: 96vw;
-      margin: 5vw auto 0 auto;
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2.5rem 1.2rem 1.7rem 1.2rem;
-      position: relative;
-      z-index: 1;
-      margin-bottom: 10vw;
-    }
+        .scattered-shape.square2 {
+            width: 62px;
+            height: 62px;
+            border-radius: var(--radius-md);
+            background: var(--accent-light);
+            top: 68%;
+            left: 77%;
+            animation-name: floatXY3;
+            animation-duration: 15s;
+        }
 
-    /* Decorative elements */
-    .bg-shape1, .bg-shape2 {
-      position: absolute;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.12;
-      filter: blur(2.5px);
-    }
-    .bg-shape1 {
-      width: 210px; height: 210px;
-      background: linear-gradient(135deg, var(--accent) 60%, var(--secondary) 100%);
-      border-radius: 45% 65% 70% 30%;
-      top: -100px; left: -100px;
-      animation: blob1 14s infinite alternate ease-in-out;
-    }
-    .bg-shape2 {
-      width: 150px; height: 150px;
-      background: linear-gradient(135deg, var(--secondary) 50%, var(--accent) 100%);
-      border-radius: 70% 30% 50% 50%;
-      bottom: -200px; right: 0px;
-      animation: blob2 19s infinite alternate ease-in-out;
-    }
-    @keyframes blob1 {
-      0% { border-radius: 45% 65% 70% 30%; }
-      100% { border-radius: 60% 40% 30% 70%; }
-    }
-    @keyframes blob2 {
-      0% { border-radius: 70% 30% 50% 50%; }
-      100% { border-radius: 40% 60% 70% 30%; }
-    }
+        /* TRIANGLE */
+        .scattered-shape.triangle1 {
+            width: 0;
+            height: 0;
+            border-left: 28px solid transparent;
+            border-right: 28px solid transparent;
+            border-bottom: 50px solid var(--warning);
+            top: 54%;
+            left: 15%;
+            animation-name: floatY1;
+            animation-duration: 16s;
+        }
 
-    /* Branding */
-    .brand-logo {
-      width: 100px;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(130,130,130,0.14);
-      margin-bottom: 1.2rem;
-      margin-top: 0.2rem;
-    }
-    .brand-title {
-      font-size: 2.1rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--primary);
-      margin-bottom: 0.4rem;
-      line-height: 1.1;
-      text-shadow: 0 1px 5px rgba(129,76,38,0.10);
-      text-align: center;
-    }
-    .brand-subtitle {
-      font-size: 1.12rem;
-      color: var(--secondary);
-      font-weight: 500;
-      margin-bottom: 1.15rem;
-      letter-spacing: 1px;
-      text-align: center;
-    }
+        .scattered-shape.triangle2 {
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 34px solid var(--accent-mid);
+            top: 38%;
+            left: 56%;
+            animation-name: floatX2;
+            animation-duration: 13.1s;
+        }
 
-    /* Tagline */
-    .tagline {
-      background: linear-gradient(90deg, var(--secondary) 60%, var(--accent) 100%);
-      color: #fff;
-      padding: 0.47rem 1.3rem;
-      border-radius: 16px;
-      font-size: 1.08rem;
-      font-weight: 600;
-      margin-bottom: 1.7rem;
-      box-shadow: 0 1px 8px rgba(80,80,80,0.07);
-      letter-spacing: 1px;
-      display: inline-block;
-      text-align: center;
-      text-shadow: 0 1px 7px rgba(129,76,38,0.07);
-    }
+        /* DIAMOND */
+        .scattered-shape.diamond1 {
+            width: 44px;
+            height: 44px;
+            background: var(--success);
+            transform: rotate(45deg);
+            border-radius: var(--radius-md);
+            top: 85%;
+            left: 41%;
+            animation-name: floatXY3;
+            animation-duration: 19s;
+        }
 
-    /* Buttons */
-    .link-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 1.04rem;
-      margin: 0.58rem 0;
-      background: linear-gradient(93deg, var(--primary) 70%, var(--secondary) 100%);
-      color: white;
-      border: none;
-      border-radius: 13px;
-      font-size: 1.16rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.09);
-      transition: var(--transition);
-      position: relative;
-      z-index: 1;
-      letter-spacing: 0.5px;
-      gap: 0.7em;
-      outline: none;
-      font-family: 'Quicksand', sans-serif !important;
-    }
-    .link-btn:hover, .link-btn:focus {
-      background: linear-gradient(93deg, var(--accent) 50%, var(--secondary) 100%);
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.16);
-      color: var(--primary);
-    }
-    .link-btn .icon {
-      font-size: 1.18em;
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 0.21em;
-    }
+        .scattered-shape.diamond2 {
+            width: 28px;
+            height: 28px;
+            background: var(--accent-dark);
+            transform: rotate(45deg);
+            border-radius: var(--radius-md);
+            top: 37%;
+            left: 17%;
+            animation-name: floatY1;
+            animation-duration: 11.3s;
+        }
 
-    /* Info cards */
-    .info-cards {
-      display: flex;
-      justify-content: center;
-      gap: 1.3rem;
-      margin: 1.9rem 0 0.8rem 0;
-      width: 100%;
-      flex-wrap: wrap;
-      z-index: 1;
-    }
-    .info-card {
-      flex: 1 1 130px;
-      min-width: 116px;
-      background: #faf7f7;
-      border-radius: 13px;
-      padding: 1.07rem 0.8rem;
-      text-align: center;
-      box-shadow: 0 2px 7px rgba(80,80,80,0.09);
-      font-size: 0.99rem;
-      color: var(--primary);
-      font-weight: 500;
-      margin-bottom: 0.1rem;
-      letter-spacing: 0.1px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3em;
-      border: 1.5px solid #f2e6e0;
-      font-family: 'Quicksand', sans-serif !important;
-    }
-    [data-theme="dark"] .info-card {
-      background: #232323;
-      border: 1.5px solid #353535;
-    }
-    .info-card .info-icon {
-      font-size: 1.32em;
-      margin-bottom: 0.13em;
-      color: var(--accent);
-    }
-    .info-card strong {
-      display: block;
-      color: var(--accent);
-      font-size: 1.01em;
-      font-weight: 700;
-    }
+        /* KEYFRAMES ANIMASI */
+        @keyframes floatY1 {
+            0%,100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-28px) scale(1.12); }
+        }
 
-    /* Footer */
-    .footer {
-      margin: 5vw auto 2vw auto;
-      text-align: center;
-      color: #aaa;
-      font-size: 0.97rem;
-      letter-spacing: 0.28px;
-      z-index: 1;
-      position: relative;
-      font-family: 'Quicksand', sans-serif !important;
-    }
-    [data-theme="dark"] .footer {
-      color: #bbb;
-    }
-    .footer a {
-      color: var(--secondary);
-      text-decoration: none;
-      font-weight: 500;
-      margin-left: 0.4em;
-      transition: color 0.2s;
-    }
-    .footer a:hover, .footer a:focus {
-      color: var(--accent);
-      text-decoration: underline;
-    }
+        @keyframes floatY2 {
+            0%,100% { transform: translateY(0) scale(1); }
+            40% { transform: translateY(19px) scale(1.08); }
+            80% { transform: translateY(-12px) scale(0.98); }
+        }
 
-    /* Responsive */
-    @media (max-width: 700px) {
-      .main-content {
-        max-width: 99vw;
-        padding: 2.2rem 0.8rem 1.3rem 0.8rem;
-        margin: 5vw auto 0 auto;
-      }
-      .info-cards {
-        gap: 0.7rem;
-      }
-      .brand-title {
-        font-size: 1.4rem;
-      }
-      .tagline {
-        font-size: 0.97rem;
-        padding: 0.35rem 0.7rem;
-      }
-      .sticky-btns {
-        right: 3vw;
-        bottom: 3vw;
-      }
-      .footer {
-        font-size: 0.93rem;
-        margin: 6vw auto 2vw auto;
-      }
-      .carousel-slide img {
-        height: 160px;
-      }
-    }
-    @media (max-width: 480px) {
-      .main-content { 
-        padding: 1.1rem 2vw 0.9rem 2vw;
-        max-width: 99vw;
-        margin: 4vw auto 0 auto;
-      }
-      .sticky-btns { 
-        right: 2vw;
-        bottom: 2vw;
-      }
-      .footer {
-        font-size: 0.91rem;
-        margin: 8vw auto 2vw auto;
-      }
-      .carousel-slide img {
-        height: 120px;
-      }
-    }
-    @media (max-width: 340px) {
-      .main-content {
-        padding: 0.6rem 1vw 0.6rem 1vw;
-        margin: 2vw auto 0 auto;
-      }
-      .sticky-btns {
-        right: 1vw;
-        bottom: 1vw;
-      }
-      .footer {
-        font-size: 0.85rem;
-        margin: 10vw auto 2vw auto;
-      }
-      .carousel-slide img {
-        height: 80px;
-      }
-    }
-    /* Modal Styles */
-.modal-screenshot {
-  display: none;
-  position: fixed;
-  z-index: 99999;
-  left: 0; top: 0; width: 100vw; height: 100vh;
-  justify-content: center; align-items: center;
-  font-family: 'Quicksand', sans-serif;
-}
-.modal-screenshot.active { display: flex; }
-.modal-overlay {
-  position: absolute;
-  width: 100vw; height: 100vh;
-  left: 0; top: 0;
-  background: rgba(40,40,40,0.38);
-  z-index: 1;
-  cursor: pointer;
-  transition: background 0.18s;
-}
-.modal-content {
-  position: relative;
-  background: #fafafa;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(60,60,60,0.22);
-  padding: 2.1vw 2vw 2vw 2vw;
-  max-width: 95vw;
-  max-height: 90vh;
-  z-index: 2;
+        @keyframes floatX2 {
+            0%,100% { transform: translateX(0) scale(1); }
+            50% { transform: translateX(-34px) scale(1.09); }
+        }
+
+        @keyframes floatXY3 {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(-19px, -17px) scale(1.11); }
+            66% { transform: translate(14px, 11px) scale(0.97); }
+        }
+
+        .container {
+            max-width: 500px;
+            width: 95vw;
+            padding: 2rem 1rem;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 0.5s ease forwards;
+            animation-delay: 2s;
+        }
+
+        .loading-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            animation: loadingPulse 1.5s ease-in-out infinite;
+            text-align: center;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: rgba(55, 65, 81, 0.02);
+            backdrop-filter: blur(var(--blur-strength));
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-dark);
+            box-shadow: 0 2px 16px rgba(31, 41, 55, 0.07);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--accent-dark);
+            position: relative;
+            z-index: 1;
+            animation: textFadeIn 1s ease 0.3s both;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.2rem, 3vw, 1.75rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--accent-dark);
+            position: relative;
+            z-index: 1;
+            animation: textFadeIn 1s ease 0.5s both;
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            width: 100%;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-hover);
+            backdrop-filter: blur(var(--blur-strength));
+            border-radius: var(--radius-md);
+            padding: 1rem 0.75rem;
+            
+            text-align: center;
+            flex: 1 1 100px;
+            min-width: 100px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-speed);
+            border: 1px solid var(--glass-border);
+        }
+
+        .info-card:hover {
+            transform: translateY(-7px);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .info-icon {
+            font-size: 1.5rem;
+            color: var(--accent-dark);
+        }
+
+        .info-text {
+            font-weight: 600;
+            color: var(--accent-dark);
+        }
+
+        /* Tombol Katalog */
+        .katalog-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--accent-dark);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(var(--blur-strength));
+            box-shadow: var(--shadow-hover);
+        }
+
+        .katalog-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .katalog-btn:hover::before {
+            left: 100%;
+        }
+
+        .katalog-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: var(--accent-mid);
+            box-shadow: var(--shadow-hover);
+            animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+        .katalog-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* Links Container dengan Cards */
+        .links-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .link-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-strength));
+            border-radius: var(--radius-md);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition-speed);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.2rem;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            background: var(--accent-dark);
+            color: white;
+            padding: 1.1rem 1.5rem;
+            border-radius: 20px 8px 20px 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+            gap: 0.75rem;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+
+        .link-btn:hover::before {
+            left: 100%;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: var(--accent-mid);
+            box-shadow: 0 10px 20px rgba(31, 41, 55, 0.2);
+            animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+        .link-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .link-icon {
+            font-size: 1.3rem;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { transform: translateY(-3px) scale(1.02); }
+            50% { transform: translateY(-5px) scale(1.03); }
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal-screenshot {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(var(--blur-strength));
+            justify-content: center;
+            align-items: center;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .modal-screenshot.active {
+            display: flex;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            background: transparent;
+            z-index: 1;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+
+        .modal-content {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(var(--blur-strength));
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-hover);
+            padding: 2rem;
+            max-width: 95vw;
+            max-height: 90vh;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: modalIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--glass-border);
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-img {
+            width: 100%;
+            max-width: 500px;
+            max-height: 70vh;
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+            display: block;
+            box-shadow: var(--shadow);
+            background: #eee;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 11;
+            padding: 0.3rem;
+            border-radius: 50%;
+            transition: background 0.18s, transform 0.18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            background: rgba(31, 41, 55, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Promo Modal */
+        .promo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(31, 41, 55, 0.13);
+            backdrop-filter: blur(var(--blur-strength));
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            animation: promoFadeInBg 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background 0.23s;
+        }
+
+        @keyframes promoFadeInBg {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .promo-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(var(--blur-strength));
+            padding: 2rem 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-hover);
+            max-width: 95vw;
+            width: 390px;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--glass-border);
+            font-family: 'Quicksand', sans-serif;
+            animation: modalBounceIn 0.55s cubic-bezier(0.25, 1.4, 0.48, 1.08);
+            transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalBounceIn {
+            0% { transform: scale(0.8) translateY(50px); opacity: 0; }
+            70% { transform: scale(1.06) translateY(-8px); opacity: 0.97; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .promo-modal-content.closing {
+            animation: modalBounceOut 0.36s cubic-bezier(0.42, 0.01, 0.52, 0.94) forwards;
+        }
+
+        @keyframes modalBounceOut {
+            0% { transform: scale(1) translateY(0); opacity: 1; }
+            60% { transform: scale(0.94) translateY(12px); opacity: 0.7; }
+            100% { transform: scale(0.7) translateY(90px); opacity: 0; }
+        }
+
+        .promo-modal-img {
+            width: 120px;
+            height: auto;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.1rem;
+            box-shadow: var(--shadow);
+            animation: imgPopIn 0.65s cubic-bezier(0.23, 1.2, 0.45, 1.01);
+        }
+
+        @keyframes imgPopIn {
+            0% { transform: scale(0.7) rotate(-6deg); opacity: 0; }
+            70% { transform: scale(1.08) rotate(3deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .promo-modal-title {
+            color: var(--accent-dark);
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            margin-top: 0;
+            letter-spacing: 1px;
+            animation: titleIn 0.7s cubic-bezier(0.23, 1.2, 0.45, 1.01);
+        }
+
+        @keyframes titleIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .promo-modal-desc {
+            color: var(--text-muted);
+            font-size: 1.09rem;
+            margin-bottom: 1.15rem;
+            line-height: 1.6;
+            animation: fadeInText 0.85s 0.13s backwards;
+        }
+
+        @keyframes fadeInText {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .promo-modal-code {
+            font-family: monospace;
+            font-size: 1.13rem;
+            color: var(--accent-dark);
+            background: rgba(31, 41, 55, 0.1);
+            padding: 2px 10px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(31, 41, 55, 0.1);
+            letter-spacing: 0.08em;
+            animation: codePulse 2.2s infinite alternate cubic-bezier(0.45, 0, 0.7, 1);
+        }
+
+        @keyframes codePulse {
+            0% { box-shadow: 0 1px 4px rgba(31, 41, 55, 0.1); background: rgba(31, 41, 55, 0.1); }
+            100% { box-shadow: 0 4px 14px rgba(31, 41, 55, 0.2); background: rgba(31, 41, 55, 0.15); }
+        }
+
+        .promo-modal-btn {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            border-radius: 20px 8px 20px 8px;
+            font-size: 1.13rem;
+            font-weight: 600;
+            padding: 0.85rem 2rem;
+            margin-top: 0.6rem;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: background 0.18s, box-shadow 0.19s, color 0.17s, transform 0.22s;
+            display: inline-block;
+            animation: btnPopIn 1.2s 0.3s backwards cubic-bezier(0.23, 1.2, 0.45, 1.01);
+        }
+
+        @keyframes btnPopIn {
+            0% { opacity: 0; transform: scale(0.7); }
+            60% { opacity: 1; transform: scale(1.18); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .promo-modal-btn:hover,
+        .promo-modal-btn:focus {
+            background: var(--accent-mid);
+            transform: scale(1.06);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .promo-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.7rem;
+            color: var(--text-light);
+            position: absolute;
+            top: 0.7rem;
+            right: 0.8rem;
+            cursor: pointer;
+            transition: color 0.17s, background 0.17s, transform 0.17s;
+            z-index: 2;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            line-height: 34px;
+        }
+
+        .promo-modal-close:hover,
+        .promo-modal-close:focus {
+            color: var(--accent-dark);
+            background: rgba(31, 41, 55, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Tombol Share (Sticky) */
+        .share-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: var(--accent-dark);
+            cursor: pointer;
+            transition: var(--transition-speed);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 16px rgba(31, 41, 55, 0.15);
+            z-index: 1000;animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 24px rgba(31, 41, 55, 0.25);
+            animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+        .share-btn:active {
+            transform: translateY(1px) scale(0.95);
+        }
+
+        .share-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: var(--accent-dark);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Share Modal */
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(var(--blur-strength));
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 99999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .share-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(var(--blur-strength));
+            padding: 2rem 1.5rem;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            box-shadow: var(--shadow-hover);
+            width: 100%;
+            max-width: 100%;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--glass-border);
+            font-family: 'Quicksand', sans-serif;
+            animation: slideUp 0.3s ease-out;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(100%); opacity: 0; }
+        }
+
+        .share-modal-title {
+            color: var(--accent-dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .share-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            color: var(--accent-dark);
+            width: 60px;
+        }
+
+        .share-option:hover {
+            transform: scale(1.1);
+        }
+
+        .share-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(31, 41, 55, 0.1);
+            background: var(--accent-light);
+        }
+
+        .share-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: white;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .share-option-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .copy-link-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .link-input {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            font-family: 'Quicksand', sans-serif;
+            width: 70%;
+        }
+
+        .copy-btn {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.5rem 1rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-mid);
+            transform: scale(1.02);
+        }
+
+        .share-modal-close {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .share-modal-close:hover {
+            background: var(--accent-mid);
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 520px) {
+            .promo-modal-content {
+                width: 96vw;
+                padding: 1.5rem 1rem;
+            }
+
+            .share-modal-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .share-options {
+                gap: 1rem;
+            }
+
+            .share-btn {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .share-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-strength));
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            padding: 1.5rem;
+            width: 100%;
+            text-align: center;
+            margin-top: auto;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem 0.75rem;
+            }
+
+            .hero {
+                padding: 2rem 0.75rem;
+            }
+
+            .links-container {
+                gap: 0.75rem;
+            }
+
+            .link-btn {
+                padding: 1rem 1.25rem;
+                font-size: 1rem;
+            }
+
+            .info-cards {
+                gap: 0.75rem;
+            }
+
+            .info-card {
+                flex: 1 1 45%;
+                min-width: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .info-card {
+                flex: 1 1 100%;
+            }
+        }
+
+        /* Animasi */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { transform: translateY(-3px) scale(1.1); }
+            50% { transform: translateY(-5px) scale(1.15); }
+        }
+        .profile-social-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  animation: modalIn 0.25s cubic-bezier(.4,0,.2,1);
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
 }
-@keyframes modalIn {
-  from { opacity: 0; transform: scale(0.92);}
-  to { opacity: 1; transform: scale(1);}
-}
-.modal-img {
-  width: 92vw;
-  max-width: 540px;
-  max-height: 73vh;
-  border-radius: 14px;
-  margin: 0 auto;
-  display: block;
-  box-shadow: 0 2px 14px rgba(40,40,40,0.07);
-  background: #eee;
-}
-.modal-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  position: absolute;
-  top: 18px; right: 18px;
-  z-index: 11;
-  padding: 3px;
+.profile-photo {
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
-  transition: background 0.18s;
+  object-fit: cover;
+  border: 3px solid var(--accent-dark);
+  box-shadow: 0 2px 16px rgba(31,41,55,0.07);
 }
-.modal-close:hover,
-.modal-close:focus { background: #eee; }
-.promo-modal {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(24, 18, 0, 0.13);
-  /* Add blur glass effect */
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(20px);
-  display: flex; align-items: center; justify-content: center; z-index: 99999;
-  animation: promoFadeInBg 0.35s cubic-bezier(.4,0,.2,1);
-  transition: background 0.23s;
+.profile-tags {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
-@keyframes promoFadeInBg { from { opacity: 0; } to { opacity: 1; } }
-@keyframes promoFadeOutBg { from { opacity: 1; } to { opacity: 0; } }
-
-.promo-modal-content {
-  background: #f5f5f5cc; /* semi-transparent for glass look */
-  padding: 2.2em 1.4em 2em 1.4em;
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(50,50,50,0.19);
-  max-width: 95vw;
-  width: 390px;
-  text-align: center;
-  position: relative;
-  border: 2.5px solid #ddd;
-  font-family: 'Quicksand', sans-serif;
-  animation: modalBounceIn 0.55s cubic-bezier(.25,1.4,.48,1.08);
-  transition: transform 0.34s cubic-bezier(.4,0,.2,1), opacity 0.24s cubic-bezier(.4,0,.2,1);
-  /* When closing: will add .closing class for animation */
-}
-@keyframes modalBounceIn {
-  0%   { transform: scale(0.8) translateY(50px); opacity: 0; }
-  70%  { transform: scale(1.06) translateY(-8px); opacity: 0.97; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
-}
-.promo-modal-content.closing {
-  animation: modalBounceOut 0.36s cubic-bezier(.42,.01,.52,.94) forwards;
-}
-@keyframes modalBounceOut {
-  0% { transform: scale(1) translateY(0); opacity: 1; }
-  60% { transform: scale(0.94) translateY(12px); opacity: 0.7;}
-  100% { transform: scale(0.7) translateY(90px); opacity: 0; }
-}
-
-.promo-modal-img {
-  width: 120px;
-  height: auto;
-  border-radius: 16px;
-  margin-bottom: 1.1em;
-  box-shadow: 0 2px 16px rgba(100,100,100,0.09);
-  animation: imgPopIn 0.65s cubic-bezier(.23,1.2,.45,1.01);
-}
-@keyframes imgPopIn {
-  0% { transform: scale(0.7) rotate(-6deg); opacity: 0; }
-  70% { transform: scale(1.08) rotate(3deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0deg);}
-}
-
-.promo-modal-title {
-  color: #814c26;
-  font-size: 1.7em;
-  font-weight: 700;
-  margin-bottom: 0.7em;
-  margin-top: 0;
-  letter-spacing: 1px;
-  animation: titleIn 0.7s cubic-bezier(.23,1.2,.45,1.01);
-}
-@keyframes titleIn {
-  0% { opacity: 0; transform: translateY(30px);}
-  100% { opacity: 1; transform: translateY(0);}
-}
-
-.promo-modal-desc {
-  color: #444;
-  font-size: 1.09em;
-  margin-bottom: 1.15em;
-  line-height: 1.6;
-  animation: fadeInText 0.85s 0.13s backwards;
-}
-@keyframes fadeInText {
-  0% { opacity: 0; transform: translateY(20px);}
-  100% { opacity: 1; transform: translateY(0);}
-}
-
-.promo-modal-code {
-  font-family: monospace;
-  font-size: 1.13em;
-  color: #814c26;
-  background: #ede7df;
-  padding: 2px 10px;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px #814c2622;
-  letter-spacing: 0.08em;
-  animation: codePulse 2.2s infinite alternate cubic-bezier(.45,0,.7,1);
-}
-@keyframes codePulse {
-  0% { box-shadow: 0 1px 4px #814c2622; background: #ede7df;}
-  100% { box-shadow: 0 4px 14px #814c2644; background: #f7f2ec;}
-}
-
-.promo-modal-btn {
-  background: linear-gradient(93deg, #814c26 60%, #111 100%);
-  color: #fff;
-  border: none;
-  border-radius: 13px;
-  font-size: 1.13em;
+.btn-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 1.5rem;
   font-weight: 600;
-  padding: 0.85em 2em;
-  margin-top: 0.6em;
   text-decoration: none;
-  cursor: pointer;
-  box-shadow: 0 3px 14px rgba(129,76,38,0.13);
-  transition: background 0.18s, box-shadow 0.19s, color 0.17s, transform 0.22s;
-  display: inline-block;
-  animation: btnPopIn 1.2s 0.3s backwards cubic-bezier(.23,1.2,.45,1.01);
-}
-@keyframes btnPopIn {
-  0% { opacity: 0; transform: scale(0.7);}
-  60% { opacity: 1; transform: scale(1.18);}
-  100% { opacity: 1; transform: scale(1);}
-}
-.promo-modal-btn:hover, .promo-modal-btn:focus {
-  background: linear-gradient(93deg, #111 60%, #814c26 100%);
-  color: #fff;
-  transform: scale(1.06);
-}
-
-.promo-modal-close {
-  background: none;
+  background: #fff;
+  color: #222;
   border: none;
-  font-size: 1.7em;
-  color: #b8b5b0;
-  position: absolute;
-  top: 0.7em;
-  right: 0.8em;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 5px rgba(55,65,81,0.06);
   cursor: pointer;
-  transition: color 0.17s, background 0.17s;
-  z-index: 2;
-  border-radius: 50%;
-  width: 34px; height: 34px;
-  line-height: 34px;
 }
-.promo-modal-close:hover, .promo-modal-close:focus {
-  color: #814c26;
-  background: #ede7df;
+.btn-social .social-icon {
+  display: flex;
+  align-items: center;
 }
-@media (max-width: 520px) {
-  .promo-modal-content { width: 96vw; padding: 1.2em 0.2em 1em 0.2em; }
+.btn-social.ig {
+	  box-shadow: 0 1px 5px #FF96B9;
+  background: #FF96B9;
+  color: #fff;
+  
+}
+.btn-social.wa {
+	box-shadow: 0 1px 5px #86D3A2;
+  background: #86D3A2;
+  color: #fff;
+}
+.btn-social.ig:hover,
+.btn-social.wa:hover {
+  filter: brightness(0.92);
+  transform: scale(1.05);
+}
+.profile-tag {
+  background: var(--accent-mid, #374151);
+  color: #fff;
+  border-radius: 1.5rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+  box-shadow: 0 1px 6px rgba(55, 65, 81, 0.07);
 }
 
-      </style>
+    </style>
 </head>
-<body data-theme="light">
-  <div class="loading-screen">
-    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG-20250410-WA0040.jpg" alt="FemmeiaCloth logo loading">
-  </div>
-
-  <!-- Decorative background shapes -->
-  <div class="bg-shape1"></div>
-  <div class="bg-shape2"></div>
-  
-  <!-- Sticky Buttons -->
-  <div style="display: none" class="sticky-btns">
-    <!-- Dark Mode Toggle SVG -->
-    <button class="sticky-btn" id="darkmode-toggle" title="Dark mode" aria-label="Toggle dark mode">
-      <!-- Moon | Sun (outline, iconic, not colored) -->
-      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 12.79A9 9 0 0 1 12.21 3a7 7 0 1 0 8.79 9.79z"></path>
-      </svg>
-      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-    </button>
-    <!-- Lang Toggle SVG -->
-    <button class="sticky-btn" id="lang-toggle" title="Ganti Bahasa / Change Language" aria-label="Toggle language">
-      <!-- Globe outline, iconic, not colored -->
-      <svg id="icon-globe-id" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <ellipse cx="12" cy="12" rx="7" ry="10"></ellipse>
-        <line x1="2" y1="12" x2="22" y2="12"></line>
-      </svg>
-      <svg id="icon-globe-en" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-        <circle cx="12" cy="12" r="10"></circle>
-        <ellipse cx="12" cy="12" rx="7" ry="10"></ellipse>
-        <line x1="2" y1="12" x2="22" y2="12"></line>
-        <line x1="6" y1="2" x2="6" y2="22"></line>
-        <line x1="18" y1="2" x2="18" y2="22"></line>
-      </svg>
-    </button>
-  </div>
-
-  <!-- Main Content -->
-  <div class="main-content">
-    <img class="brand-logo" src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth Logo" />
-    <div class="brand-title" id="brand-title">FemmeiaCloth</div>
-    <div class="brand-subtitle" id="brand-subtitle">Premium Quality Hijab</div>
-    <div class="tagline" id="tagline">Tampil Syar'i, Tetap Stylish!</div>
-
-    
-    <div class="info-cards">
-      <div class="info-card">
-        <span class="info-icon">🚚</span>
-        <div id="info-delivery">Pengiriman Seluruh Indonesia</div>
-      </div>
-      <div class="info-card">
-        <span class="info-icon">✅</span>
-        <div id="info-original">Produk Original &amp; Terjamin</div>
-      </div>
-      <div class="info-card">
-        <span class="info-icon">💬</span>
-        <div id="info-service">Layanan Fast Response</div>
-      </div>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-text">Femmeia Links Page</div>
     </div>
-    
-    
-<!-- Modal Screenshot Viewer Example -->
-<!-- Trigger Button (demonstration) -->
-<button id="openScreenshotModal"
-  style="
-    margin:30px auto;
-    display:block;
-    padding:0.8em 2em;
-    font-size:1.1em;
-    border-radius:8px;
-    background:#814c26;
-    color:#fff;
-    border:none;
-    cursor:pointer;
-    box-shadow:0 9px 20px rgba(129,76,38,0.21), 0 1.5px 7px rgba(50,22,0,0.11);
-    transition: 
-      background 0.2s cubic-bezier(.4,0,.2,1),
-      color 0.18s cubic-bezier(.4,0,.2,1),
-      box-shadow 0.36s cubic-bezier(.4,0,.2,1),
-      transform 0.28s cubic-bezier(.4,0,.2,1);
-    font-family:'Quicksand',sans-serif;
-    letter-spacing:0.04em;
-  "
-  onmouseover="this.style.background='#a35c31';
-               this.style.boxShadow='0 8px 32px rgba(129,76,38,0.33), 0 4px 14px rgba(50,22,0,0.17)';
-               this.style.transform='scale(1.045) rotate(-1.2deg)';"
-  onmouseout="this.style.background='#814c26';
-              this.style.boxShadow='0 4px 20px rgba(129,76,38,0.21), 0 1.5px 7px rgba(50,22,0,0.11)';
-              this.style.transform='scale(1) rotate(0deg)';"
-  onmousedown="this.style.transform='scale(0.965) rotate(1.3deg)';"
-  onmouseup="this.style.transform='scale(1.045) rotate(-1.2deg)';"
->
-  Lihat Katalog
-</button>
 
+    <!-- BACKGROUND SHAPES (Animasi background bergerak) -->
+    <div class="scattered-shapes" aria-hidden="true">
+        <div class="scattered-shape circle1"></div>
+        <div class="scattered-shape circle2"></div>
+        <div class="scattered-shape circle3"></div>
+        <div class="scattered-shape circle4"></div>
+        <div class="scattered-shape square1"></div>
+        <div class="scattered-shape square2"></div>
+        <div class="scattered-shape triangle1"></div>
+        <div class="scattered-shape triangle2"></div>
+        <div class="scattered-shape diamond1"></div>
+        <div class="scattered-shape diamond2"></div>
+    </div>
 
-<!-- Modal Structure -->
-<div id="screenshotModal" class="modal-screenshot">
-  <div class="modal-overlay"></div>
-  <div class="modal-content">
-    <button class="modal-close" id="closeScreenshotModal" aria-label="Close modal">
-      <!-- X icon -->
-      <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="#888" stroke-width="2">
-        <line x1="4" y1="4" x2="16" y2="16"/>
-        <line x1="16" y1="4" x2="4" y2="16"/>
-      </svg>
+    <!-- Tombol Sticky Share -->
+    <button id="openShareModal" class="share-btn" aria-label="Bagikan Link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
     </button>
-    <a href="https://shopee.co.id/femmeiacloth" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Catalog Screenshot" class="modal-img" /></a>
- </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section dan Info Cards serta Links -->
+        <section class="hero fade-in">
+            <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="FemmeiaCloth Profile Photo, showcasing elegant hijab design with premium aesthetic" class="profile-photo" />
+            <h1>FemmeiaCloth</h1>
+            <h2>Tampil Syar'i, Tetap Stylish!</h2>
+            
+            <div class="profile-social-container">
+    <div class="profile-tags">
+    <a href="https://instagram.com/femmeia.cloth" class="btn-social ig" target="_blank" title="Instagram @femmeia.cloth">
+      <span class="social-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="black" stroke-width="2" fill="none"/>
+          <circle cx="12" cy="12" r="5" stroke="black" stroke-width="2" fill="none"/>
+          <circle cx="17" cy="7" r="1.2" fill="black"/>
+        </svg>
+      </span>
+      @femmeia.cloth
+    </a>
+    <a href="https://wa.me/6287777420644" class="btn-social wa" target="_blank" title="WhatsApp 087777420644">
+      <span class="social-icon">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+          <g>
+            <circle cx="16" cy="16" r="14" stroke="black" stroke-width="2" fill="none"/>
+            <path d="M16 7c-5 0-9 3.93-9 8.77 0 1.55.5 3.02 1.36 4.32L7 25l4.13-1.31C12.9 24.23 14.41 24.54 16 24.54c5 0 9-3.93 9-8.77S21 7 16 7z" stroke="black" stroke-width="2" fill="none"/>
+            <path d="M21.06 19.07c-.29-.14-1.7-.84-1.96-.93-.26-.1-.45-.14-.64.14-.19.28-.74.93-.91 1.12-.17.19-.34.21-.64.07-.29-.14-1.21-.44-2.31-1.41-.86-.77-1.44-1.72-1.61-2-.17-.29-.02-.44.13-.58.13-.13.29-.34.44-.51.15-.17.2-.29.3-.48.1-.19.05-.36-.02-.51-.07-.14-.64-1.54-.88-2.12-.23-.56-.47-.48-.64-.49h-.54c-.17 0-.44.06-.67.29-.23.24-.88.85-.88 2.07s.91 2.39 1.03 2.56c.13.17 1.79 2.86 4.34 3.9.61.26 1.09.41 1.46.53.61.2 1.17.17 1.61.1.49-.07 1.5-.61 1.71-1.19.21-.58.21-1.07.15-1.19-.06-.12-.26-.19-.55-.33z" fill="black"/>
+          </g>
+        </svg>
+      </span>
+      087777420644
+    </a>
+    <span class="profile-tag">#hijabsyari</span>
+    <span class="profile-tag">#premiumbrand</span>
+  </div>
 </div>
 
+            <button style="margin-top:5px; box-shadow: 0 13px 40px #273345; border-radius: 20px 8px 20px 8px;" id="openScreenshotModal" class="katalog-btn">Lihat Katalog</button>
+            <div class="info-cards fade-in" style="animation-delay: 0.2s">
+                
+                <div class="info-card">
+                    <span class="info-icon">🚚</span>
+                    <div class="info-text">Pengiriman Seluruh Indonesia</div>
+                </div>
+                <div class="info-card">
+                    <span class="info-icon">✅</span>
+                    <div class="info-text">Produk Original & Terjamin</div>
+                </div>
+                <div class="info-card">
+                    <span class="info-icon">💬</span>
+                    <div class="info-text">Layanan Fast Response</div>
+                </div>
+            </div>
+              <!-- Silahkan Atur Link Anda Disini-->  
+            <div class="links-container fade-in" style="animation-delay: 0.4s">
+                <div class="link-card">
+                    <a href="/order.html" class="link-btn"><span class="link-icon">🛒</span>Pesan Sekarang</a>
+                </div>
+                <div class="link-card">
+                    <a href="https://wa.me/6287777420644" class="link-btn"><span class="link-icon">💬</span>WhatsApp</a>
+                </div>
+                <div class="link-card">
+                    <a href="https://www.instagram.com/femmeia.cloth" class="link-btn"><span class="link-icon">📷</span>Instagram</a>
+                </div>
+                <div class="link-card">
+                    <a href="https://shopee.co.id/femmeiacloth" class="link-btn"><span class="link-icon">🛍️</span>Shopee</a>
+                </div>
+                <div class="link-card">
+                    <a href="/app/store" class="link-btn"><span class="link-icon">🌐</span>Femmeia Store</a>
+                </div>
+                <div class="link-card">
+                    <a href="/track.html" class="link-btn"><span class="link-icon">📦</span>Lacak Paket</a>
+                </div>
+                <div class="link-card">
+                    <a href="/payment2.html" class="link-btn"><span class="link-icon">💳</span>Metode Pembayaran</a>
+                </div>
+            </div>
+        </section>
+    </div>
 
-    <a href="/order.html" class="link-btn"><span class="icon">🛒</span><span id="btn-order">Pesan Sekarang</span></a>
-    <a href="https://wa.me/6287777420644" class="link-btn"><span class="icon">💬</span><span id="btn-wa">WhatsApp</span></a>
-    <a href="https://www.instagram.com/femmeia.cloth/" class="link-btn"><span class="icon">📷</span><span id="btn-ig">Instagram</span></a>
-    <a href="https://shopee.co.id/femmeiacloth" class="link-btn"><span class="icon">🛍️</span><span id="btn-shopee">Shopee</span></a>
-    <a href="https://www.femmeiacloth.me/app/FemmeiaTemplate/demo/demov1.html" class="link-btn"><span class="icon">🌐</span><span id="btn-webstore">Web Store</span></a>
-    <a href="/track.html" class="link-btn"><span class="icon">📦</span><span id="btn-track">Lacak Paket</span></a>
-    <a href="/payment2.html" class="link-btn"><span class="icon">💳</span><span id="btn-payment">Metode Pembayaran</span></a>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 FemmeiaCloth. Semua hak dilindungi.</p>
+    </footer>
 
+    <!-- Modal Screenshot Viewer (Modal isi gambar dengan link tertentu) -->
+    <div id="screenshotModal" class="modal-screenshot">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="closeScreenshotModal" aria-label="Close modal">
+                <svg width="28" height="28" viewBox="0 0 20 20" fill="none" stroke="#888" stroke-width="2">
+                    <line x1="4" y1="4" x2="16" y2="16"/>
+                    <line x1="16" y1="4" x2="4" y2="16"/>
+                </svg>
+            </button>
+            <a href="https://shopee.co.id/femmeiacloth" target="_blank" rel="noopener">
+                <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Catalog Screenshot for FemmeiaCloth products" class="modal-img" />
+            </a>
+        </div>
+    </div>
 
-  </div>
+    <!-- Promo Modal -->
+    <div id="promoModal" class="promo-modal">
+        <div class="promo-modal-content">
+            <button id="closePromoModal" class="promo-modal-close" aria-label="Close">&times;</button>
+            <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Promo Banner" class="promo-modal-img" />
+            <h2 class="promo-modal-title">Diskon Spesial!</h2>
+            <p class="promo-modal-desc">
+                Dapatkan <strong>10% OFF</strong> untuk pembelian pertama kamu!<br>
+                Gunakan kode: <span class="promo-modal-code">FEMMEIA10</span> saat checkout (via wa/web only).
+            </p>
+            <a href="/order.html" class="promo-modal-btn">Pesan Sekarang</a>
+        </div>
+    </div>
 
-  <div class="footer" id="footer">
-    &copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span>
-    <a href="https://www.instagram.com/gunadizz" target="_blank">@femmeia.cloth</a>
-  </div>
-<!-- Promo Modal -->
-<div id="promoModal" class="promo-modal" style="display:none;">
-  <div class="promo-modal-content">
-    <button id="closePromoModal" class="promo-modal-close" aria-label="Close">&times;</button>
-    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/img/IMG_20250519_192937.png" alt="Promo" class="promo-modal-img" />
-    <h2 class="promo-modal-title">Diskon Spesial!</h2>
-    <p class="promo-modal-desc">
-      Dapatkan <strong>10% OFF</strong> untuk pembelian pertama kamu!<br>
-      Gunakan kode: <span class="promo-modal-code">FEMMEIA10</span> saat checkout (via wa/web only).
-    </p>
-    <a href="/order.html" class="promo-modal-btn">Pesan Sekarang</a>
-  </div>
-</div>
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <h2 class="share-modal-title">Bagikan FemmeiaCloth</h2>
+            <div class="share-options">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://femmeiacloth.me" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #1877F2;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                        </svg>
+                    </span>
+                    <span class="share-option-label">Facebook</span>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url=https://femmeiacloth.me&text=Tampil%20Syar'i%2C%20Tetap%20Stylish!%20Temukan%20hijab%20premium%20di%20FemmeiaCloth" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #1DA1F2;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                        </svg>
+                    </span>
+                    <span class="share-option-label">Twitter</span>
+                </a>
+                <a href="https://www.instagram.com/?url=https://femmeiacloth.me" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #E4405F;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </span>
+                    <span class="share-option-label">Instagram</span>
+                </a>
+                <a href="https://wa.me/?text=Tampil%20Syar'i%2C%20Tetap%20Stylish!%20Temukan%20hijab%20premium%20di%20FemmeiaCloth%20https://femmeiacloth.me" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #25D366;">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="50px" height="50px"><path d="M 25 2 C 12.309534 2 2 12.309534 2 25 C 2 29.079097 3.1186875 32.88588 4.984375 36.208984 L 2.0371094 46.730469 A 1.0001 1.0001 0 0 0 3.2402344 47.970703 L 14.210938 45.251953 C 17.434629 46.972929 21.092591 48 25 48 C 37.690466 48 48 37.690466 48 25 C 48 12.309534 37.690466 2 25 2 z M 25 4 C 36.609534 4 46 13.390466 46 25 C 46 36.609534 36.609534 46 25 46 C 21.278025 46 17.792121 45.029635 14.761719 43.333984 A 1.0001 1.0001 0 0 0 14.033203 43.236328 L 4.4257812 45.617188 L 7.0019531 36.425781 A 1.0001 1.0001 0 0 0 6.9023438 35.646484 C 5.0606869 32.523592 4 28.890107 4 25 C 4 13.390466 13.390466 4 25 4 z M 16.642578 13 C 16.001539 13 15.086045 13.23849 14.333984 14.048828 C 13.882268 14.535548 12 16.369511 12 19.59375 C 12 22.955271 14.331391 25.855848 14.613281 26.228516 L 14.615234 26.228516 L 14.615234 26.230469 C 14.588494 26.195329 14.973031 26.752191 15.486328 27.419922 C 15.999626 28.087653 16.717405 28.96464 17.619141 29.914062 C 19.422612 31.812909 21.958282 34.007419 25.105469 35.349609 C 26.554789 35.966779 27.698179 36.339417 28.564453 36.611328 C 30.169845 37.115426 31.632073 37.038799 32.730469 36.876953 C 33.55263 36.755876 34.456878 36.361114 35.351562 35.794922 C 36.246248 35.22873 37.12309 34.524722 37.509766 33.455078 C 37.786772 32.688244 37.927591 31.979598 37.978516 31.396484 C 38.003976 31.104927 38.007211 30.847602 37.988281 30.609375 C 37.969311 30.371148 37.989581 30.188664 37.767578 29.824219 C 37.302009 29.059804 36.774753 29.039853 36.224609 28.767578 C 35.918939 28.616297 35.048661 28.191329 34.175781 27.775391 C 33.303883 27.35992 32.54892 26.991953 32.083984 26.826172 C 31.790239 26.720488 31.431556 26.568352 30.914062 26.626953 C 30.396569 26.685553 29.88546 27.058933 29.587891 27.5 C 29.305837 27.918069 28.170387 29.258349 27.824219 29.652344 C 27.819619 29.649544 27.849659 29.663383 27.712891 29.595703 C 27.284761 29.383815 26.761157 29.203652 25.986328 28.794922 C 25.2115 28.386192 24.242255 27.782635 23.181641 26.847656 L 23.181641 26.845703 C 21.603029 25.455949 20.497272 23.711106 20.148438 23.125 C 20.171937 23.09704 20.145643 23.130901 20.195312 23.082031 L 20.197266 23.080078 C 20.553781 22.728924 20.869739 22.309521 21.136719 22.001953 C 21.515257 21.565866 21.68231 21.181437 21.863281 20.822266 C 22.223954 20.10644 22.02313 19.318742 21.814453 18.904297 L 21.814453 18.902344 C 21.828863 18.931014 21.701572 18.650157 21.564453 18.326172 C 21.426943 18.001263 21.251663 17.580039 21.064453 17.130859 C 20.690033 16.232501 20.272027 15.224912 20.023438 14.634766 L 20.023438 14.632812 C 19.730591 13.937684 19.334395 13.436908 18.816406 13.195312 C 18.298417 12.953717 17.840778 13.022402 17.822266 13.021484 L 17.820312 13.021484 C 17.450668 13.004432 17.045038 13 16.642578 13 z M 16.642578 15 C 17.028118 15 17.408214 15.004701 17.726562 15.019531 C 18.054056 15.035851 18.033687 15.037192 17.970703 15.007812 C 17.906713 14.977972 17.993533 14.968282 18.179688 15.410156 C 18.423098 15.98801 18.84317 16.999249 19.21875 17.900391 C 19.40654 18.350961 19.582292 18.773816 19.722656 19.105469 C 19.863021 19.437122 19.939077 19.622295 20.027344 19.798828 L 20.027344 19.800781 L 20.029297 19.802734 C 20.115837 19.973483 20.108185 19.864164 20.078125 19.923828 C 19.867096 20.342656 19.838461 20.445493 19.625 20.691406 C 19.29998 21.065838 18.968453 21.483404 18.792969 21.65625 C 18.639439 21.80707 18.36242 22.042032 18.189453 22.501953 C 18.016221 22.962578 18.097073 23.59457 18.375 24.066406 C 18.745032 24.6946 19.964406 26.679307 21.859375 28.347656 C 23.05276 29.399678 24.164563 30.095933 25.052734 30.564453 C 25.940906 31.032973 26.664301 31.306607 26.826172 31.386719 C 27.210549 31.576953 27.630655 31.72467 28.119141 31.666016 C 28.607627 31.607366 29.02878 31.310979 29.296875 31.007812 L 29.298828 31.005859 C 29.655629 30.601347 30.715848 29.390728 31.224609 28.644531 C 31.246169 28.652131 31.239109 28.646231 31.408203 28.707031 L 31.408203 28.708984 L 31.410156 28.708984 C 31.487356 28.736474 32.454286 29.169267 33.316406 29.580078 C 34.178526 29.990889 35.053561 30.417875 35.337891 30.558594 C 35.748225 30.761674 35.942113 30.893881 35.992188 30.894531 C 35.995572 30.982516 35.998992 31.07786 35.986328 31.222656 C 35.951258 31.624292 35.8439 32.180225 35.628906 32.775391 C 35.523582 33.066746 34.975018 33.667661 34.283203 34.105469 C 33.591388 34.543277 32.749338 34.852514 32.4375 34.898438 C 31.499896 35.036591 30.386672 35.087027 29.164062 34.703125 C 28.316336 34.437036 27.259305 34.092596 25.890625 33.509766 C 23.114812 32.325956 20.755591 30.311513 19.070312 28.537109 C 18.227674 27.649908 17.552562 26.824019 17.072266 26.199219 C 16.592866 25.575584 16.383528 25.251054 16.208984 25.021484 L 16.207031 25.019531 C 15.897202 24.609805 14 21.970851 14 19.59375 C 14 17.077989 15.168497 16.091436 15.800781 15.410156 C 16.132721 15.052495 16.495617 15 16.642578 15 z"/></svg>
+                    </span>
+                    <span class="share-option-label">WhatsApp</span>
+                </a>
+                <a href="mailto:?subject=Temukan%20Hijab%20Premium%20di%20FemmeiaCloth&body=Tampil%20Syar'i%2C%20Tetap%20Stylish!%20Kunjungi%20https://femmeiacloth.me" class="share-option">
+                    <span class="share-icon" style="background-color: #EA4335;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </span>
+                    <span class="share-option-label">Email</span>
+                </a>
+                <a href="https://telegram.me/share/url?url=https://femmeiacloth.me&text=Tampil%20Syar'i%2C%20Tetap%20Stylish!%20Temukan%20hijab%20premium%20di%20FemmeiaCloth" target="_blank" class="share-option">
+                    <span class="share-icon" style="background-color: #0088cc;">
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="50px" height="50px"><path d="M 44.376953 5.9863281 C 43.889905 6.0076957 43.415817 6.1432497 42.988281 6.3144531 C 42.565113 6.4845113 40.128883 7.5243408 36.53125 9.0625 C 32.933617 10.600659 28.256963 12.603668 23.621094 14.589844 C 14.349356 18.562196 5.2382813 22.470703 5.2382812 22.470703 L 5.3046875 22.445312 C 5.3046875 22.445312 4.7547875 22.629122 4.1972656 23.017578 C 3.9185047 23.211806 3.6186028 23.462555 3.3730469 23.828125 C 3.127491 24.193695 2.9479735 24.711788 3.015625 25.259766 C 3.2532479 27.184511 5.2480469 27.730469 5.2480469 27.730469 L 5.2558594 27.734375 L 14.158203 30.78125 C 14.385177 31.538434 16.858319 39.792923 17.402344 41.541016 C 17.702797 42.507484 17.984013 43.064995 18.277344 43.445312 C 18.424133 43.635633 18.577962 43.782915 18.748047 43.890625 C 18.815627 43.933415 18.8867 43.965525 18.957031 43.994141 C 18.958531 43.994806 18.959437 43.99348 18.960938 43.994141 C 18.969579 43.997952 18.977708 43.998295 18.986328 44.001953 L 18.962891 43.996094 C 18.979231 44.002694 18.995359 44.013801 19.011719 44.019531 C 19.043456 44.030655 19.062905 44.030268 19.103516 44.039062 C 20.123059 44.395042 20.966797 43.734375 20.966797 43.734375 L 21.001953 43.707031 L 26.470703 38.634766 L 35.345703 45.554688 L 35.457031 45.605469 C 37.010484 46.295216 38.415349 45.910403 39.193359 45.277344 C 39.97137 44.644284 40.277344 43.828125 40.277344 43.828125 L 40.310547 43.742188 L 46.832031 9.7519531 C 46.998903 8.9915162 47.022612 8.334202 46.865234 7.7402344 C 46.707857 7.1462668 46.325492 6.6299361 45.845703 6.34375 C 45.365914 6.0575639 44.864001 5.9649605 44.376953 5.9863281 z M 44.429688 8.0195312 C 44.627491 8.0103707 44.774102 8.032983 44.820312 8.0605469 C 44.866523 8.0881109 44.887272 8.0844829 44.931641 8.2519531 C 44.976011 8.419423 45.000036 8.7721605 44.878906 9.3242188 L 44.875 9.3359375 L 38.390625 43.128906 C 38.375275 43.162926 38.240151 43.475531 37.931641 43.726562 C 37.616914 43.982653 37.266874 44.182554 36.337891 43.792969 L 26.632812 36.224609 L 26.359375 36.009766 L 26.353516 36.015625 L 23.451172 33.837891 L 39.761719 14.648438 A 1.0001 1.0001 0 0 0 38.974609 13 A 1.0001 1.0001 0 0 0 38.445312 13.167969 L 14.84375 28.902344 L 5.9277344 25.849609 C 5.9277344 25.849609 5.0423771 25.356927 5 25.013672 C 4.99765 24.994652 4.9871961 25.011869 5.0332031 24.943359 C 5.0792101 24.874869 5.1948546 24.759225 5.3398438 24.658203 C 5.6298218 24.456159 5.9609375 24.333984 5.9609375 24.333984 L 5.9941406 24.322266 L 6.0273438 24.308594 C 6.0273438 24.308594 15.138894 20.399882 24.410156 16.427734 C 29.045787 14.44166 33.721617 12.440122 37.318359 10.902344 C 40.914175 9.3649615 43.512419 8.2583658 43.732422 8.1699219 C 43.982886 8.0696253 44.231884 8.0286918 44.429688 8.0195312 z M 33.613281 18.792969 L 21.244141 33.345703 L 21.238281 33.351562 A 1.0001 1.0001 0 0 0 21.183594 33.423828 A 1.0001 1.0001 0 0 0 21.128906 33.507812 A 1.0001 1.0001 0 0 0 20.998047 33.892578 A 1.0001 1.0001 0 0 0 20.998047 33.900391 L 19.386719 41.146484 C 19.35993 41.068197 19.341173 41.039555 19.3125 40.947266 L 19.3125 40.945312 C 18.800713 39.30085 16.467362 31.5161 16.144531 30.439453 L 33.613281 18.792969 z M 22.640625 35.730469 L 24.863281 37.398438 L 21.597656 40.425781 L 22.640625 35.730469 z"/></svg>
 
-  <!-- Click animation script -->
-  <script>
-    // Circle animation on click
-    !function(e, t, a) {
-      function n() {
-        c(`
-          .circle {
-            width: 12px;
-            height: 12px;
-            position: fixed;
-            background: #999;
-            border-radius: 50%;
-            z-index: 99999;
-            font-family: 'Montserrat', sans-serif !important;
-          }
-        `), o(), r();
-      }
+                    </span>
+                    <span class="share-option-label">Telegram</span>
+                </a>
+            </div>
+            <div class="copy-link-container">
+                <input type="text" value="https://femmeiacloth.me" id="linkInput" class="link-input" readonly>
+                <button class="copy-btn" onclick="copyLink()">Copy</button>
+            </div>
+            <button class="share-modal-close" id="closeShareModal">Tutup</button>
+        </div>
+    </div>
 
-      function r() {
-        for (var e = 0; e < d.length; e++) {
-          if (d[e].alpha <= 0) {
-            t.body.removeChild(d[e].el);
-            d.splice(e, 1);
-            e--;
-            continue;
-          }
-          d[e].y--;
-          d[e].scale += 0.004;
-          d[e].alpha -= 0.013;
-          d[e].el.style.cssText = `
-            left:${d[e].x}px;
-            top:${d[e].y}px;
-            opacity:${d[e].alpha};
-            transform:scale(${d[e].scale});
-            background:#999;
-            border-radius:50%;
-            position:fixed;
-            z-index:99999;
-          `;
-        }
-        requestAnimationFrame(r);
-      }
-
-      function o() {
-        const clickHandler = "function" == typeof e.onclick && e.onclick;
-        e.onclick = function(e) {
-          clickHandler && clickHandler(), i(e);
-        }
-      }
-
-      function i(e) {
-        var a = t.createElement("div");
-        a.className = "circle";
-        d.push({
-          el: a,
-          x: e.clientX - 6,
-          y: e.clientY - 6,
-          scale: 1,
-          alpha: 1
+    <script>
+        // hide loading screen after fadeOut animation
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var loading = document.querySelector('.loading-screen');
+                if (loading) {
+                    loading.style.display = 'none';
+                }
+            }, 2500);
         });
-        t.body.appendChild(a);
-      }
 
-      function c(e) {
-        var a = t.createElement("style");
-        a.type = "text/css";
-        try {
-          a.appendChild(t.createTextNode(e));
-        } catch (t) {
-          a.styleSheet.cssText = e;
+        // Modal logic untuk katalog
+        const modal = document.getElementById('screenshotModal');
+        const openBtn = document.getElementById('openScreenshotModal');
+        const closeBtn = document.getElementById('closeScreenshotModal');
+        const overlay = modal.querySelector('.modal-overlay');
+
+        // Buka modal
+        openBtn.onclick = () => { modal.classList.add('active'); };
+        // Tutup modal
+        closeBtn.onclick = overlay.onclick = () => { modal.classList.remove('active'); };
+        // ESC key closes
+        window.addEventListener('keydown', e => {
+            if (e.key === 'Escape') modal.classList.remove('active');
+        });
+
+        // Promo Modal logic
+        window.addEventListener('DOMContentLoaded', function() {
+            const promoModal = document.getElementById('promoModal');
+            
+            function showModal() {
+                // Only show once per session
+                if (!sessionStorage.getItem('promoModalShown')) {
+                    promoModal.style.display = 'flex';
+                    sessionStorage.setItem('promoModalShown', 'yes');
+                }
+            }
+
+            function closePromoModalAnimated() {
+                const modalContent = document.querySelector('.promo-modal-content');
+                modalContent.classList.add('closing');
+                setTimeout(() => {
+                    promoModal.style.display = 'none';
+                    modalContent.classList.remove('closing');
+                }, 360);
+            }
+
+            document.getElementById('closePromoModal').onclick = closePromoModalAnimated;
+            promoModal.onclick = function(e) {
+                if (e.target === this) closePromoModalAnimated();
+            };
+
+            // Delay for 3 seconds before showing modal
+            setTimeout(showModal, 3000);
+        });
+
+        // Share Modal logic
+        const shareModal = document.getElementById('shareModal');
+        const openShareBtn = document.getElementById('openShareModal');
+        const closeShareBtn = document.getElementById('closeShareModal');
+
+        openShareBtn.onclick = () => {
+            shareModal.style.display = 'flex';
+        };
+
+        closeShareBtn.onclick = () => {
+            shareModal.style.display = 'none';
+        };
+
+        shareModal.onclick = function(e) {
+            if (e.target === this) {
+                shareModal.style.display = 'none';
+            }
+        };
+
+        window.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                shareModal.style.display = 'none';
+            }
+        });
+
+        function copyLink() {
+            const linkInput = document.getElementById('linkInput');
+            linkInput.select();
+            document.execCommand('copy');
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy';
+            }, 2000);
         }
-        t.getElementsByTagName("head")[0].appendChild(a);
-      }
 
-      var d = [];
-      e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || function(e) {
-        setTimeout(e, 1000 / 60);
-      };
-      n();
-    }(window, document);
-
-    // Hide loading screen after fadeOut animation
-    window.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() {
-        var loading = document.querySelector('.loading-screen');
-        if (loading) loading.style.display = 'none';
-      }, 2500);
-    });
-
-    // Dark mode toggle logic
-    const darkModeBtn = document.getElementById('darkmode-toggle');
-    const iconMoon = document.getElementById('icon-moon');
-    const iconSun = document.getElementById('icon-sun');
-    function setTheme(mode) {
-      document.body.setAttribute('data-theme', mode);
-      if (mode === 'dark') {
-        iconMoon.style.display = 'none';
-        iconSun.style.display = 'inline';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        iconMoon.style.display = 'inline';
-        iconSun.style.display = 'none';
-        localStorage.setItem('theme', 'light');
-      }
-    }
-    darkModeBtn.addEventListener('click', function() {
-      const current = document.body.getAttribute('data-theme');
-      setTheme(current === 'dark' ? 'light' : 'dark');
-    });
-    // On load, check theme preference
-    (function() {
-      const pref = localStorage.getItem('theme');
-      if (pref === 'dark') setTheme('dark');
-      else setTheme('light');
-    })();
-
-    // Language changer logic
-    // id = Indonesia, en = English
-    const langBtn = document.getElementById('lang-toggle');
-    const iconId = document.getElementById('icon-globe-id');
-    const iconEn = document.getElementById('icon-globe-en');
-    const texts = {
-      id: {
-        'brand-title': "FemmeiaCloth",
-        'brand-subtitle': "Premium Quality Hijab",
-        'tagline': "Tampil Syar'i, Tetap Stylish!",
-        'info-delivery': "Pengiriman Seluruh Indonesia",
-        'info-original': "Produk Original & Terjamin",
-        'info-service': "Layanan Fast Response",
-        'btn-order': "Pesan Sekarang",
-        'btn-wa': "WhatsApp",
-        'btn-ig': "Instagram",
-        'btn-shopee': "Shopee",
-        'btn-payment': "Metode Pembayaran",
-        'openScreenshotModal': "Lihat Katalog",
-        'btn-track': "Lacak Paket",
-        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>'
-      },
-      en: {
-        'brand-title': "FemmeiaCloth",
-        'brand-subtitle': "Premium Quality Hijab",
-        'tagline': "Look Modest, Stay Stylish!",
-        'info-delivery': "Nationwide Shipping",
-        'info-original': "100% Authentic Products",
-        'info-service': "Fast Response Service",
-        'btn-order': "Order Now",
-        'btn-wa': "WhatsApp",
-        'btn-ig': "Instagram",
-        'btn-payment': "Payment Method",
-        'btn-shopee': "Shopee",
-        'openScreenshotModal': "Show Catalog",
-        'btn-track': "Track Your Package",
-        'footer': '&copy; 2025 FemmeiaCloth &mdash; Made with <span style="color:#814c26;font-size:1.1em;">&#10084;</span> <a href="https://www.instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>'
-      }
-    };
-    function setLang(lang) {
-      for(const id in texts[lang]) {
-        const el = document.getElementById(id);
-        if (el) {
-          if (id === "footer") el.innerHTML = texts[lang][id];
-          else el.textContent = texts[lang][id];
-        }
-      }
-      if(lang === "id") {
-        iconId.style.display = "inline";
-        iconEn.style.display = "none";
-      } else {
-        iconId.style.display = "none";
-        iconEn.style.display = "inline";
-      }
-      document.documentElement.lang = lang;
-      localStorage.setItem("lang", lang);
-    }
-    langBtn.addEventListener('click', function() {
-      const current = localStorage.getItem("lang") || "id";
-      setLang(current === "id" ? "en" : "id");
-    });
-    // On load, set default language
-    (function() {
-      const lang = localStorage.getItem("lang") || "id";
-      setLang(lang);
-    })();
-
-  </script>
-  
-  <script>
-// Modal logic
-const modal = document.getElementById('screenshotModal');
-const openBtn = document.getElementById('openScreenshotModal');
-const closeBtn = document.getElementById('closeScreenshotModal');
-const overlay = modal.querySelector('.modal-overlay');
-
-// Open modal
-openBtn.onclick = () => { modal.classList.add('active'); };
-// Close modal
-closeBtn.onclick = overlay.onclick = () => { modal.classList.remove('active'); };
-// ESC key closes
-window.addEventListener('keydown', e => {
-  if (e.key === 'Escape') modal.classList.remove('active');
-});
-</script>
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function() {
-      navigator.serviceWorker.register("/service-worker.js");
-    });
-  }
-</script>
-
-<script>
-window.addEventListener('DOMContentLoaded', function() {
-  function showModal() {
-    // Only show once per session
-    if (!sessionStorage.getItem('promoModalShown')) {
-      document.getElementById('promoModal').style.display = 'flex';
-      sessionStorage.setItem('promoModalShown', 'yes');
-    }
-  }
-
-  function closePromoModalAnimated() {
-    const modalContent = document.querySelector('.promo-modal-content');
-    modalContent.classList.add('closing');
-    setTimeout(() => {
-      document.getElementById('promoModal').style.display = 'none';
-      modalContent.classList.remove('closing');
-    }, 360);
-  }
-
-  document.getElementById('closePromoModal').onclick = closePromoModalAnimated;
-  document.getElementById('promoModal').onclick = function(e) {
-    if (e.target === this) closePromoModalAnimated();
-  };
-
-  // Delay for 4 seconds (4000ms) before showing modal
-  setTimeout(showModal, 3000);
-});
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3270682405009922"
+        // Smooth Scrolling untuk link-link Internal (jika dibutuhkan nanti)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                if (href && href.length > 1) {
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3270682405009922"
      crossorigin="anonymous">
   
      </script>
 </body>
 </html>
+
+
