@@ -1,0 +1,3613 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <title>Panduan Lengkap - Femmeia Store Template/Source Code</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/Femmeia/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --background: #fafbfc;
+            --background-secondary: #f1f3f5;
+            --surface: #ffffff;
+            --surface-elevated: #ffffff;
+            --text-primary: #1a1d29;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #3b82f6;
+            --border-light: #e5e7eb;
+            --border-medium: #d1d5db;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --blur: 16px;
+        }
+
+        [data-theme="dark"] {
+            --background: #0f172a;
+            --background-secondary: #1e293b;
+            --surface: #1e293b;
+            --surface-elevated: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-light: #334155;
+            --border-medium: #475569;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-medium);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(var(--blur));
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 0;
+        }
+
+        [data-theme="dark"] .header {
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.025em;
+        }
+
+        .header-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            padding: 0.75rem;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--background-secondary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .mobile-menu-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Warning Notice */
+        .warning-notice {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .warning-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            backdrop-filter: blur(var(--blur));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .warning-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--warning), #fbbf24);
+        }
+
+        .warning-card h3 {
+            color: var(--warning);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.125rem;
+        }
+
+        .warning-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .warning-item {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--warning);
+            backdrop-filter: blur(8px);
+        }
+
+        [data-theme="dark"] .warning-item {
+            background: rgba(30, 41, 59, 0.6);
+        }
+
+        .warning-item strong {
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+            align-items: start;
+        }
+
+        /* Table of Contents */
+        .toc-container {
+            position: sticky;
+            top: 120px;
+        }
+
+        .toc {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .toc h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 0.25rem;
+        }
+
+        .toc a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--radius-md);
+            display: block;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            position: relative;
+        }
+
+        .toc a:hover {
+            color: var(--text-primary);
+            background: var(--background-secondary);
+            transform: translateX(4px);
+        }
+
+        .toc a.active {
+            color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.1);
+            font-weight: 600;
+        }
+
+        .toc a.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 60%;
+            background: var(--accent-primary);
+            border-radius: 2px;
+        }
+
+        .toc .sub-item {
+            margin-left: 1rem;
+            font-size: 0.8125rem;
+        }
+
+        .toc .sub-item a {
+            padding: 0.375rem 0.75rem;
+        }
+
+        /* Mobile TOC */
+        .mobile-toc {
+            display: none;
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            margin: 1rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .mobile-toc-header {
+            padding: 1rem 1.5rem;
+            background: var(--background-secondary);
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .mobile-toc-header:hover {
+            background: var(--border-light);
+        }
+
+        .mobile-toc-header:active {
+            transform: scale(0.98);
+        }
+
+        .mobile-toc-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-toc-content.open {
+            max-height: 500px;
+        }
+
+        .mobile-toc-list {
+            padding: 1rem 1.5rem;
+        }
+
+        .mobile-toc-list ul {
+            list-style: none;
+        }
+
+        .mobile-toc-list a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.75rem 0;
+            display: block;
+            border-bottom: 1px solid var(--border-light);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .mobile-toc-list a:hover,
+        .mobile-toc-list a.active {
+            color: var(--accent-primary);
+        }
+
+        .mobile-toc-list a:last-child {
+            border-bottom: none;
+        }
+
+        /* Content */
+        .content {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            min-height: 80vh;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 140px;
+        }
+
+        .section:last-child {
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            color: var(--text-primary);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        .section h3 {
+            color: var(--text-primary);
+            font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+            font-weight: 700;
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h4 {
+            color: var(--text-primary);
+            font-size: clamp(1.125rem, 2vw, 1.25rem);
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem 0;
+        }
+
+        .section p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .section ul,
+        .section ol {
+            margin: 1rem 0 1rem 1.5rem;
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .section li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            position: relative;
+            background: #0f172a;
+            border-radius: var(--radius-xl);
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-title {
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn {
+            background: rgba(99, 102, 241, 0.8);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .copy-btn:hover {
+            background: rgba(99, 102, 241, 1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn.copied {
+            background: rgba(16, 185, 129, 0.8);
+        }
+
+        .copy-btn.copied:hover {
+            background: rgba(16, 185, 129, 1);
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            color: #e2e8f0;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(var(--blur));
+            border: 1px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: currentColor;
+        }
+
+        .info-box.info {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: rgba(59, 130, 246, 0.2);
+            color: var(--info);
+        }
+
+        .info-box.warning {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .info-box.success {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .info-box.error {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: var(--error);
+        }
+
+        .info-box h4 {
+            margin: 0 0 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .info-box p,
+        .info-box ul,
+        .info-box li {
+            color: var(--text-secondary);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            font-size: 0.875rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        th {
+            background: var(--background-secondary);
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:hover {
+            background: var(--background-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Contact Grid */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .contact-card {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-gradient);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-primary);
+        }
+
+        .contact-card .icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem auto;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .contact-card h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .contact-card a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .contact-card a:hover {
+            color: var(--accent-primary);
+        }
+
+        .contact-card p {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-primary);
+        }
+
+        .feature-card h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Steps */
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .steps-list li {
+            counter-increment: step-counter;
+            margin-bottom: 1.5rem;
+            padding-left: 4rem;
+            position: relative;
+            padding-top: 0.5rem;
+        }
+
+        .steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--accent-gradient);
+            color: white;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-gradient);
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            z-index: 2000;
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            backdrop-filter: blur(var(--blur));
+            max-width: 320px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .toast.error {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .toast-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+        }
+
+        .back-to-top:active {
+            transform: translateY(0) scale(1);
+        }
+
+        /* Icons */
+        .icon {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .icon-lg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 250px 1fr;
+                gap: 1.5rem;
+            }
+
+            .toc-container {
+                top: 100px;
+            }
+
+            .toc {
+                padding: 1.25rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.75rem 0;
+            }
+
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+
+            .toc-container {
+                display: none;
+            }
+
+            .mobile-toc {
+                display: block;
+            }
+
+            .content {
+                padding: 1.5rem;
+                border-radius: var(--radius-xl);
+            }
+
+            .section {
+                margin-bottom: 3rem;
+                scroll-margin-top: 100px;
+            }
+
+            .code-header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+            }
+
+            .code-content {
+                padding: 1rem;
+                font-size: 0.8125rem;
+            }
+
+            .copy-btn {
+                align-self: flex-end;
+                font-size: 0.75rem;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .info-box {
+                padding: 1.25rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .contact-card {
+                padding: 1.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .steps-list li {
+                padding-left: 3rem;
+            }
+
+            .steps-list li::before {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.875rem;
+            }
+
+            .table-container {
+                font-size: 0.8125rem;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .back-to-top {
+                bottom: 1rem;
+                right: 1rem;
+                width: 2.75rem;
+                height: 2.75rem;
+            }
+
+            .toast {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+                transform: translateY(-120%);
+            }
+
+            .toast.show {
+                transform: translateY(0);
+            }
+
+            .warning-notice {
+                padding: 0 1rem;
+            }
+
+            .warning-list {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .warning-item {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 1rem;
+            }
+
+            .warning-card {
+                padding: 1rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            .section h3 {
+                font-size: 1.25rem;
+            }
+
+            .code-content {
+                font-size: 0.75rem;
+            }
+
+            .contact-card .icon {
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Print Styles */
+        @media print {
+            .header,
+            .toc-container,
+            .mobile-toc,
+            .back-to-top,
+            .toast,
+            .progress-bar {
+                display: none !important;
+            }
+
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+
+            .code-block {
+                break-inside: avoid;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .copy-btn:focus,
+        .mobile-menu-btn:focus,
+        .mobile-toc-header:focus,
+        .back-to-top:focus {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+
+        .toc a:focus,
+        .mobile-toc-list a:focus {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+            border-radius: var(--radius-md);
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <div>
+                    <h1>📚 Panduan Lengkap Femmeia Store</h1>
+                    <div class="header-subtitle">Dokumentasi komprehensif untuk setup dan pengelolaan toko online hijab premium</div>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18"/>
+                    <path d="M3 12h18"/>
+                    <path d="M3 18h18"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Warning Notice -->
+        <div class="warning-notice fade-in">
+            <div class="warning-card">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                   Informasi Penting - Fitur yang Belum Maksimal
+                </h3>
+                <div class="warning-list">
+                    <div class="warning-item">
+                        <strong>🖼️ Fitur Ganti Foto Profil</strong>
+                        Belum dapat digunakan sepenuhnya - dalam pengembangan
+                    </div>
+                    <div class="warning-item">
+                        <strong>📋 Riwayat Checkout/Transaksi</strong>
+                        Belum dapat digunakan - akan ditambahkan di update mendatang
+                    </div>
+                    <div class="warning-item">
+                        <strong>🌙 Dark Mode & Multi-Bahasa</strong>
+                        Berfungsi 50% - masih dalam tahap pengembangan
+                    </div>
+                    <div class="warning-item">
+                        <strong>📧 Contact Form</strong>
+                        Hanya halaman statis - dapat disesuaikan untuk mengirim email
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile TOC -->
+        <div class="mobile-toc" id="mobileToc">
+            <div class="mobile-toc-header" onclick="toggleMobileToc()" role="button" tabindex="0" aria-expanded="false" aria-controls="mobileTocContent">
+                <span>📋 Daftar Isi</span>
+                <svg class="icon" id="mobileTocIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6,9 12,15 18,9"/>
+                </svg>
+            </div>
+            <div class="mobile-toc-content" id="mobileTocContent">
+                <div class="mobile-toc-list">
+                    <ul>
+                        <li><a href="#overview">1. Gambaran Umum</a></li>
+                        <li><a href="#requirements">2. Persyaratan Sistem</a></li>
+                        <li><a href="#firebase-setup">3. Setup Firebase Lengkap</a></li>
+                        <li><a href="#product-management">4. Mengelola Produk</a></li>
+                        <li><a href="#image-management">5. Manajemen Gambar</a></li>
+                        <li><a href="#customization">6. Kustomisasi Website</a></li>
+                        <li><a href="#seo-optimization">7. Optimasi SEO</a></li>
+                        <li><a href="#performance">8. Optimasi Performa</a></li>
+                        <li><a href="#security">9. Keamanan Website</a></li>
+                        <li><a href="#analytics">10. Analytics & Tracking</a></li>
+                        <li><a href="#marketing">11. Integrasi Marketing</a></li>
+                        <li><a href="#deployment">12. Deploy Website</a></li>
+                        <li><a href="#maintenance">13. Maintenance</a></li>
+                        <li><a href="#backup-restore">14. Backup & Restore</a></li>
+                        <li><a href="#troubleshooting">15. Troubleshooting</a></li>
+                        <li><a href="#advanced">16. Fitur Advanced</a></li>
+                        <li><a href="#contact">17. Kontak Support</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Desktop TOC -->
+            <nav class="toc-container">
+                <div class="toc">
+                    <h3>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18"/>
+                            <path d="M3 12h18"/>
+                            <path d="M3 18h18"/>
+                        </svg>
+                        Daftar Isi
+                    </h3>
+                    <ul>
+                        <li><a href="#overview">1. Gambaran Umum</a></li>
+                        <li><a href="#requirements">2. Persyaratan Sistem</a></li>
+                        <li><a href="#firebase-setup">3. Setup Firebase Lengkap</a>
+                            <ul>
+                                <li><a href="#firebase-project" class="sub-item">3.1 Membuat Project</a></li>
+                                <li><a href="#firebase-auth" class="sub-item">3.2 Authentication</a></li>
+                                <li><a href="#firebase-firestore" class="sub-item">3.3 Firestore Database</a></li>
+                                <li><a href="#firebase-storage" class="sub-item">3.4 Storage</a></li>
+                                <li><a href="#firebase-config" class="sub-item">3.5 Konfigurasi</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#product-management">4. Mengelola Produk</a>
+                            <ul>
+                                <li><a href="#add-products" class="sub-item">4.1 Menambah Produk</a></li>
+                                <li><a href="#edit-products" class="sub-item">4.2 Edit Produk</a></li>
+                                <li><a href="#product-categories" class="sub-item">4.3 Kategori</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#image-management">5. Manajemen Gambar</a></li>
+                        <li><a href="#customization">6. Kustomisasi Website</a></li>
+                        <li><a href="#seo-optimization">7. Optimasi SEO</a></li>
+                        <li><a href="#performance">8. Optimasi Performa</a></li>
+                        <li><a href="#security">9. Keamanan Website</a></li>
+                        <li><a href="#analytics">10. Analytics & Tracking</a></li>
+                        <li><a href="#marketing">11. Integrasi Marketing</a></li>
+                        <li><a href="#deployment">12. Deploy Website</a></li>
+                        <li><a href="#maintenance">13. Maintenance</a></li>
+                        <li><a href="#backup-restore">14. Backup & Restore</a></li>
+                        <li><a href="#troubleshooting">15. Troubleshooting</a></li>
+                        <li><a href="#advanced">16. Fitur Advanced</a></li>
+                        <li><a href="#contact">17. Kontak Support</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Content -->
+            <main class="content">
+                <!-- Overview -->
+                <section id="overview" class="section fade-in">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        1. Gambaran Umum
+                    </h2>
+                    
+                    <p>Femmeia Store adalah template toko online premium yang dirancang khusus untuk bisnis hijab dan fashion muslim. Template ini menggunakan teknologi web modern dengan Firebase sebagai backend untuk memberikan pengalaman berbelanja yang optimal.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+                                </svg>
+                                E-Commerce Lengkap
+                            </h4>
+                            <ul>
+                                <li>Katalog produk dengan filter dan pencarian</li>
+                                <li>Sistem keranjang belanja</li>
+                                <li>Checkout via WhatsApp</li>
+                                <li>Manajemen stok produk</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="8.5" cy="7" r="4"/>
+                                    <line x1="20" y1="8" x2="20" y2="14"/>
+                                    <line x1="23" y1="11" x2="17" y2="11"/>
+                                </svg>
+                                 User Management
+                            </h4>
+                            <ul>
+                                <li>Sistem registrasi dan login</li>
+                                <li>Profile pengguna</li>
+                                <li>Wishlist produk</li>
+                                <li>Riwayat pembelian (dalam pengembangan)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                    <line x1="8" y1="21" x2="16" y2="21"/>
+                                    <line x1="12" y1="17" x2="12" y2="21"/>
+                                </svg>
+                                Responsive Design
+                            </h4>
+                            <ul>
+                                <li>Mobile-first approach</li>
+                                <li>Progressive Web App (PWA)</li>
+                                <li>Touch-friendly interface</li>
+                                <li>Fast loading performance</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="info-box info">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                             Catatan Penting
+                        </h4>
+                        <p>Template ini adalah source code berbayar dengan lisensi penggunaan komersial. Anda mendapatkan full source code, dokumentasi lengkap, dan support teknis selama 30 hari pertama.</p>
+                    </div>
+                </section>
+
+                <!-- Requirements -->
+                <section id="requirements" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 12l2 2 4-4"/>
+                            <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+                            <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+                        </svg>
+                        2. Persyaratan Sistem
+                    </h2>
+                    
+                    <h3>🔧 Yang Anda Butuhkan:</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                Akun & Layanan
+                            </h4>
+                            <ul>
+                                <li>✅ Akun Google (untuk Firebase)</li>
+                                <li>✅ Domain dan hosting</li>
+                                <li>✅ Nomor WhatsApp Business</li>
+                                <li>✅ Email bisnis</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                    <line x1="8" y1="21" x2="16" y2="21"/>
+                                    <line x1="12" y1="17" x2="12" y2="21"/>
+                                </svg>
+                                Software & Tools
+                            </h4>
+                            <ul>
+                                <li>✅ Web browser modern</li>
+                                <li>✅ Text editor (VS Code recommended)</li>
+                                <li>✅ Image editor (Canva/Photoshop)</li>
+                                <li>✅ FTP client (FileZilla/WinSCP)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.27l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/>
+                                </svg>
+                                Pengetahuan Dasar
+                            </h4>
+                            <ul>
+                                <li>📚 HTML/CSS dasar (opsional)</li>
+                                <li>📚 JavaScript dasar (opsional)</li>
+                                <li>📚 Firebase Console</li>
+                                <li>📚 Manajemen file</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3>💰 Estimasi Biaya Operasional:</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Layanan</th>
+                                    <th>Biaya/Bulan</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Firebase (Spark Plan)</td>
+                                    <td>Gratis</td>
+                                    <td>Untuk traffic rendah-menengah</td>
+                                </tr>
+                                <tr>
+                                    <td>Domain (.com)</td>
+                                    <td>$10-15/tahun</td>
+                                    <td>Registrasi domain</td>
+                                </tr>
+                                <tr>
+                                    <td>Hosting</td>
+                                    <td>$5-20</td>
+                                    <td>Shared hosting sudah cukup</td>
+                                </tr>
+                                <tr>
+                                    <td>SSL Certificate</td>
+                                    <td>Gratis</td>
+                                    <td>Let's Encrypt atau hosting provider</td>
+                                </tr>
+                                <tr>
+                                    <td>WhatsApp Business</td>
+                                    <td>Gratis</td>
+                                    <td>API berbayar jika butuh automasi</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="info-box success">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22,4 12,14.01 9,11.01"/>
+                            </svg>
+                            Tips Hemat
+                        </h4>
+                        <p>Untuk memulai, Anda bisa menggunakan Firebase hosting (gratis) dan domain murah. Total biaya awal hanya sekitar $10-20 untuk domain saja!</p>
+                    </div>
+                </section>
+
+                <!-- Firebase Setup -->
+                <section id="firebase-setup" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                            <polyline points="2,17 12,22 22,17"/>
+                            <polyline points="2,12 12,17 22,12"/>
+                        </svg>
+                        3. Setup Firebase Lengkap
+                    </h2>
+                    
+                    <p>Firebase adalah backbone dari aplikasi Femmeia Store. Ikuti panduan step-by-step berikut untuk setup yang sempurna.</p>
+
+                    <h3 id="firebase-project">🚀 3.1 Membuat Project Firebase</h3>
+                    <ol class="steps-list">
+                        <li>Buka <a href="https://console.firebase.google.com" target="_blank">Firebase Console</a> dan login dengan akun Google</li>
+                        <li>Klik tombol <strong>"Add project"</strong> atau <strong>"Tambah project"</strong></li>
+                        <li>Masukkan nama project yang unik (contoh: <code>Femmeia-store-2025</code>)</li>
+                        <li>Pilih apakah ingin mengaktifkan Google Analytics (recommended: <strong>Ya</strong>)</li>
+                        <li>Jika mengaktifkan Analytics, pilih atau buat akun Analytics</li>
+                        <li>Klik <strong>"Create project"</strong> dan tunggu proses selesai</li>
+                        <li>Setelah selesai, klik <strong>"Continue"</strong> untuk masuk ke dashboard</li>
+                    </ol>
+
+                    <div class="info-box warning">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                             Peringatan Nama Project
+                        </h4>
+                        <p>Nama project Firebase harus unik secara global. Jika nama yang Anda pilih sudah digunakan, tambahkan tahun atau nomor di belakangnya.</p>
+                    </div>
+
+                    <h3 id="firebase-auth">🔐 3.2 Setup Authentication</h3>
+                    <ol class="steps-list">
+                        <li>Di dashboard Firebase, klik <strong>"Authentication"</strong> di menu kiri</li>
+                        <li>Klik <strong>"Get started"</strong> jika ini pertama kali</li>
+                        <li>Pilih tab <strong>"Sign-in method"</strong></li>
+                        <li>Klik pada <strong>"Email/Password"</strong></li>
+                        <li>Toggle <strong>"Enable"</strong> untuk mengaktifkan</li>
+                        <li>Opsional: Aktifkan juga <strong>"Email link (passwordless sign-in)"</strong></li>
+                        <li>Klik <strong>"Save"</strong></li>
+                    </ol>
+
+                    <h4>🔧 Konfigurasi Advanced Authentication:</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">🔒 Authentication Settings</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">// Pengaturan tambahan di tab "Settings"
+1. Authorized domains: Tambahkan domain website Anda
+   - localhost (untuk testing)
+   - yourdomain.com
+   - www.yourdomain.com
+
+2. User actions:
+   - Enable "Email enumeration protection" untuk keamanan
+   - Set "Password policy" jika diperlukan
+
+3. Templates (Email templates):
+   - Customize email verification template
+   - Customize password reset template
+   - Gunakan bahasa Indonesia jika perlu</div>
+                    </div>
+
+                    <h3 id="firebase-firestore">🗄️ 3.3 Setup Firestore Database</h3>
+                    <ol class="steps-list">
+                        <li>Klik <strong>"Firestore Database"</strong> di menu kiri</li>
+                        <li>Klik <strong>"Create database"</strong></li>
+                        <li>Pilih <strong>"Start in test mode"</strong> (untuk development)</li>
+                        <li>Pilih lokasi server terdekat dengan target user Anda:
+                            <ul>
+                                <li><strong>asia-southeast1 (Singapore)</strong> - Untuk Indonesia</li>
+                                <li><strong>asia-southeast2 (Jakarta)</strong> - Untuk Indonesia (jika tersedia)</li>
+                            </ul>
+                        </li>
+                        <li>Klik <strong>"Done"</strong> dan tunggu database dibuat</li>
+                    </ol>
+
+                    <h4>📊 Struktur Database yang Diperlukan:</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">🗂️ Firestore Collections Structure</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">📁 Femmeia-store (Project Root)
+├── 📄 users (Collection)
+│   ├── 📄 {userId} (Document)
+│   │   ├── uid: string
+│   │   ├── username: string
+│   │   ├── email: string
+│   │   ├── phone: string (optional)
+│   │   ├── address: string (optional)
+│   │   ├── avatar: string (URL)
+│   │   ├── wishlist: array (product IDs)
+│   │   ├── preferences: object
+│   │   │   ├── language: string
+│   │   │   └── theme: string
+│   │   ├── createdAt: timestamp
+│   │   └── updatedAt: timestamp
+│   │
+├── 📄 orders (Collection)
+│   ├── 📄 {orderId} (Document)
+│   │   ├── userId: string
+│   │   ├── orderNumber: string
+│   │   ├── customerInfo: object
+│   │   │   ├── name: string
+│   │   │   ├── whatsapp: string
+│   │   │   ├── email: string
+│   │   │   └── address: string
+│   │   ├── items: array
+│   │   │   ├── productId: string
+│   │   │   ├── name: string
+│   │   │   ├── price: number
+│   │   │   ├── quantity: number
+│   │   │   ├── color: string
+│   │   │   └── image: string
+│   │   ├── summary: object
+│   │   │   ├── subtotal: number
+│   │   │   ├── discount: number
+│   │   │   ├── shipping: number
+│   │   │   └── total: number
+│   │   ├── status: string (pending/processing/completed/cancelled)
+│   │   ├── paymentMethod: string
+│   │   ├── shippingMethod: string
+│   │   ├── notes: string
+│   │   ├── createdAt: timestamp
+│   │   └── updatedAt: timestamp
+│   │
+├── 📄 products (Collection) - Optional untuk admin
+│   ├── 📄 {productId} (Document)
+│   │   ├── name: string
+│   │   ├── price: number
+│   │   ├── category: string
+│   │   ├── images: array
+│   │   ├── colors: array
+│   │   ├── description: string
+│   │   ├── details: object
+│   │   ├── stock: number
+│   │   ├── isActive: boolean
+│   │   ├── createdAt: timestamp
+│   │   └── updatedAt: timestamp
+│   │
+├── 📄 settings (Collection) - Untuk konfigurasi
+│   ├── 📄 general (Document)
+│   │   ├── storeName: string
+│   │   ├── storeDescription: string
+│   │   ├── whatsappNumber: string
+│   │   ├── email: string
+│   │   ├── address: string
+│   │   └── socialMedia: object
+│   │
+└── 📄 analytics (Collection) - Untuk tracking
+    ├── 📄 {date} (Document)
+    │   ├── visitors: number
+    │   ├── pageViews: number
+    │   ├── orders: number
+    │   └── revenue: number</div>
+                    </div>
+
+                    <h4>🔒 Firestore Security Rules:</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">🛡️ firestore.rules</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection - user can only access their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.uid == userId;
+    }
+    
+    // Orders collection - user can only access their own orders
+    match /orders/{orderId} {
+      allow read, write: if request.auth != null && 
+        (request.auth.uid == resource.data.userId || 
+         request.auth.uid == request.resource.data.userId);
+      allow create: if request.auth != null && 
+        request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Products collection - read only for all users, write for authenticated
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Settings collection - read for all, write for admin only
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+    
+    // Analytics collection - admin only
+    match /analytics/{analyticsId} {
+      allow read, write: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+  }
+}</div>
+                    </div>
+
+                    <h3 id="firebase-storage">📁 3.4 Setup Storage</h3>
+                    <ol class="steps-list">
+                        <li>Klik <strong>"Storage"</strong> di menu kiri</li>
+                        <li>Klik <strong>"Get started"</strong></li>
+                        <li>Pilih <strong>"Start in test mode"</strong> untuk development</li>
+                        <li>Pilih lokasi yang sama dengan Firestore</li>
+                        <li>Klik <strong>"Done"</strong></li>
+                    </ol>
+
+                    <h4>🗂️ Struktur Folder Storage:</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">📂 Storage Folder Structure</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">📁 Storage Root
+├── 📁 profile-photos/
+│   ├── 📄 {userId}_{timestamp}.jpg
+│   └── 📄 {userId}_{timestamp}.png
+│
+├── 📁 product-images/
+│   ├── 📁 hijab/
+│   │   ├── 📄 hijab-1-main.jpg
+│   │   ├── 📄 hijab-1-gallery-1.jpg
+│   │   └── 📄 hijab-1-gallery-2.jpg
+│   ├── 📁 inner/
+│   │   ├── 📄 inner-1-main.jpg
+│   │   └── 📄 inner-1-gallery-1.jpg
+│   └── 📁 pashmina/
+│       ├── 📄 pashmina-1-main.jpg
+│       └── 📄 pashmina-1-gallery-1.jpg
+│
+├── 📁 brand-assets/
+│   ├── 📄 logo.png
+│   ├── 📄 favicon.ico
+│   └── 📄 banner.jpg
+│
+└── 📁 temp/
+    └── 📄 temporary-uploads...</div>
+                    </div>
+
+                    <h4>🔐 Storage Security Rules:</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">🛡️ storage.rules</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Profile photos - users can upload their own photos
+    match /profile-photos/{userId}_{timestamp}_{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId
+        && request.resource.size < 5 * 1024 * 1024 // Max 5MB
+        && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Product images - authenticated users can upload
+    match /product-images/{category}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.resource.size < 10 * 1024 * 1024 // Max 10MB
+        && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Brand assets - admin only
+    match /brand-assets/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+    
+    // Temporary uploads - authenticated users only
+    match /temp/{fileName} {
+      allow read, write: if request.auth != null
+        && request.resource.size < 15 * 1024 * 1024; // Max 15MB
+    }
+  }
+}</div>
+                    </div>
+
+                    <h3 id="firebase-config">⚙️ 3.5 Konfigurasi Firebase di Website</h3>
+                    <ol class="steps-list">
+                        <li>Di Firebase Console, klik ikon gear ⚙️ > <strong>"Project settings"</strong></li>
+                        <li>Scroll ke bawah ke bagian <strong>"Your apps"</strong></li>
+                        <li>Klik ikon web <strong>"&lt;/&gt;"</strong> untuk menambah web app</li>
+                        <li>Masukkan nickname app (contoh: <strong>"Femmeia Web App"</strong>)</li>
+                        <li>Centang <strong>"Also set up Firebase Hosting"</strong> (opsional tapi recommended)</li>
+                        <li>Klik <strong>"Register app"</strong></li>
+                        <li>Copy konfigurasi Firebase yang muncul</li>
+                        <li>Klik <strong>"Continue to console"</strong></li>
+                    </ol>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">🔧 Firebase Configuration - Ganti di index.html</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">// Cari bagian ini di index.html (sekitar baris 2890)
+// Ganti konfigurasi Firebase di bawah ini dengan milik Anda
+
+const firebaseConfig = {
+    apiKey: "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    authDomain: "your-project-id.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project-id.appspot.com",
+    messagingSenderId: "123456789012",
+    appId: "1:123456789012:web:abcdef123456789",
+    measurementId: "G-XXXXXXXXXX"
+};
+
+// Jangan ubah kode di bawah ini
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();</div>
+                    </div>
+
+                    <div class="info-box success">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22,4 12,14.01 9,11.01"/>
+                            </svg>
+                             Test Konfigurasi
+                        </h4>
+                        <p>Setelah mengganti konfigurasi Firebase, buka website dan coba buat akun baru. Jika berhasil, berarti konfigurasi sudah benar!</p>
+                    </div>
+
+                    <h4>🔍 Troubleshooting Firebase Setup:</h4>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Masalah</th>
+                                    <th>Penyebab</th>
+                                    <th>Solusi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Firebase not defined</td>
+                                    <td>Script Firebase belum load</td>
+                                    <td>Pastikan koneksi internet stabil</td>
+                                </tr>
+                                <tr>
+                                    <td>Project not found</td>
+                                    <td>ProjectId salah</td>
+                                    <td>Cek kembali projectId di config</td>
+                                </tr>
+                                <tr>
+                                    <td>Permission denied</td>
+                                    <td>Firestore rules terlalu ketat</td>
+                                    <td>Gunakan test mode dulu</td>
+                                </tr>
+                                <tr>
+                                    <td>Domain not authorized</td>
+                                    <td>Domain belum ditambahkan</td>
+                                    <td>Tambahkan domain di Auth settings</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Product Management -->
+                <section id="product-management" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6l-3-4H6zM3 6h18M10 12h4"/>
+                        </svg>
+                        4. Mengelola Produk
+                    </h2>
+
+                    <p>Sistem produk Femmeia Store menggunakan array JavaScript yang mudah dikelola. Anda bisa menambah, edit, atau hapus produk dengan mudah.</p>
+
+                    <h3 id="add-products">➕ 4.1 Menambah Produk Baru</h3>
+                    <p>Untuk menambah produk baru, edit array <code>products</code> di file index.html.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">📍 Lokasi Array Products di index.html</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">// Cari komentar ini di index.html (sekitar baris 2900)
+// Products data | Untuk Mengatur, Menambahkan dan menyesuaikan Produk
+
+const products = [
+    {
+        id: 1,
+        name: "Inner Earab Premium",
+        price: 25000,
+        category: "inner",
+        image: "https://example.com/inner-earab-main.jpg",
+        gallery: [
+            "https://example.com/inner-earab-1.jpg",
+            "https://example.com/inner-earab-2.jpg", 
+            "https://example.com/inner-earab-3.jpg"
+        ],
+        colors: ["Hitam", "Putih", "Cream", "Mocha", "Abu-abu"],
+        colorCodes: {
+            "Hitam": "#000000",
+            "Putih": "#FFFFFF",
+            "Cream": "#FFFDD0",
+            "Mocha": "#A38068",
+            "Abu-abu": "#808080"
+        },
+        description: "Inner Earab premium dengan bahan katun yang adem dan nyaman dipakai seharian.",
+        details: {
+            material: "100% Katun premium yang breathable dan tidak panas",
+            size: "All size (elastis, cocok untuk lingkar kepala 52-58 cm)",
+            care: "Cuci tangan dengan air dingin, jangan gunakan pemutih, setrika dengan suhu rendah."
+        },
+        stock: 50,
+        isActive: true,
+        tags: ["inner", "earab", "katun", "premium", "adem"],
+        weight: 50, // gram
+        dimensions: {
+            length: 25,
+            width: 20,
+            height: 1
+        }
+    }
+    // Tambahkan produk baru di sini...
+];</div>
+                    </div>
+
+                    <h4>📝 Template Produk Baru:</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">🆕 Template untuk Produk Baru</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">{
+    id: 7, // ID unik, increment dari produk terakhir
+    name: "Hijab Voal Premium", // Nama produk yang menarik
+    price: 75000, // Harga dalam Rupiah (tanpa titik/koma)
+    category: "hijab", // Kategori: "hijab", "inner", "pashmina"
+    image: "https://example.com/hijab-voal-main.jpg", // Gambar utama
+    gallery: [ // Array gambar untuk gallery (3-5 gambar)
+        "https://example.com/hijab-voal-1.jpg",
+        "https://example.com/hijab-voal-2.jpg",
+        "https://example.com/hijab-voal-3.jpg",
+        "https://example.com/hijab-voal-4.jpg"
+    ],
+    colors: ["Hitam", "Navy", "Maroon", "Dusty Pink"], // Warna tersedia
+    colorCodes: { // Kode warna untuk preview
+        "Hitam": "#000000",
+        "Navy": "#000080",
+        "Maroon": "#800000",
+        "Dusty Pink": "#D4A5A5"
+    },
+    description: "Hijab voal premium dengan tekstur halus dan jatuh yang sempurna. Cocok untuk acara formal maupun casual.",
+    details: {
+        material: "Voal premium import yang tidak mudah kusut",
+        size: "110cm x 110cm (ukuran standar)",
+        care: "Cuci dengan deterjen lembut, jangan diperas keras, jemur di tempat teduh"
+    },
+    stock: 25, // Jumlah stok
+    isActive: true, // Status aktif/nonaktif
+    tags: ["hijab", "voal", "premium", "formal", "casual"], // Tag untuk SEO
+    weight: 80, // Berat dalam gram (untuk ongkir)
+    dimensions: { // Dimensi untuk packaging
+        length: 30,
+        width: 25,
+        height: 2
+    },
+    // Optional: Tambahan untuk fitur advanced
+    discount: 0, // Diskon dalam persen (0-100)
+    featured: false, // Produk unggulan
+    newArrival: true, // Produk baru
+    bestseller: false // Produk terlaris
+}</div>
+                    </div>
+
+                    <h3 id="edit-products">✏️ 4.2 Edit Produk Existing</h3>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong> dengan text editor</li>
+                        <li>Cari array <code>products</code> (gunakan Ctrl+F)</li>
+                        <li>Temukan produk berdasarkan <code>id</code> atau <code>name</code></li>
+                        <li>Edit field yang ingin diubah (harga, nama, deskripsi, dll)</li>
+                        <li>Simpan file dan refresh browser untuk melihat perubahan</li>
+                    </ol>
+
+                    <div class="info-box warning">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            Backup Sebelum Edit
+                        </h4>
+                        <p>Selalu backup file index.html sebelum melakukan perubahan besar. Jika terjadi error, Anda bisa restore dari backup.</p>
+                    </div>
+
+                    <h3 id="product-categories">🏷️ 4.3 Mengatur Kategori</h3>
+                    <p>Kategori produk yang tersedia saat ini:</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Kategori</th>
+                                    <th>Nilai Code</th>
+                                    <th>Deskripsi</th>
+                                    <th>Contoh Produk</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Hijab</strong></td>
+                                    <td><code>hijab</code></td>
+                                    <td>Hijab, kerudung, jilbab</td>
+                                    <td>Hijab voal, segi empat, pashmina</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Inner</strong></td>
+                                    <td><code>inner</code></td>
+                                    <td>Ciput, inner hijab, dalaman</td>
+                                    <td>Inner earab, ciput rajut, bandana</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pashmina</strong></td>
+                                    <td><code>pashmina</code></td>
+                                    <td>Pashmina, shawl, selendang</td>
+                                    <td>Pashmina ceruti, diamond, plisket</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>➕ Menambah Kategori Baru:</h4>
+                    <ol class="steps-list">
+                        <li>Tentukan nama kategori baru (contoh: "aksesoris")</li>
+                        <li>Tambahkan button filter di HTML (cari bagian <code>filter-buttons</code>)</li>
+                        <li>Update fungsi <code>filterProducts</code> di JavaScript</li>
+                        <li>Tambahkan produk dengan kategori baru</li>
+                    </ol>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">🔧 Menambah Kategori "Aksesoris"</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">// 1. Tambahkan button di HTML (cari bagian filter-buttons)
+<button class="filter-btn" onclick="filterProducts('aksesoris')">
+    <i class="fas fa-gem"></i>
+    Aksesoris
+</button>
+
+// 2. Tambahkan produk dengan kategori baru
+{
+    id: 8,
+    name: "Bros Hijab Mutiara",
+    price: 35000,
+    category: "aksesoris", // Kategori baru
+    image: "https://example.com/bros-mutiara.jpg",
+    // ... properti lainnya
+}
+
+// 3. Fungsi filterProducts sudah otomatis support kategori baru
+// Tidak perlu edit JavaScript tambahan</div>
+                    </div>
+
+                    <h4>🎨 Kustomisasi Tampilan Produk:</h4>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                                    <polyline points="21,15 16,10 5,21"/>
+                                </svg>
+                                Badge & Label
+                            </h4>
+                            <ul>
+                                <li>New Arrival badge</li>
+                                <li>Bestseller label</li>
+                                <li>Discount percentage</li>
+                                <li>Stock status</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.27l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/>
+                                </svg>
+                                Rating & Review
+                            </h4>
+                            <ul>
+                                <li>Star rating display</li>
+                                <li>Review count</li>
+                                <li>Customer testimonials</li>
+                                <li>Photo reviews</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                    <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                                </svg>
+                                Variant & Options
+                            </h4>
+                            <ul>
+                                <li>Color variations</li>
+                                <li>Size options</li>
+                                <li>Material choices</li>
+                                <li>Bundle packages</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Image Management -->
+                <section id="image-management" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21,15 16,10 5,21"/>
+                        </svg>
+                        5. Manajemen Gambar
+                    </h2>
+
+                    <p>Gambar adalah elemen penting dalam toko online. Panduan ini akan membantu Anda mengelola gambar produk dengan optimal.</p>
+
+                    <h3>📊 Spesifikasi Gambar yang Direkomendasikan:</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Jenis Gambar</th>
+                                    <th>Ukuran (px)</th>
+                                    <th>Format</th>
+                                    <th>Max Size</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Gambar Produk Utama</td>
+                                    <td>1000 x 1000</td>
+                                    <td>JPG/PNG</td>
+                                    <td>500KB</td>
+                                    <td>Square ratio, high quality</td>
+                                </tr>
+                                <tr>
+                                    <td>Gallery Produk</td>
+                                    <td>800 x 800</td>
+                                    <td>JPG</td>
+                                    <td>300KB</td>
+                                    <td>Multiple angles, detail shots</td>
+                                </tr>
+                                <tr>
+                                    <td>Thumbnail</td>
+                                    <td>400 x 400</td>
+                                    <td>JPG</td>
+                                    <td>100KB</td>
+                                    <td>Auto-generated dari main image</td>
+                                </tr>
+                                <tr>
+                                    <td>Banner/Hero</td>
+                                    <td>1920 x 600</td>
+                                    <td>JPG</td>
+                                    <td>800KB</td>
+                                    <td>Landscape, promotional</td>
+                                </tr>
+                                <tr>
+                                    <td>Logo/Brand</td>
+                                    <td>512 x 512</td>
+                                    <td>PNG</td>
+                                    <td>200KB</td>
+                                    <td>Transparent background</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>☁️ Opsi Hosting Gambar:</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 19c-5 0-8-3-8-8s3-8 8-8 8 3 8 8-3 8-8 8"/>
+                                    <path d="M15 9l-6 6"/>
+                                    <path d="M9 9h.01"/>
+                                    <path d="M15 15h.01"/>
+                                </svg>
+                                GitHub (Gratis)
+                            </h4>
+                            <ul>
+                                <li><strong>Pro:</strong> Gratis, mudah digunakan</li>
+                                <li><strong>Con:</strong> Tidak ada CDN, loading lambat</li>
+                                <li><strong>Cocok untuk:</strong> Testing, prototype</li>
+                                <li><strong>Limit:</strong> 100MB per file</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                    <polyline points="2,17 12,22 22,17"/>
+                                    <polyline points="2,12 12,17 22,12"/>
+                                </svg>
+                                Firebase Storage
+                            </h4>
+                            <ul>
+                                <li><strong>Pro:</strong> CDN global, cepat, aman</li>
+                                <li><strong>Con:</strong> Berbayar setelah limit</li>
+                                <li><strong>Cocok untuk:</strong> Production, bisnis</li>
+                                <li><strong>Limit:</strong> 5GB gratis/bulan</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="12" y1="8" x2="12" y2="16"/>
+                                    <line x1="8" y1="12" x2="16" y2="12"/>
+                                </svg>
+                                ☁️ Cloudinary
+                            </h4>
+                            <ul>
+                                <li><strong>Pro:</strong> Auto-optimization, transformasi</li>
+                                <li><strong>Con:</strong> Setup kompleks</li>
+                                <li><strong>Cocok untuk:</strong> Advanced users</li>
+                                <li><strong>Limit:</strong> 25GB gratis/bulan</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3>📤 Cara Upload ke Firebase Storage:</h3>
+                    <ol class="steps-list">
+                        <li>Buka <strong>Firebase Console</strong> > <strong>Storage</strong></li>
+                        <li>Klik <strong>"Upload file"</strong> atau drag & drop gambar</li>
+                        <li>Buat struktur folder yang rapi:
+                            <div class="code-block">
+                                <div class="code-content">📁 product-images/
+├── 📁 hijab/
+│   ├── hijab-voal-premium-main.jpg
+│   ├── hijab-voal-premium-gallery-1.jpg
+│   └── hijab-voal-premium-gallery-2.jpg
+├── 📁 inner/
+│   ├── inner-earab-main.jpg
+│   └── inner-earab-gallery-1.jpg
+└── 📁 pashmina/</div>
+                            </div>
+                        </li>
+                        <li>Setelah upload selesai, klik gambar</li>
+                        <li>Copy <strong>"Download URL"</strong></li>
+                        <li>Paste URL ke array products di index.html</li>
+                    </ol>
+
+                    <h3>🖼️ Cara Upload ke GitHub:</h3>
+                    <ol class="steps-list">
+                        <li>Buka repository GitHub Anda</li>
+                        <li>Buat folder <code>images</code> atau <code>assets</code></li>
+                        <li>Upload gambar dengan drag & drop</li>
+                        <li>Commit dengan pesan yang jelas</li>
+                        <li>Klik gambar > klik <strong>"Raw"</strong></li>
+                        <li>Copy URL dan gunakan di konfigurasi produk</li>
+                    </ol>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">🔗 Format URL GitHub</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">// Format URL GitHub Raw
+https://raw.githubusercontent.com/USERNAME/REPOSITORY/BRANCH/PATH/FILENAME.jpg
+
+// Contoh nyata:
+https://raw.githubusercontent.com/tokohijab/Femmeia-images/main/products/hijab/voal-premium-black.jpg
+
+// Tips: Gunakan nama file yang deskriptif
+// ✅ Good: hijab-voal-premium-black-main.jpg
+// ❌ Bad: IMG_001.jpg</div>
+                    </div>
+
+                    <h3>🎨 Optimasi Gambar:</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12,6 12,12 16,14"/>
+                                </svg>
+                                Kompresi
+                            </h4>
+                            <ul>
+                                <li><strong>TinyPNG:</strong> Kompresi otomatis</li>
+                                <li><strong>Squoosh:</strong> Tool Google</li>
+                                <li><strong>ImageOptim:</strong> Untuk Mac</li>
+                                <li><strong>RIOT:</strong> Untuk Windows</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <path d="M9 9h6v6H9z"/>
+                                </svg>
+                                Resize
+                            </h4>
+                            <ul>
+                                <li><strong>Canva:</strong> Online editor</li>
+                                <li><strong>GIMP:</strong> Gratis, powerful</li>
+                                <li><strong>Photoshop:</strong> Professional</li>
+                                <li><strong>Figma:</strong> Design tool</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                                    <circle cx="12" cy="13" r="3"/>
+                                </svg>
+                               Photography Tips
+                            </h4>
+                            <ul>
+                                <li><strong>Lighting:</strong> Natural light terbaik</li>
+                                <li><strong>Background:</strong> Putih/netral</li>
+                                <li><strong>Angle:</strong> Multiple sudut pandang</li>
+                                <li><strong>Detail:</strong> Close-up texture</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="info-box info">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            Pro Tips Fotografi Produk
+                        </h4>
+                        <ul>
+                            <li><strong>Konsistensi:</strong> Gunakan setup yang sama untuk semua produk</li>
+                            <li><strong>Model:</strong> Foto dengan model lebih menarik dari flat lay</li>
+                            <li><strong>Lifestyle:</strong> Tambahkan foto lifestyle/situasional</li>
+                            <li><strong>Detail:</strong> Sertakan close-up texture dan jahitan</li>
+                            <li><strong>Color accuracy:</strong> Pastikan warna di foto sesuai aslinya</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔄 Batch Processing Gambar:</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">🛠️ Script Batch Resize (ImageMagick)</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content"># Install ImageMagick terlebih dahulu
+# Windows: Download dari https://imagemagick.org
+# Mac: brew install imagemagick
+# Linux: sudo apt-get install imagemagick
+
+# Resize semua gambar ke 1000x1000px
+magick mogrify -resize 1000x1000^ -gravity center -extent 1000x1000 *.jpg
+
+# Kompresi dengan kualitas 85%
+magick mogrify -quality 85 *.jpg
+
+# Batch rename dengan pattern
+for i in *.jpg; do
+    mv "$i" "product-$(date +%s)-$i"
+done</div>
+                    </div>
+                </section>
+
+                <!-- Kustomisasi Website -->
+                <section id="customization" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        6. Kustomisasi Website
+                    </h2>
+                    <p>Anda dapat menyesuaikan tampilan dan nuansa website Femmeia Store agar sesuai dengan merek Anda.</p>
+
+                    <h3 id="customization-appearance">🎨 6.1 Mengubah Tampilan Umum</h3>
+                    <h4>Mode Gelap/Terang:</h4>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong> dengan text editor.</li>
+                        <li>Cari tag <code>&lt;body&gt;</code>.</li>
+                        <li>Untuk mengaktifkan mode gelap secara default, tambahkan kelas <code>dark-mode</code> pada tag body, menjadi <code>&lt;body class="dark-mode"&gt;</code>.</li>
+                        <li>Untuk mode terang (default), pastikan tidak ada kelas <code>dark-mode</code> pada tag body.</li>
+                        <li>Pengguna juga dapat beralih mode melalui tombol pengaturan di website.</li>
+                    </ol>
+
+                    <h4>Ukuran Font:</h4>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong> dengan text editor.</li>
+                        <li>Cari tag <code>&lt;body&gt;</code>.</li>
+                        <li>Untuk ukuran font kecil, tambahkan kelas <code>font-small</code> pada tag body, menjadi <code>&lt;body class="font-small"&gt;</code>.</li>
+                        <li>Untuk ukuran font besar, tambahkan kelas <code>font-large</code> pada tag body, menjadi <code>&lt;body class="font-large"&gt;</code>.</li>
+                        <li>Untuk ukuran font normal (default), pastikan tidak ada kelas <code>font-small</code> atau <code>font-large</code> pada tag body.</li>
+                        <li>Pengguna juga dapat mengubah ukuran font melalui tombol pengaturan di website.</li>
+                    </ol>
+
+                    <h3 id="customization-colors">🌈 6.2 Mengubah Warna Tema</h3>
+                    <p>Anda dapat mengubah skema warna utama website dengan mengedit variabel CSS di file <strong>index.html</strong>.</p>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Cari bagian <code>:root</code> di dalam tag <code>&lt;style&gt;</code> (biasanya di bagian atas CSS).</li>
+                        <li>Ubah nilai variabel CSS berikut untuk menyesuaikan warna:
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Variabel CSS</th>
+                                            <th>Deskripsi</th>
+                                            <th>Contoh Nilai</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td><code>--accent-dark</code></td><td>Warna aksen utama (teks, tombol)</td><td><code>#1f2937</code></td></tr>
+                                        <tr><td><code>--accent-mid</code></td><td>Warna aksen menengah</td><td><code>#374151</code></td></tr>
+                                        <tr><td><code>--accent-light</code></td><td>Warna aksen terang</td><td><code>#9ca3af</code></td></tr>
+                                        <tr><td><code>--background</code></td><td>Warna latar belakang utama</td><td><code>#ffffff</code></td></tr>
+                                        <tr><td><code>--background-light</code></td><td>Warna latar belakang sekunder</td><td><code>#f8fafc</code></td></tr>
+                                        <tr><td><code>--text</code></td><td>Warna teks utama</td><td><code>#1f2937</code></td></tr>
+                                        <tr><td><code>--text-muted</code></td><td>Warna teks sekunder/pudar</td><td><code>#6b7280</code></td></tr>
+                                        <tr><td><code>--text-light</code></td><td>Warna teks terang</td><td><code>#94a3b8</code></td></tr>
+                                        <tr><td><code>--border</code></td><td>Warna garis tepi</td><td><code>rgba(55, 65, 81, 0.12)</code></td></tr>
+                                        <tr><td><code>--border-hover</code></td><td>Warna garis tepi saat hover</td><td><code>rgba(55, 65, 81, 0.2)</code></td></tr>
+                                        <tr><td><code>--success</code></td><td>Warna untuk pesan sukses</td><td><code>#059669</code></td></tr>
+                                        <tr><td><code>--error</code></td><td>Warna untuk pesan error</td><td><code>#dc2626</code></td></tr>
+                                        <tr><td><code>--warning</code></td><td>Warna untuk pesan peringatan</td><td><code>#fbbf24</code></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li>Simpan file dan refresh browser untuk melihat perubahan.</li>
+                    </ol>
+                </section>
+
+                <!-- Optimasi SEO -->
+                <section id="seo-optimization" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 18a2 2 0 0 0 2-2V4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14"/>
+                            <path d="M14 9h4l-7 7-7-7h4"/>
+                        </svg>
+                        7. Optimasi SEO
+                    </h2>
+                    <p>Optimasi mesin pencari (SEO) sangat penting agar toko online Anda mudah ditemukan di Google dan mesin pencari lainnya.</p>
+
+                    <h3 id="seo-meta-tags">📝 7.1 Meta Tag Dasar</h3>
+                    <p>Meta tag ini memberikan informasi penting kepada mesin pencari tentang konten halaman Anda.</p>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Cari bagian <code>&lt;head&gt;</code>.</li>
+                        <li>Edit tag <code>&lt;title&gt;</code>:
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">HTML Title Tag</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">&lt;title&gt;Toko Website Femmeia | Hijab Premium Brand Lokal&lt;/title&gt;</div>
+                            </div>
+                            <p>Ganti dengan judul yang relevan dan mengandung kata kunci bisnis Anda.</p>
+                        </li>
+                        <li>Edit tag <code>&lt;meta name="description"&gt;</code>:
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">HTML Meta Description</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">&lt;meta name="description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di Femmeia."&gt;</div>
+                            </div>
+                            <p>Tulis deskripsi singkat yang menarik dan informatif.</p>
+                        </li>
+                    </ol>
+
+                    <h3 id="seo-open-graph">🔗 7.2 Open Graph (untuk Media Sosial)</h3>
+                    <p>Open Graph tags mengontrol bagaimana konten Anda ditampilkan saat dibagikan di platform seperti Facebook, WhatsApp, dll.</p>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Cari bagian <code>&lt;meta property="og:..."&gt;</code>.</li>
+                        <li>Edit nilai-nilai berikut:
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Open Graph Tags</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">&lt;meta property="og:title" content="Femmeia | Hijab Premium Brand Lokal"&gt;
+&lt;meta property="og:description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di Femmeia"&gt;
+&lt;meta property="og:image" content="https://raw.githubusercontent.com/gunadizz/Femmeia/refs/heads/main/IMG_3593.jpeg"&gt;
+&lt;meta property="og:url" content="https://Femmeia.me"&gt;
+&lt;meta property="og:type" content="website"&gt;</div>
+                            </div>
+                            <p>Ganti URL gambar (`og:image`) dengan gambar yang menarik dan relevan.</p>
+                        </li>
+                    </ol>
+
+                    <h3 id="seo-twitter-cards">🐦 7.3 Twitter Cards</h3>
+                    <p>Mirip dengan Open Graph, ini mengontrol tampilan saat dibagikan di Twitter.</p>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Cari bagian <code>&lt;meta name="twitter:..."&gt;</code>.</li>
+                        <li>Edit nilai-nilai berikut:
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Twitter Card Tags</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">&lt;meta name="twitter:card" content="summary_large_image"&gt;
+&lt;meta name="twitter:title" content="Femmeia | Hijab Premium Brand Lokal"&gt;
+&lt;meta name="twitter:description" content="Tampil Syar'i, Tetap Stylish! Temukan hijab premium di Femmeia"&gt;
+&lt;meta name="twitter:image" content="https://raw.githubusercontent.com/gunadizz/Femmeia/refs/heads/main/IMG_3593.jpeg"&gt;</div>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <h3 id="seo-google-adsense">💰 7.4 Google AdSense</h3>
+                    <p>Jika Anda berencana menggunakan Google AdSense, tambahkan meta tag ini.</p>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Tambahkan tag berikut di bagian <code>&lt;head&gt;</code>:
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Google AdSense Meta Tag</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">&lt;meta name="google-adsense-account" content="ca-pub-YOUR_ADSENSE_ID"&gt;</div>
+                            </div>
+                            <p>Ganti <code>ca-pub-YOUR_ADSENSE_ID</code> dengan ID akun Google AdSense Anda.</p>
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- Optimasi Performa -->
+                <section id="performance" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+                            <polyline points="13 2 13 9 20 9"/>
+                            <path d="M16 16H8"/>
+                            <path d="M16 12H8"/>
+                            <path d="M12 20H8"/>
+                        </svg>
+                        8. Optimasi Performa
+                    </h2>
+                    <p>Website Femmeia Store dirancang untuk performa cepat. Berikut adalah beberapa aspek penting:</p>
+
+                    <h3 id="performance-lazy-loading">🖼️ 8.1 Lazy Loading Gambar</h3>
+                    <p>Gambar produk dimuat secara "lazy" (hanya saat dibutuhkan) untuk mempercepat waktu muat awal halaman.</p>
+                    <div class="info-box info">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            💡 Cara Kerja Lazy Loading
+                        </h4>
+                        <p>Gambar produk di `index.html` menggunakan atribut `data-lazy` untuk URL gambar. JavaScript akan mengganti `data-lazy` menjadi `src` hanya ketika gambar masuk ke viewport pengguna. Pastikan Anda menggunakan format ini untuk gambar produk.</p>
+                    </div>
+
+                    <h3 id="performance-preload">⚡ 8.2 Preload Critical Resources</h3>
+                    <p>Font dan resource penting lainnya di-preload untuk memastikan pengalaman pengguna yang cepat.</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-title">Preload Links di index.html</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="code-content">// Bagian script di index.html (sekitar baris 3200)
+const preloadLinks = [
+    'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'
+];
+
+preloadLinks.forEach(href => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'style';
+    link.href = href;
+    document.head.appendChild(link);
+});</div>
+                    </div>
+                    <p>Anda dapat menambahkan URL resource penting lainnya ke array <code>preloadLinks</code> jika diperlukan.</p>
+
+                    <h3 id="performance-optimization">⚙️ 8.3 Optimasi CSS dan JavaScript</h3>
+                    <p>File CSS dan JavaScript sudah di-minify dan digabungkan untuk mengurangi ukuran file dan mempercepat penguraian browser.</p>
+                    <div class="info-box warning">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            Hindari Penambahan Berlebihan
+                        </h4>
+                        <p>Menambahkan terlalu banyak CSS inline atau JavaScript eksternal yang tidak dioptimalkan dapat memperlambat website Anda.</p>
+                    </div>
+                </section>
+
+                <!-- Keamanan Website -->
+                <section id="security" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        9. Keamanan Website
+                    </h2>
+                    <p>Keamanan adalah prioritas utama. Femmeia Store memanfaatkan fitur keamanan Firebase.</p>
+
+                    <h3 id="security-firestore-rules">🔒 9.1 Aturan Keamanan Firebase Firestore</h3>
+                    <p>Aturan ini mengontrol siapa yang dapat membaca dan menulis data di database Firestore Anda. Pastikan Anda telah mengonfigurasinya dengan benar seperti yang dijelaskan di bagian "3.3 Setup Firestore Database".</p>
+                    <div class="info-box info">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            💡 Pentingnya Aturan Keamanan
+                        </h4>
+                        <p>Aturan keamanan yang longgar dapat membuat data Anda rentan terhadap akses tidak sah. Selalu tinjau dan perbarui aturan Anda sesuai kebutuhan.</p>
+                    </div>
+
+                    <h3 id="security-storage-rules">📁 9.2 Aturan Keamanan Firebase Storage</h3>
+                    <p>Aturan ini mengontrol siapa yang dapat mengunggah dan mengunduh file dari Firebase Storage Anda. Pastikan Anda telah mengonfigurasinya dengan benar seperti yang dijelaskan di bagian "3.4 Setup Storage".</p>
+
+                    <h3 id="security-https">🌐 9.3 HTTPS (SSL Certificate)</h3>
+                    <p>Website Anda harus selalu diakses melalui HTTPS untuk mengenkripsi komunikasi antara pengguna dan server, melindungi data sensitif.</p>
+                    <ol class="steps-list">
+                        <li>Jika Anda menggunakan Firebase Hosting, HTTPS secara otomatis disediakan dan dikelola.</li>
+                        <li>Jika Anda menggunakan hosting lain, pastikan Anda menginstal sertifikat SSL (misalnya, dari Let's Encrypt atau penyedia hosting Anda).</li>
+                    </ol>
+                </section>
+
+                <!-- Analytics & Tracking -->
+                <section id="analytics" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 3v18h18"/>
+                            <path d="M18.7 8.3L12 15l-3.3-3.3L3 18"/>
+                        </svg>
+                        10. Analytics & Tracking
+                    </h2>
+                    <p>Memahami perilaku pengguna adalah kunci untuk mengembangkan bisnis Anda. Femmeia Store terintegrasi dengan Google Analytics.</p>
+
+                    <h3 id="analytics-google">📊 10.1 Google Analytics</h3>
+                    <p>Google Analytics 4 (GA4) terintegrasi melalui konfigurasi Firebase Anda.</p>
+                    <ol class="steps-list">
+                        <li>Pastikan Anda telah mengaktifkan Google Analytics saat membuat proyek Firebase (lihat "3.1 Membuat Project Firebase").</li>
+                        <li>Verifikasi bahwa <code>measurementId</code> di objek <code>firebaseConfig</code> di <strong>index.html</strong> sudah benar.
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Google Analytics Measurement ID</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">const firebaseConfig = {
+    // ...
+    measurementId: "G-XXXXXXXXXX" // Pastikan ini sesuai dengan GA4 Anda
+};</div>
+                            </div>
+                        </li>
+                        <li>Anda dapat melihat data analitik di Firebase Console (bagian Analytics) atau langsung di dashboard Google Analytics.</li>
+                    </ol>
+
+                    <h3 id="analytics-user-tracking">👤 10.2 Pelacakan Pengguna</h3>
+                    <p>Sistem ini dapat melacak metrik dasar seperti:</p>
+                    <ul>
+                        <li>Jumlah pengunjung</li>
+                        <li>Tampilan halaman</li>
+                        <li>Jumlah pesanan (jika diintegrasikan dengan Firestore `orders` collection)</li>
+                    </ul>
+                    <div class="info-box info">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            💡 Pelacakan Kustom
+                        </h4>
+                        <p>Untuk pelacakan yang lebih mendalam (misalnya, event klik tombol, waktu di halaman), Anda perlu menambahkan kode pelacakan kustom menggunakan Google Analytics API atau Firebase SDK.</p>
+                    </div>
+                </section>
+
+                <!-- Integrasi Marketing -->
+                <section id="marketing" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        11. Integrasi Marketing
+                    </h2>
+                    <p>Femmeia Store menyediakan beberapa titik integrasi untuk aktivitas marketing Anda.</p>
+
+                    <h3 id="marketing-whatsapp">💬 11.1 Integrasi WhatsApp Business</h3>
+                    <p>Fitur checkout utama adalah melalui WhatsApp, memudahkan komunikasi langsung dengan pelanggan.</p>
+                    <ol class="steps-list">
+                        <li>Pastikan nomor WhatsApp Business Anda sudah benar di bagian checkout form di <strong>index.html</strong>.
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">WhatsApp Number di Checkout Form</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">// Bagian JavaScript yang membuat pesan WhatsApp (cari fungsi generateWhatsAppMessage)
+const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business Anda</div>
+                            </div>
+                        </li>
+                        <li>Anda juga dapat menambahkan link WhatsApp di bagian "Tentang Kami" atau footer.</li>
+                    </ol>
+
+                    <h3 id="marketing-email">📧 11.2 Integrasi Email</h3>
+                    <p>Form kontak di halaman "Tentang Kami" dapat digunakan untuk menerima pesan dari pelanggan.</p>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Cari bagian "Contact Form Section".</li>
+                        <li>Ubah atribut <code>action</code> pada tag <code>&lt;form&gt;</code> untuk mengarahkan ke layanan pengiriman email seperti Formspree atau sejenisnya.
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Contact Form Action</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">&lt;form action="https://formspree.io/f/yourformid" method="POST" id="contactForm"&gt;
+    // ...
+&lt;/form&gt;</div>
+                            </div>
+                            <p>Ganti <code>https://formspree.io/f/yourformid</code> dengan URL endpoint Formspree atau layanan serupa yang Anda gunakan.</p>
+                        </li>
+                    </ol>
+
+                    <h3 id="marketing-promo">🎁 11.3 Kode Promo</h3>
+                    <p>Website memiliki fitur kode promo yang dapat disalin oleh pengguna.</p>
+                    <ol class="steps-list">
+                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Cari bagian "Promo Card" di Home Section.</li>
+                        <li>Ubah teks kode promo (misalnya, <code>FEMMEIA10</code>) sesuai keinginan Anda.</li>
+                        <li>Logika diskon harus diimplementasikan di JavaScript (fungsi <code>applyPromoCode</code>) untuk memvalidasi kode dan menerapkan diskon ke total keranjang.</li>
+                    </ol>
+                </section>
+
+                <!-- Deploy Website -->
+                <section id="deployment" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z"/>
+                            <polyline points="3 7 12 12 21 7"/>
+                            <polyline points="12 22 12 12"/>
+                        </svg>
+                        12. Deploy Website
+                    </h2>
+                    <p>Setelah semua konfigurasi selesai, saatnya untuk meluncurkan toko online Anda!</p>
+
+                    <h3 id="deployment-firebase-hosting">🚀 12.1 Firebase Hosting</h3>
+                    <p>Firebase Hosting adalah cara termudah dan tercepat untuk mendeploy website ini.</p>
+                    <ol class="steps-list">
+                        <li><strong>Instal Firebase CLI:</strong> Jika belum, instal Firebase Command Line Interface (CLI) secara global:
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Instal Firebase CLI</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">npm install -g firebase-tools</div>
+                            </div>
+                        </li>
+                        <li><strong>Login ke Firebase:</strong> Buka terminal/command prompt di folder proyek Anda dan login:
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Login Firebase</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">firebase login</div>
+                            </div>
+                            <p>Ikuti instruksi di browser untuk otentikasi.</p>
+                        </li>
+                        <li><strong>Inisialisasi Proyek:</strong> Di folder proyek Anda, inisialisasi Firebase untuk hosting:
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Inisialisasi Firebase Hosting</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">firebase init hosting</div>
+                            </div>
+                            <p>Pilih proyek Firebase yang sudah Anda buat. Untuk pertanyaan "What do you want to use as your public directory?", ketik <code>.</code> (titik) karena file `index.html` ada di root. Pilih "No" untuk "Configure as a single-page app (rewrite all urls to /index.html)?".</p>
+                        </li>
+                        <li><strong>Deploy Website:</strong> Setelah inisialisasi, deploy website Anda:
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Deploy ke Firebase Hosting</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="code-content">firebase deploy --only hosting</div>
+                            </div>
+                            <p>Setelah selesai, Anda akan mendapatkan URL hosting Firebase Anda.</p>
+                        </li>
+                    </ol>
+
+                    <h3 id="deployment-custom-domain">🌐 12.2 Custom Domain</h3>
+                    <p>Untuk menggunakan domain Anda sendiri (misalnya, <code>Femmeia.me</code>):</p>
+                    <ol class="steps-list">
+                        <li>Buka <strong>Firebase Console</strong> > <strong>Hosting</strong>.</li>
+                        <li>Klik <strong>"Add custom domain"</strong>.</li>
+                        <li>Ikuti instruksi untuk memverifikasi domain Anda dan menambahkan catatan DNS (A record atau CNAME record) di penyedia domain Anda.</li>
+                        <li>Firebase akan secara otomatis menyediakan sertifikat SSL untuk domain kustom Anda.</li>
+                    </ol>
+                </section>
+
+                <!-- Maintenance -->
+                <section id="maintenance" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 0z"/>
+                            <path d="M21 12a9 9 0 1 1-6.21-8.56"/>
+                        </svg>
+                        13. Maintenance
+                    </h2>
+                    <p>Pemeliharaan rutin penting untuk menjaga toko online Anda tetap berjalan lancar dan aman.</p>
+
+                    <h3 id="maintenance-content-updates">🔄 13.1 Pembaruan Konten</h3>
+                    <p>Secara berkala perbarui informasi produk, harga, deskripsi, dan gambar untuk menjaga konten tetap segar dan akurat.</p>
+                    <ol class="steps-list">
+                        <li>Edit langsung array <code>products</code> di <strong>index.html</strong> untuk produk.</li>
+                        <li>Perbarui gambar di Firebase Storage atau GitHub.</li>
+                        <li>Jika Anda mengimplementasikan admin panel, gunakan itu untuk manajemen konten yang lebih mudah.</li>
+                    </ol>
+
+                    <h3 id="maintenance-performance-monitoring">📈 13.2 Pemantauan Performa</h3>
+                    <p>Pantau performa website Anda untuk mengidentifikasi dan mengatasi masalah potensial.</p>
+                    <ul>
+                        <li>Gunakan <strong>Google Analytics</strong> untuk melacak lalu lintas, perilaku pengguna, dan konversi.</li>
+                        <li>Gunakan <strong>Firebase Performance Monitoring</strong> (jika diaktifkan) untuk memantau waktu muat halaman dan metrik performa lainnya.</li>
+                        <li>Gunakan alat seperti Google PageSpeed Insights untuk mendapatkan rekomendasi optimasi.</li>
+                    </ul>
+                </section>
+
+                <!-- Backup & Restore -->
+                <section id="backup-restore" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.2 15.8A5 5 0 0 1 17 18H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3.13a1 1 0 0 0 .7-.29L10 3h4l1.17 2.71a1 1 0 0 0 .7.29H19a2 2 0 0 1 2 2v7.8z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                        14. Backup & Restore
+                    </h2>
+                    <p>Melakukan backup secara teratur sangat penting untuk melindungi data Anda dari kehilangan atau kerusakan.</p>
+
+                    <h3 id="backup-firestore">🗄️ 14.1 Backup Data Firestore</h3>
+                    <p>Data produk, pengguna, dan pesanan Anda disimpan di Firestore.</p>
+                    <ol class="steps-list">
+                        <li>Buka <strong>Firebase Console</strong>.</li>
+                        <li>Pilih proyek Anda.</li>
+                        <li>Navigasi ke <strong>Firestore Database</strong>.</li>
+                        <li>Untuk backup manual, Anda dapat mengekspor koleksi satu per satu atau menggunakan fitur ekspor data di bagian "Usage and billing" > "Cloud Firestore" > "Export/Import".</li>
+                    </ol>
+
+                    <h3 id="backup-storage">📁 14.2 Backup File Storage</h3>
+                    <p>Gambar dan aset lainnya disimpan di Firebase Storage.</p>
+                    <ol class="steps-list">
+                        <li>Buka <strong>Firebase Console</strong>.</li>
+                        <li>Pilih proyek Anda.</li>
+                        <li>Navigasi ke <strong>Storage</strong>.</li>
+                        <li>Anda dapat mengunduh folder atau file secara manual. Untuk backup otomatis, pertimbangkan untuk menggunakan Google Cloud Storage tools.</li>
+                    </ol>
+
+                    <h3 id="backup-source-code">💻 14.3 Backup Source Code</h3>
+                    <p>Source code website Anda (file `index.html`, `manifest.json`, `service-worker.js`, dll.) harus selalu di-backup.</p>
+                    <ul>
+                        <li>Gunakan sistem kontrol versi seperti <strong>Git</strong> dan simpan di platform seperti <strong>GitHub</strong> atau <strong>GitLab</strong>.</li>
+                        <li>Simpan salinan lokal di drive eksternal atau layanan cloud (Google Drive, Dropbox).</li>
+                    </ul>
+                </section>
+
+                <!-- Troubleshooting -->
+                <section id="troubleshooting" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        15. Troubleshooting
+                    </h2>
+                    <p>Berikut adalah beberapa masalah umum dan solusinya.</p>
+
+                    <h3 id="troubleshooting-common-issues">🛠️ 15.1 Masalah Umum</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Masalah</th>
+                                    <th>Penyebab Potensial</th>
+                                    <th>Solusi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Website tidak tampil setelah deploy</td>
+                                    <td>Firebase Hosting belum di-deploy dengan benar, atau ada masalah koneksi.</td>
+                                    <td>Pastikan Anda telah menjalankan <code>firebase deploy --only hosting</code>. Periksa status proyek di Firebase Console.</td>
+                                </tr>
+                                <tr>
+                                    <td>Gambar produk tidak muncul</td>
+                                    <td>URL gambar di <code>products</code> array salah, atau gambar belum diunggah ke Storage.</td>
+                                    <td>Verifikasi URL gambar di <code>index.html</code>. Pastikan gambar sudah diunggah ke Firebase Storage atau GitHub dan URL-nya dapat diakses publik.</td>
+                                </tr>
+                                <tr>
+                                    <td>Fungsi login/register tidak berjalan</td>
+                                    <td>Konfigurasi Firebase di <code>index.html</code> salah, atau Authentication belum diaktifkan di Firebase Console.</td>
+                                    <td>Periksa kembali <code>firebaseConfig</code> di <code>index.html</code>. Pastikan Email/Password Authentication diaktifkan di Firebase Console. Periksa konsol browser untuk error JavaScript.</td>
+                                </tr>
+                                <tr>
+                                    <td>"Permission denied" di konsol browser</td>
+                                    <td>Aturan keamanan Firestore atau Storage terlalu ketat.</td>
+                                    <td>Tinjau kembali <code>firestore.rules</code> dan <code>storage.rules</code> di Firebase Console. Untuk pengembangan, Anda bisa menggunakan "test mode" sementara.</td>
+                                </tr>
+                                <tr>
+                                    <td>Website lambat</td>
+                                    <td>Gambar tidak dioptimalkan, terlalu banyak resource, atau masalah jaringan.</td>
+                                    <td>Optimalkan ukuran gambar. Gunakan Google PageSpeed Insights untuk analisis lebih lanjut.</td>
+                                </tr>
+                                <tr>
+                                    <td>Fitur Dark Mode/Font Size tidak berfungsi</td>
+                                    <td>JavaScript yang mengelola pengaturan mungkin tidak dimuat atau ada konflik.</td>
+                                    <td>Periksa konsol browser untuk error JavaScript. Pastikan tidak ada kode yang menimpa fungsionalitas pengaturan.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="troubleshooting-support">📞 15.2 Hubungi Dukungan</h3>
+                    <p>Jika Anda mengalami masalah yang tidak dapat diselesaikan dengan panduan ini, jangan ragu untuk menghubungi tim dukungan kami.</p>
+                    <div class="info-box info">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            💡 Tips Saat Menghubungi Dukungan
+                        </h4>
+                        <ul>
+                            <li>Sertakan deskripsi masalah yang jelas dan langkah-langkah untuk mereproduksinya.</li>
+                            <li>Sertakan screenshot atau video jika memungkinkan.</li>
+                            <li>Sertakan pesan error dari konsol browser (tekan F12 di Chrome/Firefox untuk membukanya).</li>
+                            <li>Sertakan ID proyek Firebase Anda.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Fitur Advanced -->
+                <section id="advanced" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77z"/>
+                        </svg>
+                        16. Fitur Advanced (Pengembangan Lanjutan)
+                    </h2>
+                    <p>Template Femmeia Store menyediakan dasar yang kuat. Anda dapat memperluas fungsionalitasnya dengan fitur-fitur canggih berikut:</p>
+
+                    <h3 id="advanced-payment-integration">💳 16.1 Integrasi Pembayaran Otomatis</h3>
+                    <p>Saat ini, checkout dilakukan secara manual melalui WhatsApp. Untuk pembayaran otomatis, Anda dapat mengintegrasikan gateway pembayaran.</p>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                    <line x1="1" y1="10" x2="23" y2="10"/>
+                                </svg>
+                                Contoh Gateway Pembayaran
+                            </h4>
+                            <ul>
+                                <li><strong>Midtrans (Indonesia):</strong> Mendukung berbagai metode pembayaran lokal.</li>
+                                <li><strong>Xendit (Asia Tenggara):</strong> Solusi pembayaran lengkap.</li>
+                                <li><strong>Stripe (Global):</strong> Populer untuk pembayaran kartu kredit.</li>
+                            </ul>
+                        </div>
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                Implementasi
+                            </h4>
+                            <ul>
+                                <li>Membutuhkan integrasi API dari penyedia gateway.</li>
+                                <li>Mungkin memerlukan backend serverless (Firebase Functions) untuk memproses transaksi yang aman.</li>
+                                <li>Perbarui alur checkout untuk mengarahkan pengguna ke halaman pembayaran.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 id="advanced-admin-panel">⚙️ 16.2 Admin Panel</h3>
+                    <p>Untuk manajemen produk, pesanan, dan pengguna yang lebih efisien, Anda dapat membangun admin panel terpisah.</p>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="8.5" cy="7" r="4"/>
+                                    <line x1="20" y1="8" x2="20" y2="14"/>
+                                    <line x1="23" y1="11" x2="17" y2="11"/>
+                                </svg>
+                                Fungsionalitas
+                            </h4>
+                            <ul>
+                                <li>CRUD (Create, Read, Update, Delete) produk.</li>
+                                <li>Manajemen pesanan (status, detail).</li>
+                                <li>Manajemen pengguna (peran, data).</li>
+                                <li>Laporan penjualan dan analitik.</li>
+                            </ul>
+                        </div>
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.27l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z"/>
+                                </svg>
+                                Teknologi
+                            </h4>
+                            <ul>
+                                <li>Dapat dibangun dengan framework JavaScript (React, Vue, Angular).</li>
+                                <li>Terhubung langsung ke Firestore dan Storage.</li>
+                                <li>Membutuhkan otentikasi admin (misalnya, custom claims di Firebase Authentication).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 id="advanced-notifications">🔔 16.3 Notifikasi</h3>
+                    <p>Tingkatkan keterlibatan pengguna dengan notifikasi.</p>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                                Notifikasi Email
+                            </h4>
+                            <ul>
+                                <li>Konfirmasi pesanan.</li>
+                                <li>Pembaruan status pengiriman.</li>
+                                <li>Promosi dan newsletter.</li>
+                            </ul>
+                        </div>
+                        <div class="feature-card">
+                            <h4>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                                </svg>
+                                Push Notifications (PWA)
+                            </h4>
+                            <ul>
+                                <li>Pemberitahuan langsung ke perangkat pengguna.</li>
+                                <li>Membutuhkan Service Worker dan Firebase Cloud Messaging (FCM).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 id="advanced-multi-language">🌍 16.4 Multi-Bahasa</h3>
+                    <p>Meskipun fitur multi-bahasa saat ini berfungsi 50%, Anda dapat mengembangkannya lebih lanjut.</p>
+                    <ol class="steps-list">
+                        <li><strong>Manajemen Terjemahan:</strong> Gunakan objek JavaScript untuk menyimpan terjemahan teks untuk setiap bahasa.</li>
+                        <li><strong>Deteksi Bahasa:</strong> Deteksi bahasa browser pengguna atau biarkan pengguna memilih bahasa secara manual.</li>
+                        <li><strong>Pembaruan UI:</strong> Perbarui semua elemen teks di UI berdasarkan bahasa yang dipilih.</li>
+                    </ol>
+                    <div class="info-box warning">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            Catatan Multi-Bahasa
+                        </h4>
+                        <p>Implementasi multi-bahasa yang lengkap memerlukan penanganan semua teks statis dan dinamis di website. Fitur ini masih dalam pengembangan dan mungkin memerlukan penyesuaian manual.</p>
+                    </div>
+                </section>
+
+                <!-- Contact Section -->
+                <section id="contact" class="section">
+                    <h2>
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        17. Kontak Support Premium
+                    </h2>
+                    
+                    <p>Sebagai pembeli template Femmeia Store, Anda mendapatkan akses support premium untuk memastikan kesuksesan bisnis online Anda.</p>
+
+                    <div class="contact-grid">
+                        <div class="contact-card">
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                                </svg>
+                            </div>
+                            <h4>WhatsApp Support</h4>
+                            <a href="https://wa.me/6285341899229" target="_blank">+6285341899229</a>
+                            <p>Support teknis, konsultasi setup, dan troubleshooting</p>
+                            <div style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-tertiary);">
+                                <strong>Response time:</strong> < 2 jam (jam kerja)
+                            </div>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </div>
+                            <h4>Email Support</h4>
+                            <a href="mailto:femmeiacloth@gmail.com">femmeiacloth@gmail.com</a>
+                            <p>Pertanyaan detail, dokumentasi, dan feedback</p>
+                            <div style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-tertiary);">
+                                <strong>Response time:</strong> < 24 jam
+                            </div>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                                </svg>
+                            </div>
+                            <h4>Instagram</h4>
+                            <a href="https://instagram.com/femmeia.cloth" target="_blank">@femmeia.cloth</a>
+                            <p>Update terbaru, tips, dan inspirasi fashion</p>
+                            <div style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-tertiary);">
+                                <strong>Follow untuk:</strong> Tips & updates
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box success">
+                        <h4>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22,4 12,14.01 9,11.01"/>
+                            </svg>
+                            Support Premium Package
+                        </h4>
+                        <ul>
+                            <li><strong>✅ 30 hari support gratis</strong> - Setup dan kustomisasi dasar</li>
+                            <li><strong>✅ Video call consultation</strong> - 1x session (30 menit)</li>
+                            <li><strong>✅ Priority response</strong> - Respon dalam 2 jam</li>
+                            <li><strong>✅ Custom modification</strong> - Minor changes included</li>
+                            <li><strong>✅ Lifetime updates</strong> - Bug fixes dan security patches</li>
+                        </ul>
+                    </div>
+
+                    <!-- Footer -->
+                    <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border-light); color: var(--text-secondary);">
+                        <h3 style="color: var(--text-primary); margin-bottom: 1rem;">🙏 Terima Kasih!</h3>
+                        <p style="font-size: 1.125rem; margin-bottom: 1rem;">
+                            <strong>Femmeia Store Template</strong> © 2025 - Premium E-commerce Solution
+                        </p>
+                        <p>Terima kasih telah memilih template kami. Semoga bisnis hijab Anda sukses dan berkah! 🚀</p>
+                        <div style="margin-top: 2rem; padding: 1.5rem; background: var(--background-secondary); border-radius: var(--radius-xl);">
+                            <p style="font-size: 0.875rem; color: var(--text-tertiary);">
+                                Dokumentasi ini terakhir diupdate: <strong>Juli 2025</strong><br>
+                                Version: <strong>1.0.0</strong> | Build: <strong>Premium Edition</strong>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" aria-label="Back to top">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5,12 12,5 19,12"/>
+        </svg>
+    </button>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <svg class="toast-icon" id="toastIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20,6 9,17 4,12"/>
+        </svg>
+        <span id="toastText">Kode berhasil disalin!</span>
+    </div>
+
+    <script>
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block');
+            const codeContent = codeBlock.querySelector('.code-content');
+            const text = codeContent.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Update button
+                const originalText = button.innerHTML;
+                button.innerHTML = `
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20,6 9,17 4,12"/>
+                    </svg>
+                    Copied!
+                `;
+                button.classList.add('copied');
+                
+                // Show toast notification
+                showToast('Kode berhasil disalin!', 'success');
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                showToast('Gagal menyalin kode', 'error');
+            });
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toastText');
+            const toastIcon = document.getElementById('toastIcon');
+            
+            toastText.textContent = message;
+            
+            // Update icon based on type
+            if (type === 'success') {
+                toastIcon.innerHTML = '<polyline points="20,6 9,17 4,12"/>';
+                toast.className = 'toast success';
+            } else if (type === 'error') {
+                toastIcon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+                toast.className = 'toast error';
+            }
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Mobile TOC toggle
+        function toggleMobileToc() {
+            const content = document.getElementById('mobileTocContent');
+            const icon = document.getElementById('mobileTocIcon');
+            const header = document.querySelector('.mobile-toc-header');
+            
+            const isOpen = content.classList.contains('open');
+            
+            if (isOpen) {
+                content.classList.remove('open');
+                icon.innerHTML = '<polyline points="6,9 12,15 18,9"/>';
+                header.setAttribute('aria-expanded', 'false');
+            } else {
+                content.classList.add('open');
+                icon.innerHTML = '<polyline points="18,15 12,9 6,15"/>';
+                header.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        // Smooth scrolling for TOC links
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Update active link
+                    document.querySelectorAll('.toc a, .mobile-toc-list a').forEach(a => a.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Close mobile TOC if open
+                    const mobileTocContent = document.getElementById('mobileTocContent');
+                    if (mobileTocContent.classList.contains('open')) {
+                        toggleMobileToc();
+                    }
+                }
+            });
+        });
+
+        // Update active TOC link on scroll
+        function updateActiveLink() {
+            const sections = document.querySelectorAll('.section');
+            const tocLinks = document.querySelectorAll('.toc a, .mobile-toc-list a');
+            
+            let currentSection = '';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 200 && rect.bottom >= 200) {
+                    currentSection = section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Progress bar
+        function updateProgressBar() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            document.getElementById('progressBar').style.width = scrollPercent + '%';
+        }
+
+        // Back to top button
+        function updateBackToTop() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Scroll event listener with throttling
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateActiveLink();
+                    updateProgressBar();
+                    updateBackToTop();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set first link as active
+            const firstLink = document.querySelector('.toc a');
+            if (firstLink) {
+                firstLink.classList.add('active');
+            }
+            
+            // Add fade-in animation to sections
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Escape to close mobile TOC
+            if (e.key === 'Escape') {
+                const mobileTocContent = document.getElementById('mobileTocContent');
+                if (mobileTocContent.classList.contains('open')) {
+                    toggleMobileToc();
+                }
+            }
+        });
+
+        // Add keyboard support for mobile TOC header
+        document.querySelector('.mobile-toc-header').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleMobileToc();
+            }
+        });
+
+        // Handle mobile menu button click
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            // For now, just toggle the mobile TOC
+            // In a full implementation, this could open a full navigation menu
+            const mobileToc = document.getElementById('mobileToc');
+            if (mobileToc.style.display === 'none' || !mobileToc.style.display) {
+                mobileToc.style.display = 'block';
+                if (!document.getElementById('mobileTocContent').classList.contains('open')) {
+                    toggleMobileToc();
+                }
+            } else {
+                if (document.getElementById('mobileTocContent').classList.contains('open')) {
+                    toggleMobileToc();
+                }
+            }
+        });
+
+        // Prevent toast from showing on mobile when not needed
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+
+        // Override copy function to handle mobile differently
+        const originalCopyCode = copyCode;
+        copyCode = function(button) {
+            originalCopyCode(button);
+            
+            // On mobile, provide haptic feedback if available
+            if (isMobile() && 'vibrate' in navigator) {
+                navigator.vibrate(50);
+            }
+        };
+
+        // Add touch event handling for better mobile experience
+        document.querySelectorAll('.copy-btn, .mobile-menu-btn, .back-to-top').forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            button.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+
+        // Improve mobile scrolling performance
+        let isScrolling = false;
+        window.addEventListener('scroll', () => {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    updateActiveLink();
+                    updateProgressBar();
+                    updateBackToTop();
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
+        }, { passive: true });
+
+        // Add resize handler to ensure proper mobile layout
+        window.addEventListener('resize', () => {
+            // Close mobile TOC on resize to desktop
+            if (window.innerWidth > 768) {
+                const mobileTocContent = document.getElementById('mobileTocContent');
+                if (mobileTocContent.classList.contains('open')) {
+                    toggleMobileToc();
+                }
+            }
+        });
+
+        // Preload critical resources
+        const preloadLinks = [
+            'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'
+        ];
+
+        preloadLinks.forEach(href => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'style';
+            link.href = href;
+            document.head.appendChild(link);
+        });
+
+        // Service Worker registration for PWA capabilities
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Add loading state management
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+            
+            // Initialize any lazy-loaded content
+            const lazyElements = document.querySelectorAll('[data-lazy]');
+            if ('IntersectionObserver' in window) {
+                const lazyObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const element = entry.target;
+                            element.src = element.dataset.lazy;
+                            element.classList.remove('lazy');
+                            lazyObserver.unobserve(element);
+                        }
+                    });
+                });
+
+                lazyElements.forEach(element => {
+                    lazyObserver.observe(element);
+                });
+            }
+        });
+
+        // Error handling for failed operations
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e.error);
+            showToast('Terjadi kesalahan. Silakan refresh halaman.', 'error');
+        });
+
+        // Handle offline/online status
+        window.addEventListener('online', () => {
+            showToast('Koneksi internet tersambung kembali', 'success');
+        });
+
+        window.addEventListener('offline', () => {
+            showToast('Koneksi internet terputus', 'error');
+        });
+    </script>
+</body>
+</html>
