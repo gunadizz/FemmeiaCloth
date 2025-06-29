@@ -2,9 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.3">
+    <meta name="viewport" content="width=device-width, initial-scale=0.4">
     <title>Panduan Lengkap - Femmeia Store Template/Source Code</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/Femmeia/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
     
     <style>
@@ -57,11 +57,12 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             background: var(--background);
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
+            font-weight:900;
             overflow-x: hidden;
             font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
         }
@@ -1099,7 +1100,7 @@
         <div class="header-content">
             <div class="header-title">
                 <div>
-                    <h1>📚 Panduan Lengkap Femmeia Store</h1>
+                    <h1>📚 Panduan Lengkap Femmeia Store (Versi 1)</h1>
                     <div class="header-subtitle">Dokumentasi komprehensif untuk setup dan pengelolaan toko online hijab premium</div>
                 </div>
             </div>
@@ -1127,8 +1128,8 @@
                 </h3>
                 <div class="warning-list">
                     <div class="warning-item">
-                        <strong>🖼️ Fitur Ganti Foto Profil</strong>
-                        Belum dapat digunakan sepenuhnya - dalam pengembangan
+                        <strong>🖼️ Fitur Ganti Foto Profil dan Ganti Email</strong>
+                        Belum dapat digunakan - dalam pengembangan
                     </div>
                     <div class="warning-item">
                         <strong>📋 Riwayat Checkout/Transaksi</strong>
@@ -1136,7 +1137,7 @@
                     </div>
                     <div class="warning-item">
                         <strong>🌙 Dark Mode & Multi-Bahasa</strong>
-                        Berfungsi 50% - masih dalam tahap pengembangan
+                        Berfungsi 30% - masih dalam tahap pengembangan
                     </div>
                     <div class="warning-item">
                         <strong>📧 Contact Form</strong>
@@ -1241,7 +1242,7 @@
                         1. Gambaran Umum
                     </h2>
                     
-                    <p>Femmeia Store adalah template toko online premium yang dirancang khusus untuk bisnis hijab dan fashion muslim. Template ini menggunakan teknologi web modern dengan Firebase sebagai backend untuk memberikan pengalaman berbelanja yang optimal.</p>
+                    <p>Femmeia Store adalah template toko online premium yang dirancang khusus untuk bisnis hijab dan fashion muslim (bukan berarti anda tidak bisa menyesuaikan dengan kemauan anda). Template ini menggunakan teknologi web modern dengan Firebase sebagai backend untuk memberikan pengalaman berbelanja yang optimal.</p>
                     
                     <div class="feature-grid">
                         <div class="feature-card">
@@ -1272,7 +1273,7 @@
                             <ul>
                                 <li>Sistem registrasi dan login</li>
                                 <li>Profile pengguna</li>
-                                <li>Wishlist produk</li>
+                                <li>Wishlist produk (dalam pengembangan)</li>
                                 <li>Riwayat pembelian (dalam pengembangan)</li>
                             </ul>
                         </div>
@@ -1287,6 +1288,7 @@
                                 Responsive Design
                             </h4>
                             <ul>
+                            	<li>Glassmorphism and Blur UI</li>
                                 <li>Mobile-first approach</li>
                                 <li>Progressive Web App (PWA)</li>
                                 <li>Touch-friendly interface</li>
@@ -1304,7 +1306,7 @@
                             </svg>
                              Catatan Penting
                         </h4>
-                        <p>Template ini adalah source code berbayar dengan lisensi penggunaan komersial. Anda mendapatkan full source code, dokumentasi lengkap, dan support teknis selama 30 hari pertama.</p>
+                        <p>Template ini adalah source code berbayar dengan lisensi penggunaan sesuai lisensi yang anda pilih. Anda mendapatkan full source code, dokumentasi lengkap, dan support teknis selama 30 hari pertama.</p>
                     </div>
                 </section>
 
@@ -1388,12 +1390,12 @@
                                 </tr>
                                 <tr>
                                     <td>Domain (.com)</td>
-                                    <td>$10-15/tahun</td>
+                                    <td>Rp 100.000 - 250.000/tahun</td>
                                     <td>Registrasi domain</td>
                                 </tr>
                                 <tr>
                                     <td>Hosting</td>
-                                    <td>$5-20</td>
+                                    <td>Rp 80.000 - 300.000/tahun</td>
                                     <td>Shared hosting sudah cukup</td>
                                 </tr>
                                 <tr>
@@ -1418,7 +1420,7 @@
                             </svg>
                             Tips Hemat
                         </h4>
-                        <p>Untuk memulai, Anda bisa menggunakan Firebase hosting (gratis) dan domain murah. Total biaya awal hanya sekitar $10-20 untuk domain saja!</p>
+                        <p>Untuk memulai, Anda bisa menggunakan Firebase hosting (gratis) dan domain murah. Total biaya awal hanya sekitar RP 100.000 - 250.000/tahun untuk domain saja!</p>
                     </div>
                 </section>
 
@@ -1511,7 +1513,7 @@
                         <li>Klik <strong>"Done"</strong> dan tunggu database dibuat</li>
                     </ol>
 
-                    <h4>📊 Struktur Database yang Diperlukan:</h4>
+                    <h4>📊 Struktur Database yang Diperlukan (Silahkan Atur Manual di Firestore Database):</h4>
                     <div class="code-block">
                         <div class="code-header">
                             <span class="code-title">🗂️ Firestore Collections Structure</span>
@@ -1759,7 +1761,7 @@ service firebase.storage {
 
                     <div class="code-block">
                         <div class="code-header">
-                            <span class="code-title">🔧 Firebase Configuration - Ganti di index.html</span>
+                            <span class="code-title">🔧 Firebase Configuration - Ganti di v1.html</span>
                             <button class="copy-btn" onclick="copyCode(this)">
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -1768,7 +1770,7 @@ service firebase.storage {
                                 Copy
                             </button>
                         </div>
-                        <div class="code-content">// Cari bagian ini di index.html (sekitar baris 2890)
+                        <div class="code-content">// Cari bagian ini di v1.html (sekitar baris 5157)
 // Ganti konfigurasi Firebase di bawah ini dengan milik Anda
 
 const firebaseConfig = {
@@ -1847,11 +1849,11 @@ const storage = firebase.storage();</div>
                     <p>Sistem produk Femmeia Store menggunakan array JavaScript yang mudah dikelola. Anda bisa menambah, edit, atau hapus produk dengan mudah.</p>
 
                     <h3 id="add-products">➕ 4.1 Menambah Produk Baru</h3>
-                    <p>Untuk menambah produk baru, edit array <code>products</code> di file index.html.</p>
+                    <p>Untuk menambah produk baru, edit array <code>products</code> di file v1.html.</p>
 
                     <div class="code-block">
                         <div class="code-header">
-                            <span class="code-title">📍 Lokasi Array Products di index.html</span>
+                            <span class="code-title">📍 Lokasi Array Products di v1.html</span>
                             <button class="copy-btn" onclick="copyCode(this)">
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -1860,7 +1862,7 @@ const storage = firebase.storage();</div>
                                 Copy
                             </button>
                         </div>
-                        <div class="code-content">// Cari komentar ini di index.html (sekitar baris 2900)
+                        <div class="code-content">// Cari komentar ini di v1.html (sekitar baris 5174)
 // Products data | Untuk Mengatur, Menambahkan dan menyesuaikan Produk
 
 const products = [
@@ -1959,7 +1961,7 @@ const products = [
 
                     <h3 id="edit-products">✏️ 4.2 Edit Produk Existing</h3>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong> dengan text editor</li>
+                        <li>Buka file <strong>v1.html</strong> dengan text editor</li>
                         <li>Cari array <code>products</code> (gunakan Ctrl+F)</li>
                         <li>Temukan produk berdasarkan <code>id</code> atau <code>name</code></li>
                         <li>Edit field yang ingin diubah (harga, nama, deskripsi, dll)</li>
@@ -1975,7 +1977,7 @@ const products = [
                             </svg>
                             Backup Sebelum Edit
                         </h4>
-                        <p>Selalu backup file index.html sebelum melakukan perubahan besar. Jika terjadi error, Anda bisa restore dari backup.</p>
+                        <p>Selalu backup file v1.html sebelum melakukan perubahan besar. Jika terjadi error, Anda bisa restore dari backup.</p>
                     </div>
 
                     <h3 id="product-categories">🏷️ 4.3 Mengatur Kategori</h3>
@@ -2245,7 +2247,7 @@ const products = [
                         </li>
                         <li>Setelah upload selesai, klik gambar</li>
                         <li>Copy <strong>"Download URL"</strong></li>
-                        <li>Paste URL ke array products di index.html</li>
+                        <li>Paste URL ke array products di v1.html</li>
                     </ol>
 
                     <h3>🖼️ Cara Upload ke GitHub:</h3>
@@ -2393,7 +2395,7 @@ done</div>
                     <h3 id="customization-appearance">🎨 6.1 Mengubah Tampilan Umum</h3>
                     <h4>Mode Gelap/Terang:</h4>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong> dengan text editor.</li>
+                        <li>Buka file <strong>v1.html</strong> dengan text editor.</li>
                         <li>Cari tag <code>&lt;body&gt;</code>.</li>
                         <li>Untuk mengaktifkan mode gelap secara default, tambahkan kelas <code>dark-mode</code> pada tag body, menjadi <code>&lt;body class="dark-mode"&gt;</code>.</li>
                         <li>Untuk mode terang (default), pastikan tidak ada kelas <code>dark-mode</code> pada tag body.</li>
@@ -2402,7 +2404,7 @@ done</div>
 
                     <h4>Ukuran Font:</h4>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong> dengan text editor.</li>
+                        <li>Buka file <strong>v1.html</strong> dengan text editor.</li>
                         <li>Cari tag <code>&lt;body&gt;</code>.</li>
                         <li>Untuk ukuran font kecil, tambahkan kelas <code>font-small</code> pada tag body, menjadi <code>&lt;body class="font-small"&gt;</code>.</li>
                         <li>Untuk ukuran font besar, tambahkan kelas <code>font-large</code> pada tag body, menjadi <code>&lt;body class="font-large"&gt;</code>.</li>
@@ -2411,9 +2413,9 @@ done</div>
                     </ol>
 
                     <h3 id="customization-colors">🌈 6.2 Mengubah Warna Tema</h3>
-                    <p>Anda dapat mengubah skema warna utama website dengan mengedit variabel CSS di file <strong>index.html</strong>.</p>
+                    <p>Anda dapat mengubah skema warna utama website dengan mengedit variabel CSS di file <strong>v1.html</strong>.</p>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Buka file <strong>v1.html</strong>.</li>
                         <li>Cari bagian <code>:root</code> di dalam tag <code>&lt;style&gt;</code> (biasanya di bagian atas CSS).</li>
                         <li>Ubah nilai variabel CSS berikut untuk menyesuaikan warna:
                             <div class="table-container">
@@ -2461,7 +2463,7 @@ done</div>
                     <h3 id="seo-meta-tags">📝 7.1 Meta Tag Dasar</h3>
                     <p>Meta tag ini memberikan informasi penting kepada mesin pencari tentang konten halaman Anda.</p>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Buka file <strong>v1.html</strong>.</li>
                         <li>Cari bagian <code>&lt;head&gt;</code>.</li>
                         <li>Edit tag <code>&lt;title&gt;</code>:
                             <div class="code-block">
@@ -2500,7 +2502,7 @@ done</div>
                     <h3 id="seo-open-graph">🔗 7.2 Open Graph (untuk Media Sosial)</h3>
                     <p>Open Graph tags mengontrol bagaimana konten Anda ditampilkan saat dibagikan di platform seperti Facebook, WhatsApp, dll.</p>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Buka file <strong>v1.html</strong>.</li>
                         <li>Cari bagian <code>&lt;meta property="og:..."&gt;</code>.</li>
                         <li>Edit nilai-nilai berikut:
                             <div class="code-block">
@@ -2527,7 +2529,7 @@ done</div>
                     <h3 id="seo-twitter-cards">🐦 7.3 Twitter Cards</h3>
                     <p>Mirip dengan Open Graph, ini mengontrol tampilan saat dibagikan di Twitter.</p>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Buka file <strong>v1.html</strong>.</li>
                         <li>Cari bagian <code>&lt;meta name="twitter:..."&gt;</code>.</li>
                         <li>Edit nilai-nilai berikut:
                             <div class="code-block">
@@ -2552,7 +2554,7 @@ done</div>
                     <h3 id="seo-google-adsense">💰 7.4 Google AdSense</h3>
                     <p>Jika Anda berencana menggunakan Google AdSense, tambahkan meta tag ini.</p>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Buka file <strong>v1.html</strong>.</li>
                         <li>Tambahkan tag berikut di bagian <code>&lt;head&gt;</code>:
                             <div class="code-block">
                                 <div class="code-header">
@@ -2597,14 +2599,14 @@ done</div>
                             </svg>
                             💡 Cara Kerja Lazy Loading
                         </h4>
-                        <p>Gambar produk di `index.html` menggunakan atribut `data-lazy` untuk URL gambar. JavaScript akan mengganti `data-lazy` menjadi `src` hanya ketika gambar masuk ke viewport pengguna. Pastikan Anda menggunakan format ini untuk gambar produk.</p>
+                        <p>Gambar produk di `v1.html` menggunakan atribut `data-lazy` untuk URL gambar. JavaScript akan mengganti `data-lazy` menjadi `src` hanya ketika gambar masuk ke viewport pengguna. Pastikan Anda menggunakan format ini untuk gambar produk.</p>
                     </div>
 
                     <h3 id="performance-preload">⚡ 8.2 Preload Critical Resources</h3>
                     <p>Font dan resource penting lainnya di-preload untuk memastikan pengalaman pengguna yang cepat.</p>
                     <div class="code-block">
                         <div class="code-header">
-                            <span class="code-title">Preload Links di index.html</span>
+                            <span class="code-title">Preload Links di v1.html</span>
                             <button class="copy-btn" onclick="copyCode(this)">
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -2613,7 +2615,7 @@ done</div>
                                 Copy
                             </button>
                         </div>
-                        <div class="code-content">// Bagian script di index.html (sekitar baris 3200)
+                        <div class="code-content">// Bagian script di v1.html 
 const preloadLinks = [
     'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'
 ];
@@ -2693,7 +2695,7 @@ preloadLinks.forEach(href => {
                     <p>Google Analytics 4 (GA4) terintegrasi melalui konfigurasi Firebase Anda.</p>
                     <ol class="steps-list">
                         <li>Pastikan Anda telah mengaktifkan Google Analytics saat membuat proyek Firebase (lihat "3.1 Membuat Project Firebase").</li>
-                        <li>Verifikasi bahwa <code>measurementId</code> di objek <code>firebaseConfig</code> di <strong>index.html</strong> sudah benar.
+                        <li>Verifikasi bahwa <code>measurementId</code> di objek <code>firebaseConfig</code> di <strong>v1.html</strong> sudah benar.
                             <div class="code-block">
                                 <div class="code-header">
                                     <span class="code-title">Google Analytics Measurement ID</span>
@@ -2748,7 +2750,7 @@ preloadLinks.forEach(href => {
                     <h3 id="marketing-whatsapp">💬 11.1 Integrasi WhatsApp Business</h3>
                     <p>Fitur checkout utama adalah melalui WhatsApp, memudahkan komunikasi langsung dengan pelanggan.</p>
                     <ol class="steps-list">
-                        <li>Pastikan nomor WhatsApp Business Anda sudah benar di bagian checkout form di <strong>index.html</strong>.
+                        <li>Pastikan nomor WhatsApp Business Anda sudah benar di bagian checkout form di <strong>v1.html</strong>.
                             <div class="code-block">
                                 <div class="code-header">
                                     <span class="code-title">WhatsApp Number di Checkout Form</span>
@@ -2770,7 +2772,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                     <h3 id="marketing-email">📧 11.2 Integrasi Email</h3>
                     <p>Form kontak di halaman "Tentang Kami" dapat digunakan untuk menerima pesan dari pelanggan.</p>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Buka file <strong>v1.html</strong>.</li>
                         <li>Cari bagian "Contact Form Section".</li>
                         <li>Ubah atribut <code>action</code> pada tag <code>&lt;form&gt;</code> untuk mengarahkan ke layanan pengiriman email seperti Formspree atau sejenisnya.
                             <div class="code-block">
@@ -2795,7 +2797,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                     <h3 id="marketing-promo">🎁 11.3 Kode Promo</h3>
                     <p>Website memiliki fitur kode promo yang dapat disalin oleh pengguna.</p>
                     <ol class="steps-list">
-                        <li>Buka file <strong>index.html</strong>.</li>
+                        <li>Buka file <strong>v1.html</strong>.</li>
                         <li>Cari bagian "Promo Card" di Home Section.</li>
                         <li>Ubah teks kode promo (misalnya, <code>FEMMEIA10</code>) sesuai keinginan Anda.</li>
                         <li>Logika diskon harus diimplementasikan di JavaScript (fungsi <code>applyPromoCode</code>) untuk memvalidasi kode dan menerapkan diskon ke total keranjang.</li>
@@ -2862,7 +2864,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                                 </div>
                                 <div class="code-content">firebase init hosting</div>
                             </div>
-                            <p>Pilih proyek Firebase yang sudah Anda buat. Untuk pertanyaan "What do you want to use as your public directory?", ketik <code>.</code> (titik) karena file `index.html` ada di root. Pilih "No" untuk "Configure as a single-page app (rewrite all urls to /index.html)?".</p>
+                            <p>Pilih proyek Firebase yang sudah Anda buat. Untuk pertanyaan "What do you want to use as your public directory?", ketik <code>.</code> (titik) karena file `v1.html` ada di root. Pilih "No" untuk "Configure as a single-page app (rewrite all urls to /v1.html)?".</p>
                         </li>
                         <li><strong>Deploy Website:</strong> Setelah inisialisasi, deploy website Anda:
                             <div class="code-block">
@@ -2906,7 +2908,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                     <h3 id="maintenance-content-updates">🔄 13.1 Pembaruan Konten</h3>
                     <p>Secara berkala perbarui informasi produk, harga, deskripsi, dan gambar untuk menjaga konten tetap segar dan akurat.</p>
                     <ol class="steps-list">
-                        <li>Edit langsung array <code>products</code> di <strong>index.html</strong> untuk produk.</li>
+                        <li>Edit langsung array <code>products</code> di <strong>v1.html</strong> untuk produk.</li>
                         <li>Perbarui gambar di Firebase Storage atau GitHub.</li>
                         <li>Jika Anda mengimplementasikan admin panel, gunakan itu untuk manajemen konten yang lebih mudah.</li>
                     </ol>
@@ -2950,7 +2952,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                     </ol>
 
                     <h3 id="backup-source-code">💻 14.3 Backup Source Code</h3>
-                    <p>Source code website Anda (file `index.html`, `manifest.json`, `service-worker.js`, dll.) harus selalu di-backup.</p>
+                    <p>Source code website Anda (file `v1.html`, `manifest.json`, `service-worker.js`, dll.) harus selalu di-backup.</p>
                     <ul>
                         <li>Gunakan sistem kontrol versi seperti <strong>Git</strong> dan simpan di platform seperti <strong>GitHub</strong> atau <strong>GitLab</strong>.</li>
                         <li>Simpan salinan lokal di drive eksternal atau layanan cloud (Google Drive, Dropbox).</li>
@@ -2988,12 +2990,12 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                                 <tr>
                                     <td>Gambar produk tidak muncul</td>
                                     <td>URL gambar di <code>products</code> array salah, atau gambar belum diunggah ke Storage.</td>
-                                    <td>Verifikasi URL gambar di <code>index.html</code>. Pastikan gambar sudah diunggah ke Firebase Storage atau GitHub dan URL-nya dapat diakses publik.</td>
+                                    <td>Verifikasi URL gambar di <code>v1.html</code>. Pastikan gambar sudah diunggah ke Firebase Storage atau GitHub dan URL-nya dapat diakses publik.</td>
                                 </tr>
                                 <tr>
                                     <td>Fungsi login/register tidak berjalan</td>
-                                    <td>Konfigurasi Firebase di <code>index.html</code> salah, atau Authentication belum diaktifkan di Firebase Console.</td>
-                                    <td>Periksa kembali <code>firebaseConfig</code> di <code>index.html</code>. Pastikan Email/Password Authentication diaktifkan di Firebase Console. Periksa konsol browser untuk error JavaScript.</td>
+                                    <td>Konfigurasi Firebase di <code>v1.html</code> salah, atau Authentication belum diaktifkan di Firebase Console.</td>
+                                    <td>Periksa kembali <code>firebaseConfig</code> di <code>v1.html</code>. Pastikan Email/Password Authentication diaktifkan di Firebase Console. Periksa konsol browser untuk error JavaScript.</td>
                                 </tr>
                                 <tr>
                                     <td>"Permission denied" di konsol browser</td>
@@ -3144,7 +3146,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                     </div>
 
                     <h3 id="advanced-multi-language">🌍 16.4 Multi-Bahasa</h3>
-                    <p>Meskipun fitur multi-bahasa saat ini berfungsi 50%, Anda dapat mengembangkannya lebih lanjut.</p>
+                    <p>Meskipun fitur multi-bahasa saat ini berfungsi 30%, Anda dapat mengembangkannya lebih lanjut.</p>
                     <ol class="steps-list">
                         <li><strong>Manajemen Terjemahan:</strong> Gunakan objek JavaScript untuk menyimpan terjemahan teks untuk setiap bahasa.</li>
                         <li><strong>Deteksi Bahasa:</strong> Deteksi bahasa browser pengguna atau biarkan pengguna memilih bahasa secara manual.</li>
@@ -3231,9 +3233,8 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                         </h4>
                         <ul>
                             <li><strong>✅ 30 hari support gratis</strong> - Setup dan kustomisasi dasar</li>
-                            <li><strong>✅ Video call consultation</strong> - 1x session (30 menit)</li>
                             <li><strong>✅ Priority response</strong> - Respon dalam 2 jam</li>
-                            <li><strong>✅ Custom modification</strong> - Minor changes included</li>
+                            <li><strong>✅ Custom modification</strong> - Minor changes included (Terbatas)</li>
                             <li><strong>✅ Lifetime updates</strong> - Bug fixes dan security patches</li>
                         </ul>
                     </div>
@@ -3244,7 +3245,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                         <p style="font-size: 1.125rem; margin-bottom: 1rem;">
                             <strong>Femmeia Store Template</strong> © 2025 - Premium E-commerce Solution
                         </p>
-                        <p>Terima kasih telah memilih template kami. Semoga bisnis hijab Anda sukses dan berkah! 🚀</p>
+                        <p>Terima kasih telah memilih template kami. Semoga bisnis Anda sukses dan berkah! 🚀</p>
                         <div style="margin-top: 2rem; padding: 1.5rem; background: var(--background-secondary); border-radius: var(--radius-xl);">
                             <p style="font-size: 0.875rem; color: var(--text-tertiary);">
                                 Dokumentasi ini terakhir diupdate: <strong>Juli 2025</strong><br>
@@ -3274,14 +3275,14 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
     </div>
 
     <script>
-        // Copy code functionality
+      
         function copyCode(button) {
             const codeBlock = button.closest('.code-block');
             const codeContent = codeBlock.querySelector('.code-content');
             const text = codeContent.textContent;
             
             navigator.clipboard.writeText(text).then(() => {
-                // Update button
+    
                 const originalText = button.innerHTML;
                 button.innerHTML = `
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
@@ -3304,7 +3305,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             });
         }
 
-        // Show toast notification
+
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const toastText = document.getElementById('toastText');
@@ -3312,7 +3313,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             
             toastText.textContent = message;
             
-            // Update icon based on type
+  
             if (type === 'success') {
                 toastIcon.innerHTML = '<polyline points="20,6 9,17 4,12"/>';
                 toast.className = 'toast success';
@@ -3328,7 +3329,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }, 3000);
         }
 
-        // Mobile TOC toggle
+
         function toggleMobileToc() {
             const content = document.getElementById('mobileTocContent');
             const icon = document.getElementById('mobileTocIcon');
@@ -3347,7 +3348,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }
         }
 
-        // Smooth scrolling for TOC links
+
         document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -3360,11 +3361,11 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                         block: 'start'
                     });
                     
-                    // Update active link
+   
                     document.querySelectorAll('.toc a, .mobile-toc-list a').forEach(a => a.classList.remove('active'));
                     link.classList.add('active');
                     
-                    // Close mobile TOC if open
+      
                     const mobileTocContent = document.getElementById('mobileTocContent');
                     if (mobileTocContent.classList.contains('open')) {
                         toggleMobileToc();
@@ -3373,7 +3374,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             });
         });
 
-        // Update active TOC link on scroll
+
         function updateActiveLink() {
             const sections = document.querySelectorAll('.section');
             const tocLinks = document.querySelectorAll('.toc a, .mobile-toc-list a');
@@ -3394,7 +3395,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             });
         }
 
-        // Progress bar
+
         function updateProgressBar() {
             const scrollTop = window.pageYOffset;
             const docHeight = document.body.scrollHeight - window.innerHeight;
@@ -3403,7 +3404,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             document.getElementById('progressBar').style.width = scrollPercent + '%';
         }
 
-        // Back to top button
+
         function updateBackToTop() {
             const backToTop = document.getElementById('backToTop');
             if (window.pageYOffset > 300) {
@@ -3420,7 +3421,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             });
         }
 
-        // Scroll event listener with throttling
+
         let ticking = false;
         window.addEventListener('scroll', () => {
             if (!ticking) {
@@ -3434,7 +3435,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }
         });
 
-        // Initialize
+        
         document.addEventListener('DOMContentLoaded', () => {
             // Set first link as active
             const firstLink = document.querySelector('.toc a');
@@ -3442,7 +3443,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
                 firstLink.classList.add('active');
             }
             
-            // Add fade-in animation to sections
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -3456,7 +3457,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             });
         });
 
-        // Keyboard shortcuts
+
         document.addEventListener('keydown', (e) => {
             // Escape to close mobile TOC
             if (e.key === 'Escape') {
@@ -3467,7 +3468,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }
         });
 
-        // Add keyboard support for mobile TOC header
+
         document.querySelector('.mobile-toc-header').addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -3475,7 +3476,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }
         });
 
-        // Handle mobile menu button click
+
         document.getElementById('mobileMenuBtn').addEventListener('click', () => {
             // For now, just toggle the mobile TOC
             // In a full implementation, this could open a full navigation menu
@@ -3492,12 +3493,12 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }
         });
 
-        // Prevent toast from showing on mobile when not needed
+
         function isMobile() {
             return window.innerWidth <= 768;
         }
 
-        // Override copy function to handle mobile differently
+
         const originalCopyCode = copyCode;
         copyCode = function(button) {
             originalCopyCode(button);
@@ -3508,7 +3509,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }
         };
 
-        // Add touch event handling for better mobile experience
+
         document.querySelectorAll('.copy-btn, .mobile-menu-btn, .back-to-top').forEach(button => {
             button.addEventListener('touchstart', function() {
                 this.style.transform = 'scale(0.95)';
@@ -3519,7 +3520,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             });
         });
 
-        // Improve mobile scrolling performance
+
         let isScrolling = false;
         window.addEventListener('scroll', () => {
             if (!isScrolling) {
@@ -3533,7 +3534,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }
         }, { passive: true });
 
-        // Add resize handler to ensure proper mobile layout
+
         window.addEventListener('resize', () => {
             // Close mobile TOC on resize to desktop
             if (window.innerWidth > 768) {
@@ -3544,7 +3545,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }
         });
 
-        // Preload critical resources
+
         const preloadLinks = [
             'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'
         ];
@@ -3557,7 +3558,7 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             document.head.appendChild(link);
         });
 
-        // Service Worker registration for PWA capabilities
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
@@ -3570,11 +3571,11 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             });
         }
 
-        // Add loading state management
+        
         window.addEventListener('load', () => {
             document.body.classList.add('loaded');
             
-            // Initialize any lazy-loaded content
+            
             const lazyElements = document.querySelectorAll('[data-lazy]');
             if ('IntersectionObserver' in window) {
                 const lazyObserver = new IntersectionObserver((entries) => {
@@ -3594,13 +3595,13 @@ const whatsappNumber = "6285341899229"; // Ganti dengan nomor WhatsApp Business 
             }
         });
 
-        // Error handling for failed operations
+
         window.addEventListener('error', (e) => {
             console.error('Global error:', e.error);
             showToast('Terjadi kesalahan. Silakan refresh halaman.', 'error');
         });
 
-        // Handle offline/online status
+
         window.addEventListener('online', () => {
             showToast('Koneksi internet tersambung kembali', 'success');
         });
