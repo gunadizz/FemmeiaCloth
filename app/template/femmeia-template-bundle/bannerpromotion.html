@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0">
+    <title>Femmeia Brand Essentials – Web Template Bundle (6 in 1)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background geometric shapes */
+        .bg-shape {
+            position: absolute;
+            z-index: -1;
+            filter: blur(50px);
+        }
+
+        .bg-shape.circle-1 {
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 182, 193, 0.2);
+            border-radius: 50%;
+            top: 5%;
+            left: 5%;
+        }
+
+        .bg-shape.circle-2 {
+            width: 150px;
+            height: 150px;
+            background: rgba(173, 216, 230, 0.2);
+            border-radius: 50%;
+            top: 15%;
+            right: 8%;
+        }
+
+        .bg-shape.circle-3 {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 218, 185, 0.2);
+            border-radius: 50%;
+            bottom: 20%;
+            left: 8%;
+        }
+
+        .bg-shape.circle-4 {
+            width: 180px;
+            height: 180px;
+            background: rgba(221, 160, 221, 0.2);
+            border-radius: 50%;
+            bottom: 10%;
+            right: 5%;
+        }
+
+        .bg-shape.triangle-1 {
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 60px solid rgba(152, 251, 152, 0.2);
+            top: 60%;
+            left: 12%;
+        }
+
+        .bg-shape.triangle-2 {
+            width: 0;
+            height: 0;
+            border-left: 35px solid transparent;
+            border-right: 35px solid transparent;
+            border-bottom: 50px solid rgba(255, 192, 203, 0.2);
+            top: 25%;
+            right: 15%;
+        }
+
+        .bg-shape.square-1 {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 165, 0, 0.2);
+            transform: rotate(45deg);
+            top: 40%;
+            left: 3%;
+        }
+
+        .bg-shape.square-2 {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 105, 180, 0.2);
+            transform: rotate(30deg);
+            bottom: 35%;
+            right: 12%;
+        }
+
+        .banner-container {
+            width: 90vw;transform: rotate(0deg);
+            height: 90vh;
+            max-width: 1400px;
+            max-height: 890px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 50px 15px 50px 15px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.7);
+            padding: 60px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 2;
+        }
+
+        .title-section {
+            margin-bottom: 25px;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .main-title .highlight {
+            color: #ff6b9d;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        .bundle-list {
+            margin: 30px 0;
+        }
+
+        .bundle-list h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+
+        .bundle-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .bundle-item {
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+            color: #2d3748;
+            font-weight: 500;
+            padding: 8px 0;
+        }
+
+        .bundle-item::before {
+            content: '✨';
+            color: #ff6b9d;
+            font-weight: 700;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .tech-tags {
+            margin: 25px 0;
+        }
+
+        .tech-tags h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 12px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tech-tag {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transform: rotate(6deg);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            
+            color: white;
+        }
+
+        .tech-tag.html {
+            background: linear-gradient(135deg, #e34c26 0%, #f06529 100%);
+            box-shadow: 0 5px 20px #E3846B;
+        }
+
+        .tech-tag.css {
+            background: linear-gradient(135deg, #1572b6 0%, #33a9dc 100%);
+            box-shadow: 0 5px 20px #5A8FB6;
+        }
+
+        .tech-tag.js {
+            background: linear-gradient(135deg, #f7df1e 0%, #ffda44 100%);
+                 box-shadow: 0 5px 20px #F7E021;
+            color: #323330;
+        }
+
+        .tech-tag.firebase {
+            background: linear-gradient(135deg, #ffca28 0%, #ffc107 100%);
+            color: #323330;
+            box-shadow: 0 5px 20px #FFCB30;
+        }
+
+        .tech-tag.emailjs {
+            background: linear-gradient(135deg, #61dafb 0%, #21d4fd 100%);
+            color: #323330;
+            box-shadow: 0 5px 20px #53D8FB;
+            
+        }
+
+        .cta-section {
+            display: flex;
+            gap: 18px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;transform: rotate(3deg);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            box-shadow: 0 5px 35px #FF85AE;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px #ff6b9d;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #ff6b9d;
+            border: 2px solid #ff6b9d;
+        }
+
+        .btn-secondary:hover {
+            background: #ff6b9d;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 107, 157, 0.3);
+        }
+
+        .preview-section {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-grid {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .preview-item {
+            position: absolute;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12),
+                        0 0 0 2px rgba(255, 255, 255, 0.8);
+            transition: all 0.4s ease;
+            border: 4px solid white;
+        }
+
+        .preview-item:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Improved grid positioning - tinggi gambar ditingkatkan sedikit */
+        .preview-item:nth-child(1) {
+            width: 300px;
+            height: 220px;
+            top: 10px;
+            left: 30px;
+            z-index: 4;
+            transform: rotate(-3deg);
+        }
+
+        .preview-item:nth-child(2) {
+            width: 270px;
+            height: 200px;
+            top: 100px;
+            right: 10px;
+            z-index: 3;
+            transform: rotate(5deg);
+        }
+
+        .preview-item:nth-child(3) {
+            width: 240px;
+            height: 180px;
+            bottom: 180px;
+            left: 50px;
+            z-index: 5;
+            transform: rotate(2deg);
+        }
+
+        .preview-item:nth-child(4) {
+            width: 280px;
+            height: 210px;
+            top: 200px;
+            left: 120px;
+            z-index: 2;
+            transform: rotate(-2deg);
+        }
+
+        .preview-item:nth-child(5) {
+            width: 260px;
+            height: 190px;
+            bottom: 230px;
+            right: 90px;
+            z-index: 3;
+            transform: rotate(4deg);
+        }
+
+        .preview-item:nth-child(6) {
+            width: 230px;
+            height: 170px;
+            bottom: 10px;
+            left: 140px;
+            z-index: 4;
+            transform: rotate(-4deg);
+        }
+
+        .bow-decoration {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 2.2rem;
+            color: #ff6b9d;
+            z-index: 5;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+
+        /* Subtle inner glow effect */
+        .banner-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(255, 107, 157, 0.05) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background geometric shapes -->
+    <div class="bg-shape circle-1"></div>
+    <div class="bg-shape circle-2"></div>
+    <div class="bg-shape circle-3"></div>
+    <div class="bg-shape circle-4"></div>
+    <div class="bg-shape triangle-1"></div>
+    <div class="bg-shape triangle-2"></div>
+    <div class="bg-shape square-1"></div>
+    <div class="bg-shape square-2"></div>
+
+    <div class="banner-container">
+        <div class="bow-decoration">🎀</div>
+        
+        <div class="content-section">
+            <div class="title-section">
+                <h1 class="main-title">
+                    <span class="highlight">Femmeia</span> Brand Essentials<br>
+                    Web Template Bundle <span class="highlight">(6 in 1)</span>
+                </h1>
+                <p class="subtitle">
+                    Build your hijab brand online – shop-ready, stylish, and simple to use.
+                </p>
+            </div>
+
+            <div class="bundle-list">
+                <h3>What's Inside:</h3>
+                <div class="bundle-items">
+                    <div class="bundle-item">Store Template</div>
+                    <div class="bundle-item">Order Form</div>
+                    <div class="bundle-item">Finance Tracker</div>
+                    <div class="bundle-item">Survey Form</div>
+                    <div class="bundle-item">Landing Page</div>
+                    <div class="bundle-item">Links Page</div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <a href="#" class="btn btn-primary">Lihat Demo</a>
+                <a href="#" class="btn btn-secondary">Beli Sekarang</a>
+            </div>
+            
+            <div class="tech-tags">
+                <h4>Built with:</h4>
+                <div class="tags-container">
+                    <span class="tech-tag html">HTML</span>
+                    <span class="tech-tag css">CSS</span>
+                    <span class="tech-tag js">JS</span>
+                    <span class="tech-tag firebase">Firebase</span>
+                    <span class="tech-tag emailjs">EmailJS</span>
+                </div>
+            </div>
+        </div>
+
+
+                    
+                
+        <div class="preview-section">
+            <div class="preview-grid">
+                <div class="preview-item">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/fs.jpg" alt="Femmeia Store Template">
+                </div>
+                <div class="preview-item">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/fo.jpg" alt="Order Form Template">
+                </div>
+                <div class="preview-item">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/flp.jpg" alt="Links Page Template">
+                </div>
+                <div class="preview-item">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/fl.jpg" alt="Landing Page Template">
+                </div>
+                <div class="preview-item">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/ft.jpg" alt="Finance Tracker Template">
+                </div>
+                <div class="preview-item">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/demofemmeiastore/fsf.jpg" alt="Survey Form Template">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    	const allowedDomains = [
+  "femmeiacloth.me",
+  "www.femmeiacloth.me",
+  "dev.femmeiacloth.me",
+  "femmeiacloth.vercel.app"
+];
+
+const currentDomain = window.location.hostname;
+
+if (!allowedDomains.includes(currentDomain)) {
+
+  document.head.innerHTML = "";
+  document.body.innerHTML = `
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Arial', sans-serif;
+        background: #f9f9f9;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: auto;
+      }
+      .warning-container {
+        max-width: 600px;
+        background: #ffffff;
+        
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border: 2px solid #d32f2f;
+        margin: 20px;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .warning-icon {
+        font-size: 48px;
+        color: #d32f2f;
+        margin-bottom: 15px;
+      }
+      .warning-container h1 {
+        font-size: 26px;
+        color: #d32f2f;
+        margin-bottom: 15px;
+        font-weight: bold;
+      }
+      .warning-container p {
+        font-size: 16px;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        color: #444;
+      }
+      .highlight {
+        color: #d32f2f;
+        font-weight: bold;
+      }
+      .warning-list {
+        text-align: left;
+        margin: 20px 0;
+        padding-left: 20px;
+        color: #444;
+      }
+      .warning-list li {
+        font-size: 15px;
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+      .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 25px 0;
+      }
+      .btn-group a {
+        display: block;
+        padding: 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        background: #d32f2f;
+        color: white;
+        transition: background 0.3s ease;
+      }
+      .btn-group a:hover {
+        background: #b71c1c;
+      }
+      .footer-note {
+        font-size: 14px;
+        color: #d32f2f;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #e0e0e0;
+      }
+      @media (max-width: 500px) {
+        .warning-container {
+          padding: 20px;
+          margin: 15px;
+        }
+        .warning-container h1 {
+          font-size: 22px;
+        }
+        .warning-container p, .warning-list li {
+          font-size: 14px;
+        }
+      }
+    </style>
+    <div class="warning-container">
+      <div class="warning-icon">⚠️</div>
+      <h1>AKSES ILEGAL TERDETEKSI</h1>
+      <p>Template <strong>Femmeia Bundle</strong> terdeteksi digunakan tanpa lisensi resmi pada domain ini.</p>
+      <p class="highlight">Data berikut telah terekam oleh sistem kami:</p>
+      <p>Alamat domain, IP publik, browser, dan waktu akses.</p>
+      
+      <p class="highlight">Tindakan Anda melanggar hukum, termasuk:</p>
+      <ul class="warning-list">
+        <li>📌 Pelanggaran Hak Cipta Digital (UU ITE & DMCA)</li>
+        <li>📌 Penggunaan template komersial tanpa izin</li>
+        <li>📌 Distribusi ilegal aset digital berlisensi</li>
+      </ul>
+      
+      <p class="highlight">Konsekuensi jika tidak ada tindakan dalam 12 jam:</p>
+      <ul class="warning-list">
+        <li>📢 Publikasi pelanggaran di media sosial (X, IG, FB, Tiktok</li>
+        <li>⚖️ Pelaporan ke pihak berwajib dan penyedia hosting</li>
+        <li>📝 Pencatatan domain dalam daftar pelanggar publik</li>
+        <li>🔒 Pemblokiran akses permanen dan potensi gugatan hukum</li>
+      </ul>
+      
+      <p>Kami memberikan kesempatan untuk menyelesaikan masalah ini secara damai. Segera <strong>hapus template</strong> dan <strong>hubungi kami</strong>.</p>
+      
+      <div class="btn-group">
+        <a href="https://wa.me/6285341899229?text=Permintaan%20maaf%20dan%20konfirmasi%20penghapusan%20template%20Femmeia%20Bundle" target="_blank">🟢 WhatsApp</a>
+        <a href="mailto:femmeiacloth@gmail.com?subject=Permintaan%20maaf%20lisensi" target="_blank">📧 Email</a>
+        <a href="https://instagram.com/femmeia.cloth" target="_blank">📸 Instagram DM</a>
+      </div>
+      
+      <p class="footer-note">
+        ⚠️ Akses ke halaman ini telah dihentikan.<br>
+        Aktivitas lebih lanjut akan dipantau untuk melindungi hak cipta kami.
+      </p>
+    </div>
+  `;
+}
+
+</script>
+</body>
+</html>
