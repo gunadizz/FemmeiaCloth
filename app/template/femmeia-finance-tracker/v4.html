@@ -21,7 +21,7 @@
       --accent-mid: #666666;
       --accent-dark: #1f2937;
       --success-color: #00b894;
-      --danger-color: #1f2937;
+      --danger-color: #d63031;
       --shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
       --button-shadow: 0 6px 12px rgba(102, 102, 102, 0.4);
       --button-shadow-hover: 0 8px 16px rgba(102, 102, 102, 0.6);
@@ -71,8 +71,8 @@
     .square2 { width: 70px; height: 70px; bottom: 40%; right: 30%; animation-delay: 5s; }
     .triangle1 { width: 0; height: 0; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 52px solid var(--accent-mid); top: 20%; left: 80%; animation-delay: 2.5s; }
     .triangle2 { width: 0; height: 0; border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 69px solid var(--accent-mid); bottom: 30%; left: 25%; animation-delay: 4.5s; }
-    .diamond1 { width: 40px; height: 40px; transform: rotate(45deg); top: 50%; left: 10%; animation-delay: 1.5s; }
-    .diamond2 { width: 60px; height: 60px; transform: rotate(45deg); bottom: 15%; right: 15%; animation-delay: 3.5s; }
+    .diamond1 { width:40px; height:40px; transform: rotate(45deg); top: 50%; left: 10%; animation-delay: 1.5s; }
+    .diamond2 { width:60px; height:60px; transform: rotate(45deg); bottom: 15%; right: 15%; animation-delay: 3.5s; }
 
     @keyframes float {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -392,7 +392,7 @@
     }
 
     .btn-delete {
-      background-color: #1f2937;
+      background-color: #d63031;
       color: white;
       border: none;
       border-radius: 10%;
@@ -403,7 +403,7 @@
       justify-content: center;
       cursor: pointer;
       margin: 0 auto;
-      transition: background 0.2s ease, transform 0.2s;
+      transition: background-color 0.2s ease, transform 0.2s;
       box-shadow: 0 3px 10px #33445B;
     }
 
@@ -524,7 +524,6 @@
     #produk {
       border-bottom: 1px solid var(--border-color) !important;
       box-shadow: none !important;
-      margin-bottom: 0;
       background: rgba(255, 255, 255, 0.8);
     }
 
@@ -546,13 +545,13 @@
         grid-template-columns: 1fr;
         gap: 20px;
       }
-      .summary-container {
-        flex-direction: column;
-        gap: 15px;
-      }
       th, td {
         padding: 10px 12px;
         font-size: 13px;
+      }
+      .summary-container {
+        flex-direction: column;
+        gap: 15px;
       }
       .filter-container {
         gap: 10px;
@@ -565,7 +564,7 @@
       }
     }
 
-    /* Styling untuk Invoice yang dipercantik */
+    /* Styling untk Invoice yang dipercantik */
     .invoice-container {
       max-width: 800px;
       margin: 0 auto;
@@ -989,6 +988,102 @@
         }
     }
 
+/* CSS untuk tab-tab ringkasan */
+.summary-tabs {
+    display: flex;
+    justify-content: center; /* Pusatkan tab */
+    margin-bottom: 25px;
+    background-color: rgba(255, 255, 255, 0.8); /* Background sedikit transparan */
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 10px;
+    gap: 10px; /* Jarak antar tombol */
+    border: 1px solid rgba(102, 102, 102, 0.1);
+}
+
+.summary-tab-button {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--accent-mid);
+    transition: all 0.3s ease;
+    border-radius: 8px; /* Sudut sedikit membulat */
+    font-size: 1rem;
+    flex-grow: 1; /* Agar tombol mengisi ruang */
+    text-align: center;
+    position: relative; /* Untuk pseudo-element */
+    overflow: hidden; /* Untuk efek hover */
+}
+
+.summary-tab-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--success-color), #00a383); /* Gradien hijau */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-out;
+    z-index: -1;
+    opacity: 0.1; /* Sedikit transparan */
+}
+
+.summary-tab-button.active {
+    color: white; /* Teks putih saat aktif */
+    background: linear-gradient(45deg, var(--success-color), #00a383); /* Gradien hijau penuh */
+    box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+    transform: translateY(-2px); /* Sedikit naik */
+}
+
+.summary-tab-button:not(.active):hover {
+    color: var(--accent-dark); /* Teks lebih gelap saat hover tapi tidak aktif */
+    background-color: rgba(102, 102, 102, 0.05); /* Background abu-abu muda saat hover */
+    transform: translateY(-2px);
+}
+
+.summary-tab-button:not(.active):hover::before {
+    transform: translateX(0);
+    opacity: 0.2; /* Lebih terlihat saat hover */
+}
+
+/* Media query untuk tampilan mobile */
+@media (max-width: 600px) {
+    .summary-tabs {
+        flex-direction: column; /* Tumpuk tombol di layar kecil */
+        padding: 10px;
+        gap: 8px;
+    }
+    .summary-tab-button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+
+    .invoice-status-label {
+        position: absolute;
+        top: 20px; /* Adjust as needed */
+        right: 20px; /* Adjust as needed */
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        color: white;
+        font-size: 1.1em;
+        text-transform: uppercase;
+        z-index: 10; /* Ensure it's above other elements */
+    }
+
+    .invoice-status-label.lunas {
+        background-color: #00b894; /* Green */
+    }
+
+    .invoice-status-label.belum-lunas {
+        background-color: #d63031; /* Red */
+    }
+
   </style>
 </head>
 <body>
@@ -1125,52 +1220,37 @@
 
       <div class="card">
         <h2>Ringkasan</h2>
-        <div class="summary-container">
-          <div class="summary-box income-box">
-            <h3>Total Pemasukan</h3>
-            <p id="totalMasuk">Rp 0</p>
-          </div>
-          <div class="summary-box expense-box">
-            <h3>Total Pengeluaran</h3>
-            <p id="totalKeluar">Rp 0</p>
-          </div>
-          <div class="summary-box">
-            <h3>Total Piutang</h3>
-            <p id="totalPiutang">Rp 0</p>
-          </div>
-          <div class="summary-box">
-            <h3>Saldo Bersih</h3>
-            <p id="saldoBersih">Rp 0</p>
-          </div>
+        <div class="summary-tabs">
+            <button class="summary-tab-button active" data-period="all">ALL</button>
+            <button class="summary-tab-button" data-period="weekly">Minggu Ini</button>
+            <button class="summary-tab-button" data-period="monthly">Bulan Ini</button>
         </div>
+        <div id="summaryContent">
+            <div class="summary-container">
+                <div class="summary-box income-box">
+                    <h3>Total Pemasukan</h3>
+                    <p id="totalMasuk">Rp 0</p>
+                </div>
+                <div class="summary-box expense-box">
+                    <h3>Total Pengeluaran</h3>
+                    <p id="totalKeluar">Rp 0</p>
+                </div>
+                <div class="summary-box">
+                    <h3>Total Piutang</h3>
+                    <p id="totalPiutang">Rp 0</p>
+                </div>
+                <div class="summary-box">
+                    <h3>Saldo Bersih</h3>
+                    <p id="saldoBersih">Rp 0</p>
+                </div>
+            </div>
 
-        <div class="summary-container">
-            <div class="summary-box income-box">
-                <h3>Pemasukan Bulan Ini</h3>
-                <p id="monthlyIncome">Rp 0</p>
+            <div class="chart-container">
+                <canvas id="grafik"></canvas>
             </div>
-            <div class="summary-box expense-box">
-                <h3>Pengeluaran Bulan Ini</h3>
-                <p id="monthlyExpense">Rp 0</p>
+            <div class="chart-container">
+                <canvas id="grafikBulanan"></canvas>
             </div>
-        </div>
-
-        <div class="summary-container">
-            <div class="summary-box income-box">
-                <h3>Pemasukan Minggu Ini</h3>
-                <p id="weeklyIncome">Rp 0</p>
-            </div>
-            <div class="summary-box expense-box">
-                <h3>Pengeluaran Minggu Ini</h3>
-                <p id="weeklyExpense">Rp 0</p>
-            </div>
-        </div>
-
-        <div class="chart-container">
-          <canvas id="grafik"></canvas>
-        </div>
-        <div class="chart-container">
-          <canvas id="grafikBulanan"></canvas>
         </div>
       </div>
 
@@ -1184,7 +1264,7 @@
         </div>
         <div id="invoicePreview" style="display: none;">
           <div class="invoice-container">
-            <!-- Header Invoice -->
+            <!-- Invoice Status Label will be inserted here dynamically -->
             <div class="invoice-header">
               <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="Logo FemmeiaCloth, merepresentasikan the brand identity" style="width: 80px; height: auto; margin-bottom: 10px;" />
               <h1>FemmeiaCloth</h1>
@@ -1329,14 +1409,13 @@
       measurementId: "G-0ER8S6EFL2"
     };
 
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
     enableIndexedDbPersistence(db).catch((err) => {
-      if (err.code == 'failed-precondition') {
+      if (err.code === 'failed-precondition') {
         console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
-      } else if (err.code == 'unimplemented') {
+      } else if (err.code === 'unimplemented') {
         console.log('The current browser does not support all of the features required to enable persistence');
       }
     });
@@ -1393,7 +1472,7 @@
         productList.forEach(product => {
             const option = document.createElement("option");
             option.value = product.name;
-            option.textContent = `${product.name} (Rp ${new Intl.NumberFormat('id-ID').format(product.price)})`;
+            option.textContent = `${product.name} (${formatRupiah(product.price)})`;
             option.dataset.price = product.price; // Store price in dataset
             productSelect.appendChild(option);
         });
@@ -1412,7 +1491,6 @@
         priceDisplay.readOnly = true;
         priceDisplay.value = formatRupiah(0); // Initial display
         priceDisplay.placeholder = "Harga Satuan";
-
 
         const deleteButton = document.createElement("button");
         deleteButton.type = "button";
@@ -1453,17 +1531,12 @@
         productItemRows.forEach(row => {
             const productSelect = row.querySelector(".product-select");
             const quantityInput = row.querySelector(".quantity-input");
-            const priceDisplayInput = row.querySelector(".item-price-display"); // Get the input element
-
+            
             const selectedOption = productSelect.options[productSelect.selectedIndex];
             const pricePerUnit = selectedOption.dataset.price ? parseInt(selectedOption.dataset.price) : 0;
             const quantity = parseInt(quantityInput.value) || 0;
 
-            // Update individual item price display
-            priceDisplayInput.value = formatRupiah(pricePerUnit);
-
-            const subtotal = pricePerUnit * quantity;
-            totalOverall += subtotal;
+            totalOverall += (pricePerUnit * quantity);
         });
 
         overallTotalDisplay.textContent = `Total Transaksi: ${formatRupiah(totalOverall)}`;
@@ -1498,6 +1571,7 @@
     // Firebase Transaction Logic
     let transactions = [];
     let filteredTransactions = [];
+    let currentSummaryPeriod = 'all'; // 'all', 'weekly', 'monthly'
 
     // Auth State Listener
     onAuthStateChanged(auth, (user) => {
@@ -1632,20 +1706,20 @@
 
     // Hitung saldo pemasukan berjalan (pengeluaran mengurangi pemasukan)
     function computeSummaryFromList(list) {
-      let pemasukan = 0, pengeluaran = 0, piutang = 0;
-      list.sort((a, b) => a.tanggal - b.tanggal);
-      list.forEach(tx => {
-        if (tx.jenis === "pemasukan") {
-          if (tx.statusPembayaran === "lunas") {
-            pemasukan += tx.total;
-          } else { // belumLunas
-            piutang += tx.total;
-          }
-        } else { // pengeluaran
-          pengeluaran += tx.total;
-        }
-      });
-      return { pemasukan, pengeluaran, piutang };
+        let pemasukan = 0, pengeluaran = 0, piutang = 0;
+        list.sort((a, b) => a.tanggal - b.tanggal);
+        list.forEach(tx => {
+            if (tx.jenis === "pemasukan") {
+                if (tx.statusPembayaran === "lunas") {
+                    pemasukan += tx.total;
+                } else { // belumLunas
+                    piutang += tx.total;
+                }
+            } else { // pengeluaran
+                pengeluaran += tx.total;
+            }
+        });
+        return { pemasukan, pengeluaran, piutang };
     }
 
     // Filter
@@ -1743,37 +1817,43 @@
 
     // Render
     function renderSummary() {
-      const { pemasukan, pengeluaran, piutang } = computeSummaryFromList(transactions);
-      document.getElementById("totalMasuk").textContent = formatRupiah(pemasukan);
-      document.getElementById("totalKeluar").textContent = formatRupiah(pengeluaran);
-      document.getElementById("totalPiutang").textContent = formatRupiah(piutang);
-      const saldoBersih = (saldoAwal || 0) + pemasukan - pengeluaran - piutang;
-      document.getElementById("saldoBersih").textContent = formatRupiah(saldoBersih);
+        let currentTransactions = [];
+        const now = new Date();
 
-      // Monthly and Weekly Summary
-      const now = new Date();
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+        if (currentSummaryPeriod === 'all') {
+            currentTransactions = transactions;
+        } else if (currentSummaryPeriod === 'weekly') {
+            const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+            startOfWeek.setHours(0, 0, 0, 0);
+            const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 6, 23, 59, 59, 999);
+            currentTransactions = transactions.filter(tx => tx.tanggal >= startOfWeek && tx.tanggal <= endOfWeek);
+        } else if (currentSummaryPeriod === 'monthly') {
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+            currentTransactions = transactions.filter(tx => tx.tanggal >= startOfMonth && tx.tanggal <= endOfMonth);
+        }
 
-      const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
-      startOfWeek.setHours(0, 0, 0, 0);
-      const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 6, 23, 59, 59, 999);
+        const { pemasukan, pengeluaran, piutang } = computeSummaryFromList(currentTransactions);
+        document.getElementById("totalMasuk").textContent = formatRupiah(pemasukan);
+        document.getElementById("totalKeluar").textContent = formatRupiah(pengeluaran);
+        document.getElementById("totalPiutang").textContent = formatRupiah(piutang);
+        const saldoBersih = (saldoAwal || 0) + pemasukan - pengeluaran - piutang;
+        document.getElementById("saldoBersih").textContent = formatRupiah(saldoBersih);
 
-      const monthlyTransactions = transactions.filter(tx => tx.tanggal >= startOfMonth && tx.tanggal <= endOfMonth);
-      const weeklyTransactions = transactions.filter(tx => tx.tanggal >= startOfWeek && tx.tanggal <= endOfWeek);
-
-      const { pemasukan: monthlyInc, pengeluaran: monthlyExp } = computeSummaryFromList(monthlyTransactions);
-      const { pemasukan: weeklyInc, pengeluaran: weeklyExp } = computeSummaryFromList(weeklyTransactions);
-
-      document.getElementById("monthlyIncome").textContent = formatRupiah(monthlyInc);
-      document.getElementById("monthlyExpense").textContent = formatRupiah(monthlyExp);
-      document.getElementById("weeklyIncome").textContent = formatRupiah(weeklyInc);
-      document.getElementById("weeklyExpense").textContent = formatRupiah(weeklyExp);
-
-
-      renderChart(pemasukan, pengeluaran, piutang);
-      renderMonthlyChart();
+        renderChart(pemasukan, pengeluaran, piutang);
+        renderMonthlyChart();
     }
+
+    // Summary Tab Buttons
+    document.querySelectorAll('.summary-tab-button').forEach(button => {
+        button.addEventListener('click', function() {
+            document.querySelectorAll('.summary-tab-button').forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            currentSummaryPeriod = this.dataset.period;
+            renderSummary();
+        });
+    });
+
 
     function renderTransactionTable() {
       filteredTransactions = filterTransactions();
@@ -1811,32 +1891,32 @@
         `;
         const tbody = table.querySelector("tbody");
         dateTransactions.forEach(transaction => {
-          // Safely get product names and total quantity/price for display
-          const productNames = transaction.items ? transaction.items.map(item => item.namaProduk).join(', ') : transaction.produk || '';
-          const totalQuantity = transaction.items ? transaction.items.reduce((sum, item) => sum + item.jumlah, 0) : transaction.jumlah || 0;
-          const totalHargaSatuanDisplay = transaction.items ? formatRupiah(transaction.items.reduce((sum, item) => sum + item.hargaSatuan, 0)) : formatRupiah(transaction.harga || 0);
+            // Safely get product names and total quantity/price for display
+            const productNames = transaction.items ? transaction.items.map(item => item.namaProduk).join(', ') : transaction.produk || 'N/A';
+            const totalQuantity = transaction.items ? transaction.items.reduce((sum, item) => sum + item.jumlah, 0) : transaction.jumlah || 0;
+            const totalHargaSatuanDisplay = transaction.items ? formatRupiah(transaction.items.reduce((sum, item) => sum + item.hargaSatuan, 0)) : formatRupiah(transaction.harga || 0);
 
 
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${productNames}</td>
-            <td>${transaction.pembeli || "-"}</td>
-            <td>${totalQuantity}</td>
-            <td>${totalHargaSatuanDisplay}</td>
-            <td>${formatRupiah(transaction.total)}</td>
-            <td>${transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
-            <td>
-                <button class="status-button ${transaction.statusPembayaran === 'lunas' ? 'lunas' : 'belum-lunas'}" data-id="${transaction.id}" data-status="${transaction.statusPembayaran}">
-                    ${transaction.statusPembayaran === "lunas" ? "Lunas" : "Belum Lunas"}
-                </button>
-            </td>
-            <td>${transaction.kategori || "-"}</td>
-            <td>${transaction.catatan || "-"}</td>
-            <td>
-                <button class="btn-delete" data-id="${transaction.id}">X</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${productNames}</td>
+                <td>${transaction.pembeli || "-"}</td>
+                <td>${totalQuantity}</td>
+                <td>${totalHargaSatuanDisplay}</td>
+                <td>${formatRupiah(transaction.total)}</td>
+                <td>${transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
+                <td>
+                    <button class="status-button ${transaction.statusPembayaran === 'lunas' ? 'lunas' : 'belum-lunas'}" data-id="${transaction.id}" data-status="${transaction.statusPembayaran}">
+                        ${transaction.statusPembayaran === "lunas" ? "Lunas" : "Belum Lunas"}
+                    </button>
+                </td>
+                <td>${transaction.kategori || "-"}</td>
+                <td>${transaction.catatan || "-"}</td>
+                <td>
+                    <button class="btn-delete" data-id="${transaction.id}">X</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
         });
         container.appendChild(table);
       }
@@ -1873,10 +1953,10 @@
       // Hanya tampilkan transaksi pemasukan yang belum lunas atau lunas
       transactions.slice().sort((a, b) => b.tanggal - a.tanggal).forEach(transaction => {
         if (transaction.jenis === "pemasukan") {
-            const productNames = transaction.items ? transaction.items.map(item => item.namaProduk).join(', ') : transaction.produk || '';
+            const productNames = transaction.items ? transaction.items.map(item => item.namaProduk).join(', ') : transaction.produk || 'N/A';
             const option = document.createElement("option");
             option.value = transaction.id;
-            option.textContent = `${formatDateIndonesian(transaction.tanggal)} - ${productNames} - ${formatRupiah(transaction.total)} (${transaction.statusPembayaran === "lunas" ? "Lunas" : "Belum Lunas"})`;
+            option.textContent = `${formatDateIndonesian(transaction.tanggal)} - ${productNames} - ${formatRupiah(transaction.total)} (${transaction.statusPembayaran === 'lunas' ? 'Lunas' : 'Belum Lunas'})`;
             select.appendChild(option);
         }
       });
@@ -1914,7 +1994,7 @@
       // Isi item invoice
       const invoiceItemsTbody = document.getElementById("invoiceItems");
       invoiceItemsTbody.innerHTML = "";
-      // Handle both new and old data formats for invoice items
+      // Handle both new 'items' array and old single product format for invoice items
       const itemsToDisplay = transaction.items || [{
           namaProduk: transaction.produk || 'N/A',
           jumlah: transaction.jumlah || 1,
@@ -1932,6 +2012,17 @@
           `;
           invoiceItemsTbody.appendChild(tr);
       });
+
+      // Add Status Label
+      let statusLabel = document.querySelector('.invoice-status-label');
+      if (!statusLabel) {
+          statusLabel = document.createElement('div');
+          statusLabel.classList.add('invoice-status-label');
+          document.querySelector('.invoice-container').prepend(statusLabel);
+      }
+      statusLabel.textContent = transaction.statusPembayaran === 'lunas' ? 'LUNAS' : 'BELUM LUNAS';
+      statusLabel.classList.remove('lunas', 'belum-lunas');
+      statusLabel.classList.add(transaction.statusPembayaran === 'lunas' ? 'lunas' : 'belum-lunas');
     }
 
     // Fungsi untuk memuat jspdf secara async
@@ -2024,6 +2115,26 @@
         doc.text(transaction.pembeli || 'Pelanggan', marginX, yPos);
         yPos += 15;
 
+        // Status Label (New Feature)
+        const statusText = transaction.statusPembayaran === 'lunas' ? 'LUNAS' : 'BELUM LUNAS';
+        const statusBgColor = transaction.statusPembayaran === 'lunas' ? [0, 184, 148] : [214, 48, 49]; // Green or Red
+        doc.setFillColor(statusBgColor[0], statusBgColor[1], statusBgColor[2]);
+        doc.setTextColor(255, 255, 255); // White text
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        const statusTextWidth = doc.getStringUnitWidth(statusText) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+        const statusPaddingX = 5;
+        const statusPaddingY = 3;
+        const statusRectWidth = statusTextWidth + (2 * statusPaddingX);
+        const statusRectHeight = doc.internal.getFontSize() + (2 * statusPaddingY);
+        const statusX = pageWidth - marginX - statusRectWidth;
+        const statusY = marginY + 10; // Adjust position as needed
+        doc.roundedRect(statusX, statusY, statusRectWidth, statusRectHeight, 3, 3, 'F');
+        doc.text(statusText, statusX + statusPaddingX, statusY + statusRectHeight - statusPaddingY);
+        doc.setFont('helvetica', 'normal'); // Reset font style
+        doc.setTextColor(51, 51, 51); // Reset text color
+
+
         // Tabel Item Header
         doc.setFontSize(10);
         doc.setFillColor(245, 245, 245); // Lighter gray background for header
@@ -2031,17 +2142,17 @@
         doc.setTextColor(31, 41, 55); // accent-dark
         
         const tableHeaders = ['No.', 'Produk', 'Jumlah', 'Harga Satuan', 'Subtotal'];
-        const tableColWidths = [10, 70, 20, 35, 35]; // Adjusted widths for better fit
+        const colWidths = [10, 70, 20, 35, 35]; // Adjusted widths for better fit
         let currentX = marginX;
         tableHeaders.forEach((header, i) => {
             if (i === 2) { // Jumlah
-                doc.text(header, currentX + tableColWidths[i] / 2, yPos + 5, { align: 'center' });
+                doc.text(header, currentX + colWidths[i] / 2, yPos + 5, { align: 'center' });
             } else if (i > 2) { // Harga Satuan, Subtotal
-                doc.text(header, currentX + tableColWidths[i] - 2, yPos + 5, { align: 'right' });
+                doc.text(header, currentX + colWidths[i] - 2, yPos + 5, { align: 'right' });
             } else {
                 doc.text(header, currentX + 2, yPos + 5);
             }
-            currentX += tableColWidths[i];
+            currentX += colWidths[i];
         });
         yPos += 8;
 
@@ -2052,13 +2163,36 @@
         const itemsToPrint = transaction.items || [{
             namaProduk: transaction.produk || 'N/A',
             jumlah: transaction.jumlah || 1,
-            hargaSatuan: transaction.harga || (transaction.total / (transaction.jumlah || 1)) // Fallback for old single item total
+            hargaSatuan: transaction.harga || (transaction.total / (transaction.jumlah || 1))
         }];
 
         itemsToPrint.forEach((item, index) => {
-            // Set fill color to white for the row background
-            doc.setFillColor(255, 255, 255); 
-            doc.rect(marginX, yPos, pageWidth - (2 * marginX), 8, 'F'); // Draw white background for the row
+            if (yPos + 8 > pageHeight - marginY - 10) { // Check if new page is needed
+                doc.addPage();
+                yPos = marginY + 20; // Reset yPos for new page, leave space for header
+                // Re-add table header on new page
+                doc.setFontSize(10);
+                doc.setFillColor(245, 245, 245);
+                doc.rect(marginX, yPos, pageWidth - (2 * marginX), 8, 'F');
+                doc.setTextColor(31, 41, 55);
+                currentX = marginX;
+                tableHeaders.forEach((header, i) => {
+                    if (i === 2) {
+                        doc.text(header, currentX + colWidths[i] / 2, yPos + 5, { align: 'center' });
+                    } else if (i > 2) {
+                        doc.text(header, currentX + colWidths[i] - 2, yPos + 5, { align: 'right' });
+                    } else {
+                        doc.text(header, currentX + 2, yPos + 5);
+                    }
+                    currentX += colWidths[i];
+                });
+                yPos += 8;
+                doc.setFontSize(10);
+                doc.setTextColor(51, 51, 51);
+            }
+
+            doc.setFillColor(index % 2 === 0 ? 255 : 250, index % 2 === 0 ? 255 : 250, index % 2 === 0 ? 255 : 250); // Alternating row colors
+            doc.rect(marginX, yPos, pageWidth - (2 * marginX), 8, 'F');
 
             currentX = marginX;
             const itemData = [
@@ -2071,13 +2205,13 @@
 
             itemData.forEach((data, i) => {
                 if (i === 2) { // Jumlah
-                    doc.text(data, currentX + tableColWidths[i] / 2, yPos + 5, { align: 'center' });
+                    doc.text(data, currentX + colWidths[i] / 2, yPos + 5, { align: 'center' });
                 } else if (i > 2) { // Harga Satuan, Subtotal
-                    doc.text(data, currentX + tableColWidths[i] - 2, yPos + 5, { align: 'right' });
+                    doc.text(data, currentX + colWidths[i] - 2, yPos + 5, { align: 'right' });
                 } else {
                     doc.text(data, currentX + 2, yPos + 5);
                 }
-                currentX += tableColWidths[i];
+                currentX += colWidths[i];
             });
             yPos += 8;
 
@@ -2085,13 +2219,14 @@
             doc.setDrawColor(180, 180, 180);
             doc.setLineWidth(0.1);
             doc.line(marginX, yPos, pageWidth - marginX, yPos);
-            yPos += 5;
+            yPos += 2; // Small gap after line
         });
 
         // Total
+        yPos += 5;
         doc.setFontSize(12);
         doc.setTextColor(31, 41, 55); // accent-dark
-        doc.text('Total:', pageWidth - marginX - tableColWidths[4] - 5, yPos); // Adjust position
+        doc.text('Total:', pageWidth - marginX - colWidths[4] - 5, yPos); // Adjust position
         doc.text(formatRupiah(transaction.total), pageWidth - marginX, yPos, { align: 'right' });
         yPos += 20;
 
@@ -2104,16 +2239,13 @@
         yPos += 20;
 
         // Footer
-        doc.setDrawColor(224, 224, 224); // accent-light
-        doc.setLineWidth(0.5);
-        doc.line(marginX, pageHeight - marginY - 10, pageWidth - marginX, pageHeight - marginY - 10);
         doc.setFontSize(9);
         doc.setTextColor(102, 102, 102); // accent-mid
         doc.text(`Invoice ini dibuat pada ${formatDateIndonesian(new Date())}`, pageWidth / 2, pageHeight - marginY + 5, { align: 'center' });
 
         // Simpan PDF
         const firstProductName = itemsToPrint[0] ? itemsToPrint[0].namaProduk : 'invoice';
-        doc.save(`invoice_${firstProductName.replace(/ /g, '_')}_${formatDateIndonesian(transaction.tanggal).replace(/ /g, '_')}.pdf`);
+        doc.save(`femmeiatracker_${firstProductName.replace(/ /g, '_')}_${formatDateIndonesian(transaction.tanggal).replace(/ /g, '_')}.pdf`);
         showAlert("Invoice berhasil diekspor ke PDF!");
       } catch (error) {
         console.error("Gagal export invoice ke PDF:", error);
@@ -2141,7 +2273,7 @@
     async function renderChart(pemasukan, pengeluaran, piutang) {
       await loadChartJS();
       const ctx = document.getElementById('grafik').getContext('2d');
-      if (myChart) myChart.destroy();
+      if(myChart) myChart.destroy();
       myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -2183,7 +2315,7 @@
     async function renderMonthlyChart() {
       await loadChartJS();
       const ctx = document.getElementById('grafikBulanan').getContext('2d');
-      if (myMonthlyChart) myMonthlyChart.destroy();
+      if(myMonthlyChart) myMonthlyChart.destroy();
       // Hitung pemasukan & pengeluaran per bulan
       const monthly = {};
       transactions.forEach(tx => {
@@ -2196,7 +2328,7 @@
                 monthly[ym].piutang += tx.total;
             }
         } else {
-          monthly[ym].pengeluaran += tx.total;
+            monthly[ym].pengeluaran += tx.total;
         }
       });
       const labels = Object.keys(monthly).sort();
@@ -2379,10 +2511,10 @@
             // Clear existing data (optional, or merge)
             // For simplicity, we'll replace existing data
             transactions = data.transactions.map(tx => ({
-              ...tx,
-              tanggal: new Date(tx.tanggal), // Convert timestamp back to Date object
-              // Ensure 'items' array exists for restored data
-              items: tx.items || (tx.produk ? [{ namaProduk: tx.produk, jumlah: tx.jumlah || 1, hargaSatuan: tx.harga || tx.total }] : [])
+                ...tx,
+                tanggal: new Date(tx.tanggal), // Convert timestamp back to Date object
+                // Ensure 'items' array exists for restored data
+                items: tx.items || (tx.produk ? [{ namaProduk: tx.produk, jumlah: tx.jumlah || 1, hargaSatuan: tx.harga || tx.total }] : [])
             }));
             renderSummary();
             renderTransactionTable();
@@ -2401,12 +2533,13 @@
     // Export to CSV
     document.getElementById("exportCSV").onclick = function() {
       if (filteredTransactions.length === 0) {
-        showAlert("Tidak ada data untuk diexport!", true);
+        showAlert("Tidak ada data untuk diekspor!", true);
         return;
       }
       const rows = [
         ["Tanggal","Pembeli","Produk","Jumlah","Harga Satuan","Total","Jenis","Status Pembayaran","Kategori","Catatan"].join(","),
         ...filteredTransactions.map(tx => {
+          // Handle multi-item products for CSV
           const productDetails = tx.items ? tx.items.map(item => `${item.namaProduk} (${item.jumlah}x @${item.hargaSatuan})`).join('; ') : `${tx.produk || 'N/A'} (${tx.jumlah || 1}x @${tx.harga || tx.total})`;
           const totalQuantity = tx.items ? tx.items.reduce((sum, item) => sum + item.jumlah, 0) : tx.jumlah || 0;
           const totalHargaSatuan = tx.items ? tx.items.reduce((sum, item) => sum + item.hargaSatuan, 0) : tx.harga || tx.total;
@@ -2437,7 +2570,7 @@
     // Export to PDF (design ulang dengan tampilan modern dan rapi)
     document.getElementById("exportPDF").onclick = async function() {
       if (filteredTransactions.length === 0) {
-        showAlert("Tidak ada data untuk diexport!", true);
+        showAlert("Tidak ada data untuk diekspor!", true);
         return;
       }
       try {
@@ -2528,9 +2661,9 @@
             doc.setFillColor(245, 245, 245);
             doc.rect(marginX, yPos, pageWidth - marginX - marginX, 10, 'F');
             xPos = marginX + 3;
-            headers.forEach((header, j) => {
+            headers.forEach((header, i) => {
               doc.text(header, xPos, yPos + 6);
-              xPos += colWidths[j];
+              xPos += colWidths[i];
             });
             yPos += 10;
           }
@@ -2538,7 +2671,6 @@
           doc.setFontSize(10);
           doc.setFillColor(i % 2 === 0 ? 255 : 250, i % 2 === 0 ? 255 : 250, i % 2 === 0 ? 255 : 250);
           doc.rect(marginX, yPos, pageWidth - marginX - marginX, 10, 'F');
-          // Gambar border untuk setiap kolom
           doc.setDrawColor(200, 200, 200);
           doc.setLineWidth(0.1);
           let xPosTemp = marginX;
