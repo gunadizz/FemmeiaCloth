@@ -698,7 +698,7 @@
     opacity: 0.2; /* Lebih terlihat saat hover */
 }
 
-/* Media query untuk tampilan mobile */
+/* Media query untk tampilan mobile */
 @media (max-width: 600px) {
     .summary-tabs {
         flex-direction: column; /* Tumpuk tombol di layar kecil */
@@ -732,7 +732,7 @@
         background-color: #d63031; /* Red */
     }
 
-  /* Styling untk halaman autentikasi */
+/* Styling untk halaman autentikasi */
     .auth-container {
       display: flex;
       align-items: center;
@@ -986,7 +986,7 @@
     opacity: 0.2; /* Lebih terlihat saat hover */
 }
 
-/* Media query untuk tampilan mobile */
+/* Media query untk tampilan mobile */
 @media (max-width: 600px) {
     .summary-tabs {
         flex-direction: column; /* Tumpuk tombol di layar kecil */
@@ -1020,7 +1020,7 @@
         background-color: #d63031; /* Red */
     }
 
-    /* Styling untuk tombol Admin Produk */
+/* Styling untk tombol Admin Produk */
     .admin-button {
         position: fixed;
         bottom: 25px;
@@ -1049,10 +1049,12 @@
         box-shadow: 0 15px 30px rgba(0,0,0,0.2);
     }
 
-    /* Styling untuk modal Admin */
+    /* Styling untk modal Admin */
     .admin-modal-content {
         max-width: 600px;
         padding: 30px;
+        max-height: 80vh; /* Batasi tinggi modal */
+        overflow-y: auto; /* Aktifkan scroll vertikal */
     }
 
     .admin-modal-tabs {
@@ -1076,6 +1078,7 @@
     .admin-modal-tab-button.active {
         color: var(--accent-dark);
         border-bottom-color: var(--accent-dark);
+        background:none;
     }
 
     .admin-modal-tab-button:hover:not(.active) {
@@ -1091,8 +1094,8 @@
     }
 
     .admin-modal-list {
-        max-height: 300px;
-        overflow-y: auto;
+        max-height: 300px; /* Batasi tinggi daftar */
+        overflow-y: auto; /* Aktifkan scroll vertikal */
         margin-top: 20px;
         border: 1px solid var(--accent-light);
         border-radius: var(--radius);
@@ -1184,12 +1187,12 @@
         background-color: #555;
     }
 
-    .product-item-group .product-name-display {
+    .product-name-display {
         font-weight: 500;
         color: var(--accent-dark);
     }
 
-    .product-item-group .product-price-display {
+    .product-price-display {
         color: var(--accent-mid);
         font-size: 0.9em;
     }
@@ -1369,99 +1372,99 @@
         <div class="form-group">
           <label for="selectTransaction">Pilih Transaksi</label>
           <select id="selectTransaction" required>
-            <option value="">-- Pilih Transaksi untuk Invoice --</option>
+              <option value="">-- Pilih Transaksi untuk Invoice --</option>
           </select>
         </div>
         <div id="invoicePreview" style="display: none;">
-          <div class="invoice-container">
-            <!-- Invoice Status Label will be inserted here dynamically -->
-            <div class="invoice-header">
-              <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="Logo FemmeiaCloth, merepresentasikan the brand identity" style="width: 80px; height: auto; margin-bottom: 10px;" />
-              <h1>FemmeiaCloth</h1>
-              <p>Tamalanrea, Makassar, Indonesia</p>
-              <p>Email: femmeiacloth@gmail.com | Phone: +6285341899229</p>
-            </div>
+            <div class="invoice-container">
+                <!-- Invoice Status Label will be inserted here dynamically -->
+                <div class="invoice-header">
+                    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="Logo FemmeiaCloth, merepresentasikan the brand identity" style="width: 80px; height: auto; margin-bottom: 10px;"/>
+                    <h1>FemmeiaCloth</h1>
+                    <p>Tamalanrea, Makassar, Indonesia</p>
+                    <p>Email: femmeiacloth@gmail.com | Phone: +6285341899229</p>
+                </div>
 
-            <!-- Invoice Title & Date -->
-            <div class="invoice-details">
-              <h3>INVOICE</h3>
-              <div style="text-align: right;">
-                <p><strong>Tanggal:</strong> <span id="invoiceDate">--</span></p>
-                <p><strong>Nomor Invoice:</strong> <span id="invoiceNumber">--</span></p>
-              </div>
-            </div>
+                <!-- Invoice Title & Date -->
+                <div class="invoice-details">
+                    <h3>INVOICE</h3>
+                    <div style="text-align: right;">
+                        <p><strong>Tanggal:</strong> <span id="invoiceDate">--</span></p>
+                        <p><strong>Nomor Invoice:</strong> <span id="invoiceNumber">--</span></p>
+                    </div>
+                </div>
 
-            <!-- Bill To Section -->
-            <div class="invoice-buyer">
-              <h4>Ditagih Kepada:</h4>
-              <p><span id="invoiceBuyer">Pelanggan</span></p>
-            </div>
+                <!-- Bill To Section -->
+                <div class="invoice-buyer">
+                    <h4>Ditagih Kepada:</h4>
+                    <p><span id="invoiceBuyer">Pelanggan</span></p>
+                </div>
 
-            <!-- Items Table -->
-            <table class="invoice-table">
-              <thead>
-                <tr>
-                  <th style="width: 5%;">No.</th>
-                  <th style="width: 45%;">Produk</th>
-                  <th style="width: 10%; text-align: center;">Jumlah</th>
-                  <th style="width: 20%; text-align: right;">Harga Satuan</th>
-                  <th style="width: 25%; text-align: right;">Subtotal</th>
-                </tr>
-              </thead>
-              <tbody id="invoiceItems">
-                <!-- Item akan diisi secara dinamis melalui JavaScript -->
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="4" style="text-align: right;">Total:</td>
-                  <td style="text-align: right;"><span id="invoiceTotal">Rp 0</span></td>
-                </tr>
-              </tfoot>
-            </table>
+                <!-- Items Table -->
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">No.</th>
+                            <th style="width: 45%;">Produk</th>
+                            <th style="width: 10%; text-align: center;">Jumlah</th>
+                            <th style="width: 20%; text-align: right;">Harga Satuan</th>
+                            <th style="width: 25%; text-align: right;">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceItems">
+                        <!-- Item akan diisi secara dinamis melalui JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" style="text-align: right;">Total:</td>
+                            <td style="text-align: right;"><span id="invoiceTotal">Rp 0</span></td>
+                        </tr>
+                    </tfoot>
+                </table>
 
-            <!-- Thank You Note -->
-            <div class="invoice-thankyou">
-              <p>Terima kasih atas kepercayaan Anda kepada FemmeiaCloth.</p>
-              <p>Kami berharap dapat melayani Anda kembali di masa depan.</p>
-            </div>
+                <!-- Thank You Note -->
+                <div class="invoice-thankyou">
+                    <p>Terima kasih atas kepercayaan Anda kepada FemmeiaCloth.</p>
+                    <p>Kami berharap dapat melayani Anda kembali di masa depan.</p>
+                </div>
 
-            <!-- Footer -->
-            <div class="invoice-footer">
-              <p>Invoice ini dibuat pada <span id="printDate">--</span></p>
+                <!-- Footer -->
+                <div class="invoice-footer">
+                    <p>Invoice ini dibuat pada <span id="printDate">--</span></p>
+                </div>
             </div>
-          </div>
-          <button id="btnExportInvoicePDF" class="btn-print">Export Invoice ke PDF</button>
+            <button id="btnExportInvoicePDF" class="btn-print">Export Invoice ke PDF</button>
         </div>
         <p id="noInvoiceMessage" style="text-align: center; color: rgba(0, 0, 0, 0.6); margin-top: 20px;">Pilih transaksi untuk melihat preview invoice.</p>
       </div>
-
+      
       <div class="card" style="grid-column: 1 / -1;">
         <h2>Riwayat Transaksi</h2>
         <div class="backup-restore">
-          <button id="backupJSON" class="btn-export">Backup JSON</button>
-          <input type="file" id="restoreJSON" accept=".json" style="display:none;">
-          <button id="restoreJSONBtn" class="btn-export">Restore JSON</button>
+            <button id="backupJSON" class="btn-export">Backup JSON</button>
+            <input type="file" id="restoreJSON" accept=".json" style="display:none;"/>
+            <button id="restoreJSONBtn" class="btn-export">Restore JSON</button>
         </div>
         <div class="filter-container">
           <input type="text" id="filterProduk" placeholder="Cari Produk/Catatan">
           <select id="filterJenis">
-            <option value="">Semua Jenis</option>
-            <option value="pemasukan">Pemasukan</option>
-            <option value="pengeluaran">Pengeluaran</option>
+              <option value="">Semua Jenis</option>
+              <option value="pemasukan">Pemasukan</option>
+              <option value="pengeluaran">Pengeluaran</option>
           </select>
           <select id="filterKategori">
-            <option value="">Semua Kategori</option>
-            <option value="Penjualan Online">Penjualan Online</option>
-            <option value="Penjualan Offline">Penjualan Offline</option>
-            <option value="Bahan Baku">Bahan Baku</option>
-            <option value="Operasional">Operasional</option>
-            <option value="Promosi">Promosi</option>
-            <option value="Lainnya">Lainnya</option>
+              <option value="">Semua Kategori</option>
+              <option value="Penjualan Online">Penjualan Online</option>
+              <option value="Penjualan Offline">Penjualan Offline</option>
+              <option value="Bahan Baku">Bahan Baku</option>
+              <option value="Operasional">Operasional</option>
+              <option value="Promosi">Promosi</option>
+              <option value="Lainnya">Lainnya</option>
           </select>
           <select id="filterStatusPembayaran">
-            <option value="">Semua Status</option>
-            <option value="lunas">Lunas</option>
-            <option value="belumLunas">Belum Lunas</option>
+              <option value="">Semua Status</option>
+              <option value="lunas">Lunas</option>
+              <option value="belumLunas">Belum Lunas</option>
           </select>
           <input type="date" id="filterTglMulai">
           <span style="font-size:13px;color:#888;">s/d</span>
@@ -1470,11 +1473,13 @@
           <button id="btnResetFilter" type="button" style="width:auto;">Reset</button>
         </div>
         <div class="export-buttons">
-          <button id="exportCSV" class="btn-export">Export CSV</button>
-          <button id="exportPDF" class="btn-export">Export PDF</button>
+            <button id="exportCSV" class="btn-export">Export CSV</button>
+            <button id="exportPDF" class="btn-export">Export PDF</button>
         </div>
         <div class="table-container" id="transactionTableContainer"></div>
       </div>
+
+
 
       <div class="card" style="grid-column: 1 / -1;">
         <h2>Manajemen Akun</h2>
@@ -1503,7 +1508,10 @@
   </div>
 
   <!-- Tombol Admin Produk -->
-  <button id="adminProductBtn" class="admin-button">⚙️</button>
+  <button id="adminProductBtn" class="admin-button" style="display: none;">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+  <path d="M19.14,12.94c0-.32,0-.64,0-1s0-.68,0-1l2.11-1.65a.5.5,0,0,0,.12-.65l-2-3.46a.5.5,0,0,0-.61-.22l-2.49,1a7.18,7.18,0,0,0-1.69-.98l-.38-2.65A.5.5,0,0,0,13.5,2h-4a.5.5,0,0,0-.49.42L8.61,5.07a7.18,7.18,0,0,0-1.69.98l-2.49-1a.5.5,0,0,0-.61.22l-2,3.46a.5.5,0,0,0,.12.65L4,10.94c0,.32,0,.64,0,1s0,.68,0,1L1.89,14.59a.5.5,0,0,0-.12.65l2,3.46a.5.5,0,0,0,.61.22l2.49-1a7.18,7.18,0,0,0,1.69.98l.38,2.65a.5.5,0,0,0,.49.42h4a.5.5,0,0,0,.49-.42l.38-2.65a7.18,7.18,0,0,0,1.69-.98l2.49,1a.5.5,0,0,0,.61-.22l2-3.46a.5.5,0,0,0-.12-.65ZM12,15.5A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/></svg>
+  </button>
 
   <!-- Modal Admin Produk -->
   <div id="adminModal" class="modal">
@@ -1548,13 +1556,13 @@
               <!-- Kategori options will be loaded here -->
             </select>
           </div>
-          <button id="addProdukBtn" class="btn-add">Tambah Produk</button>
-          <button id="updateProdukBtn" class="btn-update" style="display:none;">Update Produk</button>
-          <button id="cancelEditProdukBtn" class="btn-cancel" style="display:none;">Batal</button>
+          <button id="addProductBtn" class="btn-add">Tambah Produk</button>
+          <button id="updateProductBtn" class="btn-update" style="display:none;">Update Produk</button>
+          <button id="cancelEditProductBtn" class="btn-cancel" style="display:none;">Batal</button>
         </div>
         <div class="admin-modal-list">
           <h4>Daftar Produk:</h4>
-          <div id="produkList">
+          <div id="productList">
             <!-- Produk items will be loaded here -->
           </div>
         </div>
@@ -1583,13 +1591,12 @@
       measurementId: "G-0ER8S6EFL2"
     };
 
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
     enableIndexedDbPersistence(db).catch((err) => {
       if (err.code === 'failed-precondition') {
-        console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+        console.log('Multiple tabs open, persistence can only be enabled in one tab.');
       } else if (err.code === 'unimplemented') {
         console.log('The current browser does not support all of the features required to enable persistence');
       }
@@ -1698,7 +1705,7 @@
             const pricePerUnit = selectedOption.dataset.price ? parseInt(selectedOption.dataset.price) : 0;
             const quantity = parseInt(quantityInput.value) || 0;
 
-            totalOverall += (pricePerUnit * quantity);
+            totalOverall += (quantity * pricePerUnit);
         });
 
         overallTotalDisplay.textContent = `Total Transaksi: ${formatRupiah(totalOverall)}`;
@@ -1736,10 +1743,12 @@
 
     // Auth State Listener
     onAuthStateChanged(auth, (user) => {
+      const adminButton = document.getElementById("adminProductBtn");
       if (user) {
         // Pengguna sudah login, tampilkan aplikasi utama
         document.getElementById("authContainer").style.display = "none";
         document.getElementById("appContainer").style.display = "block";
+        adminButton.style.display = "flex"; // Show admin button
         showUserInfo();
         loadSaldoAwal();
         loadTransactions();
@@ -1749,6 +1758,7 @@
         // Pengguna belum login, tampilkan halaman login
         document.getElementById("authContainer").style.display = "flex";
         document.getElementById("appContainer").style.display = "none";
+        adminButton.style.display = "none"; // Hide admin button
       }
     });
 
@@ -2342,7 +2352,7 @@
       URL.revokeObjectURL(url);
     };
 
-    // Export to PDF (design ulang dengan tampilan modern dan rapi)
+    // Export to PDF (desain ulang dengan tampilan modern dan rapi)
     async function loadJsPDF() {
       return new Promise((resolve, reject) => { // Added reject here
         if (window.jspdf && window.jspdf.jsPDF) { // Check for both window.jspdf and its jsPDF property
@@ -2499,7 +2509,7 @@
           yPos += 10;
         });
 
-        // Hitung total halaman setelah semua konten ditambahkan
+        // Hitung total halaman dan tambahkan footer
         const totalPages = doc.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
           doc.setPage(i);
@@ -2889,10 +2899,10 @@
     const inputNamaProduk = document.getElementById('inputNamaProduk');
     const inputHargaProduk = document.getElementById('inputHargaProduk');
     const selectKategoriProduk = document.getElementById('selectKategoriProduk');
-    const addProdukBtn = document.getElementById('addProdukBtn');
-    const updateProdukBtn = document.getElementById('updateProdukBtn');
-    const cancelEditProdukBtn = document.getElementById('cancelEditProdukBtn');
-    const produkListDiv = document.getElementById('produkList');
+    const addProductBtn = document.getElementById('addProductBtn');
+    const updateProductBtn = document.getElementById('updateProductBtn');
+    const cancelEditProductBtn = document.getElementById('cancelEditProductBtn');
+    const productListDiv = document.getElementById('productList');
     const editProductIdInput = document.getElementById('editProductId');
 
     let categories = [];
@@ -2982,7 +2992,7 @@
 
     // CRUD Produk
     async function loadProduk() {
-        produkListDiv.innerHTML = '';
+        productListDiv.innerHTML = '';
         products = [];
         try {
             const q = query(collection(db, "produk"), orderBy("nama", "asc"));
@@ -2990,7 +3000,7 @@
             querySnapshot.forEach((doc) => {
                 products.push({ id: doc.id, ...doc.data() });
             });
-            renderProdukList();
+            renderProductList();
             // Update all product dropdowns in the main transaction form
             document.querySelectorAll('.product-select').forEach(select => {
                 loadProductsToDropdown(select);
@@ -3001,16 +3011,16 @@
         }
     }
 
-    function renderProdukList() {
-        produkListDiv.innerHTML = '';
+    function renderProductList() {
+        productListDiv.innerHTML = '';
         if (products.length === 0) {
-            produkListDiv.innerHTML = '<p style="text-align: center; color: #666;">Belum ada produk.</p>';
+            productListDiv.innerHTML = '<p style="text-align: center; color: #666;">Belum ada produk.</p>';
             return;
         }
         products.forEach(prod => {
+            const categoryName = categories.find(cat => cat.id === prod.kategori)?.nama || 'Tidak Diketahui';
             const item = document.createElement('div');
             item.classList.add('admin-modal-list-item');
-            const categoryName = categories.find(cat => cat.id === prod.kategori)?.nama || 'Tidak Diketahui';
             item.innerHTML = `
                 <span>${prod.nama} (${formatRupiah(prod.harga)}) - ${categoryName}</span>
                 <div class="actions">
@@ -3018,7 +3028,7 @@
                     <button class="btn-delete" data-id="${prod.id}" data-type="produk">Hapus</button>
                 </div>
             `;
-            produkListDiv.appendChild(item);
+            productListDiv.appendChild(item);
         });
         addDeleteListeners('produk');
         addEditListeners('produk');
@@ -3034,7 +3044,7 @@
         });
     }
 
-    addProdukBtn.addEventListener('click', async () => {
+    addProductBtn.addEventListener('click', async () => {
         const nama = inputNamaProduk.value.trim();
         const harga = parseInt(inputHargaProduk.value);
         const kategoriId = selectKategoriProduk.value;
@@ -3055,7 +3065,7 @@
         }
     });
 
-    updateProdukBtn.addEventListener('click', async () => {
+    updateProductBtn.addEventListener('click', async () => {
         const productId = editProductIdInput.value;
         const nama = inputNamaProduk.value.trim();
         const harga = parseInt(inputHargaProduk.value);
@@ -3068,25 +3078,25 @@
         try {
             await updateDoc(doc(db, "produk", productId), { nama: nama, harga: harga, kategori: kategoriId });
             showAlert("Produk berhasil diperbarui!");
-            resetProdukForm();
+            resetProductForm();
             loadProduk();
         } catch (error) {
             showAlert("Gagal memperbarui produk: " + error.message, true);
         }
     });
 
-    cancelEditProdukBtn.addEventListener('click', () => {
-        resetProdukForm();
+    cancelEditProductBtn.addEventListener('click', () => {
+        resetProductForm();
     });
 
-    function resetProdukForm() {
+    function resetProductForm() {
         editProductIdInput.value = '';
         inputNamaProduk.value = '';
         inputHargaProduk.value = '';
         selectKategoriProduk.value = '';
-        addProdukBtn.style.display = 'block';
-        updateProdukBtn.style.display = 'none';
-        cancelEditProdukBtn.style.display = 'none';
+        addProductBtn.style.display = 'block';
+        updateProductBtn.style.display = 'none';
+        cancelEditProductBtn.style.display = 'none';
     }
 
     function addDeleteListeners(type) {
@@ -3123,9 +3133,9 @@
                         inputHargaProduk.value = productToEdit.harga;
                         selectKategoriProduk.value = productToEdit.kategori;
 
-                        addProdukBtn.style.display = 'none';
-                        updateProdukBtn.style.display = 'block';
-                        cancelEditProdukBtn.style.display = 'inline-block';
+                        addProductBtn.style.display = 'none';
+                        updateProductBtn.style.display = 'block';
+                        cancelEditProductBtn.style.display = 'inline-block';
                     }
                 };
             });
