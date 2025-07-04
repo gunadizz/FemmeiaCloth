@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FemmeiaCloth Finance Tracker</title>
+  <meta name="description" content="Aplikasi pencatat keuangan untuk FemmeiaCloth">
+  <meta name="theme-color" content="#333333">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+
+      --primary-bg: #ffffff;
+      --secondary-bg: rgba(255, 255, 255, 0.5);
+      --border-color: rgba(0, 0, 0, 0.3);
+      --text-color: #333333;
+      --accent-light: #e0e0e0;
+      --accent-mid: #666666;
+      --accent-dark: #1f2937;
+      --success-color: #00b894;
+      --danger-color: #1f2937;
+      --shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+      --button-shadow: 0 6px 12px rgba(102, 102, 102, 0.4);
+      --button-shadow-hover: 0 8px 16px rgba(102, 102, 102, 0.6);
+      --radius: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--primary-bg);
+      color: var(--text-color);
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 50% 50%, rgba(102, 102, 102, 0.2), transparent 60%);
+      overflow-x: hidden;
+    }
+
+    /* Scattered Shapes */
+    .scattered-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .scattered-shape {
+      position: absolute;
+      background: transparent;
+      border: 2px solid var(--accent-mid);
+      opacity: 0.5;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .circle1 { width: 60px; height: 60px; border-radius: 50%; top: 10%; left: 5%; animation-delay: 0s; }
+    .circle2 { width: 40px; height: 40px; border-radius: 50%; top: 60%; right: 10%; animation-delay: 2s; }
+    .circle3 { width: 80px; height: 80px; border-radius: 50%; bottom: 20%; left: 15%; animation-delay: 4s; }
+    .circle4 { width: 50px; height: 50px; border-radius: 50%; bottom: 10%; right: 20%; animation-delay: 1s; }
+    .square1 { width: 50px; height: 50px; top: 30%; left: 50%; animation-delay: 3s; }
+    .square2 { width: 70px; height: 70px; bottom: 40%; right: 30%; animation-delay: 5s; }
+    .triangle1 { width: 0; height: 0; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 52px solid var(--accent-mid); top: 20%; left: 80%; animation-delay: 2.5s; }
+    .triangle2 { width: 0; height: 0; border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 69px solid var(--accent-mid); bottom: 30%; left: 25%; animation-delay: 4.5s; }
+    .diamond1 { width: 40px; height: 40px; transform: rotate(45deg); top: 50%; left: 10%; animation-delay: 1.5s; }
+    .diamond2 { width: 60px; height: 60px; transform: rotate(45deg); bottom: 15%; right: 15%; animation-delay: 3.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 25px;
+    }
+
+    header {
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      padding: 15px 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+      text-align: center;
+      position: sticky;
+      top: 25px;
+      z-index: 100;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid rgba(102, 102, 102, 0.1);
+    }
+
+    h1 {
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin-bottom: 10px;
+      font-size: 2.2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+      padding: 0 15px;
+    }
+
+    @media (min-width: 768px) {
+      .main-content {
+        grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+      }
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(102, 102, 102, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+      color: var(--accent-dark);
+      font-weight: 600;
+      border-bottom: 2px solid rgba(102, 102, 102, 0.15);
+      padding-bottom: 12px;
+      font-size: 1.6rem;
+      letter-spacing: 0.3px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid rgba(102, 102, 102, 0.2);
+      border-radius: var(--radius);
+      font-size: 16px;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
+      outline: none;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-mid);
+      box-shadow: 0 0 0 2px rgba(102, 102, 102, 0.2);
+    }
+
+    .suggestions {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      width: calc(100% - 40px);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      box-shadow: var(--shadow);
+    }
+
+    .suggestion-item {
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      font-size: 15px;
+    }
+
+    .suggestion-item:hover {
+      background-color: rgba(102, 102, 102, 0.1);
+    }
+
+    button, .saldoawal-container button {
+      background: #1f2937;
+      box-shadow: var(--button-shadow);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      margin-right: 0;
+      margin-left: 0;
+      width: 100%;
+      display: block;
+      font-size: 16px;
+    }
+
+    button:hover, .saldoawal-container button:hover {
+      background: #1f2937;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(102, 102, 102, 0.5);
+    }
+
+    .btn-export {
+      background: linear-gradient(135deg, #00b894, #00a383);
+      box-shadow: 0 6px 12px rgba(0, 184, 148, 0.4);
+      margin-right: 15px;
+      width: auto;
+      padding: 12px 24px;
+    }
+
+    .btn-export:hover {
+      background: linear-gradient(135deg, #00a383, #008c6e);
+      box-shadow: 0 8px 16px rgba(0, 184, 148, 0.6);
+    }
+
+    .btn-print {
+      background: linear-gradient(135deg, #00b894, #00a383);
+      box-shadow: 0 6px 12px rgba(0, 184, 148, 0.4);
+      width: auto;
+      margin-top: 25px;
+      padding: 12px 24px;
+    }
+
+    .btn-print:hover {
+      background: linear-gradient(135deg, #00a383, #008c6e);
+      box-shadow: 0 8px 16px rgba(0, 184, 148, 0.6);
+    }
+
+    .summary-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      margin-bottom: 25px;
+    }
+
+    .summary-box {
+      flex: 1;
+      min-width: 250px;
+      padding: 25px;
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: var(--shadow);
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(15px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid rgba(102, 102, 102, 0.1);
+    }
+
+    .summary-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .income-box {
+      background-color: rgba(0, 184, 148, 0.1);
+      border: 1px solid rgba(0, 184, 148, 0.2);
+    }
+
+    .expense-box {
+      background-color: rgba(214, 48, 49, 0.1);
+      border: 1px solid rgba(214, 48, 49, 0.2);
+    }
+
+    .summary-box h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: 500;
+    }
+
+    .summary-box p {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(102, 102, 102, 0.15);
+    }
+
+    th {
+      background-color: rgba(102, 102, 102, 0.07);
+      font-weight: 600;
+      color: var(--accent-dark);
+      font-size: 14px;
+    }
+
+    td {
+      font-size: 14px;
+      color: var(--text-color);
+    }
+
+    tr:hover {
+      background-color: rgba(102, 102, 102, 0.03);
+    }
+
+    .alert {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      background-color: var(--success-color);
+      color: white;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      opacity: 0;
+      transition: opacity 0.4s, transform 0.4s;
+      z-index: 999;
+      font-size: 14px;
+      max-width: 350px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .alert.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .export-buttons, .backup-restore, .modal-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      margin-top: 10px;
+      justify-content: flex-end;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 280px;
+      margin-top: 25px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+    }
+
+    .loader {
+      border: 4px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+      border-top: 4px solid var(--accent-mid);
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 25px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn-delete {
+      background-color: #1f2937;
+      color: white;
+      border: none;
+      border-radius: 10%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin: 0 auto;
+      transition: background 0.2s ease, transform 0.2s;
+      box-shadow: 0 3px 10px #33445B;
+    }
+
+    .btn-delete:hover {
+      background-color: #b52c2c;
+      transform: scale(1.1);
+      
+    }
+
+    .date-header {
+      background-color: rgba(102, 102, 102, 0.08);
+      padding: 12px 18px;
+      margin-top: 30px;
+      font-weight: 600;
+      color: var(--accent-dark);
+      border-radius: var(--radius) var(--radius) 0 0;
+      font-size: 16px;
+    }
+
+    .date-header:first-child {
+      margin-top: 0;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(15px);
+      border-radius: var(--radius);
+      padding: 25px;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      border: 1px solid rgba(102, 102, 102, 0.1);
+    }
+
+    .modal-title {
+      margin-bottom: 20px;
+      color: var(--text-color);
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .offline-indicator {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      background-color: var(--danger-color);
+      color: white;
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: none;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px 0;
+    }
+
+    .filter-container input, .filter-container select {
+      max-width: 200px;
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+
+    .saldoawal-container {
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    .user-info {
+      margin-bottom: 15px;
+      font-size: 15px;
+      color: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      background: rgba(102, 102, 102, 0.05);
+      border-radius: 8px;
+    }
+
+    .logout-btn {
+      background: linear-gradient(135deg, #d63031, #b52c2c);
+      box-shadow: 0 6px 12px rgba(214, 48, 49, 0.4);
+      padding: 12px 24px;
+      width: auto;
+      margin: 0 auto;
+      border-radius: 50px;
+    }
+
+    .logout-btn:hover {
+      background: linear-gradient(135deg, #b52c2c, #9e2526);
+      box-shadow: 0 8px 16px rgba(214, 48, 49, 0.6);
+      transform: translateY(-3px);
+    }
+
+    .pw-section {
+      margin-bottom: 15px;
+    }
+
+    /* Khusus untuk input "Nama Produk" agar tidak ada garis memanjang */
+    #produk {
+      border-bottom: 1px solid var(--border-color) !important;
+      box-shadow: none !important;
+      margin-bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    #formTransaksi button, .saldoawal-container button {
+      margin-bottom: 15px;
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    .total-harga-display {
+        font-weight: 500;
+        color: var(--accent-mid);
+        margin-top: 5px;
+        font-size: 1em;
+    }
+
+    @media (max-width: 600px) {
+      .main-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .summary-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      th, td {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+      .filter-container {
+        gap: 10px;
+      }
+      .filter-container input, .filter-container select {
+        max-width: 100%;
+      }
+      .container {
+        padding: 15px;
+      }
+    }
+
+    /* Styling untuk Invoice yang dipercantik */
+    .invoice-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      background: linear-gradient(135deg, rgba(102, 102, 102, 0.05) 0%, rgba(255, 255, 255, 1) 30%);
+    }
+
+    .invoice-header {
+      text-align: center;
+      margin-bottom: 25px;
+      border-bottom: 2px solid var(--accent-light);
+      padding-bottom: 15px;
+    }
+
+    .invoice-header h1 {
+      font-size: 2.5rem;
+      color: var(--accent-dark);
+      font-weight: 700;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+    }
+
+    .invoice-header p {
+      color: var(--accent-mid);
+      font-size: 0.9rem;
+      margin: 5px 0;
+    }
+
+    .invoice-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
+      align-items: center;
+      background: rgba(102, 102, 102, 0.05);
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+
+    .invoice-details h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 0;
+      color: var(--accent-dark);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .invoice-details p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--accent-mid);
+    }
+
+    .invoice-buyer {
+      margin-bottom: 25px;
+      padding: 15px;
+      background: rgba(0, 184, 148, 0.05);
+      border-left: 4px solid var(--success-color);
+      border-radius: 8px;
+    }
+
+    .invoice-buyer h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--accent-dark);
+    }
+
+    .invoice-buyer p {
+      font-size: 0.95rem;
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .invoice-table th, .invoice-table td {
+      border: 1px solid var(--border-color);
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    .invoice-table th {
+      background-color: rgba(102, 102, 102, 0.1);
+      font-weight: 600;
+      color: var(--accent-dark);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .invoice-table td {
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+
+    .invoice-table tr:nth-child(even) {
+      background-color: rgba(102, 102, 102, 0.03);
+    }
+
+    .invoice-table tr:hover {
+      background-color: rgba(102, 102, 102, 0.07);
+    }
+
+    .invoice-table tfoot {
+      font-weight: 600;
+      background-color: rgba(0, 184, 148, 0.1);
+      color: var(--accent-dark);
+    }
+
+    .invoice-thankyou {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.95rem;
+      color: var(--accent-mid);
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      border: 1px dashed var(--accent-light);
+    }
+
+    .invoice-footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.8rem;
+      color: var(--accent-mid);
+      padding-top: 10px;
+      border-top: 1px solid var(--accent-light);
+    }
+
+    /* Styling untuk halaman autentikasi */
+    .auth-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, rgba(102, 102, 102, 0.2), rgba(102, 102, 102, 0.1));
+    }
+
+    .auth-card {
+      background-color: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      padding: 35px;
+      width: 90%;
+      max-width: 480px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .auth-card h2 {
+      font-size: 2.2rem;
+      color: var(--accent-dark);
+      margin-bottom: 25px;
+      font-weight: 700;
+    }
+
+    .auth-form-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .auth-form-group label {
+      width: 30%;
+      margin-bottom: 0;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    .auth-form-group input {
+      width: 70%;
+      padding: 14px;
+      border: 1px solid rgba(102, 102, 102, 0.2);
+      border-radius: var(--radius);
+      font-size: 16px;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
+      outline: none;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .auth-form-group input:focus {
+      outline: none;
+      border-color: var(--accent-mid);
+      box-shadow: 0 0 0 2px rgba(102, 102, 102, 0.2);
+    }
+
+    @media (max-width: 400px) {
+      .auth-form-group {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .auth-form-group label {
+        width: 100%;
+        margin-bottom: 8px;
+      }
+      .auth-form-group input {
+        width: 100%;
+      }
+    }
+
+    .auth-button {
+      background: #1f2937;
+      color: white;
+      border: none;
+      padding: 16px 30px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 25px;
+      width: 100%;
+      display: inline-block;
+      box-shadow: 0 12px 19px rgba(0, 0, 0, 0.2);
+    }
+
+    .auth-button:hover {
+      transform: translateY(-3px);
+      background: #1f2937;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .auth-link {
+      color: var(--accent-mid);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .auth-link:hover {
+      color: var(--accent-dark);
+    }
+
+    .auth-divider {
+      margin: 25px 0;
+      display: flex;
+      align-items: center;
+      color: var(--accent-mid);
+      font-size: 14px;
+    }
+
+    .auth-divider::before, .auth-divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid var(--accent-light);
+    }
+
+    .auth-divider::before {
+      margin-right: 12px;
+    }
+
+    .auth-divider::after {
+      margin-left: 12px;
+    }
+
+    /* Animasi untuk tombol login */
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(0, 184, 148, 0.5); }
+      70% { box-shadow: 0 0 0 15px rgba(0, 184, 148, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 184, 148, 0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-button.loading {
+      background: transparent;
+      border: 2px solid var(--accent-mid);
+      color: var(--accent-dark);
+      animation: pulse 1.5s infinite;
+      cursor: not-allowed;
+    }
+
+    .auth-form {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .auth-card {
+      animation: fadeIn 0.7s ease-out;
+    }
+    
+  </style>
+</head>
+<body>
+  <!-- Halaman autentikasi -->
+  <div id="authContainer" class="auth-container">
+    <div class="auth-card">
+      <h2>Selamat Datang di FemmeiaCloth Finance Tracker</h2>
+      <div id="loginForm" class="auth-form">
+        <div class="auth-form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Masukkan Email" required>
+        </div>
+        <div class="auth-form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Masukkan Password" required>
+        </div>
+        <button id="btnLogin" type="button" class="auth-button">Login</button>
+        <p style="text-align: center; margin-top: 15px;">
+          <a href="#" id="forgotPassword" class="auth-link">Lupa Password?</a>
+        </p>
+        <div class="auth-divider">atau</div>
+        <p style="text-align: center;">
+          <a href="#" id="showRegister" class="auth-link">Daftar Akun Baru</a>
+        </p>
+      </div>
+      <div id="registerForm" style="display: none;" class="auth-form">
+        <div class="auth-form-group">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" placeholder="Masukkan Email" required>
+        </div>
+        <div class="auth-form-group">
+          <label for="regPassword">Password</label>
+          <input type="password" id="regPassword" placeholder="Masukkan Password (min. 6 karakter)" required>
+        </div>
+        <div class="auth-form-group">
+          <label for="confirmPassword">Konfirmasi</label>
+          <input type="password" id="confirmPassword" placeholder="Konfirmasi Password" required>
+        </div>
+        <button id="btnRegister" type="button" class="auth-button">Daftar</button>
+        <p style="text-align: center; margin-top: 15px;">
+          <a href="#" id="showLogin" class="auth-link">Sudah punya akun? Login</a>
+        </p>
+      </div>
+      <div id="resetPasswordForm" style="display: none;" class="auth-form">
+        <div class="auth-form-group">
+          <label for="resetEmail">Email</label>
+          <input type="email" id="resetEmail" placeholder="Masukkan Email untuk Reset Password" required>
+        </div>
+        <button id="btnResetPassword" type="button" class="auth-button">Kirim Link Reset Password</button>
+        <p style="text-align: center; margin-top: 15px;">
+          <a href="#" id="showLoginFormReset" class="auth-link">Kembali ke Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Halaman aplikasi utama -->
+  <div id="appContainer" class="container" style="display: none;">
+    <!-- Scattered Shapes Background -->
+    <div class="scattered-shapes" aria-hidden="true">
+      <div class="scattered-shape circle1"></div>
+      <div class="scattered-shape circle2"></div>
+      <div class="scattered-shape circle3"></div>
+      <div class="scattered-shape circle4"></div>
+      <div class="scattered-shape square1"></div>
+      <div class="scattered-shape square2"></div>
+      <div class="scattered-shape triangle1"></div>
+      <div class="scattered-shape triangle2"></div>
+      <div class="scattered-shape diamond1"></div>
+      <div class="scattered-shape diamond2"></div>
+    </div>
+
+    <header>
+      <h1>FemmeiaCloth Finance Tracker</h1>
+    </header>
+
+    <div class="main-content">
+      <div class="card">
+        <h2>Input Transaksi</h2>
+        <form id="formTransaksi" autocomplete="off">
+          <div class="form-group" style="position: relative;">
+            <label for="pembeli">Nama Pelanggan/Pembeli</label>
+            <input type="text" id="pembeli" placeholder="Nama Pelanggan (Opsional)">
+          </div>
+          <div class="form-group" style="position: relative;">
+            <label for="produk">Nama Produk</label>
+            <select id="produk" required autocomplete="off">
+                <option value="">Pilih Produk</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="jumlah">Jumlah</label>
+            <input type="number" id="jumlah" min="1" value="1" required>
+          </div>
+          <div class="form-group">
+            <label for="harga">Harga Satuan (Rp)</label>
+            <input type="number" id="harga" min="0" required readonly>
+            	<br></br>
+            <span id="totalHargaDisplay" class="total-harga-display">Total: Rp 0</span>
+          </div>
+          <div class="form-group">
+            <label for="jenis">Jenis Transaksi</label>
+            <select id="jenis" required>
+              <option value="">Pilih Jenis Transaksi</option>
+              <option value="pemasukan">Pemasukan (Penjualan)</option>
+              <option value="pengeluaran">Pengeluaran (Biaya)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="kategori">Kategori</label>
+            <select id="kategori" required>
+              <option value="">Pilih Kategori</option>
+              <option value="Penjualan Online">Penjualan Online</option>
+              <option value="Penjualan Offline">Penjualan Offline</option>
+              <option value="Bahan Baku">Bahan Baku (Kain, label, aksesoris hijab)</option>
+              <option value="Operasional">Operasional</option>
+              <option value="Promosi">Promosi</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="catatan">Catatan (Opsional)</label>
+            <textarea id="catatan" rows="3"></textarea>
+          </div>
+          <button type="submit">Simpan Transaksi</button>
+        </form>
+        <div class="saldoawal-container">
+            <label for="saldoAwal">Saldo Awal Bulan (Rp):</label>
+            <input type="number" id="saldoAwal" min="0" placeholder="Misal: 5000000" style="margin-bottom:8px;"/>
+            <button type="button" id="simpanSaldoAwal">Simpan Saldo Awal</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Ringkasan</h2>
+        <div class="summary-container">
+          <div class="summary-box income-box">
+            <h3>Total Pemasukan</h3>
+            <p id="totalMasuk">Rp 0</p>
+          </div>
+          <div class="summary-box expense-box">
+            <h3>Total Pengeluaran</h3>
+            <p id="totalKeluar">Rp 0</p>
+          </div>
+          <div class="summary-box">
+            <h3>Saldo Bersih</h3>
+            <p id="saldoBersih">Rp 0</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="grafik"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="grafikBulanan"></canvas>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column: 1 / -1;">
+        <h2>Riwayat Transaksi</h2>
+        <div class="backup-restore">
+          <button id="backupJSON" class="btn-export">Backup JSON</button>
+          <input type="file" id="restoreJSON" accept=".json" style="display:none;">
+          <button id="restoreJSONBtn" class="btn-export">Restore JSON</button>
+        </div>
+        <div class="filter-container">
+          <input type="text" id="filterProduk" placeholder="Cari Produk/Catatan">
+          <select id="filterJenis">
+            <option value="">Semua Jenis</option>
+            <option value="pemasukan">Pemasukan</option>
+            <option value="pengeluaran">Pengeluaran</option>
+          </select>
+          <select id="filterKategori">
+            <option value="">Semua Kategori</option>
+            <option value="Penjualan Online">Penjualan Online</option>
+            <option value="Penjualan Offline">Penjualan Offline</option>
+            <option value="Bahan Baku">Bahan Baku</option>
+            <option value="Operasional">Operasional</option>
+            <option value="Promosi">Promosi</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+          <input type="date" id="filterTglMulai">
+          <span style="font-size:13px;color:#888">s/d</span>
+          <input type="date" id="filterTglAkhir">
+          <button id="btnFilter" type="button" style="width:auto;">Cari</button>
+          <button id="btnResetFilter" type="button" style="width:auto;">Reset</button>
+        </div>
+        <div class="export-buttons">
+          <button id="exportCSV" class="btn-export">Export CSV</button>
+          <button id="exportPDF" class="btn-export">Export PDF</button>
+        </div>
+        <div class="table-container" id="transactionTableContainer"></div>
+      </div>
+
+      <div class="card" style="grid-column: 1 / -1;">
+        <h2>Generate Invoice</h2>
+        <div class="form-group">
+          <label for="selectTransaction">Pilih Transaksi</label>
+          <select id="selectTransaction" required>
+            <option value="">-- Pilih Transaksi untuk Invoice --</option>
+          </select>
+        </div>
+        <div id="invoicePreview" style="display: none;">
+          <div class="invoice-container">
+            <!-- Header Invoice -->
+            <div class="invoice-header">
+              <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" alt="Logo FemmeiaCloth, representing the brand identity" style="width: 80px; height: auto; margin-bottom: 10px;" />
+              <h1>FemmeiaCloth</h1>
+              <p>Tamalanrea, Makassar, Indonesia</p>
+              <p>Email: femmeiacloth@gmail.com | Phone: +6285341899229</p>
+            </div>
+
+            <!-- Invoice Title & Date -->
+            <div class="invoice-details">
+              <h3>INVOICE</h3>
+              <div style="text-align: right;">
+                <p><strong>Tanggal:</strong> <span id="invoiceDate">--</span></p>
+              </div>
+            </div>
+
+            <!-- Bill To Section -->
+            <div class="invoice-buyer">
+              <h4>Ditagih Kepada:</h4>
+              <p><span id="invoiceBuyer">Pelanggan</span></p>
+            </div>
+
+            <!-- Items Table -->
+            <table class="invoice-table">
+              <thead>
+                <tr>
+                  <th style="width: 5%;">No.</th>
+                  <th style="width: 40%;">Produk</th>
+                  <th style="width: 10%; text-align: center;">Jumlah</th>
+                  <th style="width: 20%; text-align: right;">Harga Satuan</th>
+                  <th style="width: 25%; text-align: right;">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody id="invoiceItems">
+                <!-- Item akan diisi secara dinamis melalui JavaScript -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4" style="text-align: right;">Total:</td>
+                  <td style="text-align: right;"><span id="invoiceTotal">Rp 0</span></td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <!-- Thank You Note -->
+            <div class="invoice-thankyou">
+              <p>Terima kasih atas kepercayaan Anda kepada FemmeiaCloth.</p>
+              <p>Kami berharap dapat melayani Anda kembali di masa depan.</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="invoice-footer">
+              <p>Invoice ini dibuat pada <span id="printDate">--</span></p>
+            </div>
+          </div>
+          <button id="btnExportInvoicePDF" class="btn-print">Export Invoice ke PDF</button>
+        </div>
+        <p id="noInvoiceMessage" style="text-align: center; color: rgba(0, 0, 0, 0.6); margin-top: 20px;">Pilih transaksi untuk melihat preview invoice.</p>
+      </div>
+
+      <div class="card" style="grid-column: 1 / -1;">
+        <h2>Manajemen Akun</h2>
+        <div class="user-info" id="userInfo"></div>
+        <div class="pw-section">
+          <input type="password" id="newPassword" placeholder="Password Baru">
+          <button id="btnChangePassword">Ganti Password</button>
+        </div>
+        <button class="logout-btn" id="btnLogout">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loginAlert" class="alert"></div>
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Yakin ingin menghapus transaksi ini?</h3>
+      <div class="modal-buttons">
+        <button style="background:#000;color:#fff;box-shadow:none;width:auto;" id="cancelDelete" class="btn-cancel">Batal</button>
+        <button style="width:auto;" id="confirmDelete" class="btn-confirm">Hapus</button>
+      </div>
+    </div>
+  </div>
+  <div id="offlineIndicator" class="offline-indicator">
+    Anda sedang offline. Beberapa fitur mungkin tidak tersedia.
+  </div>
+
+<!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, enableIndexedDbPersistence, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, updatePassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyDVRX1ExILdGhsqsaOcmyOix00PZYMHh04",
+      authDomain: "femmeiadev.firebaseapp.com",
+      projectId: "femmeiadev",
+      storageBucket: "femmeiadev.firebasestorage.app",
+      messagingSenderId: "214287674772",
+      appId: "1:214287674772:web:4c455b47d3dec899687381",
+      measurementId: "G-0ER8S6EFL2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    enableIndexedDbPersistence(db).catch((err) => {
+      if (err.code == 'failed-precondition') {
+        console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+      } else if (err.code == 'unimplemented') {
+        console.log('The current browser does not support all of the features required to enable persistence');
+      }
+    });
+
+    // UI Helper
+    function showAlert(message, isError = false) {
+      const alert = document.getElementById("loginAlert");
+      alert.textContent = message;
+      alert.style.backgroundColor = isError ? "var(--danger-color)" : "var(--success-color)";
+      alert.classList.add("show");
+      setTimeout(() => { alert.classList.remove("show"); }, 1200);
+    }
+    function formatRupiah(angka) {
+      return "Rp " + new Intl.NumberFormat('id-ID').format(angka);
+    }
+    function formatDateIndonesian(date) {
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      return date.toLocaleDateString('id-ID', options);
+    }
+    function groupTransactionsByDate(transactions) {
+      const grouped = {};
+      transactions.forEach(transaction => {
+        const dateStr = formatDateIndonesian(transaction.tanggal);
+        if (!grouped[dateStr]) grouped[dateStr] = [];
+        grouped[dateStr].push(transaction);
+      });
+      return grouped;
+    }
+    // Kategori List
+    const kategoriList = [
+      "Penjualan Online","Penjualan Offline","Bahan Baku","Operasional","Promosi","Lainnya"
+    ];
+
+    // Product List (New)
+    const productList = [
+        { name: "Hijab Paris", price: 35000 },
+        { name: "Earab Inner Ciput", price: 25000 },
+        { name: "Pashmina Kaos", price: 55000 }
+    ];
+
+    // Populate Product Select and Update Total Price Display
+    const productSelect = document.getElementById("produk");
+    const quantityInput = document.getElementById("jumlah");
+    const priceInput = document.getElementById("harga");
+    const totalHargaDisplay = document.getElementById("totalHargaDisplay");
+
+    productList.forEach(product => {
+        const option = document.createElement("option");
+        option.value = product.name;
+        option.textContent = `${product.name} (Rp ${new Intl.NumberFormat('id-ID').format(product.price)})`;
+        productSelect.appendChild(option);
+    });
+
+    function updateTotalHargaDisplay() {
+        const selectedProduct = productList.find(p => p.name === productSelect.value);
+        const quantity = parseInt(quantityInput.value) || 0;
+        let calculatedPrice = 0;
+
+        if (selectedProduct) {
+            calculatedPrice = selectedProduct.price;
+            priceInput.value = calculatedPrice; // Set harga satuan
+        } else {
+            priceInput.value = "";
+        }
+
+        const total = calculatedPrice * quantity;
+        totalHargaDisplay.textContent = `Total: ${formatRupiah(total)}`;
+    }
+
+    productSelect.addEventListener("change", updateTotalHargaDisplay);
+    quantityInput.addEventListener("input", updateTotalHargaDisplay);
+
+    // Initialize total price display on load
+    updateTotalHargaDisplay();
+
+
+    // Filter Pengaturan
+    const filterState = {
+      produk: "",
+      jenis: "",
+      kategori: "",
+      tglMulai: "",
+      tglAkhir: ""
+    };
+    document.getElementById("btnFilter").onclick = function() {
+      filterState.produk = document.getElementById("filterProduk").value;
+      filterState.jenis = document.getElementById("filterJenis").value;
+      filterState.kategori = document.getElementById("filterKategori").value;
+      filterState.tglMulai = document.getElementById("filterTglMulai").value;
+      filterState.tglAkhir = document.getElementById("filterTglAkhir").value;
+      renderTransactionTable();
+    };
+    document.getElementById("btnResetFilter").onclick = function() {
+      document.getElementById("filterProduk").value = "";
+      document.getElementById("filterJenis").value = "";
+      document.getElementById("filterKategori").value = "";
+      document.getElementById("filterTglMulai").value = "";
+      document.getElementById("filterTglAkhir").value = "";
+      filterState.produk = "";
+      filterState.jenis = "";
+      filterState.kategori = "";
+      filterState.tglMulai = "";
+      filterState.tglAkhir = "";
+      renderTransactionTable();
+    };
+
+    // Saldo Awal
+    let saldoAwal = 0;
+    async function loadSaldoAwal() {
+      try {
+        const now = new Date();
+        const ym = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+        const saldoDoc = await getDoc(doc(db, "saldoAwal", ym));
+        saldoAwal = saldoDoc.exists() ? saldoDoc.data().saldo : 0;
+        document.getElementById("saldoAwal").value = saldoAwal || "";
+      } catch {}
+    }
+    document.getElementById("simpanSaldoAwal").onclick = async function() {
+      const val = parseInt(document.getElementById("saldoAwal").value, 10) || 0;
+      const now = new Date();
+      const ym = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+      try {
+        await setDoc(doc(db, "saldoAwal", ym), { saldo: val });
+        saldoAwal = val;
+        renderSummary();
+        showAlert("Saldo awal disimpan!");
+      } catch (e) {
+        showAlert("Gagal simpan saldo awal", true);
+      }
+    };
+
+    // Firebase Transaction Logic
+    let transactions = [];
+    let filteredTransactions = [];
+
+    // Auth State Listener
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Pengguna sudah login, tampilkan aplikasi utama
+        document.getElementById("authContainer").style.display = "none";
+        document.getElementById("appContainer").style.display = "block";
+        showUserInfo();
+        loadSaldoAwal();
+        loadTransactions();
+      } else {
+        // Pengguna belum login, tampilkan halaman login
+        document.getElementById("authContainer").style.display = "flex";
+        document.getElementById("appContainer").style.display = "none";
+      }
+    });
+
+    // Login Function
+    document.getElementById("btnLogin").onclick = async function() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const loginBtn = document.getElementById("btnLogin");
+      if (!email || !password) {
+        showAlert("Email dan Password harus diisi!", true);
+        return;
+      }
+      loginBtn.classList.add("loading");
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Memproses...";
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        showAlert("Berhasil login!");
+        setTimeout(() => {
+          loginBtn.classList.remove("loading");
+          loginBtn.disabled = false;
+          loginBtn.textContent = "Login";
+        }, 1500);
+      } catch (error) {
+        showAlert("Gagal login: " + error.message, true);
+        loginBtn.classList.remove("loading");
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Login";
+      }
+    };
+
+    // Register Function
+    document.getElementById("btnRegister").onclick = async function() {
+      const email = document.getElementById("regEmail").value.trim();
+      const password = document.getElementById("regPassword").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      const registerBtn = document.getElementById("btnRegister");
+      if (!email || !password || !confirmPassword) {
+        showAlert("Semua field harus diisi!", true);
+        return;
+      }
+      if (password !== confirmPassword) {
+        showAlert("Password dan konfirmasi password tidak cocok!", true);
+        return;
+      }
+      if (password.length < 6) {
+        showAlert("Password minimal 6 karakter!", true);
+        return;
+      }
+      registerBtn.classList.add("loading");
+      registerBtn.disabled = true;
+      registerBtn.textContent = "Mendaftar...";
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(userCredential.user);
+        showAlert("Berhasil mendaftar! Silakan cek email Anda untuk verifikasi.");
+        setTimeout(() => {
+          document.getElementById("registerForm").style.display = "none";
+          document.getElementById("loginForm").style.display = "block";
+          registerBtn.classList.remove("loading");
+          registerBtn.disabled = false;
+          registerBtn.textContent = "Daftar";
+        }, 1500);
+      } catch (error) {
+        showAlert("Gagal mendaftar: " + error.message, true);
+        registerBtn.classList.remove("loading");
+        registerBtn.disabled = false;
+        registerBtn.textContent = "Daftar";
+      }
+    };
+
+    // Reset Password Function
+    document.getElementById("btnResetPassword").onclick = async function() {
+      const email = document.getElementById("resetEmail").value.trim();
+      const resetBtn = document.getElementById("btnResetPassword");
+      if (!email) {
+        showAlert("Email harus diisi!", true);
+        return;
+      }
+      resetBtn.classList.add("loading");
+      resetBtn.disabled = true;
+      resetBtn.textContent = "Mengirim...";
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showAlert("Link reset password telah dikirim ke email Anda!");
+        setTimeout(() => {
+          document.getElementById("resetPasswordForm").style.display = "none";
+          document.getElementById("loginForm").style.display = "block";
+          resetBtn.classList.remove("loading");
+          resetBtn.disabled = false;
+          resetBtn.textContent = "Kirim Link Reset Password";
+        }, 1500);
+      } catch (error) {
+        showAlert("Gagal mengirim link reset: " + error.message, true);
+        resetBtn.classList.remove("loading");
+        resetBtn.disabled = false;
+        resetBtn.textContent = "Kirim Link Reset Password";
+      }
+    };
+
+    // Toggle antara form login, register, dan reset password
+    document.getElementById("showRegister").onclick = function() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("registerForm").style.display = "block";
+    };
+    document.getElementById("showLogin").onclick = function() {
+      document.getElementById("registerForm").style.display = "none";
+      document.getElementById("loginForm").style.display = "block";
+    };
+    document.getElementById("forgotPassword").onclick = function() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("resetPasswordForm").style.display = "block";
+    };
+    document.getElementById("showLoginFormReset").onclick = function() {
+      document.getElementById("resetPasswordForm").style.display = "none";
+      document.getElementById("loginForm").style.display = "block";
+    };
+
+    // Hitung saldo pemasukan berjalan (pengeluaran mengurangi pemasukan)
+    function computeSummaryFromList(list) {
+      let pemasukan = 0, pengeluaran = 0;
+      list.sort((a, b) => a.tanggal - b.tanggal);
+      list.forEach(tx => {
+        if (tx.jenis === "pemasukan") {
+          pemasukan += tx.total;
+        } else {
+          pengeluaran += tx.total;
+        }
+      });
+      return { pemasukan, pengeluaran };
+    }
+
+    // Filter
+    function filterTransactions() {
+      let list = [...transactions];
+      if (filterState.produk) {
+        const val = filterState.produk.toLowerCase();
+        list = list.filter(tx => 
+          (tx.produk && tx.produk.toLowerCase().includes(val)) ||
+          (tx.catatan && tx.catatan.toLowerCase().includes(val))
+        );
+      }
+      if (filterState.jenis) list = list.filter(tx => tx.jenis === filterState.jenis);
+      if (filterState.kategori) list = list.filter(tx => tx.kategori === filterState.kategori);
+      if (filterState.tglMulai) {
+        const tglMulai = new Date(filterState.tglMulai);
+        list = list.filter(tx => tx.tanggal >= tglMulai);
+      }
+      if (filterState.tglAkhir) {
+        const tglAkhir = new Date(filterState.tglAkhir);
+        tglAkhir.setHours(23,59,59,999);
+        list = list.filter(tx => tx.tanggal <= tglAkhir);
+      }
+      return list;
+    }
+
+    // Load
+    async function loadTransactions() {
+      try {
+        const q = query(collection(db, "transactions"), orderBy("tanggal", "asc"));
+        const querySnapshot = await getDocs(q);
+        transactions = [];
+        querySnapshot.forEach((docu) => {
+          const data = docu.data();
+          transactions.push({
+            id: docu.id,
+            ...data,
+            tanggal: data.tanggal.toDate()
+          });
+        });
+        renderSummary();
+        renderTransactionTable();
+        renderInvoiceDropdown();
+      } catch (error) {
+        showAlert("Gagal memuat transaksi: " + error.message, true);
+      }
+    }
+
+    // Render
+    function renderSummary() {
+      const { pemasukan, pengeluaran } = computeSummaryFromList([...transactions]);
+      document.getElementById("totalMasuk").textContent = formatRupiah(pemasukan);
+      document.getElementById("totalKeluar").textContent = formatRupiah(pengeluaran);
+      document.getElementById("saldoBersih").textContent = formatRupiah((saldoAwal||0) + pemasukan - pengeluaran);
+      renderChart(pemasukan, pengeluaran);
+      renderMonthlyChart();
+    }
+    function renderTransactionTable() {
+      filteredTransactions = filterTransactions();
+      const container = document.getElementById("transactionTableContainer");
+      container.innerHTML = "";
+      if (filteredTransactions.length === 0) {
+        container.innerHTML = `<p style="text-align: center; padding: 20px;">Belum ada data transaksi</p>`;
+        return;
+      }
+      const grouped = groupTransactionsByDate(filteredTransactions.slice().sort((a, b) => b.tanggal - a.tanggal));
+      for (const [dateStr, dateTransactions] of Object.entries(grouped)) {
+        const dateHeader = document.createElement("div");
+        dateHeader.className = "date-header";
+        dateHeader.textContent = dateStr;
+        container.appendChild(dateHeader);
+        const table = document.createElement("table");
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Produk</th>
+                    <th>Pelanggan</th>
+                    <th>Jumlah</th>
+                    <th>Harga Satuan</th>
+                    <th>Total</th>
+                    <th>Jenis</th>
+                    <th>Kategori</th>
+                    <th>Catatan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+        const tbody = table.querySelector("tbody");
+        dateTransactions.forEach(transaction => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+                <td>${transaction.produk}</td>
+                <td>${transaction.pembeli || "-"}</td>
+                <td>${transaction.jumlah}</td>
+                <td>${formatRupiah(transaction.harga)}</td>
+                <td>${formatRupiah(transaction.total)}</td>
+                <td>${transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
+                <td>${transaction.kategori || "-"}</td>
+                <td>${transaction.catatan || "-"}</td>
+                <td>
+                    <button class="btn-delete" data-id="${transaction.id}">X</button>
+                </td>
+            `;
+          tbody.appendChild(tr);
+        });
+        container.appendChild(table);
+      }
+      document.querySelectorAll(".btn-delete").forEach(button => {
+        button.addEventListener("click", function() {
+          const transactionId = this.getAttribute("data-id");
+          showDeleteConfirmation(transactionId);
+        });
+      });
+    }
+
+    // Fungsi untuk mengisi dropdown transaksi di bagian Generate Invoice
+    function renderInvoiceDropdown() {
+      const select = document.getElementById("selectTransaction");
+      select.innerHTML = '<option value="">-- Pilih Transaksi untuk Invoice --</option>';
+      transactions.slice().sort((a, b) => b.tanggal - a.tanggal).forEach(transaction => {
+        const option = document.createElement("option");
+        option.value = transaction.id;
+        option.textContent = `${formatDateIndonesian(transaction.tanggal)} - ${transaction.produk} - ${formatRupiah(transaction.total)}`;
+        select.appendChild(option);
+      });
+    }
+
+    // Fungsi untuk menampilkan invoice berdasarkan transaksi yang dipilih
+    function renderInvoice(transactionId) {
+      const transaction = transactions.find(tx => tx.id === transactionId);
+      if (!transaction) {
+        document.getElementById("noInvoiceMessage").style.display = "block";
+        document.getElementById("invoicePreview").style.display = "none";
+        return;
+      }
+
+      document.getElementById("noInvoiceMessage").style.display = "none";
+      document.getElementById("invoicePreview").style.display = "block";
+
+      // Isi data invoice
+      document.getElementById("invoiceDate").textContent = formatDateIndonesian(transaction.tanggal);
+      document.getElementById("invoiceBuyer").textContent = transaction.pembeli || "Pelanggan";
+      document.getElementById("invoiceTotal").textContent = formatRupiah(transaction.total);
+      document.getElementById("printDate").textContent = formatDateIndonesian(new Date());
+
+      // Isi daftar item (hanya satu item per transaksi untuk saat ini)
+      const tbody = document.getElementById("invoiceItems");
+      tbody.innerHTML = `
+        <tr>
+          <td>1</td>
+          <td>${transaction.produk}</td>
+          <td style="text-align: center;">${transaction.jumlah}</td>
+          <td style="text-align: right;">${formatRupiah(transaction.harga)}</td>
+          <td style="text-align: right;">${formatRupiah(transaction.total)}</td>
+        </tr>
+      `;
+    }
+
+    // Event listener untuk dropdown transaksi
+    document.getElementById("selectTransaction").addEventListener("change", function() {
+      const transactionId = this.value;
+      if (transactionId) {
+        renderInvoice(transactionId);
+      } else {
+        document.getElementById("noInvoiceMessage").style.display = "block";
+        document.getElementById("invoicePreview").style.display = "none";
+      }
+    });
+
+    // Fungsi untuk memuat jspdf secara asinkron
+    async function loadJsPDF() {
+      return new Promise((resolve, reject) => {
+        if (typeof jspdf !== 'undefined') {
+          resolve();
+          return;
+        }
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+// Fungsi untuk export invoice ke PDF
+document.getElementById("btnExportInvoicePDF").addEventListener("click", async function() {
+  const transactionId = document.getElementById("selectTransaction").value;
+  const exportButton = document.getElementById("btnExportInvoicePDF");
+  
+  if (!transactionId) {
+    showAlert("Pilih transaksi terlebih dahulu!", true);
+    return;
+  }
+  
+  const transaction = transactions.find(tx => tx.id === transactionId);
+  if (!transaction) {
+    showAlert("Transaksi tidak ditemukan!", true);
+    return;
+  }
+
+  // Nonaktifkan tombol untuk mencegah double click/download
+  exportButton.disabled = true;
+  exportButton.textContent = "Memproses...";
+
+  try {
+    await loadJsPDF();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const marginX = 20;
+    const marginY = 20;
+    let yPos = marginY;
+
+    // Header Perusahaan
+    doc.setFontSize(24);
+    doc.setTextColor(31, 41, 55); // accent-dark
+    doc.text('FemmeiaCloth', pageWidth / 2, yPos, { align: 'center' });
+    yPos += 8;
+    doc.setFontSize(10);
+    doc.setTextColor(102, 102, 102); // accent-mid
+    doc.text('Tamalanrea, Makassar, Indonesia', pageWidth / 2, yPos, { align: 'center' });
+    yPos += 5;
+    doc.text('Email: femmeiacloth@gmail.com | Phone: +6285341899229', pageWidth / 2, yPos, { align: 'center' });
+    yPos += 15;
+
+    // Garis Pemisah
+    doc.setDrawColor(224, 224, 224); // accent-light
+    doc.setLineWidth(0.5);
+    doc.line(marginX, yPos, pageWidth - marginX, yPos);
+    yPos += 10;
+
+    // Judul Invoice dan Detail
+    doc.setFontSize(18);
+    doc.setTextColor(31, 41, 55); // accent-dark
+    doc.text('INVOICE', marginX, yPos);
+    doc.setFontSize(10);
+    doc.setTextColor(102, 102, 102); // accent-mid
+    doc.text(`Tanggal: ${formatDateIndonesian(transaction.tanggal)}`, pageWidth - marginX, yPos, { align: 'right' });
+    yPos += 5;
+    doc.text(`Nomor Invoice: INV-${transactionId.slice(0, 8).toUpperCase()}`, pageWidth - marginX, yPos, { align: 'right' });
+    yPos += 15;
+
+    // Ditagih Kepada
+    doc.setFontSize(12);
+    doc.setTextColor(31, 41, 55); // accent-dark
+    doc.text('Ditagih Kepada:', marginX, yPos);
+    yPos += 6;
+    doc.setFontSize(11);
+    doc.setTextColor(51, 51, 51); // text-color
+    doc.text(transaction.pembeli || 'Pelanggan', marginX, yPos);
+    yPos += 15;
+
+    // Tabel Item Header
+    doc.setFillColor(245, 245, 245); // Light gray background for header
+    doc.rect(marginX, yPos, pageWidth - (2 * marginX), 8, 'F');
+    doc.setFontSize(10);
+    doc.setTextColor(31, 41, 55); // accent-dark
+    
+    const tableHeaders = ['No.', 'Produk', 'Jumlah', 'Harga Satuan', 'Subtotal'];
+    const tableColWidths = [10, 70, 20, 35, 35]; // Adjusted widths for better fit
+    let currentX = marginX;
+    tableHeaders.forEach((header, i) => {
+        if (i === 2) { // Jumlah
+            doc.text(header, currentX + tableColWidths[i] / 2, yPos + 5, { align: 'center' });
+        } else if (i > 2) { // Harga Satuan, Subtotal
+            doc.text(header, currentX + tableColWidths[i] - 2, yPos + 5, { align: 'right' });
+        } else {
+            doc.text(header, currentX + 2, yPos + 5);
+        }
+        currentX += tableColWidths[i];
+    });
+    yPos += 8;
+
+        // Tabel Item Baris
+    doc.setFontSize(10);
+    doc.setTextColor(51, 51, 51); // text-color
+    
+    // Set fill color to white for the row background
+    doc.setFillColor(255, 255, 255); 
+    doc.rect(marginX, yPos, pageWidth - (2 * marginX), 8, 'F'); // Draw white background for the row
+
+    currentX = marginX;
+    const itemData = ['1', transaction.produk, transaction.jumlah.toString(), formatRupiah(transaction.harga), formatRupiah(transaction.total)];
+    itemData.forEach((data, i) => {
+        if (i === 2) { // Jumlah
+            doc.text(data, currentX + tableColWidths[i] / 2, yPos + 5, { align: 'center' });
+        } else if (i > 2) { // Harga Satuan, Subtotal
+            doc.text(data, currentX + tableColWidths[i] - 2, yPos + 5, { align: 'right' });
+        } else {
+            doc.text(data, currentX + 2, yPos + 5);
+        }
+        currentX += tableColWidths[i];
+    });
+    yPos += 8;
+
+
+    // Garis bawah tabel
+    doc.setDrawColor(180, 180, 180);
+    doc.setLineWidth(0.1);
+    doc.line(marginX, yPos, pageWidth - marginX, yPos);
+    yPos += 5;
+
+    // Total
+    doc.setFontSize(12);
+    doc.setTextColor(31, 41, 55); // accent-dark
+    doc.text('Total:', pageWidth - marginX - tableColWidths[4] - 5, yPos); // Adjust position
+    doc.text(formatRupiah(transaction.total), pageWidth - marginX, yPos, { align: 'right' });
+    yPos += 20;
+
+    // Catatan Terima Kasih
+    doc.setFontSize(10);
+    doc.setTextColor(102, 102, 102); // accent-mid
+    doc.text('Terima kasih atas kepercayaan Anda kepada FemmeiaCloth.', pageWidth / 2, yPos, { align: 'center' });
+    yPos += 5;
+    doc.text('Kami berharap dapat melayani Anda kembali di masa depan.', pageWidth / 2, yPos, { align: 'center' });
+    yPos += 20;
+
+    // Footer
+    doc.setDrawColor(224, 224, 224); // accent-light
+    doc.setLineWidth(0.5);
+    doc.line(marginX, pageHeight - marginY - 10, pageWidth - marginX, pageHeight - marginY - 10);
+    doc.setFontSize(9);
+    doc.setTextColor(102, 102, 102); // accent-mid
+    doc.text(`Invoice ini dibuat pada ${formatDateIndonesian(new Date())}`, pageWidth / 2, pageHeight - marginY + 5, { align: 'center' });
+
+    // Simpan PDF
+    doc.save(`invoice_${transaction.produk.replace(/ /g, '_')}_${formatDateIndonesian(transaction.tanggal).replace(/ /g, '_')}.pdf`);
+    showAlert("Invoice berhasil diekspor ke PDF!");
+  } catch (error) {
+    console.error("Gagal export invoice ke PDF:", error);
+    showAlert("Gagal export invoice ke PDF: " + error.message, true);
+  } finally {
+    // Aktifkan kembali tombol setelah proses selesai
+    exportButton.disabled = false;
+    exportButton.textContent = "Export Invoice ke PDF";
+  }
+});
+
+
+    // Chart
+    let myChart = null;
+    let myMonthlyChart = null;
+    async function loadChartJS() {
+      if (window.Chart) return;
+      return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        script.onload = () => resolve();
+        document.head.appendChild(script);
+      });
+    }
+    async function renderChart(pemasukan, pengeluaran) {
+      await loadChartJS();
+      const ctx = document.getElementById('grafik').getContext('2d');
+      if (myChart) myChart.destroy();
+      myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Pemasukan', 'Pengeluaran'],
+          datasets: [{
+            data: [pemasukan, pengeluaran],
+            backgroundColor: [
+              'rgba(0, 184, 148, 0.7)',
+              'rgba(214, 48, 49, 0.7)'
+            ],
+            borderColor: [
+              'rgba(0, 184, 148, 1)',
+              'rgba(214, 48, 49, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  return `${label}: ${formatRupiah(value)}`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    async function renderMonthlyChart() {
+      await loadChartJS();
+      const ctx = document.getElementById('grafikBulanan').getContext('2d');
+      if (myMonthlyChart) myMonthlyChart.destroy();
+      // Hitung pemasukan & pengeluaran per bulan
+      const monthly = {};
+      transactions.forEach(tx => {
+        const ym = `${tx.tanggal.getFullYear()}-${String(tx.tanggal.getMonth()+1).padStart(2,"0")}`;
+        if (!monthly[ym]) monthly[ym] = { pemasukan: 0, pengeluaran: 0 };
+        if (tx.jenis === "pemasukan") monthly[ym].pemasukan += tx.total;
+        else monthly[ym].pengeluaran += tx.total;
+      });
+      const labels = Object.keys(monthly).sort();
+      const pemasukanData = labels.map(l => monthly[l].pemasukan);
+      const pengeluaranData = labels.map(l => monthly[l].pengeluaran);
+      myMonthlyChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            { label: 'Pemasukan', data: pemasukanData, backgroundColor: 'rgba(0,184,148,0.7)' },
+            { label: 'Pengeluaran', data: pengeluaranData, backgroundColor: 'rgba(214,48,49,0.7)' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } },
+          scales: { y: { beginAtZero: true, ticks: { callback: v=>formatRupiah(v) } } }
+        }
+      });
+    }
+
+    // Form submit
+    document.getElementById("formTransaksi").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const pembeli = document.getElementById("pembeli").value.trim();
+      const produk = document.getElementById("produk").value.trim();
+      const jumlah = parseInt(document.getElementById("jumlah").value, 10);
+      const harga = parseInt(document.getElementById("harga").value, 10);
+      const jenis = document.getElementById("jenis").value;
+      const kategori = document.getElementById("kategori").value;
+      const catatan = document.getElementById("catatan").value.trim();
+      const total = jumlah * harga;
+      const tanggal = new Date();
+
+      if (!produk || !jumlah || !harga || !jenis || !kategori) {
+          showAlert("Mohon lengkapi semua field yang wajib diisi!", true);
+          return;
+      }
+
+      try {
+        const docRef = await addDoc(collection(db, "transactions"), {
+          pembeli, produk, jumlah, harga, total, jenis, kategori, catatan, tanggal
+        });
+        transactions.push({
+          id: docRef.id,
+          pembeli, produk, jumlah, harga, total, jenis, kategori, catatan, tanggal
+        });
+        renderSummary();
+        renderTransactionTable();
+        renderInvoiceDropdown();
+        showAlert("Transaksi berhasil disimpan!");
+        this.reset();
+        document.getElementById("harga").value = ""; // Clear auto-filled price
+        updateTotalHargaDisplay(); // Reset total display
+      } catch (error) {
+        showAlert("Gagal menyimpan transaksi: " + error.message, true);
+      }
+    });
+
+    // Delete konfirmasi 
+    let deleteTransactionId = null;
+    function showDeleteConfirmation(id) {
+      deleteTransactionId = id;
+      document.getElementById("confirmModal").style.display = "flex";
+    }
+    document.getElementById("cancelDelete").addEventListener("click", function() {
+      document.getElementById("confirmModal").style.display = "none";
+      deleteTransactionId = null;
+    });
+    document.getElementById("confirmDelete").addEventListener("click", async function() {
+      if (deleteTransactionId) {
+        try {
+          await deleteDoc(doc(db, "transactions", deleteTransactionId));
+          transactions = transactions.filter(tx => tx.id !== deleteTransactionId);
+          renderSummary();
+          renderTransactionTable();
+          renderInvoiceDropdown();
+          showAlert("Transaksi berhasil dihapus!");
+        } catch (error) {
+          showAlert("Gagal menghapus transaksi: " + error.message, true);
+        }
+      } else {
+        showAlert("ID transaksi tidak ditemukan!", true);
+      }
+      document.getElementById("confirmModal").style.display = "none";
+    });
+
+    // User Info dan Logout
+    document.getElementById("btnLogout").addEventListener("click", async function() {
+      try {
+        await signOut(auth);
+        showAlert("Berhasil logout");
+        window.location.reload();
+      } catch (error) {
+        showAlert("Gagal logout: " + error.message, true);
+      }
+    });
+    document.getElementById("btnChangePassword").addEventListener("click", async function() {
+      const newPwd = document.getElementById("newPassword").value.trim();
+      if (newPwd.length < 6) {
+        showAlert("Password minimal 6 karakter!", true);
+        return;
+      }
+      try {
+        await updatePassword(auth.currentUser, newPwd);
+        showAlert("Password berhasil diubah!");
+        document.getElementById("newPassword").value = "";
+      } catch (error) {
+        showAlert("Gagal ubah password: " + error.message, true);
+      }
+    });
+    function showUserInfo() {
+      const user = auth.currentUser;
+      document.getElementById("userInfo").innerHTML = user ? 
+        `Login sebagai: <strong>${user.email}</strong>` : "";
+    }
+
+    // Offline Indicator
+    window.addEventListener('offline', () => {
+      document.getElementById('offlineIndicator').style.display = 'block';
+    });
+    window.addEventListener('online', () => {
+      document.getElementById('offlineIndicator').style.display = 'none';
+    });
+
+    // Backup & Restore
+    document.getElementById("backupJSON").onclick = function() {
+      const backupData = { transactions };
+      const blob = new Blob([JSON.stringify(backupData)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `femmeiatracker_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+    document.getElementById("restoreJSONBtn").onclick = function() {
+      document.getElementById("restoreJSON").click();
+    };
+    document.getElementById("restoreJSON").onchange = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.transactions && Array.isArray(data.transactions)) {
+            transactions = data.transactions.map(tx => ({
+              ...tx,
+              tanggal: new Date(tx.tanggal)
+            }));
+            renderSummary();
+            renderTransactionTable();
+            renderInvoiceDropdown();
+            showAlert("Data berhasil direstore!");
+          } else {
+            showAlert("Format file tidak valid!", true);
+          }
+        } catch (err) {
+          showAlert("Gagal restore data: " + err.message, true);
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    // Export to CSV
+    document.getElementById("exportCSV").onclick = function() {
+      if (filteredTransactions.length === 0) {
+        showAlert("Tidak ada data untuk diexport!", true);
+        return;
+      }
+      const rows = [
+        ["Tanggal","Pembeli","Produk","Jumlah","Harga Satuan","Total","Jenis","Kategori","Catatan"].join(","),
+        ...filteredTransactions.map(tx => [
+          formatDateIndonesian(tx.tanggal),
+          tx.pembeli || "-",
+          tx.produk,
+          tx.jumlah,
+          tx.harga,
+          tx.total,
+          tx.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
+          tx.kategori || "-",
+          tx.catatan || "-"
+        ].map(field => `"${field}"`).join(","))
+      ].join("\n");
+      const blob = new Blob([rows], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `femmeiatracker_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
+    // Export to PDF (desain ulang dengan tampilan modern dan rapi)
+    document.getElementById("exportPDF").onclick = async function() {
+      if (filteredTransactions.length === 0) {
+        showAlert("Tidak ada data untuk diexport!", true);
+        return;
+      }
+      try {
+        await loadJsPDF();
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+          orientation: 'landscape', // Menggunakan orientasi landscape untuk tabel yang lebih lebar
+          unit: 'mm'
+        });
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const marginX = 15;
+        const marginY = 15;
+        let yPos = marginY;
+
+        // Fungsi untuk menambahkan header di setiap halaman
+        function addHeader() {
+          doc.setFillColor(245, 245, 245); // Lighter background
+          doc.rect(0, 0, pageWidth, 18, 'F');
+          doc.setFontSize(16);
+          doc.setTextColor(0, 0, 0);
+          doc.text('FemmeiaCloth - Laporan Riwayat Transaksi', pageWidth / 2, 11, { align: 'center' });
+          doc.setFontSize(10);
+          doc.setTextColor(100, 100, 100);
+          doc.text(`Tanggal Cetak: ${formatDateIndonesian(new Date())}`, pageWidth - marginX - 50, 11);
+          yPos = marginY + 20;
+        }
+
+        // Fungsi untuk menambahkan footer di setiap halaman
+        function addFooter(pageNumber, totalPages) {
+          doc.setFontSize(9);
+          doc.setTextColor(100, 100, 100);
+          doc.text(`Halaman ${pageNumber} dari ${totalPages}`, pageWidth / 2, pageHeight - marginY, { align: 'center' });
+          doc.text('Email: femmeiacloth@gmail.com | Phone: +6285341899229', pageWidth / 2, pageHeight - marginY + 5, { align: 'center' });
+        }
+
+        // Tambahkan header untuk halaman pertama
+        addHeader();
+
+        // Tambahkan judul laporan
+        doc.setFontSize(14);
+        doc.setTextColor(0, 0, 0);
+        doc.text('Ringkasan Transaksi', marginX, yPos);
+        yPos += 10;
+
+        // Ringkasan Total (seperti di UI)
+        const { pemasukan, pengeluaran } = computeSummaryFromList([...filteredTransactions]);
+        doc.setFontSize(11);
+        doc.setFillColor(220, 240, 230); // Light green tone
+        doc.rect(marginX, yPos, 80, 8, 'F');
+        doc.text(`Total Pemasukan: ${formatRupiah(pemasukan)}`, marginX + 5, yPos + 5);
+        yPos += 8;
+
+        doc.setFillColor(240, 220, 220); // Light red tone
+        doc.rect(marginX, yPos, 80, 8, 'F');
+        doc.text(`Total Pengeluaran: ${formatRupiah(pengeluaran)}`, marginX + 5, yPos + 5);
+        yPos += 8;
+
+        doc.setFillColor(235, 235, 240); // Light gray tone
+        doc.rect(marginX, yPos, 80, 8, 'F');
+        doc.text(`Saldo Bersih: ${formatRupiah((saldoAwal||0) + pemasukan - pengeluaran)}`, marginX + 5, yPos + 5);
+        yPos += 15;
+
+        // Tabel Header
+        doc.setFontSize(11);
+        doc.setFillColor(245, 245, 245); // Lighter gray for header
+        doc.rect(marginX, yPos, pageWidth - marginX - marginX, 10, 'F');
+        let xPos = marginX + 3;
+        const headers = ["Tanggal", "Pembeli", "Produk", "Jumlah", "Harga Satuan", "Total", "Jenis", "Kategori", "Catatan"];
+        const colWidths = [25, 25, 30, 15, 25, 25, 20, 20, 30];
+        headers.forEach((header, i) => {
+          doc.text(header, xPos, yPos + 6);
+          xPos += colWidths[i];
+        });
+        yPos += 10;
+
+        // Isi data transaksi
+        let pageNumber = 1;
+        let totalPages = 1; // Akan diupdate nanti
+        filteredTransactions.forEach((tx, i) => {
+          if (yPos > pageHeight - marginY - 10) {
+            addFooter(pageNumber, totalPages);
+            doc.addPage();
+            pageNumber++;
+            addHeader();
+            // Tabel Header di halaman baru
+            doc.setFillColor(245, 245, 245);
+            doc.rect(marginX, yPos, pageWidth - marginX - marginX, 10, 'F');
+            xPos = marginX + 3;
+            headers.forEach((header, j) => {
+              doc.text(header, xPos, yPos + 6);
+              xPos += colWidths[j];
+            });
+            yPos += 10;
+          }
+          // Baris data
+          doc.setFontSize(10);
+          doc.setFillColor(i % 2 === 0 ? 255 : 250, i % 2 === 0 ? 255 : 250, i % 2 === 0 ? 255 : 250);
+          doc.rect(marginX, yPos, pageWidth - marginX - marginX, 10, 'F');
+          // Gambar border untuk tiap kolom
+          doc.setDrawColor(200, 200, 200);
+          doc.setLineWidth(0.1);
+          let xPosTemp = marginX;
+          colWidths.forEach(w => {
+            doc.line(xPosTemp, yPos, xPosTemp, yPos + 10);
+            xPosTemp += w;
+          });
+          doc.line(marginX, yPos, pageWidth - marginX, yPos);
+          doc.line(marginX, yPos + 10, pageWidth - marginX, yPos + 10);
+          // Isi data
+          xPos = marginX + 3;
+          const rowData = [
+            formatDateIndonesian(tx.tanggal),
+            tx.pembeli || "-",
+            tx.produk,
+            tx.jumlah.toString(),
+            formatRupiah(tx.harga),
+            formatRupiah(tx.total),
+            tx.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
+            tx.kategori || "-",
+            tx.catatan || "-"
+          ];
+          rowData.forEach((data, j) => {
+            const lines = doc.splitTextToSize(data, colWidths[j] - 5);
+            doc.text(lines[0] || "", xPos, yPos + 6);
+            xPos += colWidths[j];
+          });
+          yPos += 10;
+        });
+
+        // Hitung total halaman setelah semua konten ditambahkan
+        totalPages = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+          doc.setPage(i);
+          addFooter(i, totalPages);
+        }
+
+        // Simpan file
+        doc.save(`femmeiatracker_${new Date().toISOString().slice(0,10)}.pdf`);
+        showAlert("Berhasil export data ke PDF!");
+      } catch (err) {
+        console.error("Gagal export PDF:", err);
+        showAlert("Gagal export PDF: " + err.message, true);
+      }
+    };
+  </script>
+  
+</body>
+</html>
