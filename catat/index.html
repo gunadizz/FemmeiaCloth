@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checklist Perlengkapan KKN</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Optional: Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* PASTE ALL CSS FROM STEP 2 AND 3 HERE */
         * {
@@ -31,6 +33,7 @@
             --success: #059669;
             --error: #dc2626;
             --warning: #fbbf24;
+            --info: #3b82f6; /* New color for info alerts */
 
             /* Glassmorphism Efek */
             --glass-bg: rgba(255, 255, 255, 0.2);
@@ -61,6 +64,7 @@
             --z-sticky: 999;
             --z-nav: 1000;
             --z-modal: 2000;
+            --z-toast: 3000; /* New z-index for toasts */
         }
 
         body {
@@ -73,6 +77,7 @@
             overflow-x: hidden;
             line-height: 1.6;
             position: relative;
+            padding-bottom: 70px; /* Space for bottom nav */
         }
 
         body::before {
@@ -130,7 +135,8 @@
         input[type="password"],
         input[type="text"],
         textarea,
-        input[type="file"] { /* Added input[type="file"] */
+        input[type="file"],
+        select { /* Added select */
             width: 100%;
             padding: 10px;
             border: 1px solid var(--border);
@@ -146,7 +152,8 @@
         input[type="password"]:focus,
         input[type="text"]:focus,
         textarea:focus,
-        input[type="file"]:focus {
+        input[type="file"]:focus,
+        select:focus {
             outline: none;
             border-color: var(--accent-dark);
             box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
@@ -304,40 +311,61 @@
             gap: 10px;
         }
 
-        .alert {
-            padding: 10px;
+        /* Toast Notifications */
+        #toastContainer {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: var(--z-toast);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 90%;
+            max-width: 400px;
+            pointer-events: none; /* Allow clicks through */
+        }
+
+        .toast {
+            background-color: var(--surface);
+            color: var(--text);
+            padding: 12px 20px;
             border-radius: var(--radius-sm);
-            margin-bottom: 15px;
-            text-align: center;
+            box-shadow: var(--shadow);
             opacity: 0;
-            animation: fadeInOut 3.5s forwards; /* Animation for alerts */
+            animation: toastIn 0.3s forwards, toastOut 0.3s forwards var(--toast-duration, 3s);
+            pointer-events: auto; /* Re-enable clicks for the toast itself */
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .alert-error {
-            background-color: rgba(220, 38, 38, 0.1);
-            color: var(--error);
+        .toast.success { background-color: rgba(5, 150, 105, 0.9); color: white; }
+        .toast.error { background-color: rgba(220, 38, 38, 0.9); color: white; }
+        .toast.warning { background-color: rgba(251, 191, 36, 0.9); color: white; }
+        .toast.info { background-color: rgba(59, 130, 246, 0.9); color: white; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .alert-success {
-            background-color: rgba(5, 150, 105, 0.1);
-            color: var(--success);
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
         }
 
-        .alert-warning {
-            background-color: rgba(251, 191, 36, 0.1);
-            color: var(--warning);
-        }
 
         .hidden {
             display: none;
         }
 
         /* Animation for section transitions */
-        .auth-container, .checklist-container {
+        .auth-container, .checklist-container, .add-item-section, .account-management-section, .data-io-section {
             animation: slideInFromTop 0.6s ease-out forwards;
         }
 
-        .auth-container.hidden, .checklist-container.hidden {
+        .auth-container.hidden, .checklist-container.hidden, .add-item-section.hidden, .account-management-section.hidden, .data-io-section.hidden {
             animation: slideOutToBottom 0.6s ease-in forwards;
         }
 
@@ -551,6 +579,149 @@
             from { opacity: 1; transform: translateX(0); }
             to { opacity: 0; transform: translateX(20px); }
         }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--surface);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 60px;
+            z-index: var(--z-nav);
+            border-top-left-radius: var(--radius-md);
+            border-top-right-radius: var(--radius-md);
+            backdrop-filter: blur(var(--blur-light));
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 5px 0;
+            transition: color var(--transition-speed);
+            cursor: pointer;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active {
+            color: var(--accent-dark);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: var(--z-modal);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-speed);
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--background);
+            padding: 25px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-intense);
+            width: 90%;
+            max-width: 400px;
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: transform var(--transition-speed), opacity var(--transition-speed);
+        }
+
+        .modal-overlay.visible .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: var(--accent-dark);
+            text-align: center;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .modal-buttons .btn {
+            width: auto;
+            padding: 10px 20px;
+            min-height: auto;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 20px;
+            background-color: var(--background-lighter);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            height: 20px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--success);
+            border-radius: var(--radius-sm);
+            transition: width 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Sort Controls */
+        .sort-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .sort-controls label {
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+
+        .sort-controls select {
+            flex: 1;
+            min-width: 120px;
+        }
     </style>
 </head>
 <body>
@@ -599,9 +770,10 @@
             </div>
         </div>
 
-        <!-- Checklist Section -->
-        <div id="checklistSection" class="hidden">
-            <div class="checklist-container">
+        <!-- Main Content Sections (controlled by bottom nav) -->
+        <div id="mainContentSections">
+            <!-- Checklist Section -->
+            <div id="checklistSection" class="checklist-container hidden">
                 <div class="header-controls">
                     <button id="logoutBtn" class="btn btn-secondary btn-small">Logout</button>
                     <button id="resetBtn" class="btn btn-danger btn-small">Reset Checklist</button>
@@ -609,6 +781,11 @@
                 </div>
                 <h1>Checklist Perlengkapan KKN</h1>
                 <div id="alertContainerChecklist"></div> <!-- Alert for checklist section -->
+
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
 
                 <!-- Search and Filter Controls -->
                 <div class="search-filter-controls">
@@ -620,45 +797,103 @@
                     </div>
                 </div>
 
+                <!-- Sort Controls -->
+                <div class="sort-controls">
+                    <label for="sortCategory">Urutkan Kategori:</label>
+                    <select id="sortCategory">
+                        <option value="default">Default</option>
+                        <option value="az">A-Z</option>
+                        <option value="za">Z-A</option>
+                    </select>
+                    <label for="sortItem">Urutkan Item:</label>
+                    <select id="sortItem">
+                        <option value="default">Default</option>
+                        <option value="az">A-Z</option>
+                        <option value="za">Z-A</option>
+                        <option value="checked">Selesai Dulu</option>
+                        <option value="unchecked">Belum Selesai Dulu</option>
+                    </select>
+                </div>
+
                 <div id="checklistContent"></div>
+            </div>
 
-                <!-- Add Item/Category Section -->
-                <div class="add-item-section">
-                    <h2>Tambah Kategori/Perlengkapan Lain</h2>
-                    <div class="form-group">
-                        <input type="text" id="newCategoryName" placeholder="Nama Kategori Baru (Opsional)">
-                        <textarea id="newItemNames" rows="3" placeholder="Nama Perlengkapan Baru (pisahkan dengan koma atau baris baru)" required></textarea>
-                        <button id="addItemBtn" class="btn btn-small">Tambah</button>
-                    </div>
+            <!-- Add Item/Category Section -->
+            <div id="addItemSection" class="add-item-section hidden">
+                <h2>Tambah Kategori/Perlengkapan</h2>
+                <div class="form-group">
+                    <label for="newCategoryName">Nama Kategori Baru (Opsional):</label>
+                    <input type="text" id="newCategoryName" placeholder="Contoh: Dokumen Penting">
                 </div>
-
-                <!-- Account Management Section -->
-                <div class="account-management-section">
-                    <h2>Pengaturan Akun</h2>
-                    <form id="changePasswordForm">
-                        <div class="form-group">
-                            <label for="newPassword">Password Baru:</label>
-                            <input type="password" id="newPassword" required minlength="6">
-                        </div>
-                        <button type="submit" class="btn btn-small">Ubah Password</button>
-                    </form>
-                    <button id="deleteAccountBtn" class="btn btn-danger btn-small" style="margin-top: 15px;">Hapus Akun</button>
+                <div class="form-group">
+                    <label for="newItemNames">Nama Perlengkapan Baru (pisahkan dengan koma atau baris baru):</label>
+                    <textarea id="newItemNames" rows="5" placeholder="Contoh: KTP, Kartu Mahasiswa, Surat Izin"></textarea>
                 </div>
+                <button id="addItemBtn" class="btn">Tambah Perlengkapan</button>
+            </div>
 
-                <!-- Data Import/Export Section -->
-                <div class="data-io-section">
-                    <h2>Impor/Ekspor Data</h2>
+            <!-- Account Management Section -->
+            <div id="accountSection" class="account-management-section hidden">
+                <h2>Pengaturan Akun</h2>
+                <form id="changePasswordForm">
                     <div class="form-group">
-                        <button id="exportDataBtn" class="btn btn-small">Ekspor Data (JSON)</button>
+                        <label for="newPassword">Password Baru:</label>
+                        <input type="password" id="newPassword" required minlength="6">
                     </div>
-                    <div class="form-group">
-                        <input type="file" id="importFileInput" accept=".json">
-                        <button id="importDataBtn" class="btn btn-small">Impor Data (JSON)</button>
-                    </div>
+                    <button type="submit" class="btn">Ubah Password</button>
+                </form>
+                <button id="deleteAccountBtn" class="btn btn-danger" style="margin-top: 15px;">Hapus Akun</button>
+            </div>
+
+            <!-- Data Import/Export Section -->
+            <div id="dataIoSection" class="data-io-section hidden">
+                <h2>Impor/Ekspor Data</h2>
+                <div class="form-group">
+                    <button id="exportDataBtn" class="btn">Ekspor Data (JSON)</button>
+                </div>
+                <div class="form-group">
+                    <label for="importFileInput">Pilih file JSON untuk diimpor:</label>
+                    <input type="file" id="importFileInput" accept=".json">
+                    <button id="importDataBtn" class="btn">Impor Data (JSON)</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav" id="bottomNavBar">
+        <div class="nav-item active" data-section="checklistSection">
+            <i class="fas fa-list-check"></i>
+            <span>Checklist</span>
+        </div>
+        <div class="nav-item" data-section="addItemSection">
+            <i class="fas fa-plus-circle"></i>
+            <span>Tambah</span>
+        </div>
+        <div class="nav-item" data-section="accountSection">
+            <i class="fas fa-user-circle"></i>
+            <span>Akun</span>
+        </div>
+        <div class="nav-item" data-section="dataIoSection">
+            <i class="fas fa-exchange-alt"></i>
+            <span>Data</span>
+        </div>
+    </div>
+
+    <!-- Modal for Confirmations -->
+    <div id="confirmationModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modalTitle">Konfirmasi</h3>
+            <p id="modalMessage">Apakah Anda yakin?</p>
+            <div class="modal-buttons">
+                <button id="modalCancelBtn" class="btn btn-secondary btn-small">Batal</button>
+                <button id="modalConfirmBtn" class="btn btn-danger btn-small">Konfirmasi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
 
     <!-- Firebase SDK -->
     <script type="module">
@@ -670,15 +905,14 @@
 
         // Firebase configuration
         const firebaseConfig = {
-      apiKey: "AIzaSyDVRX1ExILdGhsqsaOcmyOix00PZYMHh04",
-      authDomain: "femmeiadev.firebaseapp.com",
-      projectId: "femmeiadev",
-      storageBucket: "femmeiadev.firebasestorage.app",
-      messagingSenderId: "214287674772",
-      appId: "1:214287674772:web:4c455b47d3dec899687381",
-      measurementId: "G-0ER8S6EFL2"
-    };
-   
+            apiKey: "AIzaSyDVRX1ExILdGhsqsaOcmyOix00PZYMHh04",
+            authDomain: "femmeiadev.firebaseapp.com",
+            projectId: "femmeiadev",
+            storageBucket: "femmeiadev.firebasestorage.app",
+            messagingSenderId: "214287674772",
+            appId: "1:214287674772:web:4c455b47d3dec899687381",
+            measurementId: "G-0ER8S6EFL2"
+        };
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
@@ -734,10 +968,16 @@
         let currentChecklistData = {};
         let currentFilter = 'all'; // 'all', 'completed', 'pending'
         let currentSearchTerm = '';
+        let currentCategorySort = 'default';
+        let currentItemSort = 'default';
 
         // DOM elements
         const authSection = document.getElementById('authSection');
+        const mainContentSections = document.getElementById('mainContentSections');
         const checklistSection = document.getElementById('checklistSection');
+        const addItemSection = document.getElementById('addItemSection');
+        const accountSection = document.getElementById('accountSection');
+        const dataIoSection = document.getElementById('dataIoSection');
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
         const showRegisterLink = document.getElementById('showRegister');
@@ -762,6 +1002,10 @@
         const filterCompletedBtn = document.getElementById('filterCompletedBtn');
         const filterPendingBtn = document.getElementById('filterPendingBtn');
 
+        // Sort elements
+        const sortCategorySelect = document.getElementById('sortCategory');
+        const sortItemSelect = document.getElementById('sortItem');
+
         // Account Management elements
         const changePasswordForm = document.getElementById('changePasswordForm');
         const newPasswordInput = document.getElementById('newPassword');
@@ -772,27 +1016,62 @@
         const importFileInput = document.getElementById('importFileInput');
         const importDataBtn = document.getElementById('importDataBtn');
 
+        // Bottom Navigation
+        const bottomNavBar = document.getElementById('bottomNavBar');
+        const navItems = document.querySelectorAll('.nav-item');
 
-        // Show alert
-        function showAlert(message, type = 'error', container = alertContainerAuth) {
-            // Clear existing alerts in the container
-            container.innerHTML = '';
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.textContent = message;
-            container.appendChild(alertDiv);
+        // Modal elements
+        const confirmationModal = document.getElementById('confirmationModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
 
-            // Remove the alert after the animation finishes
-            setTimeout(() => {
-                alertDiv.style.opacity = '0'; // Start fade out
-                alertDiv.style.transform = 'translateY(-10px)';
-                setTimeout(() => {
-                    if (alertDiv.parentNode) {
-                        alertDiv.parentNode.removeChild(alertDiv);
-                    }
-                }, 500); // Match CSS transition duration for fade out
-            }, 3000); // Display duration
+        // Progress Bar
+        const progressBar = document.getElementById('progressBar');
+
+        // Toast Container
+        const toastContainer = document.getElementById('toastContainer');
+
+
+        // Toast Notification Function
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.style.setProperty('--toast-duration', `${duration / 1000}s`);
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+
+            // Remove toast after animation
+            toast.addEventListener('animationend', (e) => {
+                if (e.animationName === 'toastOut') {
+                    toast.remove();
+                }
+            });
         }
+
+        // Modal Function
+        let resolveModalPromise;
+        function showConfirmationModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            confirmationModal.classList.add('visible');
+
+            return new Promise((resolve) => {
+                resolveModalPromise = resolve;
+            });
+        }
+
+        modalConfirmBtn.addEventListener('click', () => {
+            confirmationModal.classList.remove('visible');
+            resolveModalPromise(true);
+        });
+
+        modalCancelBtn.addEventListener('click', () => {
+            confirmationModal.classList.remove('visible');
+            resolveModalPromise(false);
+        });
+
 
         // Toggle between login and register forms
         showRegisterLink.addEventListener('click', (e) => {
@@ -817,19 +1096,18 @@
 
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                // Set initial checklist data for new user
                 await setDoc(doc(db, 'checklists', userCredential.user.uid), { checklist: defaultChecklist });
-                showAlert('Registrasi berhasil! Silakan login.', 'success', alertContainerAuth);
+                showToast('Registrasi berhasil! Silakan login.', 'success');
                 registerFormElement.reset();
                 registerForm.classList.add('hidden');
                 loginForm.classList.remove('hidden');
             } catch (error) {
                 if (error.code === 'auth/email-already-in-use') {
-                    showAlert('Email sudah terdaftar!', 'error', alertContainerAuth);
+                    showToast('Email sudah terdaftar!', 'error');
                 } else if (error.code === 'auth/weak-password') {
-                    showAlert('Password terlalu lemah! Minimal 6 karakter.', 'error', alertContainerAuth);
+                    showToast('Password terlalu lemah! Minimal 6 karakter.', 'error');
                 } else {
-                    showAlert('Gagal mendaftar: ' + error.message, 'error', alertContainerAuth);
+                    showToast('Gagal mendaftar: ' + error.message, 'error');
                 }
             }
         });
@@ -845,30 +1123,47 @@
                 loginFormElement.reset();
             } catch (error) {
                 if (error.code === 'auth/wrong-password') {
-                    showAlert('Password salah!', 'error', alertContainerAuth);
+                    showToast('Password salah!', 'error');
                 } else if (error.code === 'auth/user-not-found') {
-                    showAlert('Email tidak terdaftar!', 'error', alertContainerAuth);
+                    showToast('Email tidak terdaftar!', 'error');
                 } else {
-                    showAlert('Gagal login: ' + error.message, 'error', alertContainerAuth);
+                    showToast('Gagal login: ' + error.message, 'error');
                 }
             }
         });
 
         // Handle Logout
         logoutBtn.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                // The onAuthStateChanged listener will handle UI updates
-                showAlert('Anda telah logout.', 'success', alertContainerAuth);
-            } catch (error) {
-                showAlert('Gagal logout: ' + error.message, 'error', alertContainerChecklist);
+            const confirmed = await showConfirmationModal('Konfirmasi Logout', 'Apakah Anda yakin ingin logout?');
+            if (confirmed) {
+                try {
+                    await signOut(auth);
+                    showToast('Anda telah logout.', 'success');
+                } catch (error) {
+                    showToast('Gagal logout: ' + error.message, 'error');
+                }
             }
         });
+
+        // Calculate and update progress bar
+        function updateProgressBar() {
+            let totalItems = 0;
+            let completedItems = 0;
+
+            for (const category in currentChecklistData) {
+                totalItems += currentChecklistData[category].length;
+                completedItems += currentChecklistData[category].filter(item => item.checked).length;
+            }
+
+            const percentage = totalItems === 0 ? 0 : (completedItems / totalItems) * 100;
+            progressBar.style.width = `${percentage}%`;
+            progressBar.textContent = `${Math.round(percentage)}% Selesai (${completedItems}/${totalItems})`;
+        }
 
         // Render Checklist
         function renderChecklist(checklistData) {
             checklistContent.innerHTML = '';
-            // currentChecklistData = checklistData; // This is updated when data is fetched/modified
+            // currentChecklistData is already updated by the calling function
 
             let filteredAndSearchedData = {};
 
@@ -902,35 +1197,43 @@
                 }
             });
 
+            // Apply category sort
+            let sortedCategories = Object.keys(finalData);
+            if (currentCategorySort === 'az') {
+                sortedCategories.sort((a, b) => a.localeCompare(b));
+            } else if (currentCategorySort === 'za') {
+                sortedCategories.sort((a, b) => b.localeCompare(a));
+            }
 
             if (Object.keys(finalData).length === 0) {
                 checklistContent.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Tidak ada perlengkapan yang cocok dengan kriteria Anda.</p>';
+                updateProgressBar();
                 return;
             }
 
-            Object.keys(finalData).forEach(category => {
+            sortedCategories.forEach(category => {
                 const categoryDiv = document.createElement('div');
                 categoryDiv.className = 'checklist-category';
 
                 const categoryTitleH2 = document.createElement('h2');
                 const categoryTitleSpan = document.createElement('span');
                 categoryTitleSpan.textContent = category;
-                categoryTitleSpan.style.cursor = 'pointer'; // Indicate editable
                 categoryTitleH2.appendChild(categoryTitleSpan);
 
                 const deleteCategoryBtn = document.createElement('button');
                 deleteCategoryBtn.className = 'delete-category-btn';
-                deleteCategoryBtn.innerHTML = '&times;';
+                deleteCategoryBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
                 deleteCategoryBtn.title = `Hapus kategori ${category}`;
                 deleteCategoryBtn.addEventListener('click', async () => {
-                    if (confirm(`Apakah Anda yakin ingin menghapus seluruh kategori "${category}" beserta isinya?`)) {
+                    const confirmed = await showConfirmationModal('Hapus Kategori', `Apakah Anda yakin ingin menghapus seluruh kategori "${category}" beserta isinya?`);
+                    if (confirmed) {
                         try {
                             delete currentChecklistData[category];
                             await updateChecklistInFirestore();
                             renderChecklist(currentChecklistData); // Re-render to update UI
-                            showAlert(`Kategori "${category}" berhasil dihapus!`, 'success', alertContainerChecklist);
+                            showToast(`Kategori "${category}" berhasil dihapus!`, 'success');
                         } catch (error) {
-                            showAlert('Gagal menghapus kategori: ' + error.message, 'error', alertContainerChecklist);
+                            showToast('Gagal menghapus kategori: ' + error.message, 'error');
                         }
                     }
                 });
@@ -952,7 +1255,7 @@
                         const newCategoryName = inputField.value.trim();
                         if (newCategoryName && newCategoryName !== currentCategoryName) {
                             if (currentChecklistData[newCategoryName]) {
-                                showAlert('Nama kategori sudah ada!', 'error', alertContainerChecklist);
+                                showToast('Nama kategori sudah ada!', 'error');
                                 inputField.replaceWith(categoryTitleSpan);
                                 categoryTitleSpan.textContent = currentCategoryName;
                                 return;
@@ -963,9 +1266,9 @@
                                 currentChecklistData[newCategoryName] = oldCategoryItems;
                                 await updateChecklistInFirestore();
                                 renderChecklist(currentChecklistData);
-                                showAlert('Nama kategori berhasil diperbarui!', 'success', alertContainerChecklist);
+                                showToast('Nama kategori berhasil diperbarui!', 'success');
                             } catch (error) {
-                                showAlert('Gagal memperbarui nama kategori: ' + error.message, 'error', alertContainerChecklist);
+                                showToast('Gagal memperbarui nama kategori: ' + error.message, 'error');
                             }
                         } else {
                             inputField.replaceWith(categoryTitleSpan);
@@ -981,8 +1284,20 @@
                     });
                 });
 
+                // Apply item sort
+                let sortedItems = [...finalData[category]]; // Create a copy to sort
+                if (currentItemSort === 'az') {
+                    sortedItems.sort((a, b) => a.name.localeCompare(b.name));
+                } else if (currentItemSort === 'za') {
+                    sortedItems.sort((a, b) => b.name.localeCompare(a.name));
+                } else if (currentItemSort === 'checked') {
+                    sortedItems.sort((a, b) => (a.checked === b.checked) ? 0 : a.checked ? -1 : 1);
+                } else if (currentItemSort === 'unchecked') {
+                    sortedItems.sort((a, b) => (a.checked === b.checked) ? 0 : a.checked ? 1 : -1);
+                }
 
-                finalData[category].forEach((item) => { // Iterate over finalData, not currentChecklistData
+
+                sortedItems.forEach((item) => {
                     // Find the original index in currentChecklistData to update correctly
                     const originalIndex = currentChecklistData[category] ? currentChecklistData[category].findIndex(originalItem => originalItem.name === item.name) : -1;
 
@@ -993,7 +1308,7 @@
                     itemDiv.innerHTML = `
                         <input type="checkbox" id="${category}-${originalIndex}" ${item.checked ? 'checked' : ''}>
                         <label for="${category}-${originalIndex}">${item.name}</label>
-                        <button class="delete-item-btn" data-category="${category}" data-index="${originalIndex}">&times;</button>
+                        <button class="delete-item-btn" data-category="${category}" data-index="${originalIndex}"><i class="fas fa-trash-alt"></i></button>
                     `;
                     const checkbox = itemDiv.querySelector('input[type="checkbox"]');
                     checkbox.addEventListener('change', async () => {
@@ -1001,16 +1316,18 @@
                             currentChecklistData[category][originalIndex].checked = checkbox.checked;
                             await updateChecklistInFirestore();
                             renderChecklist(currentChecklistData); // Re-render to apply filter if needed
+                            showToast('Status perlengkapan diperbarui!', 'info', 1500);
                         } catch (error) {
-                            showAlert('Gagal memperbarui status item: ' + error.message, 'error', alertContainerChecklist);
+                            showToast('Gagal memperbarui status item: ' + error.message, 'error');
                         }
                     });
 
                     const deleteButton = itemDiv.querySelector('.delete-item-btn');
                     deleteButton.addEventListener('click', async (e) => {
-                        const cat = e.target.dataset.category;
-                        const idx = parseInt(e.target.dataset.index);
-                        if (confirm(`Apakah Anda yakin ingin menghapus "${currentChecklistData[cat][idx].name}" dari kategori "${cat}"?`)) {
+                        const cat = e.target.dataset.category || e.target.closest('button').dataset.category;
+                        const idx = parseInt(e.target.dataset.index || e.target.closest('button').dataset.index);
+                        const confirmed = await showConfirmationModal('Hapus Perlengkapan', `Apakah Anda yakin ingin menghapus "${currentChecklistData[cat][idx].name}" dari kategori "${cat}"?`);
+                        if (confirmed) {
                             // Add fade-out animation before removal
                             itemDiv.classList.remove('fade-in');
                             itemDiv.classList.add('fade-out');
@@ -1022,9 +1339,9 @@
                                     }
                                     await updateChecklistInFirestore();
                                     renderChecklist(currentChecklistData); // Re-render to update UI
-                                    showAlert('Perlengkapan berhasil dihapus!', 'success', alertContainerChecklist);
+                                    showToast('Perlengkapan berhasil dihapus!', 'success');
                                 } catch (error) {
-                                    showAlert('Gagal menghapus perlengkapan: ' + error.message, 'error', alertContainerChecklist);
+                                    showToast('Gagal menghapus perlengkapan: ' + error.message, 'error');
                                 }
                             }, { once: true }); // Ensure listener runs only once
                         }
@@ -1048,9 +1365,9 @@
                                 try {
                                     currentChecklistData[category][originalIndex].name = newText;
                                     await updateChecklistInFirestore();
-                                    showAlert('Nama item berhasil diperbarui!', 'success', alertContainerChecklist);
+                                    showToast('Nama item berhasil diperbarui!', 'success');
                                 } catch (error) {
-                                    showAlert('Gagal memperbarui nama item: ' + error.message, 'error', alertContainerChecklist);
+                                    showToast('Gagal memperbarui nama item: ' + error.message, 'error');
                                 }
                             }
                             inputField.replaceWith(itemLabel);
@@ -1070,6 +1387,7 @@
 
                 checklistContent.appendChild(categoryDiv);
             });
+            updateProgressBar(); // Update progress after rendering
         }
 
         // Function to update checklist in Firestore
@@ -1079,24 +1397,24 @@
                     await updateDoc(doc(db, 'checklists', auth.currentUser.uid), {
                         checklist: currentChecklistData
                     });
-                    // showAlert('Checklist berhasil diperbarui!', 'success', alertContainerChecklist); // Optional: show success message
                 } catch (error) {
-                    showAlert('Gagal memperbarui checklist: ' + error.message, 'error', alertContainerChecklist);
-                    throw error; // Re-throw to propagate error for loading states
+                    showToast('Gagal memperbarui checklist: ' + error.message, 'error');
+                    throw error;
                 }
             }
         }
 
         // Reset Checklist
         resetBtn.addEventListener('click', async () => {
-            if (confirm('Apakah Anda yakin ingin mereset checklist? Semua centang dan item tambahan akan dihapus.')) {
+            const confirmed = await showConfirmationModal('Reset Checklist', 'Apakah Anda yakin ingin mereset checklist? Semua centang dan item tambahan akan dihapus.');
+            if (confirmed) {
                 try {
                     currentChecklistData = JSON.parse(JSON.stringify(defaultChecklist)); // Deep copy default
                     await updateChecklistInFirestore();
                     renderChecklist(currentChecklistData);
-                    showAlert('Checklist berhasil direset!', 'success', alertContainerChecklist);
+                    showToast('Checklist berhasil direset!', 'success');
                 } catch (error) {
-                    showAlert('Gagal mereset checklist: ' + error.message, 'error', alertContainerChecklist);
+                    showToast('Gagal mereset checklist: ' + error.message, 'error');
                 }
             }
         });
@@ -1107,14 +1425,14 @@
             const newItemNamesText = newItemNamesInput.value.trim();
 
             if (!newItemNamesText) {
-                showAlert('Nama perlengkapan tidak boleh kosong!', 'error', alertContainerChecklist);
+                showToast('Nama perlengkapan tidak boleh kosong!', 'error');
                 return;
             }
 
             const itemsToAdd = newItemNamesText.split(/[\n,]+/).map(item => item.trim()).filter(item => item !== '');
 
             if (itemsToAdd.length === 0) {
-                showAlert('Tidak ada perlengkapan yang valid untuk ditambahkan.', 'error', alertContainerChecklist);
+                showToast('Tidak ada perlengkapan yang valid untuk ditambahkan.', 'error');
                 return;
             }
 
@@ -1148,12 +1466,12 @@
                     if (skippedCount > 0) {
                         message += ` (${skippedCount} duplikat dilewati).`;
                     }
-                    showAlert(message, 'success', alertContainerChecklist);
+                    showToast(message, 'success');
                 } catch (error) {
-                    showAlert('Gagal menambahkan perlengkapan: ' + error.message, 'error', alertContainerChecklist);
+                    showToast('Gagal menambahkan perlengkapan: ' + error.message, 'error');
                 }
             } else {
-                showAlert('Semua perlengkapan yang dimasukkan sudah ada atau tidak valid.', 'warning', alertContainerChecklist);
+                showToast('Semua perlengkapan yang dimasukkan sudah ada atau tidak valid.', 'warning');
             }
         });
 
@@ -1187,6 +1505,18 @@
             filterPendingBtn.classList.remove('btn-secondary');
         });
 
+        // Sort Controls
+        sortCategorySelect.addEventListener('change', () => {
+            currentCategorySort = sortCategorySelect.value;
+            renderChecklist(currentChecklistData);
+        });
+
+        sortItemSelect.addEventListener('change', () => {
+            currentItemSort = sortItemSelect.value;
+            renderChecklist(currentChecklistData);
+        });
+
+
         // Account Management: Change Password
         changePasswordForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1194,22 +1524,21 @@
             const user = auth.currentUser;
 
             if (!user) {
-                showAlert('Anda harus login untuk mengubah password.', 'error', alertContainerChecklist);
+                showToast('Anda harus login untuk mengubah password.', 'error');
                 return;
             }
 
             try {
                 await updatePassword(user, newPassword);
-                showAlert('Password berhasil diubah!', 'success', alertContainerChecklist);
+                showToast('Password berhasil diubah!', 'success');
                 changePasswordForm.reset();
             } catch (error) {
-                // Handle specific Firebase errors for password change
                 if (error.code === 'auth/requires-recent-login') {
-                    showAlert('Untuk mengubah password, Anda perlu login ulang. Silakan logout dan login kembali.', 'warning', alertContainerChecklist);
+                    showToast('Untuk mengubah password, Anda perlu login ulang. Silakan logout dan login kembali.', 'warning');
                 } else if (error.code === 'auth/weak-password') {
-                    showAlert('Password terlalu lemah! Minimal 6 karakter.', 'error', alertContainerChecklist);
+                    showToast('Password terlalu lemah! Minimal 6 karakter.', 'error');
                 } else {
-                    showAlert('Gagal mengubah password: ' + error.message, 'error', alertContainerChecklist);
+                    showToast('Gagal mengubah password: ' + error.message, 'error');
                 }
             }
         });
@@ -1219,15 +1548,15 @@
             const user = auth.currentUser;
 
             if (!user) {
-                showAlert('Anda harus login untuk menghapus akun.', 'error', alertContainerChecklist);
+                showToast('Anda harus login untuk menghapus akun.', 'error');
                 return;
             }
 
-            if (confirm('PERINGATAN: Menghapus akun akan menghapus semua data checklist Anda secara permanen. Apakah Anda yakin?')) {
-                // Re-authenticate user before deleting account (Firebase security requirement)
-                const passwordPrompt = prompt('Untuk konfirmasi, masukkan password Anda:');
+            const confirmed = await showConfirmationModal('Hapus Akun', 'PERINGATAN: Menghapus akun akan menghapus semua data checklist Anda secara permanen. Apakah Anda yakin?');
+            if (confirmed) {
+                const passwordPrompt = prompt('Untuk konfirmasi, masukkan password Anda:'); // Still using prompt for password for simplicity
                 if (!passwordPrompt) {
-                    showAlert('Penghapusan akun dibatalkan.', 'warning', alertContainerChecklist);
+                    showToast('Penghapusan akun dibatalkan.', 'warning');
                     return;
                 }
 
@@ -1235,21 +1564,17 @@
                     const credential = EmailAuthProvider.credential(user.email, passwordPrompt);
                     await reauthenticateWithCredential(user, credential);
 
-                    // Delete user data from Firestore first
                     await deleteDoc(doc(db, 'checklists', user.uid));
-
-                    // Then delete the user account
                     await deleteUser(user);
 
-                    showAlert('Akun Anda dan semua data berhasil dihapus.', 'success', alertContainerAuth);
-                    // Will automatically redirect to auth section via onAuthStateChanged
+                    showToast('Akun Anda dan semua data berhasil dihapus.', 'success');
                 } catch (error) {
                     if (error.code === 'auth/wrong-password') {
-                        showAlert('Password salah. Penghapusan akun dibatalkan.', 'error', alertContainerChecklist);
+                        showToast('Password salah. Penghapusan akun dibatalkan.', 'error');
                     } else if (error.code === 'auth/requires-recent-login') {
-                        showAlert('Untuk menghapus akun, Anda perlu login ulang. Silakan logout dan login kembali.', 'warning', alertContainerChecklist);
+                        showToast('Untuk menghapus akun, Anda perlu login ulang. Silakan logout dan login kembali.', 'warning');
                     } else {
-                        showAlert('Gagal menghapus akun: ' + error.message, 'error', alertContainerChecklist);
+                        showToast('Gagal menghapus akun: ' + error.message, 'error');
                     }
                 }
             }
@@ -1259,7 +1584,7 @@
         // Data Import/Export: Export Data
         exportDataBtn.addEventListener('click', () => {
             if (Object.keys(currentChecklistData).length === 0) {
-                showAlert('Tidak ada data untuk diekspor.', 'warning', alertContainerChecklist);
+                showToast('Tidak ada data untuk diekspor.', 'warning');
                 return;
             }
             const dataStr = JSON.stringify(currentChecklistData, null, 2);
@@ -1272,7 +1597,7 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showAlert('Data berhasil diekspor!', 'success', alertContainerChecklist);
+            showToast('Data berhasil diekspor!', 'success');
         });
 
         // Data Import/Export: Import Data
@@ -1306,18 +1631,19 @@
                         }
                     }
 
-                    if (confirm('Mengimpor data akan menimpa checklist Anda saat ini. Lanjutkan?')) {
+                    const confirmed = await showConfirmationModal('Impor Data', 'Mengimpor data akan menimpa checklist Anda saat ini. Lanjutkan?');
+                    if (confirmed) {
                         try {
                             currentChecklistData = importedData;
                             await updateChecklistInFirestore();
                             renderChecklist(currentChecklistData);
-                            showAlert('Data berhasil diimpor!', 'success', alertContainerChecklist);
+                            showToast('Data berhasil diimpor!', 'success');
                         } catch (error) {
-                            showAlert('Gagal mengimpor data ke Firestore: ' + error.message, 'error', alertContainerChecklist);
+                            showToast('Gagal mengimpor data ke Firestore: ' + error.message, 'error');
                         }
                     }
                 } catch (error) {
-                    showAlert('Gagal membaca atau memproses file JSON: ' + error.message, 'error', alertContainerChecklist);
+                    showToast('Gagal membaca atau memproses file JSON: ' + error.message, 'error');
                 } finally {
                     importFileInput.value = ''; // Clear file input
                 }
@@ -1328,7 +1654,7 @@
 
         // Capture Page as Image
         captureBtn.addEventListener('click', async () => {
-            showAlert('Mengambil gambar halaman...', 'success', alertContainerChecklist);
+            showToast('Mengambil gambar halaman...', 'info');
             try {
                 // Temporarily hide elements that shouldn't be in the screenshot
                 const headerControls = document.querySelector('.header-controls');
@@ -1336,21 +1662,22 @@
                 const accountSection = document.querySelector('.account-management-section');
                 const dataIoSection = document.querySelector('.data-io-section');
                 const searchFilterControls = document.querySelector('.search-filter-controls');
-                const alertChecklist = document.getElementById('alertContainerChecklist');
-                const h1Title = document.querySelector('#checklistSection h1'); // Specific H1 for checklist section
+                const sortControls = document.querySelector('.sort-controls');
+                const progressBarContainer = document.querySelector('.progress-container');
+                const bottomNav = document.getElementById('bottomNavBar');
 
                 if (headerControls) headerControls.style.display = 'none';
                 if (addSection) addSection.style.display = 'none';
                 if (accountSection) accountSection.style.display = 'none';
                 if (dataIoSection) dataIoSection.style.display = 'none';
                 if (searchFilterControls) searchFilterControls.style.display = 'none';
-                if (alertChecklist) alertChecklist.style.display = 'none';
-                if (h1Title) h1Title.style.marginBottom = '0'; // Adjust margin for cleaner look
+                if (sortControls) sortControls.style.display = 'none';
+                if (progressBarContainer) progressBarContainer.style.display = 'none';
+                if (bottomNav) bottomNav.style.display = 'none';
 
-                // Capture the checklist container
                 const checklistContainer = document.querySelector('.checklist-container');
                 if (!checklistContainer) {
-                    showAlert('Elemen checklist tidak ditemukan!', 'error', alertContainerChecklist);
+                    showToast('Elemen checklist tidak ditemukan!', 'error');
                     return;
                 }
 
@@ -1367,8 +1694,9 @@
                 if (accountSection) accountSection.style.display = 'block';
                 if (dataIoSection) dataIoSection.style.display = 'block';
                 if (searchFilterControls) searchFilterControls.style.display = 'flex';
-                if (alertChecklist) alertChecklist.style.display = 'block';
-                if (h1Title) h1Title.style.marginBottom = '20px'; // Restore margin
+                if (sortControls) sortControls.style.display = 'flex';
+                if (progressBarContainer) progressBarContainer.style.display = 'block';
+                if (bottomNav) bottomNav.style.display = 'flex';
 
                 const image = canvas.toDataURL('image/png');
                 const link = document.createElement('a');
@@ -1377,60 +1705,77 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                showAlert('Gambar berhasil disimpan!', 'success', alertContainerChecklist);
+                showToast('Gambar berhasil disimpan!', 'success');
             } catch (error) {
                 console.error('Error capturing image:', error);
-                showAlert('Gagal menyimpan gambar: ' + error.message, 'error', alertContainerChecklist);
+                showToast('Gagal menyimpan gambar: ' + error.message, 'error');
             }
+        });
+
+        // Bottom Navigation Logic
+        function showSection(sectionId) {
+            const sections = [checklistSection, addItemSection, accountSection, dataIoSection];
+            sections.forEach(section => {
+                if (section.id === sectionId) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+
+            navItems.forEach(item => {
+                if (item.dataset.section === sectionId) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                showSection(item.dataset.section);
+            });
         });
 
 
         // Auth State Listener
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Apply slide-in animation when showing checklist section
                 authSection.classList.add('hidden');
-                checklistSection.classList.remove('hidden');
-                checklistSection.style.animation = 'slideInFromTop 0.6s ease-out forwards';
+                mainContentSections.classList.remove('hidden');
+                bottomNavBar.classList.remove('hidden'); // Show bottom nav
+
+                // Ensure checklist section is shown by default after login
+                showSection('checklistSection');
 
                 const docRef = doc(db, 'checklists', user.uid);
                 try {
                     const docSnap = await getDoc(docRef);
                     if (docSnap.exists()) {
                         const data = docSnap.data();
-                        currentChecklistData = data.checklist; // Load data from Firestore
+                        currentChecklistData = data.checklist;
                     } else {
-                        // If no data exists for the user, set default and save to Firestore
-                        currentChecklistData = JSON.parse(JSON.stringify(defaultChecklist)); // Deep copy
+                        currentChecklistData = JSON.parse(JSON.stringify(defaultChecklist));
                         await setDoc(docRef, { checklist: currentChecklistData });
                     }
                     renderChecklist(currentChecklistData);
                     filterAllBtn.click(); // Ensure 'All' filter is active on load
                 } catch (error) {
-                    showAlert('Gagal memuat checklist: ' + error.message, 'error', alertContainerChecklist);
+                    showToast('Gagal memuat checklist: ' + error.message, 'error');
                     console.error("Error loading checklist:", error);
-                    // Force logout if data loading fails critically
-                    await signOut(auth);
+                    await signOut(auth); // Force logout if data loading fails critically
                 }
             } else {
-                // Apply slide-out animation when hiding checklist section
-                if (!checklistSection.classList.contains('hidden')) {
-                    checklistSection.style.animation = 'slideOutToBottom 0.6s ease-in forwards';
-                    checklistSection.addEventListener('animationend', () => {
-                        checklistSection.classList.add('hidden');
-                        authSection.classList.remove('hidden');
-                        authSection.style.animation = 'slideInFromTop 0.6s ease-out forwards'; // Animate auth section in
-                    }, { once: true });
-                } else {
-                    authSection.classList.remove('hidden');
-                    authSection.style.animation = 'slideInFromTop 0.6s ease-out forwards';
-                }
+                authSection.classList.remove('hidden');
+                mainContentSections.classList.add('hidden');
+                bottomNavBar.classList.add('hidden'); // Hide bottom nav
 
-                currentChecklistData = {}; // Clear data on logout
-                currentFilter = 'all'; // Reset filter
-                currentSearchTerm = ''; // Reset search
+                currentChecklistData = {};
+                currentFilter = 'all';
+                currentSearchTerm = '';
                 searchItemInput.value = '';
-                filterAllBtn.click(); // Reset filter button style
+                filterAllBtn.click();
             }
         });
     </script>
