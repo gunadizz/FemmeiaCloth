@@ -1,1091 +1,1438 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=0.8">
-  <title>FemmeiaCloth Finance Tracker</title>
-  <meta name="description" content="Aplikasi pencatatan keuangan untuk bisnis hijab FemmeiaCloth">
-  <meta name="theme-color" content="#6c5ce7">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-bg: #ffffff;
-      --secondary-bg: #f9f9f9;
-      --border-color: #e0e0e0;
-      --text-color: #333333;
-      --accent-color: #6c5ce7;
-      --success-color: #000;
-      --danger-color: #d63031;
-      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      --radius: 8px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Perlengkapan KKN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* PASTE ALL CSS FROM STEP 2 AND 3 HERE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Quicksand', sans-serif;
-    }
+        :root {
+            /* + color system */
+            --background: #ffffff;
+            --background-light: #f8fafc;
+            --background-lighter: #f1f5f9;
+            --surface: rgba(255, 255, 255, 0.85);
+            --surface-hover: rgba(255, 255, 255, 0.95);
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --text-light: #94a3b8;
+            --accent-dark: #1f2937;
+            --accent-mid: #374151;
+            --accent-light: #9ca3af;
+            --border: rgba(55, 65, 81, 0.12);
+            --border-hover: rgba(55, 65, 81, 0.2);
+            --success: #059669;
+            --error: #dc2626;
+            --warning: #fbbf24;
 
-    body {
-      background-color: var(--secondary-bg);
-      color: var(--text-color);
-      min-height: 100vh;
-    }
+            /* Glassmorphism Efek */
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-blur: blur(10px);
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      
-    }
+            /* Blur dan effects */
+            --blur-strength: 10px;
+            --blur-light: 8px;
+            --blur-heavy: 13px;
 
-    header {
-      background-color: var(--primary-bg);
-      padding: 20px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-      text-align: center;
-      position: relative;
-    }
+            /* Transitions */
+            --transition-speed: 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Slightly faster for general use */
+            --transition-bounce: 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-    h1 {
-      font-weight: 700;
-      color: #444;
-      margin-bottom: 10px;
-    }
+            /* Shadows */
+            --shadow: 0 8px 32px rgba(31, 41, 55, 0.06);
+            --shadow-hover: 0 16px 48px rgba(31, 41, 55, 0.1);
+            --shadow-intense: 0 24px 64px rgba(31, 41, 55, 0.15);
 
-    .main-content {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
+            /* Spacing */
+            --radius-sm: 0.75rem;
+            --radius-md: 1rem;
+            --radius-lg: 1.25rem;
+            --radius-xl: 1.5rem;
 
-    @media (min-width: 768px) {
-      .main-content {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
+            /* Z-index */
+            --z-sticky: 999;
+            --z-nav: 1000;
+            --z-modal: 2000;
+        }
 
-    .card {
-      background-color: var(--primary-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 20px;
-      transition: transform 0.3s ease;
-    }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: radial-gradient(circle at 20% 80%, rgba(31, 41, 55, 0.015) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(31, 41, 55, 0.015) 0%, transparent 50%),
+                        linear-gradient(135deg, var(--background) 0%, var(--background-light) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
 
-    .card:hover {
-      transform: translateY(-5px);
-    }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 25% 75%, rgba(31, 41, 55, 0.01) 0%, transparent 40%),
+                        radial-gradient(circle at 75% 25%, rgba(31, 41, 55, 0.01) 0%, transparent 40%);
+            animation: floatBackground 60s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
 
-    .card h2 {
-      margin-bottom: 15px;
-      color: #444;
-      font-weight: 600;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 10px;
-    }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    /* Form Styles */
-    .form-group {
-      margin-bottom: 15px;
-    }
+        h1 {
+            text-align: center;
+            color: var(--accent-dark);
+            margin-bottom: 20px;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            animation: textFadeIn 1s ease 0.3s both;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: 500;
-    }
+        h2 {
+            color: var(--accent-dark);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex; /* For category edit/delete */
+            align-items: center;
+            gap: 10px;
+        }
 
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      font-size: 16px;
-      transition: border 0.3s ease;
-    }
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent-color);
-    }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--text);
+        }
 
-    .suggestions {
-      position: absolute;
-      background: white;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      width: calc(100% - 40px);
-      max-height: 150px;
-      overflow-y: auto;
-      z-index: 10;
-      display: none;
-    }
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        textarea,
+        input[type="file"] { /* Added input[type="file"] */
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            background: var(--surface);
+            color: var(--text);
+            resize: vertical; /* Allow vertical resizing for textarea */
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
 
-    .suggestion-item {
-      padding: 10px;
-      cursor: pointer;
-    }
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus,
+        textarea:focus,
+        input[type="file"]:focus {
+            outline: none;
+            border-color: var(--accent-dark);
+            box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
+        }
 
-    .suggestion-item:hover {
-      background-color: var(--secondary-bg);
-    }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background-color: var(--accent-dark);
+            border: none;
+            border-radius: 20px 8px 20px 8px;
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            min-height: 48px;
+            backdrop-filter: blur(var(--blur-light));
+            box-shadow: var(--shadow-hover);
+            width: 100%;
+        }
 
-    button {
-      background: linear-gradient(135deg, #ff7a7a, #ffb6b9);
-  box-shadow: 0 6px 20px rgba(255, 100, 100, 0.4);
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: var(--radius);
-      cursor: pointer;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-    }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
 
-    button:hover {
-      background-color: #5549c0;
-    }
+        .btn:hover::before {
+            left: 100%;
+        }
 
-    .btn-export {
-      background-color: var(--success-color);
-      margin-right: 10px;
-      
-      
-    }
+        .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            background-color: var(--accent-mid);
+        }
 
-    .btn-export:hover {
-      background-color: #00a383;
-    }
+        .btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
 
-    /* Summary Section */
-    .summary-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-    .summary-box {
-      flex: 1;
-      min-width: 150px;
-      padding: 15px;
-      border-radius: var(--radius);
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
+        .btn-secondary {
+            background-color: var(--accent-light);
+        }
 
-    .income-box {
-      background-color: rgba(0, 184, 148, 0.1);
-      border: 1px solid var(--success-color);
-    }
+        .btn-danger {
+            background-color: var(--error);
+        }
 
-    .expense-box {
-      background-color: rgba(214, 48, 49, 0.1);
-      border: 1px solid var(--danger-color);
-    }
+        .btn-small {
+            width: auto;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
 
-    .summary-box h3 {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
+        .switch-auth {
+            text-align: center;
+            margin-top: 15px;
+        }
 
-    .summary-box p {
-      font-size: 24px;
-      font-weight: 700;
-    }
+        .switch-auth a {
+            color: var(--accent-dark);
+            text-decoration: none;
+        }
 
-    /* Table Styles */
-    .table-container {
-      overflow-x: auto;
-    }
+        .switch-auth a:hover {
+            text-decoration: underline;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
+        .checklist-container {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+            transition: transform var(--transition-speed), opacity var(--transition-speed);
+        }
 
-    th, td {
-      padding: 12px 15px;
-      text-align: left;
-      border-bottom: 1px solid var(--border-color);
-    }
+        .checklist-category {
+            margin-bottom: 20px;
+            transition: all var(--transition-speed);
+        }
 
-    th {
-      background-color: var(--secondary-bg);
-      font-weight: 600;
-    }
+        .checklist-category h2 span { /* For editable category title */
+            cursor: pointer;
+            flex-grow: 1;
+            transition: color var(--transition-speed);
+        }
 
-    tr:hover {
-      background-color: var(--secondary-bg);
-    }
+        .checklist-category h2 span:hover {
+            color: var(--accent-mid);
+        }
 
-    /* Alert Styles */
-    .alert {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 20px;
-      border-radius: var(--radius);
-      background-color: var(--success-color);
-      color: white;
-      box-shadow: var(--shadow);
-      opacity: 0;
-      transform: translateX(100%);
-      transition: all 0.5s ease;
-      z-index: 1000;
-    }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            justify-content: space-between;
+            transition: all var(--transition-speed);
+        }
 
-    .alert.show {
-      opacity: 1;
-      transform: translateX(0);
-    }
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
 
-    .export-buttons {
-      margin-bottom: 15px;
-      margin-top: 15px;
-      display: flex;
-      justify-content: flex-end;
-    }
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            min-width: 20px;
+            min-height: 20px;
+            accent-color: var(--accent-dark); /* Style checkbox */
+            transition: transform 0.2s ease-out;
+        }
 
-    /* Chart container */
-    .chart-container {
-      position: relative;
-      height: 250px;
- 
-      margin-top: 20px;
-    }
+        .checklist-item input[type="checkbox"]:checked {
+            transform: scale(1.1);
+        }
 
-    /* Loading spinner */
-    .loader {
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      border-top: 4px solid var(--accent-color);
-      width: 30px;
-      height: 30px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+            margin-bottom: 0; /* Override default label margin */
+            transition: color var(--transition-speed);
+        }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+        .checklist-item input[type="checkbox"]:checked + label {
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
 
-    /* Delete button */
-    .btn-delete {
-      background-color: var(--danger-color);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-    .btn-delete:hover {
-      background-color: #b52c2c;
-    }
+        .alert {
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 15px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInOut 3.5s forwards; /* Animation for alerts */
+        }
 
-    /* Date header in transaction table */
-    .date-header {
-      background-color: var(--secondary-bg);
-      padding: 10px 15px;
-      font-weight: 600;
-      color: var(--accent-color);
-      border-radius: var(--radius) var(--radius) 0 0;
-      
-    }
+        .alert-error {
+            background-color: rgba(220, 38, 38, 0.1);
+            color: var(--error);
+        }
 
-    .date-header:first-child {
-      margin-top: 0;
-    }
+        .alert-success {
+            background-color: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
 
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      align-items: center;
-      justify-content: center;
-    }
+        .alert-warning {
+            background-color: rgba(251, 191, 36, 0.1);
+            color: var(--warning);
+        }
 
-    .modal-content {
-      background-color: var(--primary-bg);
-      border-radius: var(--radius);
-      padding: 20px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: var(--shadow);
-      text-align: center;
-    }
+        .hidden {
+            display: none;
+        }
 
-    .modal-title {
-      margin-bottom: 15px;
-      color: var(--text-color);
-      font-weight: 600;
-    }
+        /* Animation for section transitions */
+        .auth-container, .checklist-container {
+            animation: slideInFromTop 0.6s ease-out forwards;
+        }
 
-    .modal-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
+        .auth-container.hidden, .checklist-container.hidden {
+            animation: slideOutToBottom 0.6s ease-in forwards;
+        }
 
-    .btn-cancel {
-      background-color: var(--border-color);
-      color: var(--text-color);
-    }
 
-    .btn-confirm {
-      background-color: var(--danger-color);
-    }
+        .add-item-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
 
-    /* Install button */
-    .install-button {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background-color: var(--accent-color);
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: var(--radius);
-      font-size: 14px;
-      cursor: pointer;
-      display: none;
-    }
+        .add-item-section h2 {
+            margin-bottom: 15px;
+        }
 
-    /* Offline indicator */
-    .offline-indicator {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background-color: var(--danger-color);
-      color: white;
-      padding: 10px 15px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      display: none;
-      z-index: 1000;
-    }
+        .add-item-section .form-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap; /* Allow wrapping for inputs */
+        }
 
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-      .main-content {
-        grid-template-columns: 1fr;
-      }
-      
-      .summary-container {
-        flex-direction: column;
-      }
-      
-      th, td {
-        padding: 8px 10px;
-        font-size: 14px;
-      }
-    }
-  </style>
+        .add-item-section .form-group input,
+        .add-item-section .form-group textarea {
+            flex: 1;
+            min-width: 150px; /* Ensure inputs don't get too small */
+        }
+
+        .add-item-section .form-group .btn {
+            width: auto;
+            padding: 10px 20px;
+            min-height: auto;
+        }
+
+        .delete-item-btn, .delete-category-btn {
+            background: none;
+            border: none;
+            color: var(--error);
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-left: 10px;
+            padding: 5px;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .delete-item-btn:hover, .delete-category-btn:hover {
+            color: var(--accent-dark);
+            transform: scale(1.1);
+        }
+
+        /* New styles for added features */
+        .edit-item-input, .edit-category-input {
+            flex: 1;
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1em;
+            background: var(--background-light);
+            color: var(--text);
+            transition: all var(--transition-speed);
+        }
+
+        .edit-item-input:focus, .edit-category-input:focus {
+            outline: none;
+            border-color: var(--accent-dark);
+            box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
+        }
+
+        .search-filter-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-filter-controls input[type="text"] {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .filter-buttons .btn {
+            width: auto;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .account-management-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .account-management-section h2 {
+            margin-bottom: 15px;
+        }
+
+        .account-management-section .form-group {
+            margin-bottom: 10px;
+        }
+
+        .data-io-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .data-io-section h2 {
+            margin-bottom: 15px;
+        }
+
+        .data-io-section .form-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .data-io-section .form-group input[type="file"] {
+            flex: 1;
+        }
+
+        .data-io-section .form-group .btn {
+            width: auto;
+            padding: 10px 20px;
+            min-height: auto;
+        }
+
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .header-controls, .search-filter-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .add-item-section .form-group,
+            .data-io-section .form-group {
+                flex-direction: column;
+            }
+            .add-item-section .form-group input,
+            .add-item-section .form-group textarea,
+            .add-item-section .form-group .btn,
+            .data-io-section .form-group input[type="file"],
+            .data-io-section .form-group .btn {
+                width: 100%;
+            }
+            .filter-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Animations from v1.html */
+        @keyframes floatBackground {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(15px, -10px) rotate(1deg); }
+            66% { transform: translate(-10px, 15px) rotate(-1deg); }
+        }
+
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Auth Section Specific Styles */
+        .auth-container {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-top: 50px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* New Animations */
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-10px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        @keyframes slideInFromTop {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideOutToBottom {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(50px); }
+        }
+
+        /* Animation for checklist items when added/removed */
+        .checklist-item.fade-in {
+            animation: itemFadeIn 0.4s ease-out forwards;
+        }
+
+        .checklist-item.fade-out {
+            animation: itemFadeOut 0.4s ease-in forwards;
+        }
+
+        @keyframes itemFadeIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes itemFadeOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(20px); }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>FemmeiaCloth Finance Tracker</h1>
-      <button id="installButton" class="install-button">Install App</button>
-    </header>
+    <div class="container">
+        <!-- Auth Section -->
+        <div id="authSection" class="auth-container">
+            <h1>Checklist Perlengkapan KKN</h1>
+            <div id="alertContainer"></div>
 
-    <div class="main-content">
-      <!-- Input Form Section -->
-      <div class="card">
-        <h2>Input Transaksi</h2>
-        <form id="formTransaksi">
-          <div class="form-group">
-            <label for="produk">Nama Produk</label>
-            <input type="text" id="produk" required autocomplete="off">
-            <div id="suggestions" class="suggestions"></div>
-          </div>
-          <div class="form-group">
-            <label for="jumlah">Jumlah</label>
-            <input type="number" id="jumlah" min="1" required>
-          </div>
-          <div class="form-group">
-            <label for="harga">Harga Satuan (Rp)</label>
-            <input type="number" id="harga" min="0" required>
-          </div>
-          <div class="form-group">
-            <label for="jenis">Jenis Transaksi</label>
-            <select id="jenis" required>
-              <option value="">Pilih Jenis Transaksi</option>
-              <option value="pemasukan">Pemasukan (Penjualan)</option>
-              <option value="pengeluaran">Pengeluaran (Biaya)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="catatan">Catatan (Opsional)</label>
-            <textarea id="catatan" rows="3"></textarea>
-          </div>
-          <button type="submit">Simpan Transaksi</button>
-        </form>
-      </div>
+            <!-- Login Form -->
+            <div id="loginForm">
+                <h2>Login</h2>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+                <div class="switch-auth">
+                    <p>Belum punya akun? <a href="#" id="showRegister">Daftar</a></p>
+                </div>
+            </div>
 
-      <!-- Summary Section -->
-      <div class="card">
-        <h2>Ringkasan</h2>
-        <div class="summary-container">
-          <div class="summary-box income-box">
-            <h3>Total Pemasukan</h3>
-            <p id="totalMasuk">Rp 0</p>
-          </div>
-          <div class="summary-box expense-box">
-            <h3>Total Pengeluaran</h3>
-            <p id="totalKeluar">Rp 0</p>
-          </div>
+            <!-- Register Form -->
+            <div id="registerForm" class="hidden">
+                <h2>Register</h2>
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label for="registerEmail">Email:</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password:</label>
+                        <input type="password" id="registerPassword" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn">Daftar</button>
+                </form>
+                <div class="switch-auth">
+                    <p>Sudah punya akun? <a href="#" id="showLogin">Login</a></p>
+                </div>
+            </div>
         </div>
-        <div class="chart-container">
-          <canvas id="grafik"></canvas>
-        </div>
-      </div>
 
-      <!-- Transaction History Section -->
-      <div class="card" style="grid-column: 1 / -1;">
-        <h2>Riwayat Transaksi</h2>
-        <div class="export-buttons">
-          <button id="exportCSV" class="btn-export">Export CSV</button>
-          <button id="exportPDF" class="btn-export">Export PDF</button>
+        <!-- Checklist Section -->
+        <div id="checklistSection" class="hidden">
+            <div class="checklist-container">
+                <div class="header-controls">
+                    <button id="logoutBtn" class="btn btn-secondary btn-small">Logout</button>
+                    <button id="resetBtn" class="btn btn-danger btn-small">Reset Checklist</button>
+                    <button id="captureBtn" class="btn btn-small">Simpan Gambar</button>
+                </div>
+                <h1>Checklist Perlengkapan KKN</h1>
+                <div id="alertContainerChecklist"></div> <!-- Alert for checklist section -->
+
+                <!-- Search and Filter Controls -->
+                <div class="search-filter-controls">
+                    <input type="text" id="searchItemInput" placeholder="Cari perlengkapan...">
+                    <div class="filter-buttons">
+                        <button id="filterAllBtn" class="btn btn-small">Semua</button>
+                        <button id="filterCompletedBtn" class="btn btn-small btn-secondary">Selesai</button>
+                        <button id="filterPendingBtn" class="btn btn-small btn-secondary">Belum Selesai</button>
+                    </div>
+                </div>
+
+                <div id="checklistContent"></div>
+
+                <!-- Add Item/Category Section -->
+                <div class="add-item-section">
+                    <h2>Tambah Kategori/Perlengkapan Lain</h2>
+                    <div class="form-group">
+                        <input type="text" id="newCategoryName" placeholder="Nama Kategori Baru (Opsional)">
+                        <textarea id="newItemNames" rows="3" placeholder="Nama Perlengkapan Baru (pisahkan dengan koma atau baris baru)" required></textarea>
+                        <button id="addItemBtn" class="btn btn-small">Tambah</button>
+                    </div>
+                </div>
+
+                <!-- Account Management Section -->
+                <div class="account-management-section">
+                    <h2>Pengaturan Akun</h2>
+                    <form id="changePasswordForm">
+                        <div class="form-group">
+                            <label for="newPassword">Password Baru:</label>
+                            <input type="password" id="newPassword" required minlength="6">
+                        </div>
+                        <button type="submit" class="btn btn-small">Ubah Password</button>
+                    </form>
+                    <button id="deleteAccountBtn" class="btn btn-danger btn-small" style="margin-top: 15px;">Hapus Akun</button>
+                </div>
+
+                <!-- Data Import/Export Section -->
+                <div class="data-io-section">
+                    <h2>Impor/Ekspor Data</h2>
+                    <div class="form-group">
+                        <button id="exportDataBtn" class="btn btn-small">Ekspor Data (JSON)</button>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" id="importFileInput" accept=".json">
+                        <button id="importDataBtn" class="btn btn-small">Impor Data (JSON)</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="table-container" id="transactionTableContainer">
-          <!-- Transaction data will be inserted here -->
-        </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Login Alert -->
-  <div id="loginAlert" class="alert">
-    Berhasil login sebagai FemmeiaCloth
-  </div>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword, reauthenticateWithCredential, EmailAuthProvider, deleteUser } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        // Import html2canvas library
+        import html2canvas from 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.esm.js';
 
-  <!-- Confirmation Modal -->
-  <div id="confirmModal" class="modal">
-    <div class="modal-content">
-      <h3 class="modal-title">Yakin ingin menghapus transaksi ini?</h3>
-      <div class="modal-buttons">
-        <button style="background : #000; color:#fff; box-shadow: none" id="cancelDelete" class="btn-cancel">Batal</button>
-        <button id="confirmDelete" class="btn-confirm">Hapus</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Offline Indicator -->
-  <div id="offlineIndicator" class="offline-indicator">
-    Anda sedang offline. Beberapa fitur mungkin tidak tersedia.
-  </div>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    // Import the functions you need from the SDKs
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
-
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
-      authDomain: "femmeiacloth-finance.firebaseapp.com",
-      projectId: "femmeiacloth-finance",
-      storageBucket: "femmeiacloth-finance.appspot.com",
-      messagingSenderId: "517478386163",
-      appId: "1:517478386163:web:51028f5841baa311126a86",
-      measurementId: "G-K4L516Q54R"
+        // Firebase configuration
+        const firebaseConfig = {
+      apiKey: "AIzaSyDVRX1ExILdGhsqsaOcmyOix00PZYMHh04",
+      authDomain: "femmeiadev.firebaseapp.com",
+      projectId: "femmeiadev",
+      storageBucket: "femmeiadev.firebasestorage.app",
+      messagingSenderId: "214287674772",
+      appId: "1:214287674772:web:4c455b47d3dec899687381",
+      measurementId: "G-0ER8S6EFL2"
     };
+   
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    // Enable offline persistence
-    enableIndexedDbPersistence(db)
-      .catch((err) => {
-        if (err.code == 'failed-precondition') {
-          console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
-        } else if (err.code == 'unimplemented') {
-          console.log('The current browser does not support all of the features required to enable persistence');
-        }
-      });
-
-    // Auto login
-    async function autoLogin() {
-      try {
-        await signInWithEmailAndPassword(auth, "femmeiacloth@gmail.com", "femmeia");
-        showAlert("Berhasil login sebagai FemmeiaCloth");
-        loadTransactions();
-      } catch (error) {
-        console.error("Error during auto-login:", error);
-        showAlert("Gagal login: " + error.message, true);
-      }
-    }
-
-    // Show alert function with enhanced animation
-    function showAlert(message, isError = false) {
-      const alert = document.getElementById("loginAlert");
-      alert.textContent = message;
-      
-      if (isError) {
-        alert.style.backgroundColor = "var(--danger-color)";
-      } else {
-        alert.style.backgroundColor = "var(--success-color)";
-      }
-      
-      // Enhanced animation
-      alert.style.opacity = "0";
-      alert.style.transform = "translateX(0)";
-      alert.classList.add("show");
-      
-      setTimeout(() => {
-        alert.style.opacity = "1";
-      }, 10);
-      
-      setTimeout(() => {
-        alert.classList.remove("show");
-      }, 1000);
-    }
-
-    // Format currency
-    function formatRupiah(angka) {
-      return "Rp " + new Intl.NumberFormat('id-ID').format(angka);
-    }
-
-    // Format date in Indonesian
-    function formatDateIndonesian(date) {
-      const options = { day: 'numeric', month: 'long', year: 'numeric' };
-      return date.toLocaleDateString('id-ID', options);
-    }
-
-    // Group transactions by date
-    function groupTransactionsByDate(transactions) {
-      const grouped = {};
-      
-      transactions.forEach(transaction => {
-        const dateStr = formatDateIndonesian(transaction.tanggal);
-        if (!grouped[dateStr]) {
-          grouped[dateStr] = [];
-        }
-        grouped[dateStr].push(transaction);
-      });
-      
-      return grouped;
-    }
-
-    // Product suggestions - Enhanced list
-    const productSuggestions = [
-      "Hijab Paris",
-      "Earab Inner Ciput",
-      "Ciput",
-      "titahcantik"
-      "Pashmina Kaos"
-    ];
-
-    const produkInput = document.getElementById("produk");
-    const suggestionsDiv = document.getElementById("suggestions");
-
-    produkInput.addEventListener("input", function() {
-      const inputValue = this.value.toLowerCase();
-      suggestionsDiv.innerHTML = "";
-      
-      if (inputValue.length < 1) {
-        suggestionsDiv.style.display = "none";
-        return;
-      }
-      
-      const filteredSuggestions = productSuggestions.filter(product => 
-        product.toLowerCase().includes(inputValue)
-      );
-      
-      if (filteredSuggestions.length > 0) {
-        suggestionsDiv.style.display = "block";
-        
-        filteredSuggestions.forEach(suggestion => {
-          const div = document.createElement("div");
-          div.className = "suggestion-item";
-          div.textContent = suggestion;
-          div.addEventListener("click", function() {
-            produkInput.value = suggestion;
-            suggestionsDiv.style.display = "none";
-          });
-          suggestionsDiv.appendChild(div);
-        });
-      } else {
-        suggestionsDiv.style.display = "none";
-      }
-    });
-
-    document.addEventListener("click", function(e) {
-      if (e.target !== produkInput && e.target !== suggestionsDiv) {
-        suggestionsDiv.style.display = "none";
-      }
-    });
-
-    // Handle form submission
-    document.getElementById("formTransaksi").addEventListener("submit", async function(e) {
-      e.preventDefault();
-      
-      const produk = document.getElementById("produk").value;
-      const jumlah = parseInt(document.getElementById("jumlah").value);
-      const harga = parseInt(document.getElementById("harga").value);
-      const jenis = document.getElementById("jenis").value;
-      const catatan = document.getElementById("catatan").value;
-      const tanggal = new Date();
-      const total = jumlah * harga;
-      
-      try {
-        await addDoc(collection(db, "transactions"), {
-          produk,
-          jumlah,
-          harga,
-          total,
-          jenis,
-          catatan,
-          tanggal
-        });
-        
-        showAlert("Transaksi berhasil disimpan!");
-        this.reset();
-        loadTransactions();
-      } catch (error) {
-        console.error("Error adding document: ", error);
-        showAlert("Gagal menyimpan transaksi: " + error.message, true);
-      }
-    });
-
-    // Load transactions from Firestore
-    let transactions = [];
-    
-    async function loadTransactions() {
-      try {
-        const q = query(collection(db, "transactions"), orderBy("tanggal", "desc"));
-        const querySnapshot = await getDocs(q);
-        
-        transactions = [];
-        let totalPemasukan = 0;
-        let totalPengeluaran = 0;
-        
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          transactions.push({
-            id: doc.id,
-            ...data,
-            tanggal: data.tanggal.toDate()
-          });
-          
-          if (data.jenis === "pemasukan") {
-            totalPemasukan += data.total;
-          } else {
-            totalPengeluaran += data.total;
-          }
-        });
-        
-        // Update summary
-        document.getElementById("totalMasuk").textContent = formatRupiah(totalPemasukan);
-        document.getElementById("totalKeluar").textContent = formatRupiah(totalPengeluaran);
-        
-        // Update table with grouped transactions
-        renderTransactionTable();
-        
-        // Update chart
-        renderChart(totalPemasukan, totalPengeluaran);
-      } catch (error) {
-        console.error("Error loading transactions: ", error);
-        showAlert("Gagal memuat transaksi: " + error.message, true);
-      }
-    }
-
-    // Render transaction table with date grouping
-    function renderTransactionTable() {
-      const container = document.getElementById("transactionTableContainer");
-      container.innerHTML = "";
-      
-      if (transactions.length === 0) {
-        container.innerHTML = `<p style="text-align: center; padding: 20px;">Belum ada data transaksi</p>`;
-        return;
-      }
-      
-      // Group transactions by date
-      const groupedTransactions = groupTransactionsByDate(transactions);
-      
-      // Create tables for each date group
-      for (const [dateStr, dateTransactions] of Object.entries(groupedTransactions)) {
-        // Add date header
-        const dateHeader = document.createElement("div");
-        dateHeader.className = "date-header";
-        dateHeader.textContent = dateStr;
-        container.appendChild(dateHeader);
-        
-        // Create table for this date group
-        const table = document.createElement("table");
-        table.innerHTML = `
-          <thead>
-            <tr>
-              <th>Produk</th>
-              <th>Jumlah</th>
-              <th>Harga Satuan</th>
-              <th>Total</th>
-              <th>Jenis</th>
-              <th>Catatan</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        `;
-        
-        const tbody = table.querySelector("tbody");
-        
-        dateTransactions.forEach(transaction => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${transaction.produk}</td>
-            <td>${transaction.jumlah}</td>
-            <td>${formatRupiah(transaction.harga)}</td>
-            <td>${formatRupiah(transaction.total)}</td>
-            <td>${transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
-            <td>${transaction.catatan || "-"}</td>
-            <td>
-              <button class="btn-delete" data-id="${transaction.id}">❌</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-        
-        container.appendChild(table);
-      }
-      
-      // Add event listeners to delete buttons
-      document.querySelectorAll(".btn-delete").forEach(button => {
-        button.addEventListener("click", function() {
-          const transactionId = this.getAttribute("data-id");
-          showDeleteConfirmation(transactionId);
-        });
-      });
-    }
-
-    // Delete transaction confirmation
-    let transactionToDelete = null;
-    const confirmModal = document.getElementById("confirmModal");
-    const cancelDeleteBtn = document.getElementById("cancelDelete");
-    const confirmDeleteBtn = document.getElementById("confirmDelete");
-    
-    function showDeleteConfirmation(transactionId) {
-      transactionToDelete = transactionId;
-      confirmModal.style.display = "flex";
-    }
-    
-    cancelDeleteBtn.addEventListener("click", function() {
-      confirmModal.style.display = "none";
-      transactionToDelete = null;
-    });
-    
-    confirmDeleteBtn.addEventListener("click", async function() {
-      if (transactionToDelete) {
-        try {
-          await deleteDoc(doc(db, "transactions", transactionToDelete));
-          showAlert("Transaksi berhasil dihapus!");
-          confirmModal.style.display = "none";
-          transactionToDelete = null;
-          loadTransactions();
-        } catch (error) {
-          console.error("Error deleting document: ", error);
-          showAlert("Gagal menghapus transaksi: " + error.message, true);
-        }
-      }
-    });
-
-    // Load Chart.js
-    let myChart = null;
-    
-    async function loadChartJS() {
-      return new Promise((resolve) => {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-        script.onload = () => resolve();
-        document.head.appendChild(script);
-      });
-    }
-
-    // Render doughnut chart with improved colors
-    async function renderChart(pemasukan, pengeluaran) {
-      await loadChartJS();
-      
-      const ctx = document.getElementById('grafik').getContext('2d');
-      
-      if (myChart) {
-        myChart.destroy();
-      }
-      
-      myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Pemasukan', 'Pengeluaran'],
-          datasets: [{
-            data: [pemasukan, pengeluaran],
-            backgroundColor: [
-              'rgba(0, 184, 148, 0.7)',  // Green for income
-              'rgba(214, 48, 49, 0.7)'   // Red for expenses
+        // Default checklist data
+        const defaultChecklist = {
+            "Pakaian": [
+                { name: "Kaos kaki (3)", checked: false },
+                { name: "Kaos tangan (1)", checked: false },
+                { name: "Baju kaos (8): 3 putih, 2 hitam, 2 orange, 1 cream", checked: false },
+                { name: "Celana pendek (2)", checked: false },
+                { name: "Celana panjang (4)", checked: false },
+                { name: "Handuk", checked: false },
+                { name: "Selimut", checked: false }
             ],
-            borderColor: [
-              'rgba(0, 184, 148, 1)',
-              'rgba(214, 48, 49, 1)'
+            "Perlengkapan Mandi": [
+                { name: "Sikat gigi & pasta gigi", checked: false },
+                { name: "Sabun batang (3)", checked: false },
+                { name: "Sampo sachet", checked: false },
+                { name: "Rinso kecil", checked: false }
             ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom'
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  const label = context.label || '';
-                  const value = context.raw || 0;
-                  return `${label}: ${formatRupiah(value)}`;
+            "Elektronik & Gadget": [
+                { name: "Charger Android", checked: false },
+                { name: "Charger iPhone", checked: false },
+                { name: "TWS", checked: false },
+                { name: "Jam tangan dan kabel casnya", checked: false },
+                { name: "Parfum", checked: false },
+                { name: "Alat HP (lem LCD, casing, dll)", checked: false }
+            ],
+            "Peralatan Makan": [
+                { name: "Piring", checked: false },
+                { name: "Gelas", checked: false },
+                { name: "Sendok", checked: false }
+            ],
+            "Kesehatan": [
+                { name: "Vitamin C sachet", checked: false },
+                { name: "Minyak kayu putih", checked: false },
+                { name: "Gunting kuku", checked: false }
+            ],
+            "Alas Kaki": [
+                { name: "Sepatu (1)", checked: false },
+                { name: "Sandal (2)", checked: false }
+            ],
+            "Lain-lain": [
+                { name: "Plastik/totebag", checked: false },
+                { name: "Gunting", checked: false }
+            ]
+        };
+
+        // Global variable to store current checklist data
+        let currentChecklistData = {};
+        let currentFilter = 'all'; // 'all', 'completed', 'pending'
+        let currentSearchTerm = '';
+
+        // DOM elements
+        const authSection = document.getElementById('authSection');
+        const checklistSection = document.getElementById('checklistSection');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showRegisterLink = document.getElementById('showRegister');
+        const showLoginLink = document.getElementById('showLogin');
+        const loginFormElement = document.getElementById('loginFormElement');
+        const registerFormElement = document.getElementById('registerFormElement');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const checklistContent = document.getElementById('checklistContent');
+        const alertContainerAuth = document.getElementById('alertContainer'); // For auth section
+        const alertContainerChecklist = document.getElementById('alertContainerChecklist'); // For checklist section
+
+        // New elements for adding items/categories
+        const newCategoryNameInput = document.getElementById('newCategoryName');
+        const newItemNamesInput = document.getElementById('newItemNames');
+        const addItemBtn = document.getElementById('addItemBtn');
+
+        // Search and Filter elements
+        const searchItemInput = document.getElementById('searchItemInput');
+        const filterAllBtn = document.getElementById('filterAllBtn');
+        const filterCompletedBtn = document.getElementById('filterCompletedBtn');
+        const filterPendingBtn = document.getElementById('filterPendingBtn');
+
+        // Account Management elements
+        const changePasswordForm = document.getElementById('changePasswordForm');
+        const newPasswordInput = document.getElementById('newPassword');
+        const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+
+        // Data Import/Export elements
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        const importFileInput = document.getElementById('importFileInput');
+        const importDataBtn = document.getElementById('importDataBtn');
+
+
+        // Show alert
+        function showAlert(message, type = 'error', container = alertContainerAuth) {
+            // Clear existing alerts in the container
+            container.innerHTML = '';
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            container.appendChild(alertDiv);
+
+            // Remove the alert after the animation finishes
+            setTimeout(() => {
+                alertDiv.style.opacity = '0'; // Start fade out
+                alertDiv.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    if (alertDiv.parentNode) {
+                        alertDiv.parentNode.removeChild(alertDiv);
+                    }
+                }, 500); // Match CSS transition duration for fade out
+            }, 3000); // Display duration
+        }
+
+        // Toggle between login and register forms
+        showRegisterLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+            alertContainerAuth.innerHTML = ''; // Clear alerts
+        });
+
+        showLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            alertContainerAuth.innerHTML = ''; // Clear alerts
+        });
+
+        // Handle Register
+        registerFormElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // Set initial checklist data for new user
+                await setDoc(doc(db, 'checklists', userCredential.user.uid), { checklist: defaultChecklist });
+                showAlert('Registrasi berhasil! Silakan login.', 'success', alertContainerAuth);
+                registerFormElement.reset();
+                registerForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    showAlert('Email sudah terdaftar!', 'error', alertContainerAuth);
+                } else if (error.code === 'auth/weak-password') {
+                    showAlert('Password terlalu lemah! Minimal 6 karakter.', 'error', alertContainerAuth);
+                } else {
+                    showAlert('Gagal mendaftar: ' + error.message, 'error', alertContainerAuth);
                 }
-              }
             }
-          }
-        }
-      });
-    }
+        });
 
-    // Load PapaParse for CSV export
-    async function loadPapaParse() {
-      return new Promise((resolve) => {
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js';
-        script.onload = () => resolve();
-        document.head.appendChild(script);
-      });
-    }
+        // Handle Login
+        loginFormElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
 
-    // Export to CSV with PapaParse
-    document.getElementById("exportCSV").addEventListener("click", async function() {
-      if (transactions.length === 0) {
-        showAlert("Tidak ada data untuk diekspor", true);
-        return;
-      }
-      
-      await loadPapaParse();
-      
-      const data = transactions.map(transaction => ({
-        Tanggal: transaction.tanggal.toLocaleDateString('id-ID'),
-        Produk: transaction.produk,
-        Jumlah: transaction.jumlah,
-        'Harga Satuan': transaction.harga,
-        Total: transaction.total,
-        Jenis: transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
-        Catatan: transaction.catatan || ""
-      }));
-      
-      const csv = Papa.unparse(data);
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', `transaksi_femmeiacloth_${new Date().toISOString().slice(0, 10)}.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-
-    // Export to PDF with improved layout
-    document.getElementById("exportPDF").addEventListener("click", async function() {
-      if (transactions.length === 0) {
-        showAlert("Tidak ada data untuk diekspor", true);
-        return;
-      }
-      
-      // Load jsPDF library
-      const script1 = document.createElement('script');
-      script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-      document.head.appendChild(script1);
-      
-      // Load jsPDF-AutoTable plugin
-      const script2 = document.createElement('script');
-      script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js';
-      document.head.appendChild(script2);
-      
-      script2.onload = function() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        // Add title with better styling
-        doc.setFontSize(20);
-        doc.setFont(undefined, 'bold');
-        doc.setTextColor(108, 92, 231); // Accent color
-        doc.text('FemmeiaCloth Finance Tracker', 105, 20, { align: 'center' });
-        
-        // Add date
-        doc.setFontSize(12);
-        doc.setFont(undefined, 'normal');
-        doc.setTextColor(0, 0, 0);
-        doc.text(`Laporan Transaksi - ${new Date().toLocaleDateString('id-ID')}`, 105, 30, { align: 'center' });
-        
-        // Add summary with better styling
-        doc.setFontSize(14);
-        doc.setFont(undefined, 'bold');
-        doc.text('Ringkasan:', 14, 45);
-        
-        doc.setFontSize(12);
-        doc.setFont(undefined, 'normal');
-        doc.text(`Total Pemasukan: ${document.getElementById("totalMasuk").textContent}`, 14, 55);
-        doc.text(`Total Pengeluaran: ${document.getElementById("totalKeluar").textContent}`, 14, 65);
-        
-        // Group transactions by date for the PDF
-        const groupedTransactions = groupTransactionsByDate(transactions);
-        let startY = 80;
-        
-        for (const [dateStr, dateTransactions] of Object.entries(groupedTransactions)) {
-          // Add date header
-          doc.setFontSize(12);
-          doc.setFont(undefined, 'bold');
-          doc.setTextColor(108, 92, 231); // Accent color
-          doc.text(dateStr, 14, startY);
-          startY += 10;
-          
-          // Create table for this date group
-          const tableColumn = ["Produk", "Jumlah", "Harga", "Total", "Jenis", "Catatan"];
-          const tableRows = [];
-          
-          dateTransactions.forEach(transaction => {
-            const tableRow = [
-              transaction.produk,
-              transaction.jumlah,
-              formatRupiah(transaction.harga),
-              formatRupiah(transaction.total),
-              transaction.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran",
-              transaction.catatan || "-"
-            ];
-            tableRows.push(tableRow);
-          });
-          
-          doc.autoTable({
-            head: [tableColumn],
-            body: tableRows,
-            startY: startY,
-            theme: 'grid',
-            styles: {
-              fontSize: 9,
-              cellPadding: 3
-            },
-            headStyles: {
-              fillColor: [108, 92, 231],
-              textColor: [255, 255, 255],
-              fontStyle: 'bold'
-            },
-            alternateRowStyles: {
-              fillColor: [245, 245, 245]
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                loginFormElement.reset();
+            } catch (error) {
+                if (error.code === 'auth/wrong-password') {
+                    showAlert('Password salah!', 'error', alertContainerAuth);
+                } else if (error.code === 'auth/user-not-found') {
+                    showAlert('Email tidak terdaftar!', 'error', alertContainerAuth);
+                } else {
+                    showAlert('Gagal login: ' + error.message, 'error', alertContainerAuth);
+                }
             }
-          });
-          
-          startY = doc.lastAutoTable.finalY + 15;
-          
-          // Add new page if needed
-          if (startY > 270 && Object.entries(groupedTransactions).indexOf([dateStr, dateTransactions]) < Object.entries(groupedTransactions).length - 1) {
-            doc.addPage();
-            startY = 20;
-          }
+        });
+
+        // Handle Logout
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // The onAuthStateChanged listener will handle UI updates
+                showAlert('Anda telah logout.', 'success', alertContainerAuth);
+            } catch (error) {
+                showAlert('Gagal logout: ' + error.message, 'error', alertContainerChecklist);
+            }
+        });
+
+        // Render Checklist
+        function renderChecklist(checklistData) {
+            checklistContent.innerHTML = '';
+            // currentChecklistData = checklistData; // This is updated when data is fetched/modified
+
+            let filteredAndSearchedData = {};
+
+            // Apply search filter
+            if (currentSearchTerm) {
+                Object.keys(checklistData).forEach(category => {
+                    const filteredItems = checklistData[category].filter(item =>
+                        item.name.toLowerCase().includes(currentSearchTerm.toLowerCase())
+                    );
+                    if (filteredItems.length > 0) {
+                        filteredAndSearchedData[category] = filteredItems;
+                    }
+                });
+            } else {
+                filteredAndSearchedData = { ...checklistData }; // Copy all data if no search term
+            }
+
+            // Apply status filter
+            let finalData = {};
+            Object.keys(filteredAndSearchedData).forEach(category => {
+                const itemsToDisplay = filteredAndSearchedData[category].filter(item => {
+                    if (currentFilter === 'completed') {
+                        return item.checked;
+                    } else if (currentFilter === 'pending') {
+                        return !item.checked;
+                    }
+                    return true; // 'all' filter
+                });
+                if (itemsToDisplay.length > 0) {
+                    finalData[category] = itemsToDisplay;
+                }
+            });
+
+
+            if (Object.keys(finalData).length === 0) {
+                checklistContent.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Tidak ada perlengkapan yang cocok dengan kriteria Anda.</p>';
+                return;
+            }
+
+            Object.keys(finalData).forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'checklist-category';
+
+                const categoryTitleH2 = document.createElement('h2');
+                const categoryTitleSpan = document.createElement('span');
+                categoryTitleSpan.textContent = category;
+                categoryTitleSpan.style.cursor = 'pointer'; // Indicate editable
+                categoryTitleH2.appendChild(categoryTitleSpan);
+
+                const deleteCategoryBtn = document.createElement('button');
+                deleteCategoryBtn.className = 'delete-category-btn';
+                deleteCategoryBtn.innerHTML = '&times;';
+                deleteCategoryBtn.title = `Hapus kategori ${category}`;
+                deleteCategoryBtn.addEventListener('click', async () => {
+                    if (confirm(`Apakah Anda yakin ingin menghapus seluruh kategori "${category}" beserta isinya?`)) {
+                        try {
+                            delete currentChecklistData[category];
+                            await updateChecklistInFirestore();
+                            renderChecklist(currentChecklistData); // Re-render to update UI
+                            showAlert(`Kategori "${category}" berhasil dihapus!`, 'success', alertContainerChecklist);
+                        } catch (error) {
+                            showAlert('Gagal menghapus kategori: ' + error.message, 'error', alertContainerChecklist);
+                        }
+                    }
+                });
+                categoryTitleH2.appendChild(deleteCategoryBtn);
+                categoryDiv.appendChild(categoryTitleH2);
+
+                // Edit Category Name
+                categoryTitleSpan.addEventListener('dblclick', () => {
+                    const currentCategoryName = categoryTitleSpan.textContent;
+                    const inputField = document.createElement('input');
+                    inputField.type = 'text';
+                    inputField.value = currentCategoryName;
+                    inputField.className = 'edit-category-input';
+
+                    categoryTitleSpan.replaceWith(inputField);
+                    inputField.focus();
+
+                    const saveCategoryChanges = async () => {
+                        const newCategoryName = inputField.value.trim();
+                        if (newCategoryName && newCategoryName !== currentCategoryName) {
+                            if (currentChecklistData[newCategoryName]) {
+                                showAlert('Nama kategori sudah ada!', 'error', alertContainerChecklist);
+                                inputField.replaceWith(categoryTitleSpan);
+                                categoryTitleSpan.textContent = currentCategoryName;
+                                return;
+                            }
+                            try {
+                                const oldCategoryItems = currentChecklistData[currentCategoryName];
+                                delete currentChecklistData[currentCategoryName];
+                                currentChecklistData[newCategoryName] = oldCategoryItems;
+                                await updateChecklistInFirestore();
+                                renderChecklist(currentChecklistData);
+                                showAlert('Nama kategori berhasil diperbarui!', 'success', alertContainerChecklist);
+                            } catch (error) {
+                                showAlert('Gagal memperbarui nama kategori: ' + error.message, 'error', alertContainerChecklist);
+                            }
+                        } else {
+                            inputField.replaceWith(categoryTitleSpan);
+                            categoryTitleSpan.textContent = currentCategoryName;
+                        }
+                    };
+
+                    inputField.addEventListener('blur', saveCategoryChanges);
+                    inputField.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            saveCategoryChanges();
+                        }
+                    });
+                });
+
+
+                finalData[category].forEach((item) => { // Iterate over finalData, not currentChecklistData
+                    // Find the original index in currentChecklistData to update correctly
+                    const originalIndex = currentChecklistData[category] ? currentChecklistData[category].findIndex(originalItem => originalItem.name === item.name) : -1;
+
+                    if (originalIndex === -1) return; // Skip if item not found in original data (shouldn't happen with current logic)
+
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'checklist-item fade-in'; // Add fade-in class
+                    itemDiv.innerHTML = `
+                        <input type="checkbox" id="${category}-${originalIndex}" ${item.checked ? 'checked' : ''}>
+                        <label for="${category}-${originalIndex}">${item.name}</label>
+                        <button class="delete-item-btn" data-category="${category}" data-index="${originalIndex}">&times;</button>
+                    `;
+                    const checkbox = itemDiv.querySelector('input[type="checkbox"]');
+                    checkbox.addEventListener('change', async () => {
+                        try {
+                            currentChecklistData[category][originalIndex].checked = checkbox.checked;
+                            await updateChecklistInFirestore();
+                            renderChecklist(currentChecklistData); // Re-render to apply filter if needed
+                        } catch (error) {
+                            showAlert('Gagal memperbarui status item: ' + error.message, 'error', alertContainerChecklist);
+                        }
+                    });
+
+                    const deleteButton = itemDiv.querySelector('.delete-item-btn');
+                    deleteButton.addEventListener('click', async (e) => {
+                        const cat = e.target.dataset.category;
+                        const idx = parseInt(e.target.dataset.index);
+                        if (confirm(`Apakah Anda yakin ingin menghapus "${currentChecklistData[cat][idx].name}" dari kategori "${cat}"?`)) {
+                            // Add fade-out animation before removal
+                            itemDiv.classList.remove('fade-in');
+                            itemDiv.classList.add('fade-out');
+                            itemDiv.addEventListener('animationend', async () => {
+                                try {
+                                    currentChecklistData[cat].splice(idx, 1);
+                                    if (currentChecklistData[cat].length === 0) {
+                                        delete currentChecklistData[cat]; // Remove category if empty
+                                    }
+                                    await updateChecklistInFirestore();
+                                    renderChecklist(currentChecklistData); // Re-render to update UI
+                                    showAlert('Perlengkapan berhasil dihapus!', 'success', alertContainerChecklist);
+                                } catch (error) {
+                                    showAlert('Gagal menghapus perlengkapan: ' + error.message, 'error', alertContainerChecklist);
+                                }
+                            }, { once: true }); // Ensure listener runs only once
+                        }
+                    });
+
+                    // Edit Item Name
+                    const itemLabel = itemDiv.querySelector('label');
+                    itemLabel.addEventListener('dblclick', () => {
+                        const currentText = itemLabel.textContent;
+                        const inputField = document.createElement('input');
+                        inputField.type = 'text';
+                        inputField.value = currentText;
+                        inputField.className = 'edit-item-input';
+
+                        itemLabel.replaceWith(inputField);
+                        inputField.focus();
+
+                        const saveItemChanges = async () => {
+                            const newText = inputField.value.trim();
+                            if (newText && newText !== currentText) {
+                                try {
+                                    currentChecklistData[category][originalIndex].name = newText;
+                                    await updateChecklistInFirestore();
+                                    showAlert('Nama item berhasil diperbarui!', 'success', alertContainerChecklist);
+                                } catch (error) {
+                                    showAlert('Gagal memperbarui nama item: ' + error.message, 'error', alertContainerChecklist);
+                                }
+                            }
+                            inputField.replaceWith(itemLabel);
+                            itemLabel.textContent = newText || currentText;
+                        };
+
+                        inputField.addEventListener('blur', saveItemChanges);
+                        inputField.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                saveItemChanges();
+                            }
+                        });
+                    });
+
+                    categoryDiv.appendChild(itemDiv);
+                });
+
+                checklistContent.appendChild(categoryDiv);
+            });
         }
-        
-        // Add footer
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-          doc.setPage(i);
-          doc.setFontSize(10);
-          doc.setTextColor(150, 150, 150);
-          doc.text(`Halaman ${i} dari ${pageCount}`, 105, 290, { align: 'center' });
-          doc.text('FemmeiaCloth © ' + new Date().getFullYear(), 105, 295, { align: 'center' });
+
+        // Function to update checklist in Firestore
+        async function updateChecklistInFirestore() {
+            if (auth.currentUser) {
+                try {
+                    await updateDoc(doc(db, 'checklists', auth.currentUser.uid), {
+                        checklist: currentChecklistData
+                    });
+                    // showAlert('Checklist berhasil diperbarui!', 'success', alertContainerChecklist); // Optional: show success message
+                } catch (error) {
+                    showAlert('Gagal memperbarui checklist: ' + error.message, 'error', alertContainerChecklist);
+                    throw error; // Re-throw to propagate error for loading states
+                }
+            }
         }
-        
-        // Save PDF
-        doc.save(`transaksi_femmeiacloth_${new Date().toISOString().slice(0, 10)}.pdf`);
-      };
-    });
 
-    // PWA Install Button
-    let deferredPrompt;
-    const installButton = document.getElementById('installButton');
+        // Reset Checklist
+        resetBtn.addEventListener('click', async () => {
+            if (confirm('Apakah Anda yakin ingin mereset checklist? Semua centang dan item tambahan akan dihapus.')) {
+                try {
+                    currentChecklistData = JSON.parse(JSON.stringify(defaultChecklist)); // Deep copy default
+                    await updateChecklistInFirestore();
+                    renderChecklist(currentChecklistData);
+                    showAlert('Checklist berhasil direset!', 'success', alertContainerChecklist);
+                } catch (error) {
+                    showAlert('Gagal mereset checklist: ' + error.message, 'error', alertContainerChecklist);
+                }
+            }
+        });
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later
-      deferredPrompt = e;
-      // Show the install button
-      installButton.style.display = 'block';
-    });
+        // Add Multiple Items/Category
+        addItemBtn.addEventListener('click', async () => {
+            const newCategory = newCategoryNameInput.value.trim();
+            const newItemNamesText = newItemNamesInput.value.trim();
 
-    installButton.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      
-      // Show the install prompt
-      deferredPrompt.prompt();
-      
-      // Wait for the user to respond to the prompt
-      const { outcome } = await deferredPrompt.userChoice;
-      
-      // We no longer need the prompt
-      deferredPrompt = null;
-      
-      // Hide the install button
-      installButton.style.display = 'none';
-      
-      console.log(`User response to the install prompt: ${outcome}`);
-    });
+            if (!newItemNamesText) {
+                showAlert('Nama perlengkapan tidak boleh kosong!', 'error', alertContainerChecklist);
+                return;
+            }
 
-    window.addEventListener('appinstalled', () => {
-      // Hide the install button
-      installButton.style.display = 'none';
-      console.log('PWA was installed');
-    });
+            const itemsToAdd = newItemNamesText.split(/[\n,]+/).map(item => item.trim()).filter(item => item !== '');
 
-    // Offline detection
-    const offlineIndicator = document.getElementById('offlineIndicator');
-    
-    function updateOnlineStatus() {
-      if (navigator.onLine) {
-        offlineIndicator.style.display = 'none';
-      } else {
-        offlineIndicator.style.display = 'block';
-      }
-    }
+            if (itemsToAdd.length === 0) {
+                showAlert('Tidak ada perlengkapan yang valid untuk ditambahkan.', 'error', alertContainerChecklist);
+                return;
+            }
 
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    updateOnlineStatus();
+            const targetCategory = newCategory || "Lain-lain"; // Default to "Lain-lain" if no category specified
 
-    // Initialize app
-    window.addEventListener('load', function() {
-      autoLogin();
-    });
-  </script>
+            if (!currentChecklistData[targetCategory]) {
+                currentChecklistData[targetCategory] = [];
+            }
+
+            let addedCount = 0;
+            let skippedCount = 0;
+
+            itemsToAdd.forEach(item => {
+                // Check for duplicate item in the target category
+                const isDuplicate = currentChecklistData[targetCategory].some(existingItem => existingItem.name.toLowerCase() === item.toLowerCase());
+                if (!isDuplicate) {
+                    currentChecklistData[targetCategory].push({ name: item, checked: false });
+                    addedCount++;
+                } else {
+                    skippedCount++;
+                }
+            });
+
+            if (addedCount > 0) {
+                try {
+                    await updateChecklistInFirestore();
+                    renderChecklist(currentChecklistData); // Re-render to show new items
+                    newCategoryNameInput.value = '';
+                    newItemNamesInput.value = '';
+                    let message = `${addedCount} perlengkapan berhasil ditambahkan!`;
+                    if (skippedCount > 0) {
+                        message += ` (${skippedCount} duplikat dilewati).`;
+                    }
+                    showAlert(message, 'success', alertContainerChecklist);
+                } catch (error) {
+                    showAlert('Gagal menambahkan perlengkapan: ' + error.message, 'error', alertContainerChecklist);
+                }
+            } else {
+                showAlert('Semua perlengkapan yang dimasukkan sudah ada atau tidak valid.', 'warning', alertContainerChecklist);
+            }
+        });
+
+        // Search and Filter Logic
+        searchItemInput.addEventListener('input', () => {
+            currentSearchTerm = searchItemInput.value.trim();
+            renderChecklist(currentChecklistData);
+        });
+
+        filterAllBtn.addEventListener('click', () => {
+            currentFilter = 'all';
+            renderChecklist(currentChecklistData);
+            filterAllBtn.classList.remove('btn-secondary');
+            filterCompletedBtn.classList.add('btn-secondary');
+            filterPendingBtn.classList.add('btn-secondary');
+        });
+
+        filterCompletedBtn.addEventListener('click', () => {
+            currentFilter = 'completed';
+            renderChecklist(currentChecklistData);
+            filterAllBtn.classList.add('btn-secondary');
+            filterCompletedBtn.classList.remove('btn-secondary');
+            filterPendingBtn.classList.add('btn-secondary');
+        });
+
+        filterPendingBtn.addEventListener('click', () => {
+            currentFilter = 'pending';
+            renderChecklist(currentChecklistData);
+            filterAllBtn.classList.add('btn-secondary');
+            filterCompletedBtn.classList.add('btn-secondary');
+            filterPendingBtn.classList.remove('btn-secondary');
+        });
+
+        // Account Management: Change Password
+        changePasswordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPassword = newPasswordInput.value;
+            const user = auth.currentUser;
+
+            if (!user) {
+                showAlert('Anda harus login untuk mengubah password.', 'error', alertContainerChecklist);
+                return;
+            }
+
+            try {
+                await updatePassword(user, newPassword);
+                showAlert('Password berhasil diubah!', 'success', alertContainerChecklist);
+                changePasswordForm.reset();
+            } catch (error) {
+                // Handle specific Firebase errors for password change
+                if (error.code === 'auth/requires-recent-login') {
+                    showAlert('Untuk mengubah password, Anda perlu login ulang. Silakan logout dan login kembali.', 'warning', alertContainerChecklist);
+                } else if (error.code === 'auth/weak-password') {
+                    showAlert('Password terlalu lemah! Minimal 6 karakter.', 'error', alertContainerChecklist);
+                } else {
+                    showAlert('Gagal mengubah password: ' + error.message, 'error', alertContainerChecklist);
+                }
+            }
+        });
+
+        // Account Management: Delete Account
+        deleteAccountBtn.addEventListener('click', async () => {
+            const user = auth.currentUser;
+
+            if (!user) {
+                showAlert('Anda harus login untuk menghapus akun.', 'error', alertContainerChecklist);
+                return;
+            }
+
+            if (confirm('PERINGATAN: Menghapus akun akan menghapus semua data checklist Anda secara permanen. Apakah Anda yakin?')) {
+                // Re-authenticate user before deleting account (Firebase security requirement)
+                const passwordPrompt = prompt('Untuk konfirmasi, masukkan password Anda:');
+                if (!passwordPrompt) {
+                    showAlert('Penghapusan akun dibatalkan.', 'warning', alertContainerChecklist);
+                    return;
+                }
+
+                try {
+                    const credential = EmailAuthProvider.credential(user.email, passwordPrompt);
+                    await reauthenticateWithCredential(user, credential);
+
+                    // Delete user data from Firestore first
+                    await deleteDoc(doc(db, 'checklists', user.uid));
+
+                    // Then delete the user account
+                    await deleteUser(user);
+
+                    showAlert('Akun Anda dan semua data berhasil dihapus.', 'success', alertContainerAuth);
+                    // Will automatically redirect to auth section via onAuthStateChanged
+                } catch (error) {
+                    if (error.code === 'auth/wrong-password') {
+                        showAlert('Password salah. Penghapusan akun dibatalkan.', 'error', alertContainerChecklist);
+                    } else if (error.code === 'auth/requires-recent-login') {
+                        showAlert('Untuk menghapus akun, Anda perlu login ulang. Silakan logout dan login kembali.', 'warning', alertContainerChecklist);
+                    } else {
+                        showAlert('Gagal menghapus akun: ' + error.message, 'error', alertContainerChecklist);
+                    }
+                }
+            }
+        });
+
+
+        // Data Import/Export: Export Data
+        exportDataBtn.addEventListener('click', () => {
+            if (Object.keys(currentChecklistData).length === 0) {
+                showAlert('Tidak ada data untuk diekspor.', 'warning', alertContainerChecklist);
+                return;
+            }
+            const dataStr = JSON.stringify(currentChecklistData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'checklist_data.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showAlert('Data berhasil diekspor!', 'success', alertContainerChecklist);
+        });
+
+        // Data Import/Export: Import Data
+        importDataBtn.addEventListener('click', () => {
+            importFileInput.click(); // Trigger file input click
+        });
+
+        importFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+
+                    // Basic validation for imported data structure
+                    if (typeof importedData !== 'object' || importedData === null) {
+                        throw new Error('Struktur data JSON tidak valid.');
+                    }
+                    for (const category in importedData) {
+                        if (!Array.isArray(importedData[category])) {
+                            throw new Error('Setiap kategori harus berupa array item.');
+                        }
+                        for (const item of importedData[category]) {
+                            if (typeof item !== 'object' || !item.hasOwnProperty('name') || !item.hasOwnProperty('checked')) {
+                                throw new Error('Setiap item harus memiliki properti "name" dan "checked".');
+                            }
+                        }
+                    }
+
+                    if (confirm('Mengimpor data akan menimpa checklist Anda saat ini. Lanjutkan?')) {
+                        try {
+                            currentChecklistData = importedData;
+                            await updateChecklistInFirestore();
+                            renderChecklist(currentChecklistData);
+                            showAlert('Data berhasil diimpor!', 'success', alertContainerChecklist);
+                        } catch (error) {
+                            showAlert('Gagal mengimpor data ke Firestore: ' + error.message, 'error', alertContainerChecklist);
+                        }
+                    }
+                } catch (error) {
+                    showAlert('Gagal membaca atau memproses file JSON: ' + error.message, 'error', alertContainerChecklist);
+                } finally {
+                    importFileInput.value = ''; // Clear file input
+                }
+            };
+            reader.readAsText(file);
+        });
+
+
+        // Capture Page as Image
+        captureBtn.addEventListener('click', async () => {
+            showAlert('Mengambil gambar halaman...', 'success', alertContainerChecklist);
+            try {
+                // Temporarily hide elements that shouldn't be in the screenshot
+                const headerControls = document.querySelector('.header-controls');
+                const addSection = document.querySelector('.add-item-section');
+                const accountSection = document.querySelector('.account-management-section');
+                const dataIoSection = document.querySelector('.data-io-section');
+                const searchFilterControls = document.querySelector('.search-filter-controls');
+                const alertChecklist = document.getElementById('alertContainerChecklist');
+                const h1Title = document.querySelector('#checklistSection h1'); // Specific H1 for checklist section
+
+                if (headerControls) headerControls.style.display = 'none';
+                if (addSection) addSection.style.display = 'none';
+                if (accountSection) accountSection.style.display = 'none';
+                if (dataIoSection) dataIoSection.style.display = 'none';
+                if (searchFilterControls) searchFilterControls.style.display = 'none';
+                if (alertChecklist) alertChecklist.style.display = 'none';
+                if (h1Title) h1Title.style.marginBottom = '0'; // Adjust margin for cleaner look
+
+                // Capture the checklist container
+                const checklistContainer = document.querySelector('.checklist-container');
+                if (!checklistContainer) {
+                    showAlert('Elemen checklist tidak ditemukan!', 'error', alertContainerChecklist);
+                    return;
+                }
+
+                const canvas = await html2canvas(checklistContainer, {
+                    scale: 2, // Increase scale for better quality
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: null
+                });
+
+                // Restore hidden elements
+                if (headerControls) headerControls.style.display = 'flex';
+                if (addSection) addSection.style.display = 'block';
+                if (accountSection) accountSection.style.display = 'block';
+                if (dataIoSection) dataIoSection.style.display = 'block';
+                if (searchFilterControls) searchFilterControls.style.display = 'flex';
+                if (alertChecklist) alertChecklist.style.display = 'block';
+                if (h1Title) h1Title.style.marginBottom = '20px'; // Restore margin
+
+                const image = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = 'checklist_kkn.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showAlert('Gambar berhasil disimpan!', 'success', alertContainerChecklist);
+            } catch (error) {
+                console.error('Error capturing image:', error);
+                showAlert('Gagal menyimpan gambar: ' + error.message, 'error', alertContainerChecklist);
+            }
+        });
+
+
+        // Auth State Listener
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Apply slide-in animation when showing checklist section
+                authSection.classList.add('hidden');
+                checklistSection.classList.remove('hidden');
+                checklistSection.style.animation = 'slideInFromTop 0.6s ease-out forwards';
+
+                const docRef = doc(db, 'checklists', user.uid);
+                try {
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        currentChecklistData = data.checklist; // Load data from Firestore
+                    } else {
+                        // If no data exists for the user, set default and save to Firestore
+                        currentChecklistData = JSON.parse(JSON.stringify(defaultChecklist)); // Deep copy
+                        await setDoc(docRef, { checklist: currentChecklistData });
+                    }
+                    renderChecklist(currentChecklistData);
+                    filterAllBtn.click(); // Ensure 'All' filter is active on load
+                } catch (error) {
+                    showAlert('Gagal memuat checklist: ' + error.message, 'error', alertContainerChecklist);
+                    console.error("Error loading checklist:", error);
+                    // Force logout if data loading fails critically
+                    await signOut(auth);
+                }
+            } else {
+                // Apply slide-out animation when hiding checklist section
+                if (!checklistSection.classList.contains('hidden')) {
+                    checklistSection.style.animation = 'slideOutToBottom 0.6s ease-in forwards';
+                    checklistSection.addEventListener('animationend', () => {
+                        checklistSection.classList.add('hidden');
+                        authSection.classList.remove('hidden');
+                        authSection.style.animation = 'slideInFromTop 0.6s ease-out forwards'; // Animate auth section in
+                    }, { once: true });
+                } else {
+                    authSection.classList.remove('hidden');
+                    authSection.style.animation = 'slideInFromTop 0.6s ease-out forwards';
+                }
+
+                currentChecklistData = {}; // Clear data on logout
+                currentFilter = 'all'; // Reset filter
+                currentSearchTerm = ''; // Reset search
+                searchItemInput.value = '';
+                filterAllBtn.click(); // Reset filter button style
+            }
+        });
+    </script>
 </body>
 </html>
