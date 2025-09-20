@@ -1,0 +1,3204 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sistem Pencatatan & Monitoring Mutu Ikan Segar - Makassar (Enhanced)</title>
+<meta name="description" content="Aplikasi pencatatan dan monitoring mutu ikan segar di pasar tradisional Kota Makassar - Versi Peningkatan Single File">
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+/* ==================== ROOT & THEME ==================== */
+:root {
+  --accent: 210 100% 50%;
+  --radius-sm: 10px;
+  --radius: 20px;
+  --radius-lg: 32px;
+  --glass-bg: 220 25% 14%;
+  --glass-alpha: .55;
+  --panel-alpha: .58;
+  --transition: .35s cubic-bezier(.55,.2,.2,1);
+  --ease-soft: cubic-bezier(.4,.0,.2,1);
+  --sidebar-width: 250px;
+  --danger: #ef4444;
+  --warn: #f59e0b;
+  --ok: #10b981;
+  --info: #3b82f6;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --gradient-accent: linear-gradient(135deg, hsl(var(--accent)/.92), hsl(var(--accent)/.62));
+  --gradient-bg: linear-gradient(145deg, hsl(var(--accent)/.10), transparent 60%);
+  --focus-ring: 0 0 0 3px hsl(var(--accent)/.40);
+  --shadow-soft: 0 4px 12px -2px hsl(var(--accent)/.35);
+  --shadow-elev: 0 8px 28px -10px rgba(0,0,0,.55);
+  --shadow-inner: inset 0 0 0 1px hsl(var(--accent)/.18);
+  --table-stripe: hsl(var(--accent)/.08);
+}
+[data-theme="light"] {
+  --glass-bg: 210 40% 97%;
+  --glass-alpha: .75;
+  --panel-alpha: .85;
+  --text-color: 220 25% 14%;
+  --text-dim: 220 10% 40%;
+  --bg: 210 40% 96%;
+  --bg-alt: 210 45% 92%;
+  --panel-border: 210 25% 78%;
+  --overlay: 210 40% 92%;
+}
+[data-theme="dark"] {
+  --text-color: 0 0% 100%;
+  --text-dim: 220 12% 70%;
+  --bg: 230 25% 9%;
+  --bg-alt: 220 18% 12%;
+  --panel-border: 220 14% 32%;
+  --overlay: 220 25% 18%;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body { height:100%; scroll-behavior:smooth; }
+
+body {
+  margin:0;
+  font-family: var(--font-sans);
+  font-size:15px;
+  line-height:1.5;
+  color:hsl(var(--text-color));
+  background:
+    radial-gradient(circle at 25% 18%, hsl(var(--accent)/.12), transparent 60%),
+    radial-gradient(circle at 80% 70%, hsl(var(--accent)/.10), transparent 65%),
+    var(--gradient-bg),
+    hsl(var(--bg));
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,h2,h3,h4 { font-weight:600; margin:0 0 .75rem; letter-spacing:.25px; }
+p { margin:0 0 1rem; }
+a { color:hsl(var(--accent)/.9); text-decoration:none; transition:color .25s var(--ease-soft); }
+a:hover { color:hsl(var(--accent)/1); }
+
+::-selection { background:hsl(var(--accent)/.35); color:#fff; }
+
+/* Focus */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* ==================== REUSABLE ==================== */
+button {
+  font-family:inherit;
+  cursor:pointer;
+  border:none;
+  background:var(--gradient-accent);
+  color:#fff;
+  padding:.72rem 1.05rem;
+  font-size:.85rem;
+  font-weight:600;
+  border-radius:16px;
+  letter-spacing:.4px;
+  display:inline-flex;
+  align-items:center;
+  gap:.55rem;
+  position:relative;
+  overflow:hidden;
+  line-height:1.1;
+  transition: var(--transition);
+  box-shadow:var(--shadow-soft);
+}
+button::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg, transparent 30%, rgba(255,255,255,.25), transparent 70%);
+  transform:translateX(-100%);
+  transition: transform 1.1s ease;
+  mix-blend-mode:overlay;
+}
+button:hover::after { transform:translateX(100%); }
+button:hover { filter:brightness(1.08); transform:translateY(-2px); }
+button:active { transform:translateY(1px) scale(.97); }
+button:disabled { opacity:.5; cursor:not-allowed; }
+
+button.outline {
+  background: hsl(var(--accent)/.12);
+  border:1px solid hsl(var(--accent)/.35);
+  color:hsl(var(--accent)/.95);
+  box-shadow:none;
+}
+button.outline:hover { background:hsl(var(--accent)/.20); }
+
+button.ghost {
+  background:hsl(var(--accent)/.10);
+  color:hsl(var(--accent)/.95);
+  box-shadow:none;
+}
+button.ghost:hover { background:hsl(var(--accent)/.18); }
+
+button.subtle {
+  background: hsl(var(--accent)/.08);
+  color: hsl(var(--text-color));
+  box-shadow:none;
+}
+button.subtle:hover { background:hsl(var(--accent)/.15); }
+
+button.danger {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: 0 6px 16px -6px rgba(239,68,68,.55);
+}
+
+button.success {
+  background: linear-gradient(135deg, #10b981, #047857);
+  box-shadow: 0 6px 16px -6px rgba(16,185,129,.5);
+}
+
+button.neutral {
+  background:linear-gradient(135deg, hsl(var(--accent)/.35), hsl(var(--accent)/.55));
+}
+
+input, select, textarea {
+  width:100%;
+  border:1px solid hsl(var(--panel-border)/.6);
+  background:linear-gradient(145deg, hsl(var(--glass-bg)/.55), hsl(var(--glass-bg)/.35));
+  color:hsl(var(--text-color));
+  padding:.72rem .85rem .68rem;
+  font-size:.83rem;
+  border-radius:14px;
+  outline:none;
+  transition: var(--transition);
+  backdrop-filter: blur(22px) saturate(1.5);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.08), 0 0 0 0 transparent;
+}
+input:hover, select:hover, textarea:hover {
+  border-color:hsl(var(--accent)/.8);
+}
+input:focus, select:focus, textarea:focus {
+  border-color:hsl(var(--accent)/1);
+  box-shadow:0 0 0 3px hsl(var(--accent)/.35), 0 2px 8px -2px hsl(var(--accent)/.4);
+}
+
+textarea { resize:vertical; min-height:120px; }
+
+label {
+  font-size:.66rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  display:block;
+  margin:0 0 .4rem;
+  color:hsl(var(--text-dim));
+}
+
+.small { font-size:.72rem; color:hsl(var(--text-dim)); line-height:1.35; }
+.xsmall { font-size:.6rem; letter-spacing:.5px; opacity:.7; }
+.muted { color:hsl(var(--text-dim)); }
+
+.hidden { display:none !important; }
+.fade-in { animation: fade-in .55s var(--ease-soft); }
+.slide-up { animation: slide-up .65s var(--ease-soft); }
+.scale-in { animation: scale-in .5s var(--ease-soft); }
+
+@keyframes fade-in { from { opacity:0 } to { opacity:1 } }
+@keyframes slide-up { from { transform:translateY(14px); opacity:0 } to { transform:translateY(0); opacity:1 } }
+@keyframes scale-in { from { transform:scale(.92); opacity:0 } to { transform:scale(1); opacity:1 } }
+@keyframes pulse-soft { 0%,100%{opacity:.45} 50%{opacity:.9} }
+@keyframes shimmer {
+  100% { transform:translateX(100%); }
+}
+
+.skeleton {
+  position:relative;
+  background: linear-gradient(90deg, hsl(var(--accent)/.12) 8%, hsl(var(--accent)/.25) 18%, hsl(var(--accent)/.12) 33%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius:10px;
+  min-height:18px;
+}
+
+/* Layout */
+.layout {
+  display:flex;
+  min-height:100dvh;
+  width:100%;
+  overflow:hidden;
+  position:relative;
+}
+
+/* Sidebar */
+.sidebar {
+  width:var(--sidebar-width);
+  background:linear-gradient(165deg, hsl(var(--glass-bg)/.75), hsl(var(--glass-bg)/.4));
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  border-right:1px solid hsl(var(--panel-border)/.55);
+  display:flex;
+  flex-direction:column;
+  padding:1.05rem 1rem 1.3rem;
+  gap:.75rem;
+  position:relative;
+  transition:transform .55s var(--ease-soft), width .35s var(--ease-soft);
+  overflow:hidden;
+  box-shadow: 0 0 0 1px hsl(var(--panel-border)/.35), var(--shadow-elev);
+}
+
+.sidebar::before, .container-auth::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 25% 20%, hsl(var(--accent)/.30), transparent 65%),
+    radial-gradient(circle at 80% 70%, hsl(var(--accent)/.25), transparent 68%);
+  mix-blend-mode: overlay;
+  opacity:.45;
+  pointer-events:none;
+}
+
+.sidebar-header {
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+  padding:.25rem .15rem .35rem;
+  position:relative;
+}
+
+.logo-circle {
+  width:54px;
+  height:54px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  font-size:.85rem;
+  font-weight:700;
+  letter-spacing:.8px;
+  color:#fff;
+  background:var(--gradient-accent);
+  position:relative;
+  box-shadow:0 6px 14px -5px hsl(var(--accent)/.6);
+  overflow:hidden;
+}
+.logo-circle::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, rgba(255,255,255,.35), transparent 65%);
+  opacity:.4;
+  mix-blend-mode:overlay;
+}
+
+.nav {
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+  flex:1;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  padding-right:.3rem;
+}
+.nav button {
+  justify-content:flex-start;
+  background: hsl(var(--accent)/.08);
+  border:1px solid hsl(var(--accent)/.15);
+  color:hsl(var(--text-dim));
+  padding:.75rem .85rem;
+  border-radius:14px;
+  font-weight:600;
+  font-size:.74rem;
+  position:relative;
+  letter-spacing:.5px;
+  backdrop-filter:blur(12px);
+  transition: var(--transition);
+  isolation:isolate;
+  overflow:hidden;
+}
+.nav button i { stroke-width:1.7; }
+.nav button::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(140deg, hsl(var(--accent)/.55), hsl(var(--accent)/.25));
+  opacity:0;
+  transition: var(--transition);
+  z-index:-1;
+}
+.nav button:hover {
+  color:#fff;
+  border-color:hsl(var(--accent)/.55);
+  box-shadow:0 4px 14px -5px hsl(var(--accent)/.55);
+}
+.nav button:hover::before { opacity:.75; }
+.nav button.active {
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 6px 20px -6px hsl(var(--accent)/.7), 0 0 0 1px hsl(var(--accent)/.45);
+}
+.nav button.active::before { opacity:1; }
+
+.sidebar-footer {
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+  font-size:.65rem;
+  padding-top:.35rem;
+  border-top:1px dashed hsl(var(--panel-border)/.6);
+}
+
+/* Main & Topbar */
+.main { flex:1; display:flex; flex-direction:column; min-width:0; position:relative; }
+
+.topbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding:.85rem clamp(.85rem, 2vw, 1.4rem);
+  background:linear-gradient(to bottom, hsl(var(--glass-bg)/.85), hsl(var(--glass-bg)/.55));
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  border-bottom:1px solid hsl(var(--panel-border)/.55);
+  position:sticky;
+  top:0;
+  z-index:60;
+  box-shadow:0 4px 16px -8px rgba(0,0,0,.45);
+  animation: slide-down .55s var(--ease-soft);
+}
+@keyframes slide-down {
+  from { transform:translateY(-12px); opacity:0; }
+  to { transform:translateY(0); opacity:1; }
+}
+
+.search-box {
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  background:hsl(var(--accent)/.08);
+  border:1px solid hsl(var(--accent)/.25);
+  padding:.55rem .75rem;
+  border-radius:16px;
+  min-width:200px;
+  width:100%;
+  max-width:360px;
+  transition: var(--transition);
+  position:relative;
+}
+.search-box:focus-within {
+  border-color:hsl(var(--accent)/.8);
+  box-shadow:0 0 0 3px hsl(var(--accent)/.35);
+  background:hsl(var(--accent)/.12);
+}
+.search-box input {
+  background:transparent;
+  border:none;
+  font-size:.8rem;
+  flex:1;
+  outline:none;
+  color:inherit;
+}
+
+.toggle {
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.55rem .9rem;
+  background:hsl(var(--accent)/.18);
+  color:hsl(var(--accent)/.95);
+  border-radius:18px;
+  cursor:pointer;
+  font-size:.65rem;
+  font-weight:600;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  border:1px solid hsl(var(--accent)/.4);
+  transition: var(--transition);
+  position:relative;
+  overflow:hidden;
+}
+.toggle::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg, transparent, hsl(var(--accent)/.35), transparent 70%);
+  transform:translateX(-100%);
+  transition:transform 1s ease;
+  mix-blend-mode:overlay;
+}
+.toggle:hover::after { transform:translateX(100%); }
+.toggle.active {
+  background:var(--gradient-accent);
+  color:#fff;
+  box-shadow:0 6px 18px -6px hsl(var(--accent)/.65);
+  border-color:transparent;
+}
+
+.avatar {
+  width:42px;
+  height:42px;
+  border-radius:16px;
+  background:hsl(var(--accent)/.22);
+  display:grid;
+  place-items:center;
+  font-size:.85rem;
+  font-weight:600;
+  color:hsl(var(--accent)/1);
+  position:relative;
+  overflow:hidden;
+  border:1px solid hsl(var(--accent)/.45);
+  cursor:pointer;
+  transition: var(--transition);
+}
+.avatar:hover { transform:translateY(-2px) scale(1.03); }
+.avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+
+.dropdown {
+  position:absolute;
+  top:110%;
+  right:0;
+  display:none;
+  flex-direction:column;
+  min-width:240px;
+  background:linear-gradient(165deg, hsl(var(--glass-bg)/.88), hsl(var(--glass-bg)/.65));
+  border:1px solid hsl(var(--panel-border)/.55);
+  backdrop-filter:blur(28px) saturate(1.3);
+  -webkit-backdrop-filter:blur(28px) saturate(1.3);
+  border-radius:22px;
+  padding:.55rem;
+  box-shadow:0 16px 38px -8px rgba(0,0,0,.55);
+  animation: dropdown .45s var(--ease-soft);
+  z-index:200;
+}
+@keyframes dropdown {
+  from { transform:translateY(-8px); opacity:0; }
+  to { transform:translateY(0); opacity:1; }
+}
+.dropdown.show { display:flex; }
+.dropdown button {
+  background:transparent;
+  color:hsl(var(--text-dim));
+  border:1px solid transparent;
+  border-radius:14px;
+  font-size:.72rem;
+  font-weight:600;
+  justify-content:flex-start;
+  padding:.6rem .75rem;
+}
+.dropdown button:hover {
+  background:hsl(var(--accent)/.25);
+  color:#fff;
+}
+
+.content {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:2rem;
+  padding:1.2rem clamp(.85rem,2vw,1.6rem) 2rem;
+  position:relative;
+  animation: fade-in .6s var(--ease-soft);
+}
+
+/* Panels */
+.panel {
+  background:linear-gradient(160deg, hsl(var(--glass-bg)/var(--panel-alpha)), hsl(var(--glass-bg)/calc(var(--panel-alpha) - .2)));
+  border:1px solid hsl(var(--panel-border)/.55);
+  border-radius:28px;
+  padding:1.25rem 1.3rem 1.6rem;
+  display:flex;
+  flex-direction:column;
+  gap:1.05rem;
+  position:relative;
+  box-shadow:0 4px 14px -4px rgba(0,0,0,.55), 0 0 0 1px hsl(var(--panel-border)/.35);
+  overflow:hidden;
+  transition: var(--transition);
+  isolation:isolate;
+}
+.panel:hover {
+  box-shadow:0 6px 24px -10px rgba(0,0,0,.6), 0 0 0 1px hsl(var(--accent)/.3);
+  transform:translateY(-2px);
+}
+.panel::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 18% 15%, hsl(var(--accent)/.18), transparent 65%),
+    radial-gradient(circle at 85% 80%, hsl(var(--accent)/.15), transparent 70%);
+  opacity:.45;
+  mix-blend-mode:overlay;
+  pointer-events:none;
+}
+
+.panel-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+  padding:0 0 .2rem;
+  position:relative;
+}
+.panel-header h3 {
+  margin:0;
+  font-size:.78rem;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  color:hsl(var(--text-dim));
+}
+
+.panel.bento { min-height:240px; }
+
+.grid {
+  display:grid;
+  gap:1.4rem;
+}
+.grid-auto {
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+}
+.grid-wide {
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+}
+
+.divider {
+  height:1px;
+  background:linear-gradient(to right, transparent, hsl(var(--panel-border)/.75), transparent);
+  margin:.4rem 0 1rem;
+}
+
+.badge-role, .chip {
+  background:hsl(var(--accent)/.22);
+  color:hsl(var(--accent)/1);
+  padding:.35rem .6rem;
+  border-radius:10px;
+  font-size:.58rem;
+  font-weight:700;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  gap:.3rem;
+}
+
+.chip {
+  background:hsl(var(--accent)/.18);
+  cursor:default;
+}
+
+.inline { display:inline-flex; align-items:center; gap:.4rem; }
+
+.flex { display:flex; }
+.col { flex-direction:column; }
+.gap-xs { gap:.35rem; }
+.gap-s { gap:.55rem; }
+.gap { gap:1rem; }
+.gap-lg { gap:1.8rem; }
+.wrap { flex-wrap:wrap; }
+.center { align-items:center; justify-content:center; }
+
+/* Indicators */
+.indicators {
+  display:flex;
+  gap:.9rem;
+  flex-wrap:wrap;
+}
+.indicator {
+  flex:1 1 160px;
+  min-width:160px;
+  display:flex;
+  flex-direction:column;
+  gap:.4rem;
+  background:linear-gradient(140deg, hsl(var(--accent)/.14), hsl(var(--accent)/.08));
+  border:1px solid hsl(var(--accent)/.35);
+  padding:.85rem .9rem .95rem;
+  border-radius:20px;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  transition: var(--transition);
+}
+.indicator::before {
+  content:"";
+  position:absolute;
+  top:-40%; left:-15%;
+  width:140%;
+  height:140%;
+  background:radial-gradient(circle at 30% 30%, hsl(var(--accent)/.25), transparent 70%);
+  opacity:0;
+  transition: var(--transition);
+  transform:scale(.6);
+}
+.indicator:hover::before { opacity:.85; transform:scale(1); }
+.indicator h4 {
+  margin:0;
+  font-size:.6rem;
+  text-transform:uppercase;
+  letter-spacing:.75px;
+  color:hsl(var(--text-dim));
+  font-weight:700;
+}
+.indicator .val {
+  font-size:1.45rem;
+  line-height:1;
+  font-weight:700;
+}
+.indicator .trend {
+  font-size:.56rem;
+  font-weight:700;
+  letter-spacing:.6px;
+  background:hsl(var(--accent)/.3);
+  padding:.3rem .55rem;
+  border-radius:10px;
+  display:inline-flex;
+  align-items:center;
+  gap:.3rem;
+  color:#fff;
+}
+
+/* Status Dot */
+.status-dot {
+  width:12px;
+  height:12px;
+  border-radius:6px;
+  background:#888;
+  position:relative;
+  box-shadow:0 0 0 3px rgba(255,255,255,.09), 0 0 0 1px rgba(0,0,0,.35);
+}
+.status-dot::after {
+  content:"";
+  position:absolute;
+  inset:-4px;
+  border-radius:inherit;
+  animation:pulse-soft 2.8s infinite;
+  background:currentColor;
+  opacity:.35;
+  filter:blur(6px);
+}
+.status-good { background:var(--ok); color:var(--ok); }
+.status-warn { background:var(--warn); color:var(--warn); }
+.status-bad { background:var(--danger); color:var(--danger); }
+
+/* Table */
+.table-wrapper {
+  width:100%;
+  overflow:auto;
+  border:1px solid hsl(var(--panel-border)/.55);
+  border-radius:20px;
+  background:linear-gradient(150deg, hsl(var(--glass-bg)/.45), hsl(var(--glass-bg)/.30));
+  backdrop-filter: blur(15px) saturate(1.3);
+  -webkit-backdrop-filter: blur(15px) saturate(1.3);
+  position:relative;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:.7rem;
+  min-width:1100px;
+  letter-spacing:.2px;
+}
+
+thead {
+  background:hsl(var(--accent)/.25);
+  color:#fff;
+}
+thead th {
+  text-align:left;
+  padding:.75rem .7rem .7rem;
+  font-weight:600;
+  position:sticky;
+  top:0;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  z-index:2;
+}
+
+tbody tr {
+  border-bottom:1px solid hsl(var(--panel-border)/.4);
+  transition: var(--transition);
+  background:linear-gradient(90deg, transparent, hsl(var(--accent)/.04) 15%, transparent);
+  background-size:200% 100%;
+}
+tbody tr:nth-child(even) { background:linear-gradient(90deg, hsl(var(--accent)/.04), hsl(var(--accent)/.08)); background-size:200% 100%; }
+tbody tr:hover {
+  background:hsl(var(--accent)/.18);
+  color:#fff;
+}
+td {
+  padding:.6rem .55rem .55rem;
+  vertical-align:top;
+}
+
+.actions {
+  display:flex;
+  gap:.4rem;
+  flex-wrap:wrap;
+}
+
+.pagination {
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:flex-end;
+  padding:.6rem .2rem .2rem;
+  font-size:.6rem;
+}
+
+.page-btn {
+  background:hsl(var(--accent)/.18);
+  color:hsl(var(--accent)/1);
+  border:1px solid hsl(var(--accent)/.4);
+  padding:.45rem .55rem;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:.6rem;
+  letter-spacing:.5px;
+  font-weight:600;
+  transition: var(--transition);
+}
+.page-btn.active, .page-btn:hover {
+  background:var(--gradient-accent);
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 4px 10px -4px hsl(var(--accent)/.5);
+}
+
+/* Chips & Toggles */
+.toggle-group {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+}
+
+.toggle-chip {
+  padding:.45rem .85rem;
+  border-radius:999px;
+  background:hsl(var(--accent)/.16);
+  color:hsl(var(--accent)/1);
+  font-size:.6rem;
+  font-weight:700;
+  letter-spacing:.7px;
+  cursor:pointer;
+  user-select:none;
+  border:1px solid hsl(var(--accent)/.35);
+  transition: var(--transition);
+  position:relative;
+  overflow:hidden;
+}
+.toggle-chip:hover {
+  background:hsl(var(--accent)/.28);
+  color:#fff;
+}
+.toggle-chip.active {
+  background:var(--gradient-accent);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 4px 12px -4px hsl(var(--accent)/.6);
+}
+
+/* Empty State */
+.empty-state {
+  text-align:center;
+  padding:2rem 1rem;
+  font-size:.8rem;
+  color:hsl(var(--text-dim));
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(165deg, hsl(var(--accent)/.10), transparent);
+  border:1px dashed hsl(var(--panel-border)/.6);
+  border-radius:18px;
+  margin-top:.75rem;
+}
+
+/* Auth Container */
+.container-auth {
+  max-width:520px;
+  margin:clamp(1.6rem, 5vh, 3.5rem) auto 4rem;
+  padding:2.3rem 2.2rem 2.6rem;
+  background:linear-gradient(140deg, hsl(var(--glass-bg)/.80), hsl(var(--glass-bg)/.58));
+  backdrop-filter:blur(30px) saturate(1.35);
+  -webkit-backdrop-filter:blur(30px) saturate(1.35);
+  border:1px solid hsl(var(--panel-border)/.55);
+  border-radius:36px;
+  position:relative;
+  box-shadow:0 10px 40px -12px rgba(0,0,0,.55), 0 0 0 1px hsl(var(--panel-border)/.4), var(--shadow-inner);
+  overflow:hidden;
+  animation:scale-in .65s var(--ease-soft);
+}
+
+.switch-auth {
+  display:flex;
+  gap:.4rem;
+  flex-wrap:wrap;
+  font-size:.7rem;
+  margin-top:.85rem;
+  letter-spacing:.45px;
+  align-items:center;
+}
+
+/* Alert */
+.alert {
+  padding:.85rem 1rem .85rem;
+  border-radius:16px;
+  font-size:.68rem;
+  font-weight:600;
+  letter-spacing:.45px;
+  display:flex;
+  gap:.7rem;
+  align-items:center;
+  line-height:1.2;
+  position:relative;
+  background:hsl(var(--accent)/.18);
+  color:hsl(var(--accent)/1);
+  border:1px solid hsl(var(--accent)/.4);
+  animation: fade-in .45s var(--ease-soft);
+}
+.alert.success { background:linear-gradient(135deg, rgba(16,185,129,.22), rgba(16,185,129,.12)); color:#059669; border-color:#10b981; }
+.alert.danger { background:linear-gradient(135deg, rgba(239,68,68,.2), rgba(239,68,68,.1)); color:#dc2626; border-color:#ef4444; }
+.alert.warn { background:linear-gradient(135deg, rgba(245,158,11,.25), rgba(245,158,11,.12)); color:#b45309; border-color:#f59e0b; }
+.alert.info { background:linear-gradient(135deg, rgba(59,130,246,.25), rgba(59,130,246,.1)); color:#2563eb; border-color:#3b82f6; }
+.alert button {
+  background:transparent;
+  color:inherit;
+  padding:.2rem .3rem;
+  border:none;
+  box-shadow:none;
+}
+.alert button:hover { filter:brightness(1.15); }
+
+/* Profile specifics */
+.profile-extra-grid {
+  display:grid;
+  gap:1rem;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  margin-top:.4rem;
+}
+
+.inline-field { display:flex; flex-direction:column; gap:.35rem; }
+
+.form-grid {
+  display:grid;
+  gap:1rem;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  align-items:start;
+}
+
+/* Modal */
+.modal-backdrop {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:1rem;
+  z-index:1000;
+  animation: fade-in .4s var(--ease-soft);
+}
+.modal-backdrop.show { display:flex; }
+.modal {
+  width:100%;
+  max-width:500px;
+  background:linear-gradient(145deg, hsl(var(--glass-bg)/.90), hsl(var(--glass-bg)/.75));
+  border:1px solid hsl(var(--panel-border)/.55);
+  border-radius:30px;
+  padding:1.4rem 1.4rem 1.8rem;
+  box-shadow:0 18px 45px -15px rgba(0,0,0,.6), 0 0 0 1px hsl(var(--panel-border)/.4);
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  position:relative;
+  animation: scale-in .55s var(--ease-soft);
+  overflow:hidden;
+}
+.modal h3 {
+  font-size:.9rem;
+  margin:0 0 .4rem;
+  text-transform:uppercase;
+  letter-spacing:.9px;
+  color:hsl(var(--text-dim));
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+.modal-close {
+  position:absolute;
+  top:.65rem;
+  right:.65rem;
+  background:hsl(var(--accent)/.2);
+  padding:.45rem .55rem;
+  border-radius:12px;
+  color:hsl(var(--accent)/1);
+  font-size:.6rem;
+  line-height:1;
+}
+.modal-close:hover { background:var(--gradient-accent); color:#fff; }
+
+/* Tag list */
+.tag-list {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  margin-top:.5rem;
+}
+.tag {
+  padding:.4rem .65rem;
+  background:hsl(var(--accent)/.15);
+  border:1px solid hsl(var(--accent)/.4);
+  border-radius:12px;
+  font-size:.58rem;
+  font-weight:600;
+  letter-spacing:.5px;
+  display:inline-flex;
+  gap:.4rem;
+  align-items:center;
+  color:hsl(var(--accent)/1);
+  position:relative;
+}
+.tag button {
+  background:transparent;
+  padding:0;
+  border:none;
+  color:inherit;
+  box-shadow:none;
+  font-size:.65rem;
+  line-height:1;
+}
+.tag.removable:hover {
+  background:hsl(var(--accent)/.28);
+  color:#fff;
+}
+
+/* Multi-step hints */
+.helper {
+  font-size:.6rem;
+  letter-spacing:.4px;
+  background:hsl(var(--accent)/.15);
+  padding:.35rem .55rem;
+  border-radius:8px;
+  display:inline-flex;
+  align-items:center;
+  gap:.3rem;
+  font-weight:600;
+  color:hsl(var(--accent)/.95);
+}
+
+/* Filter bar enhancements */
+.filter-bar {
+  display:grid;
+  gap:1rem;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  margin-bottom:.95rem;
+  align-items:end;
+  background:linear-gradient(145deg, hsl(var(--accent)/.08), hsl(var(--accent)/.04));
+  border:1px solid hsl(var(--accent)/.20);
+  padding:1rem 1rem 1.1rem;
+  border-radius:22px;
+  position:relative;
+  overflow:hidden;
+}
+.filter-bar::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 15% 25%, hsl(var(--accent)/.20), transparent 60%);
+  opacity:.35;
+  mix-blend-mode:overlay;
+  pointer-events:none;
+}
+
+.badge-inline {
+  background:hsl(var(--accent)/.25);
+  color:#fff;
+  font-size:.53rem;
+  font-weight:700;
+  padding:.35rem .55rem;
+  letter-spacing:.6px;
+  border-radius:8px;
+}
+
+.inline-actions {
+  display:flex;
+  gap:.4rem;
+  flex-wrap:wrap;
+  margin-top:.25rem;
+}
+
+/* Cards subtle */
+.sub-card {
+  background:hsl(var(--accent)/.12);
+  border:1px solid hsl(var(--accent)/.3);
+  border-radius:16px;
+  padding:.75rem .8rem;
+  font-size:.65rem;
+  line-height:1.3;
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+  min-width:160px;
+  position:relative;
+  overflow:hidden;
+  transition: var(--transition);
+}
+.sub-card:hover {
+  background:hsl(var(--accent)/.22);
+  color:#fff;
+  transform:translateY(-3px);
+}
+.sub-card h4 {
+  margin:0;
+  font-size:.62rem;
+  letter-spacing:.7px;
+  font-weight:700;
+  text-transform:uppercase;
+  color:hsl(var(--text-dim));
+}
+
+/* Tabs */
+.tabs {
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  margin:-.25rem 0 .4rem;
+}
+.tab-btn {
+  background:hsl(var(--accent)/.16);
+  border:1px solid hsl(var(--accent)/.35);
+  padding:.55rem .85rem;
+  border-radius:14px;
+  font-size:.6rem;
+  font-weight:700;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition: var(--transition);
+  color:hsl(var(--accent)/1);
+}
+.tab-btn.active, .tab-btn:hover {
+  background:var(--gradient-accent);
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 4px 16px -8px hsl(var(--accent)/.55);
+}
+
+footer.app {
+  padding:1rem 1.25rem 1.5rem;
+  font-size:.6rem;
+  text-align:center;
+  color:hsl(var(--text-dim));
+  opacity:.85;
+  letter-spacing:.4px;
+  position:relative;
+  margin-top:.5rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width:10px; height:10px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb {
+  background:hsl(var(--accent)/.28);
+  border-radius:8px;
+  border:2px solid transparent;
+  background-clip:content-box;
+  transition: var(--transition);
+}
+::-webkit-scrollbar-thumb:hover { background:hsl(var(--accent)/.45); }
+
+/* Loading Overlay */
+#loadingOverlay {
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(125deg, hsl(var(--accent)/.45), hsl(var(--glass-bg)/.92));
+  backdrop-filter:blur(35px);
+  -webkit-backdrop-filter:blur(35px);
+  z-index:2000;
+  color:#fff;
+  font-size:.9rem;
+  gap:1.4rem;
+  flex-direction:column;
+  animation:fade-in .5s ease;
+}
+.spinner {
+  width:62px;
+  height:62px;
+  border:5px solid hsl(var(--accent)/.28);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation: spin 1s linear infinite;
+  position:relative;
+}
+.spinner::after {
+  content:"";
+  position:absolute;
+  inset:4px;
+  border-radius:50%;
+  border:3px dashed rgba(255,255,255,.35);
+  animation: spin 4s linear infinite reverse;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Accent palette */
+.color-palette { display:flex; gap:.55rem; flex-wrap:wrap; }
+.color-swatch {
+  width:38px;
+  height:38px;
+  border-radius:14px;
+  cursor:pointer;
+  position:relative;
+  box-shadow:0 0 0 1px hsl(var(--panel-border)/.6), 0 4px 10px -4px rgba(0,0,0,.55);
+  transition: var(--transition);
+  display:grid;
+  place-items:center;
+  font-size:.55rem;
+  font-weight:700;
+  letter-spacing:.4px;
+  color:#fff;
+  text-shadow:0 1px 3px rgba(0,0,0,.4);
+}
+.color-swatch:hover { transform:translateY(-4px) scale(1.08) rotate(-3deg); }
+.color-swatch.active {
+  outline:3px solid hsl(var(--accent)/.45);
+  outline-offset:2px;
+}
+
+/* Animations utility */
+.animate-pop { animation: pop .5s var(--ease-soft); }
+@keyframes pop { 0% { transform:scale(.6); opacity:0; } 100% { transform:scale(1); opacity:1; } }
+
+/* Responsive */
+.responsive-hide { display:none; }
+
+@media (max-width:1250px) {
+  .grid-wide { grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); }
+}
+@media (max-width:1080px) {
+  .sidebar {
+    position:fixed;
+    inset:0 auto 0 0;
+    transform:translateX(-100%);
+    z-index:1200;
+    max-width:82%;
+  }
+  .sidebar.open { transform:translateX(0); }
+  .responsive-hide { display:inline-flex; }
+  .topbar { border-radius:0 0 26px 26px; }
+}
+@media (max-width:760px) {
+  .indicators { gap:.65rem; }
+  .indicator { min-width:140px; }
+  .content { padding:1.05rem .85rem 2.2rem; }
+  .panel { border-radius:26px; padding:.95rem 1rem 1.3rem; }
+  .table-wrapper { border-radius:18px; }
+  .modal { border-radius:26px; padding:1.1rem 1.1rem 1.4rem; }
+}
+@media (max-width:520px) {
+  .search-box { max-width:100%; }
+  .container-auth { padding:2rem 1.5rem 2.2rem; }
+  .indicator .val { font-size:1.25rem; }
+  .topbar { padding:.75rem .85rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loadingOverlay">
+  <div class="spinner"></div>
+  <div id="loadingText">Memuat aplikasi & aset...</div>
+  <div class="xsmall" id="loadingProgressInfo">Inisialisasi...</div>
+</div>
+
+<!-- AUTH VIEWS -->
+<div id="authView" class="fade-in">
+  <!-- LOGIN -->
+  <div class="container-auth" id="loginContainer">
+    <div class="logo-circle">IKN</div>
+    <h1 data-i18n="app_title">Monitoring Mutu Ikan Segar</h1>
+    <p class="muted" data-i18n="app_subtitle">Sistem Informasi Pasar Tradisional Kota Makassar</p>
+    <div id="authAlert"></div>
+    <form id="loginForm" autocomplete="on">
+      <div class="inline-field">
+        <label data-i18n="email">Email</label>
+        <input type="email" id="loginEmail" required placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="inline-field">
+        <label data-i18n="password">Kata Sandi</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div style="display:flex;gap:.65rem;align-items:center;margin-top:.4rem;">
+        <button type="submit" id="btnLogin" style="flex:1;">
+          <i data-feather="log-in" width="16"></i><span data-i18n="login">Masuk</span>
+        </button>
+        <a href="#" id="linkForgot" class="small" style="font-weight:600; letter-spacing:.5px; margin-left:auto;" data-i18n="forgot_password">Lupa kata sandi?</a>
+      </div>
+    </form>
+    <div class="switch-auth">
+      <span data-i18n="no_account">Belum punya akun?</span>
+      <a href="#" id="showRegister" data-i18n="register_now">Daftar sekarang</a>
+    </div>
+    <div class="switch-auth" style="margin-top:.2rem;">
+      <span class="small">© <span id="year"></span> Skripsi - Kota Makassar</span>
+    </div>
+    <div style="margin-top:1.1rem;display:flex;gap:.55rem;flex-wrap:wrap;">
+      <button class="outline" type="button" id="quickDemoAdmin">Demo Admin</button>
+      <button class="outline" type="button" id="quickDemoUser">Demo Mahasiswa</button>
+    </div>
+  </div>
+  <!-- REGISTER -->
+  <div class="container-auth hidden" id="registerContainer">
+    <div class="logo-circle">IKN</div>
+    <h1 data-i18n="register_account">Registrasi Akun</h1>
+    <p class="muted" data-i18n="register_subtitle">Buat akun baru untuk mulai mencatat data mutu ikan.</p>
+    <div id="registerAlert"></div>
+    <form id="registerForm" autocomplete="off">
+      <div class="form-grid">
+        <div class="inline-field">
+          <label data-i18n="full_name">Nama Lengkap</label>
+          <input id="regName" required placeholder="Nama lengkap">
+        </div>
+        <div class="inline-field">
+          <label data-i18n="email">Email</label>
+          <input type="email" id="regEmail" required placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="inline-field">
+          <label data-i18n="password">Kata Sandi</label>
+            <input type="password" id="regPassword" required minlength="6" placeholder="Minimal 6 karakter" autocomplete="new-password">
+        </div>
+        <div class="inline-field">
+          <label data-i18n="confirm_password">Konfirmasi Kata Sandi</label>
+          <input type="password" id="regConfirmPassword" required placeholder="Ulangi kata sandi" autocomplete="new-password">
+        </div>
+        <div class="inline-field">
+          <label data-i18n="role">Peran</label>
+          <select id="regRole" required>
+            <option value="Mahasiswa">Mahasiswa</option>
+            <option value="Petugas Pasar">Petugas Pasar</option>
+            <option value="Dosen">Dosen/Pembimbing</option>
+          </select>
+        </div>
+        <div class="inline-field" id="regExtraFieldWrapper">
+          <!-- dynamic role extra (NIM, NIP, dsb) -->
+        </div>
+      </div>
+      <div class="divider"></div>
+      <button type="submit" style="width:100%;">
+        <i data-feather="user-plus" width="16"></i>
+        <span data-i18n="create_account">Buat Akun</span>
+      </button>
+    </form>
+    <div class="switch-auth">
+      <span data-i18n="have_account">Sudah punya akun?</span>
+      <a href="#" id="showLogin" data-i18n="login">Masuk</a>
+    </div>
+  </div>
+  <!-- FORGOT -->
+  <div class="container-auth hidden" id="forgotContainer">
+    <div class="logo-circle">IKN</div>
+    <h1 data-i18n="reset_password">Reset Kata Sandi</h1>
+    <p class="muted" data-i18n="reset_subtitle">Masukkan email anda untuk menerima link reset.</p>
+    <div id="forgotAlert"></div>
+    <form id="forgotForm">
+      <div class="inline-field">
+        <label data-i18n="email">Email</label>
+        <input type="email" id="forgotEmail" required placeholder="you@example.com">
+      </div>
+      <button type="submit" style="width:100%;margin-top:.6rem;">
+        <i data-feather="mail" width="16"></i>
+        <span data-i18n="send_reset_link">Kirim Link Reset</span>
+      </button>
+    </form>
+    <div class="switch-auth">
+      <a href="#" id="backToLogin" data-i18n="back_login">Kembali ke Login</a>
+    </div>
+  </div>
+</div>
+
+<!-- APP LAYOUT -->
+<div id="appLayout" class="layout hidden">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-circle">IKN</div>
+      <div style="display:flex;flex-direction:column;line-height:1;">
+        <span style="font-size:.9rem;font-weight:700;letter-spacing:.5px;">Mutu Ikan</span>
+        <span style="font-size:.58rem; opacity:.65; letter-spacing:.8px;">Makassar</span>
+      </div>
+      <button class="ghost responsive-hide" id="closeSidebar" style="margin-left:auto;padding:.5rem .6rem;">
+        <i data-feather="x" width="16"></i>
+      </button>
+    </div>
+
+    <div class="nav" id="navMenu">
+      <button data-view="dashboard" class="active"><i data-feather="activity" width="18"></i><span data-i18n="dashboard">Dashboard</span></button>
+      <button data-view="data"><i data-feather="database" width="18"></i><span data-i18n="data_records">Data Mutu</span></button>
+      <button data-view="form"><i data-feather="edit-3" width="18"></i><span data-i18n="input_form">Input Data</span></button>
+      <button data-view="reports"><i data-feather="bar-chart-2" width="18"></i><span data-i18n="reports">Laporan</span></button>
+      <button data-view="settings"><i data-feather="settings" width="18"></i><span data-i18n="settings">Pengaturan</span></button>
+      <button data-view="profile"><i data-feather="user" width="18"></i><span data-i18n="profile">Profil</span></button>
+      <button data-view="about"><i data-feather="info" width="18"></i><span>Tentang</span></button>
+    </div>
+
+    <div class="sidebar-footer">
+      <div id="sidebarUserInfo" style="font-size:.63rem;line-height:1.35;"></div>
+      <div class="inline-actions">
+        <button class="outline" id="btnCollapseSidebar" title="Collapse" style="flex:1;justify-content:center;">
+          <i data-feather="chevrons-left" width="16"></i>
+        </button>
+        <button class="outline" id="btnLogout" style="flex:2;justify-content:center;">
+          <i data-feather="log-out" width="16"></i><span data-i18n="logout">Keluar</span>
+        </button>
+      </div>
+      <div style="text-align:center;">
+        <span class="xsmall">v1.2.0 Enhanced • Skripsi</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
+        <button class="ghost responsive-hide" id="openSidebar" style="padding:.5rem .65rem;">
+          <i data-feather="menu" width="18"></i>
+        </button>
+        <div class="search-box">
+          <i data-feather="search" width="16" class="muted"></i>
+          <input id="globalSearch" placeholder="Cari data ikan / bau / pasar / user..." autocomplete="off">
+          <button type="button" id="clearGlobalSearch" style="background:transparent;border:none;padding:0;margin:0;color:hsl(var(--text-dim));display:none;">
+            <i data-feather="x-circle" width="16"></i>
+          </button>
+        </div>
+        <div class="toggle" id="toggleMyData" data-state="all" title="Toggle data saya">
+          <i data-feather="user-check" width="14"></i>
+          <span id="toggleMyDataLabel">Semua Data</span>
+        </div>
+        <div class="toggle" id="toggleRealtime" data-active="on" title="Realtime On/Off">
+          <i data-feather="radio" width="14"></i><span id="labelRealtime">Realtime</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.55rem;">
+        <button class="ghost" id="btnToggleTheme" title="Mode Gelap/Terang"><i data-feather="moon" width="16"></i></button>
+        <button class="ghost" id="btnLang" title="Ganti Bahasa"><i data-feather="globe" width="16"></i></button>
+        <button class="ghost" id="btnOpenQuickAdd" title="Tambah Cepat"><i data-feather="plus-circle" width="16"></i></button>
+        <div style="position:relative;">
+          <div class="avatar" id="avatarBtn">
+            <span id="avatarInitial">U</span>
+            <img id="avatarImg" alt="avatar" class="hidden">
+          </div>
+          <div class="dropdown" id="userDropdown">
+            <button data-dropdown="profile"><i data-feather="user" width="15"></i><span data-i18n="profile">Profil</span></button>
+            <button data-dropdown="settings"><i data-feather="settings" width="15"></i><span data-i18n="settings">Pengaturan</span></button>
+            <button data-dropdown="reports"><i data-feather="bar-chart-2" width="15"></i><span data-i18n="reports">Laporan</span></button>
+            <div style="height:1px;background:hsl(var(--panel-border)/.55);margin:.45rem 0;"></div>
+            <button id="logoutDropdownBtn"><i data-feather="log-out" width="15"></i><span data-i18n="logout">Keluar</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="content">
+      <!-- DASHBOARD -->
+      <section id="view-dashboard" class="fade-in">
+        <div class="panel bento">
+          <div class="panel-header">
+            <h3><i data-feather="activity" width="16"></i><span data-i18n="dashboard_overview">Ringkasan Mutu Terkini</span></h3>
+            <div class="toggle-group">
+              <div class="toggle-chip active" data-dash-filter="today">Hari Ini</div>
+              <div class="toggle-chip" data-dash-filter="7d">7 Hari</div>
+              <div class="toggle-chip" data-dash-filter="30d">30 Hari</div>
+              <div class="toggle-chip" data-dash-filter="all">Semua</div>
+            </div>
+          </div>
+          <div class="indicators" id="dashboardIndicators">
+            <div class="indicator">
+              <h4 data-i18n="total_records">Total Data</h4>
+              <div class="val" id="indTotal">0</div>
+              <div class="trend" id="indTotalTrend"><i data-feather="trending-up" width="12"></i><span>0%</span></div>
+            </div>
+            <div class="indicator">
+              <h4 data-i18n="avg_score">Rata-rata Skor</h4>
+              <div class="val" id="indAvg">-</div>
+              <div class="trend" id="indAvgTrend"><i data-feather="activity" width="12"></i><span>0%</span></div>
+            </div>
+            <div class="indicator">
+              <h4 data-i18n="good_quality">Mutu Baik</h4>
+              <div class="val" id="indGood">0</div>
+              <div class="trend" id="indGoodTrend"><i data-feather="check-circle" width="12"></i><span>0%</span></div>
+            </div>
+            <div class="indicator">
+              <h4 data-i18n="warning_quality">Mutu Sedang</h4>
+              <div class="val" id="indWarn">0</div>
+              <div class="trend" id="indWarnTrend"><i data-feather="alert-triangle" width="12"></i><span>0%</span></div>
+            </div>
+            <div class="indicator">
+              <h4 data-i18n="bad_quality">Mutu Buruk</h4>
+              <div class="val" id="indBad">0</div>
+              <div class="trend" id="indBadTrend"><i data-feather="x-octagon" width="12"></i><span>0%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-auto">
+          <div class="panel bento">
+            <div class="panel-header">
+              <h3><i data-feather="bar-chart-2" width="15"></i><span data-i18n="chart_comparison">Perbandingan Mutu per Pasar</span></h3>
+              <div class="inline-actions">
+                <button class="ghost" id="refreshCharts1" title="Refresh Chart"><i data-feather="refresh-cw" width="14"></i></button>
+                <button class="ghost" id="btnDownloadChartComparison" title="Unduh Chart PNG"><i data-feather="download" width="14"></i></button>
+              </div>
+            </div>
+            <div class="chart-container" style="height:270px;">
+              <canvas id="chartComparison"></canvas>
+            </div>
+          </div>
+
+          <div class="panel bento">
+            <div class="panel-header">
+              <h3><i data-feather="trending-up" width="15"></i><span data-i18n="chart_trend">Tren Skor Waktu</span></h3>
+              <div class="inline-actions">
+                <button class="ghost" id="refreshCharts2"><i data-feather="refresh-cw" width="14"></i></button>
+                <button class="ghost" id="btnDownloadChartTrend"><i data-feather="download" width="14"></i></button>
+              </div>
+            </div>
+            <div class="chart-container" style="height:270px;">
+              <canvas id="chartTrend"></canvas>
+            </div>
+          </div>
+
+          <div class="panel bento">
+            <div class="panel-header">
+              <h3><i data-feather="pie-chart" width="15"></i><span data-i18n="chart_pie">Proporsi Jenis Ikan</span></h3>
+              <div class="inline-actions">
+                <button class="ghost" id="refreshCharts3"><i data-feather="refresh-cw" width="14"></i></button>
+                <button class="ghost" id="btnDownloadChartPie"><i data-feather="download" width="14"></i></button>
+              </div>
+            </div>
+            <div class="chart-container" style="height:270px;">
+              <canvas id="chartPie"></canvas>
+            </div>
+          </div>
+
+          <div class="panel bento">
+            <div class="panel-header">
+              <h3><i data-feather="thermometer" width="15"></i><span data-i18n="quality_indicators">Indikator Mutu</span></h3>
+              <div class="toggle-group" style="font-size:.55rem;">
+                <div class="toggle-chip active" data-quality-filter="all">Semua</div>
+                <div class="toggle-chip" data-quality-filter="baik">Baik</div>
+                <div class="toggle-chip" data-quality-filter="sedang">Sedang</div>
+                <div class="toggle-chip" data-quality-filter="buruk">Buruk</div>
+              </div>
+            </div>
+            <div id="qualityIndicatorList" style="display:flex;flex-direction:column;gap:.65rem;max-height:300px;overflow:auto;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DATA TABLE -->
+      <section id="view-data" class="hidden fade-in">
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i data-feather="database" width="15"></i><span data-i18n="data_mutu_list">Data Mutu Ikan</span></h3>
+            <div class="inline-actions">
+              <button class="ghost" id="btnExportCSV"><i data-feather="download-cloud" width="14"></i>CSV</button>
+              <button class="ghost" id="btnExportExcel"><i data-feather="grid" width="14"></i>Excel</button>
+              <button class="ghost" id="btnExportPDF"><i data-feather="file-text" width="14"></i>PDF</button>
+              <button class="ghost" id="btnExportJSON"><i data-feather="code" width="14"></i>JSON</button>
+              <button class="ghost" id="btnPrint"><i data-feather="printer" width="14"></i>Print</button>
+              <button class="ghost" id="btnBulkDelete" title="Hapus banyak (Admin)"><i data-feather="trash-2" width="14"></i></button>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div>
+              <label data-i18n="filter_fish">Jenis Ikan</label>
+              <select id="filterFish"></select>
+            </div>
+            <div>
+              <label data-i18n="filter_market">Pasar</label>
+              <select id="filterMarket"></select>
+            </div>
+            <div>
+              <label data-i18n="filter_date">Tanggal</label>
+              <input type="date" id="filterDate">
+            </div>
+            <div>
+              <label data-i18n="filter_text">Cari Teks</label>
+              <input id="filterText" placeholder="Bau / tekstur / warna">
+            </div>
+            <div>
+              <label>Skor Minimum</label>
+              <input type="number" id="filterScoreMin" min="1" max="9" placeholder="1">
+            </div>
+            <div>
+              <label>Skor Maks</label>
+              <input type="number" id="filterScoreMax" min="1" max="9" placeholder="9">
+            </div>
+            <div>
+              <label>Urutkan</label>
+              <select id="sortBy">
+                <option value="date_desc">Tanggal ↓</option>
+                <option value="date_asc">Tanggal ↑</option>
+                <option value="score_desc">Skor ↓</option>
+                <option value="score_asc">Skor ↑</option>
+                <option value="fish_asc">Jenis Ikan A-Z</option>
+                <option value="fish_desc">Jenis Ikan Z-A</option>
+              </select>
+            </div>
+            <div>
+              <label>Per Halaman</label>
+              <select id="pageSize">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+              </select>
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <button class="outline" id="btnResetFilters" type="button" style="width:100%;justify-content:center;">
+                <i data-feather="rotate-ccw" width="14"></i>Reset
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table id="dataTable">
+              <thead>
+                <tr>
+                  <th style="width:32px;"><input type="checkbox" id="selectAllRows"></th>
+                  <th data-i18n="th_no">No</th>
+                  <th data-i18n="th_date">Tanggal</th>
+                  <th data-i18n="th_fish">Jenis Ikan</th>
+                  <th data-i18n="th_market">Pasar</th>
+                  <th>Skor</th>
+                  <th data-i18n="th_organoleptic">Organoleptik</th>
+                  <th data-i18n="th_smell">Bau</th>
+                  <th data-i18n="th_texture">Tekstur</th>
+                  <th data-i18n="th_color">Warna</th>
+                  <th data-i18n="th_score_status">Status</th>
+                  <th data-i18n="th_user">Pengguna</th>
+                  <th style="min-width:90px;" data-i18n="th_actions">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="dataTableBody"></tbody>
+            </table>
+          </div>
+          <div id="dataEmptyState" class="empty-state hidden">
+            <i data-feather="inbox" width="42"></i>
+            <div data-i18n="empty_data">Belum ada data. Silakan input.</div>
+            <button class="outline" data-view-jump="form"><i data-feather="plus" width="14"></i>Tambah Sekarang</button>
+          </div>
+          <div class="pagination" id="paginationContainer"></div>
+        </div>
+      </section>
+
+      <!-- FORM INPUT -->
+      <section id="view-form" class="hidden fade-in">
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i data-feather="edit-3" width="15"></i><span data-i18n="input_new_data">Input Data Mutu Baru</span></h3>
+            <div class="inline-actions">
+              <button class="ghost" id="btnResetForm"><i data-feather="refresh-cw" width="14"></i>Reset</button>
+              <button class="ghost" id="btnQuickAddMaster" title="Tambah Jenis Ikan / Pasar"><i data-feather="plus-square" width="14"></i></button>
+            </div>
+          </div>
+          <form id="fishForm" autocomplete="off">
+            <input type="hidden" id="recordId">
+            <div class="form-grid">
+              <div>
+                <label data-i18n="fish_type">Jenis Ikan</label>
+                <div style="display:flex;gap:.4rem;align-items:center;">
+                  <select id="fishType" required style="flex:1;"></select>
+                  <button type="button" class="outline" id="btnAddFishType" title="Tambah Jenis"><i data-feather="plus" width="14"></i></button>
+                </div>
+              </div>
+              <div>
+                <label data-i18n="market_location">Lokasi Pasar</label>
+                <div style="display:flex;gap:.4rem;align-items:center;">
+                  <select id="market" required style="flex:1;"></select>
+                  <button type="button" class="outline" id="btnAddMarket" title="Tambah Pasar"><i data-feather="plus" width="14"></i></button>
+                </div>
+              </div>
+              <div>
+                <label data-i18n="organoleptic_score">Skor Organoleptik (1-9)</label>
+                <input type="number" id="organoleptic" min="1" max="9" required placeholder="1-9">
+              </div>
+              <div>
+                <label data-i18n="smell">Bau</label>
+                <input id="smell" required placeholder="Segar / agak amis / ...">
+              </div>
+              <div>
+                <label data-i18n="texture">Tekstur</label>
+                <input id="texture" required placeholder="Kenyal / lembek / firm">
+              </div>
+              <div>
+                <label data-i18n="color">Warna</label>
+                <input id="colorField" required placeholder="Cerah / pucat">
+              </div>
+              <div>
+                <label data-i18n="date_auto">Tanggal (otomatis)</label>
+                <input id="dateAuto" disabled>
+              </div>
+              <div>
+                <label>Catatan Opsional</label>
+                <textarea id="note" placeholder="Catatan tambahan..."></textarea>
+              </div>
+              <div id="roleExtraWrapper" class="hidden">
+                <label id="roleExtraLabel">NIM</label>
+                <input id="roleExtraValue" placeholder="NIM / NIP / ID">
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="inline-actions">
+              <button type="submit" id="submitDataBtn"><i data-feather="save" width="15"></i><span data-i18n="save_data">Simpan Data</span></button>
+              <button type="button" class="outline hidden" id="cancelEditBtn">
+                <i data-feather="x-circle" width="15"></i><span data-i18n="cancel_edit">Batal Edit</span>
+              </button>
+              <button type="button" class="outline" id="btnFillDummy"><i data-feather="zap" width="15"></i>Dummy</button>
+            </div>
+            <div id="formAlert" style="margin-top:.85rem;"></div>
+          </form>
+        </div>
+      </section>
+
+      <!-- REPORTS -->
+      <section id="view-reports" class="hidden fade-in">
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i data-feather="file-text" width="15"></i><span data-i18n="reports_export">Laporan & Export</span></h3>
+            <div class="inline-actions">
+              <button class="ghost" id="repExportPDF"><i data-feather="file" width="14"></i>PDF</button>
+              <button class="ghost" id="repExportCSV"><i data-feather="download" width="14"></i>CSV</button>
+              <button class="ghost" id="repExportJSON"><i data-feather="code" width="14"></i>JSON</button>
+              <button class="ghost" id="repPrint"><i data-feather="printer" width="14"></i>Print</button>
+            </div>
+          </div>
+          <p class="small" data-i18n="reports_desc">Pilih rentang data dan ekspor laporan yang berisi grafik dan tabel.</p>
+          <div class="form-grid">
+            <div>
+              <label data-i18n="from_date">Dari Tanggal</label>
+              <input type="date" id="reportFrom">
+            </div>
+            <div>
+              <label data-i18n="to_date">Sampai Tanggal</label>
+              <input type="date" id="reportTo">
+            </div>
+            <div>
+              <label data-i18n="report_scope">Ruang Lingkup</label>
+              <select id="reportScope">
+                <option value="all">Semua Data</option>
+                <option value="mine">Data Saya</option>
+              </select>
+            </div>
+            <div>
+              <label data-i18n="report_fish_type">Jenis Ikan (Opsional)</label>
+              <select id="reportFish"></select>
+            </div>
+            <div>
+              <label>Pasar (Opsional)</label>
+              <select id="reportMarket"></select>
+            </div>
+            <div>
+              <label>Skor Min</label>
+              <input type="number" id="reportScoreMin" min="1" max="9">
+            </div>
+            <div>
+              <label>Skor Max</label>
+              <input type="number" id="reportScoreMax" min="1" max="9">
+            </div>
+            <div>
+              <label>Format</label>
+              <select id="reportFormat">
+                <option value="detailed">Detail</option>
+                <option value="summary">Ringkas</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-top:.9rem;display:flex;gap:.6rem;flex-wrap:wrap;">
+            <button id="btnGenerateReport"><i data-feather="file-text" width="15"></i><span data-i18n="generate_report">Generate Laporan</span></button>
+            <button class="outline" id="btnClearReport"><i data-feather="trash-2" width="15"></i><span data-i18n="clear_report">Bersihkan</span></button>
+          </div>
+          <hr class="line">
+          <div id="reportResult" class="fade-in"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="view-settings" class="hidden fade-in">
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i data-feather="settings" width="15"></i><span data-i18n="settings_pref">Pengaturan & Preferensi</span></h3>
+          </div>
+          <div class="grid grid-wide">
+            <div class="panel" style="padding:1.05rem;">
+              <h4 class="xsmall" style="margin:0 0 .6rem;text-transform:uppercase;letter-spacing:1px;" data-i18n="appearance">Tampilan</h4>
+              <div class="profile-extra-grid">
+                <div>
+                  <label data-i18n="theme_mode">Mode Tema</label>
+                  <div style="display:flex;gap:.55rem;">
+                    <button class="outline" id="prefLight"><i data-feather="sun" width="14"></i>Light</button>
+                    <button class="outline" id="prefDark"><i data-feather="moon" width="14"></i>Dark</button>
+                  </div>
+                </div>
+                <div>
+                  <label data-i18n="accent_color">Warna Aksen</label>
+                  <div class="color-palette" id="accentPalette"></div>
+                </div>
+                <div>
+                  <label data-i18n="layout_style">Gaya Layout</label>
+                  <select id="layoutStyle">
+                    <option value="grid">Grid (Default)</option>
+                    <option value="list">List / Kompak</option>
+                  </select>
+                </div>
+                <div>
+                  <label data-i18n="language">Bahasa</label>
+                  <select id="languageSelect">
+                    <option value="id">Indonesia</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Animasi</label>
+                  <select id="animationPref">
+                    <option value="full">Lengkap</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="off">Nonaktif</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Preferensi Simpan</label>
+                  <div style="display:flex;gap:.55rem;flex-wrap:wrap;">
+                    <button class="outline" id="btnSavePrefs"><i data-feather="save" width="14"></i>Simpan</button>
+                    <button class="outline" id="btnResetPrefs"><i data-feather="trash" width="14"></i>Reset</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" style="padding:1.05rem;">
+              <h4 class="xsmall" style="margin:0 0 .6rem;text-transform:uppercase;letter-spacing:1px;" data-i18n="account_info">Info Akun</h4>
+              <div id="settingsUserInfo" style="font-size:.7rem;line-height:1.55;"></div>
+              <div style="margin-top:.7rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+                <button class="ghost" id="btnResendVerification"><i data-feather="mail" width="14"></i><span data-i18n="resend_verif">Kirim Ulang Verifikasi</span></button>
+                <button class="ghost" id="btnRefreshUser"><i data-feather="refresh-cw" width="14"></i><span data-i18n="refresh">Refresh</span></button>
+              </div>
+              <div id="verifyAlert" style="margin-top:.6rem;"></div>
+            </div>
+
+            <div class="panel" style="padding:1.05rem;">
+              <h4 class="xsmall" style="margin:0 0 .6rem;text-transform:uppercase;letter-spacing:1px;" data-i18n="role_mgmt">Manajemen Peran</h4>
+              <p class="small" data-i18n="role_mgmt_desc">Hanya admin dapat mengubah peran pengguna lain. (Client-side demonstrasi)</p>
+              <div id="roleMgmt" class="small" style="display:flex;flex-direction:column;gap:.55rem;max-height:300px;overflow:auto;"></div>
+            </div>
+
+            <div class="panel" style="padding:1.05rem;">
+              <h4 class="xsmall" style="margin:0 0 .6rem;text-transform:uppercase;letter-spacing:1px;" data-i18n="danger_zone">Zona Berbahaya</h4>
+              <p class="small" data-i18n="delete_account_warn">Penghapusan akun akan menghapus data profil (tidak menghapus histori data). (Demo)</p>
+              <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+                <button class="danger" id="btnDeleteAccount"><i data-feather="user-x" width="14"></i><span data-i18n="delete_account">Hapus Akun</span></button>
+                <button class="outline" id="btnWipeLocal"><i data-feather="trash-2" width="14"></i>Hapus Cache Lokal</button>
+              </div>
+              <div id="deleteAccountAlert" style="margin-top:.6rem;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section id="view-profile" class="hidden fade-in">
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i data-feather="user" width="15"></i><span data-i18n="profile_manage">Profil Pengguna</span></h3>
+            <div class="inline-actions">
+              <button class="ghost" id="btnRefreshProfile" title="Refresh"><i data-feather="refresh-cw" width="14"></i></button>
+              <button class="ghost" id="btnDownloadProfileJSON" title="Download JSON Profile"><i data-feather="download" width="14"></i></button>
+            </div>
+          </div>
+          <div style="display:flex;gap:1.8rem;flex-wrap:wrap;">
+            <div style="flex:0 0 190px;display:flex;flex-direction:column;align-items:center;gap:.85rem;">
+              <div class="avatar" style="width:130px;height:130px;border-radius:38px;font-size:2.4rem;" id="profileAvatar">
+                <span id="profileAvatarInitial">U</span>
+                <img id="profileAvatarImg" alt="avatar" class="hidden">
+              </div>
+              <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
+              <button class="outline" id="btnChangePhoto" style="width:100%;justify-content:center;">
+                <i data-feather="image" width="14"></i><span data-i18n="change_photo">Ganti Foto</span>
+              </button>
+              <button class="outline" id="btnRemovePhoto" style="width:100%;justify-content:center;">
+                <i data-feather="trash" width="14"></i><span data-i18n="remove_photo">Hapus Foto</span>
+              </button>
+              <div class="sub-card">
+                <h4>Status</h4>
+                <div id="profileStatusInfo" class="xsmall"></div>
+              </div>
+            </div>
+
+            <div style="flex:1;min-width:300px;">
+              <form id="profileForm" autocomplete="off">
+                <div class="form-grid">
+                  <div>
+                    <label data-i18n="full_name">Nama Lengkap</label>
+                    <input id="profName" required>
+                  </div>
+                  <div>
+                    <label>Email</label>
+                    <input id="profEmail" disabled>
+                  </div>
+                  <div>
+                    <label data-i18n="role">Peran</label>
+                    <select id="profRole" disabled>
+                      <option>Admin</option>
+                      <option>Mahasiswa</option>
+                      <option>Dosen</option>
+                      <option>Petugas Pasar</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label data-i18n="email_verified">Email Terverifikasi</label>
+                    <input id="profVerified" disabled>
+                  </div>
+                  <div>
+                    <label>NIM / NIP / ID</label>
+                    <input id="profIdentity" placeholder="NIM (Mahasiswa) / NIP (Dosen) / ID Petugas">
+                  </div>
+                  <div>
+                    <label>Telepon</label>
+                    <input id="profPhone" placeholder="+62...">
+                  </div>
+                  <div>
+                    <label>Organisasi / Instansi</label>
+                    <input id="profOrg" placeholder="Universitas / Unit Pasar">
+                  </div>
+                  <div>
+                    <label>Website / Link</label>
+                    <input id="profLink" placeholder="https://">
+                  </div>
+                  <div style="grid-column:1 / -1;">
+                    <label>Bio / Deskripsi</label>
+                    <textarea id="profBio" placeholder="Tuliskan fokus kerja / minat penelitian..."></textarea>
+                  </div>
+                </div>
+                <div class="divider"></div>
+                <div style="display:flex;gap:.7rem;flex-wrap:wrap;">
+                  <button type="submit"><i data-feather="save" width="14"></i><span data-i18n="update_profile">Update Profil</span></button>
+                  <button type="button" class="outline" id="btnSendVerifyProfile"><i data-feather="mail" width="14"></i><span data-i18n="send_verification">Kirim Verifikasi</span></button>
+                  <button type="button" class="outline" id="btnCopyUID"><i data-feather="copy" width="14"></i>Copy UID</button>
+                </div>
+                <div id="profileAlert" style="margin-top:.75rem;"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="view-about" class="hidden fade-in">
+        <div class="panel">
+          <div class="panel-header">
+            <h3><i data-feather="info" width="15"></i><span>Tentang Aplikasi</span></h3>
+          </div>
+          <p class="small">
+            Aplikasi single-file ini (versi peningkatan) dikembangkan untuk skripsi:
+            <strong>"Pengembangan Sistem Informasi Berbasis Website untuk Pencatatan dan Monitoring Mutu Ikan Segar di Pasar Tradisional Kota Makassar"</strong>.
+          </p>
+          <p class="small">
+            Peningkatan mencakup: UX ditingkatkan, animasi, pagination, sorting, pencarian lanjutan, toggle realtime, manajemen master data (jenis ikan & pasar), profil lanjutan (NIM/NIP/Telepon/Bio), export JSON, quick add, indikator mutu dinamis, caching lokal, serta modularisasi logika.
+          </p>
+          <p class="small">
+            Keamanan: Pastikan Firestore Security Rules disesuaikan untuk mengontrol akses sesuai peran. Jangan mengandalkan validasi client saja.
+          </p>
+          <details style="margin-top:1rem;">
+            <summary style="cursor:pointer;font-size:.7rem;font-weight:700;letter-spacing:.5px;">Contoh Firestore Security Rules (Konseptual, perlu adaptasi)</summary>
+<pre class="small" style="white-space:pre-wrap;background:hsl(var(--accent)/.12);padding:.8rem;border-radius:14px;overflow:auto;">
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+    function userDoc() { return get(/databases/$(db)/documents/users/$(request.auth.uid)); }
+    function userRole() { return isSignedIn() ? userDoc().data.role : "Guest"; }
+
+    match /users/{uid} {
+      allow read: if isSignedIn() && (uid == request.auth.uid || userRole() in ['Admin','Dosen']);
+      allow create: if isSignedIn() && uid == request.auth.uid;
+      allow update: if isSignedIn() && (uid == request.auth.uid || userRole() == 'Admin');
+      allow delete: if userRole() == 'Admin';
+    }
+
+    match /fishQuality/{docId} {
+      allow read: if isSignedIn() && (
+        userRole() in ['Admin','Dosen'] ||
+        resource.data.userId == request.auth.uid
+      );
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (
+        userRole() in ['Admin','Petugas Pasar'] ||
+        resource.data.userId == request.auth.uid
+      );
+      allow delete: if isSignedIn() && (
+        userRole() == 'Admin' ||
+        (userRole() == 'Petugas Pasar' && resource.data.userId == request.auth.uid)
+      );
+    }
+
+    match /masters/{type}/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isSignedIn() && userRole() in ['Admin','Petugas Pasar'];
+    }
+  }
+}
+</pre>
+          </details>
+        </div>
+      </section>
+    </main>
+    <footer class="app">
+      <span id="footerInfo">© <span id="year2"></span> Sistem Mutu Ikan Segar - Enhanced Single File App</span>
+    </footer>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-backdrop" id="modalMaster">
+  <div class="modal">
+    <button class="modal-close" id="closeMasterModal"><i data-feather="x" width="16"></i></button>
+    <h3><i data-feather="list-plus" width="16"></i>Kelola Master Data</h3>
+    <p class="small">Tambah atau hapus master data (Jenis Ikan & Pasar). Hanya Admin / Petugas Pasar yang dapat menghapus.</p>
+    <div style="display:flex;flex-direction:column;gap:1.2rem;">
+      <div>
+        <div style="display:flex;gap:.5rem;align-items:flex-end;flex-wrap:wrap;">
+          <div style="flex:2;min-width:200px;">
+            <label>Jenis Ikan Baru</label>
+            <input id="newFishType" placeholder="Contoh: Ikan Tongkol">
+          </div>
+          <button class="outline" id="btnSaveFishType"><i data-feather="plus" width="14"></i>Tambah</button>
+        </div>
+        <div class="tag-list" id="fishTypeList"></div>
+      </div>
+      <div>
+        <div style="display:flex;gap:.5rem;align-items:flex-end;flex-wrap:wrap;">
+          <div style="flex:2;min-width:200px;">
+            <label>Pasar Baru</label>
+            <input id="newMarket" placeholder="Contoh: Pasar Baru Makassar">
+          </div>
+          <button class="outline" id="btnSaveMarket"><i data-feather="plus" width="14"></i>Tambah</button>
+        </div>
+        <div class="tag-list" id="marketList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modalQuickAdd">
+  <div class="modal">
+    <button class="modal-close" id="closeQuickAdd"><i data-feather="x" width="16"></i></button>
+    <h3><i data-feather="zap" width="16"></i>Tambah Cepat Data Mutu</h3>
+    <form id="quickAddForm">
+      <div class="form-grid">
+        <div>
+          <label>Jenis Ikan</label>
+          <select id="qaFish"></select>
+        </div>
+        <div>
+          <label>Pasar</label>
+          <select id="qaMarket"></select>
+        </div>
+        <div>
+          <label>Skor (1-9)</label>
+          <input type="number" id="qaScore" min="1" max="9" required>
+        </div>
+        <div>
+          <label>Bau</label>
+          <input id="qaSmell" placeholder="Segar / amis">
+        </div>
+        <div>
+          <label>Tekstur</label>
+          <input id="qaTexture" placeholder="Kenyal / lembek">
+        </div>
+        <div>
+          <label>Warna</label>
+          <input id="qaColor" placeholder="Cerah / pucat">
+        </div>
+        <div style="grid-column:1 / -1;">
+          <label>Catatan</label>
+          <textarea id="qaNote" placeholder="Catatan singkat..."></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:.6rem;margin-top:.75rem;flex-wrap:wrap;">
+        <button type="submit"><i data-feather="save" width="14"></i>Simpan</button>
+        <button type="button" class="outline" id="qaReset"><i data-feather="rotate-ccw" width="14"></i>Reset</button>
+      </div>
+      <div id="quickAddAlert" style="margin-top:.7rem;"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+/* =======================================================================================
+   FIREBASE CONFIG - Ganti dengan konfigurasi project Anda.
+   ======================================================================================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
+  authDomain: "femmeiacloth-finance.firebaseapp.com",
+  projectId: "femmeiacloth-finance",
+  storageBucket: "femmeiacloth-finance.appspot.com",
+  messagingSenderId: "517478386163",
+  appId: "1:517478386163:web:51028f5841baa311126a86",
+  measurementId: "G-K4L516Q54R"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+/* =======================================================================================
+   GLOBAL STATE
+   ======================================================================================= */
+const state = {
+  currentUser: null,
+  userProfile: null,
+  fishData: [],
+  filteredData: [],
+  charts: {},
+  myDataOnly: false,
+  qualityFilter: 'all',
+  lang: localStorage.getItem('lang') || 'id',
+  accent: localStorage.getItem('accent') || '210 100% 50%',
+  layoutStyle: localStorage.getItem('layoutStyle') || 'grid',
+  dashRange: 'today',
+  roleOptions: ['Admin','Mahasiswa','Dosen','Petugas Pasar'],
+  animationPref: localStorage.getItem('animationPref') || 'full',
+  fishTypes: [],
+  markets: [],
+  unsubFishData: null,
+  realtimeEnabled: true,
+  pagination: {
+    page: 1,
+    size: parseInt(localStorage.getItem('pageSize') || '25',10),
+    totalPages: 1
+  },
+  lastFiltersHash: '',
+  performance: {
+    lastRenderTime: 0
+  }
+};
+
+document.documentElement.lang = state.lang;
+document.documentElement.style.setProperty('--accent', state.accent);
+if (state.layoutStyle === 'list') document.body.classList.add('layout-list');
+
+/* =======================================================================================
+   I18N DICTIONARY
+   ======================================================================================= */
+const i18n = {
+  id: {
+    app_title: "Monitoring Mutu Ikan Segar",
+    app_subtitle: "Sistem Informasi Pasar Tradisional Kota Makassar",
+    email: "Email",
+    password: "Kata Sandi",
+    confirm_password: "Konfirmasi Kata Sandi",
+    login: "Masuk",
+    register_now: "Daftar sekarang",
+    no_account: "Belum punya akun?",
+    have_account: "Sudah punya akun?",
+    forgot_password: "Lupa kata sandi?",
+    register_account: "Registrasi Akun",
+    register_subtitle: "Buat akun baru untuk mulai mencatat data mutu ikan.",
+    create_account: "Buat Akun",
+    reset_password: "Reset Kata Sandi",
+    reset_subtitle: "Masukkan email anda untuk menerima link reset.",
+    send_reset_link: "Kirim Link Reset",
+    back_login: "Kembali ke Login",
+    full_name: "Nama Lengkap",
+    role: "Peran",
+    dashboard: "Dashboard",
+    data_records: "Data Mutu",
+    input_form: "Input Data",
+    reports: "Laporan",
+    settings: "Pengaturan",
+    profile: "Profil",
+    logout: "Keluar",
+    dashboard_overview: "Ringkasan Mutu Terkini",
+    total_records: "Total Data",
+    avg_score: "Rata-rata Skor",
+    good_quality: "Mutu Baik",
+    warning_quality: "Mutu Sedang",
+    bad_quality: "Mutu Buruk",
+    chart_comparison: "Perbandingan Mutu per Pasar",
+    chart_trend: "Tren Skor Waktu",
+    chart_pie: "Proporsi Jenis Ikan",
+    quality_indicators: "Indikator Mutu",
+    data_mutu_list: "Data Mutu Ikan",
+    filter_fish: "Jenis Ikan",
+    filter_market: "Pasar",
+    filter_date: "Tanggal",
+    filter_text: "Cari (bau / warna, dll.)",
+    th_no: "No",
+    th_date: "Tanggal",
+    th_fish: "Jenis Ikan",
+    th_market: "Pasar",
+    th_organoleptic: "Organoleptik",
+    th_smell: "Bau",
+    th_texture: "Tekstur",
+    th_color: "Warna",
+    th_score_status: "Status",
+    th_user: "Pengguna",
+    th_actions: "Aksi",
+    empty_data: "Belum ada data. Silakan input.",
+    input_new_data: "Input Data Mutu Baru",
+    fish_type: "Jenis Ikan",
+    market_location: "Lokasi Pasar",
+    organoleptic_score: "Skor Organoleptik (1-9)",
+    smell: "Bau",
+    texture: "Tekstur",
+    color: "Warna",
+    date_auto: "Tanggal (otomatis)",
+    save_data: "Simpan Data",
+    cancel_edit: "Batal Edit",
+    reports_export: "Laporan & Export",
+    reports_desc: "Pilih rentang data dan ekspor laporan yang berisi grafik dan tabel.",
+    from_date: "Dari Tanggal",
+    to_date: "Sampai Tanggal",
+    report_scope: "Ruang Lingkup",
+    report_fish_type: "Jenis Ikan (Opsional)",
+    generate_report: "Generate Laporan",
+    clear_report: "Bersihkan",
+    settings_pref: "Pengaturan & Preferensi",
+    appearance: "Tampilan",
+    theme_mode: "Mode Tema",
+    accent_color: "Warna Aksen",
+    layout_style: "Gaya Layout",
+    language: "Bahasa",
+    account_info: "Info Akun",
+    resend_verif: "Kirim Ulang Verifikasi",
+    refresh: "Refresh",
+    role_mgmt: "Manajemen Peran",
+    role_mgmt_desc: "Hanya admin dapat mengubah peran pengguna lain. (Client-side demonstrasi)",
+    danger_zone: "Zona Berbahaya",
+    delete_account_warn: "Penghapusan akun akan menghapus data profil (tidak menghapus histori data). (Demo)",
+    delete_account: "Hapus Akun",
+    profile_manage: "Profil Pengguna",
+    change_photo: "Ganti Foto",
+    remove_photo: "Hapus Foto",
+    update_profile: "Update Profil",
+    send_verification: "Kirim Verifikasi",
+    email_verified: "Email Terverifikasi"
+  },
+  en: {
+    app_title: "Fresh Fish Quality Monitoring",
+    app_subtitle: "Information System for Traditional Markets in Makassar",
+    email: "Email",
+    password: "Password",
+    confirm_password: "Confirm Password",
+    login: "Login",
+    register_now: "Register now",
+    no_account: "Don't have an account?",
+    have_account: "Already have an account?",
+    forgot_password: "Forgot password?",
+    register_account: "Register Account",
+    register_subtitle: "Create a new account to start recording fish quality data.",
+    create_account: "Create Account",
+    reset_password: "Reset Password",
+    reset_subtitle: "Enter your email to receive a reset link.",
+    send_reset_link: "Send Reset Link",
+    back_login: "Back to Login",
+    full_name: "Full Name",
+    role: "Role",
+    dashboard: "Dashboard",
+    data_records: "Quality Data",
+    input_form: "Input Data",
+    reports: "Reports",
+    settings: "Settings",
+    profile: "Profile",
+    logout: "Logout",
+    dashboard_overview: "Latest Quality Overview",
+    total_records: "Total Records",
+    avg_score: "Average Score",
+    good_quality: "Good Quality",
+    warning_quality: "Medium Quality",
+    bad_quality: "Bad Quality",
+    chart_comparison: "Quality Comparison per Market",
+    chart_trend: "Score Trend Over Time",
+    chart_pie: "Fish Type Proportion",
+    quality_indicators: "Quality Indicators",
+    data_mutu_list: "Fish Quality Data",
+    filter_fish: "Fish Type",
+    filter_market: "Market",
+    filter_date: "Date",
+    filter_text: "Text Search",
+    th_no: "No",
+    th_date: "Date",
+    th_fish: "Fish Type",
+    th_market: "Market",
+    th_organoleptic: "Organoleptic",
+    th_smell: "Smell",
+    th_texture: "Texture",
+    th_color: "Color",
+    th_score_status: "Status",
+    th_user: "User",
+    th_actions: "Actions",
+    empty_data: "No data yet. Please input.",
+    input_new_data: "Input New Quality Data",
+    fish_type: "Fish Type",
+    market_location: "Market Location",
+    organoleptic_score: "Organoleptic Score (1-9)",
+    smell: "Smell",
+    texture: "Texture",
+    color: "Color",
+    date_auto: "Date (auto)",
+    save_data: "Save Data",
+    cancel_edit: "Cancel Edit",
+    reports_export: "Reports & Export",
+    reports_desc: "Choose a date range and export report containing charts and tables.",
+    from_date: "From Date",
+    to_date: "To Date",
+    report_scope: "Scope",
+    report_fish_type: "Fish Type (Optional)",
+    generate_report: "Generate Report",
+    clear_report: "Clear",
+    settings_pref: "Settings & Preferences",
+    appearance: "Appearance",
+    theme_mode: "Theme Mode",
+    accent_color: "Accent Color",
+    layout_style: "Layout Style",
+    language: "Language",
+    account_info: "Account Info",
+    resend_verif: "Resend Verification",
+    refresh: "Refresh",
+    role_mgmt: "Role Management",
+    role_mgmt_desc: "Only admin can change other user roles. (Client-side demo)",
+    danger_zone: "Danger Zone",
+    delete_account_warn: "Account deletion removes profile (history remains). (Demo)",
+    delete_account: "Delete Account",
+    profile_manage: "User Profile",
+    change_photo: "Change Photo",
+    remove_photo: "Remove Photo",
+    update_profile: "Update Profile",
+    send_verification: "Send Verification",
+    email_verified: "Email Verified"
+  }
+};
+
+function applyI18n() {
+  const dict = i18n[state.lang] || i18n.id;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) el.textContent = dict[key];
+  });
+  document.documentElement.lang = state.lang;
+  localStorage.setItem('lang', state.lang);
+}
+
+/* =======================================================================================
+   UTILITIES
+   ======================================================================================= */
+function $(sel){ return document.querySelector(sel); }
+function $all(sel){ return Array.from(document.querySelectorAll(sel)); }
+function sanitize(str){ return (str||'').toString().replace(/[<>]/g,''); }
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+function average(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+function formatDate(ts){
+  const d = ts instanceof Date ? ts : (ts?.toDate?.() || new Date(ts));
+  return d.toLocaleDateString(state.lang==='en'?'en-US':'id-ID',{year:'numeric',month:'2-digit',day:'2-digit'});
+}
+function formatISODate(ts){
+  const d = ts instanceof Date ? ts : (ts?.toDate?.() || new Date(ts));
+  return d.toISOString().split('T')[0];
+}
+function nowDateInput(){ return new Date().toISOString().split('T')[0]; }
+
+function showAlert(targetId,type,msg,timeout=5000){
+  const container = typeof targetId==='string' ? document.getElementById(targetId) : targetId;
+  if(!container) return;
+  container.innerHTML = `
+    <div class="alert ${type}">
+      <i data-feather="${type==='danger'?'alert-triangle':type==='success'?'check-circle':type==='warn'?'alert-octagon':'info'}" width="16"></i>
+      <span style="flex:1;">${msg}</span>
+      <button onclick="this.closest('.alert').remove();"><i data-feather="x" width="14"></i></button>
+    </div>`;
+  feather.replace();
+  if(timeout) setTimeout(()=> {
+    if(container.firstElementChild) container.firstElementChild.remove();
+  }, timeout);
+}
+
+function computeQualityStatus(score){
+  if(score >=7) return { label: state.lang==='en'?'Good':'Baik', cls:'status-good' };
+  if(score >=4) return { label: state.lang==='en'?'Medium':'Sedang', cls:'status-warn' };
+  return { label: state.lang==='en'?'Bad':'Buruk', cls:'status-bad' };
+}
+
+function download(filename, content, type='text/plain'){
+  const blob = new Blob([content], {type});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  setTimeout(()=> URL.revokeObjectURL(a.href), 1500);
+}
+
+function toCSV(rows){
+  return rows.map(r => r.map(v => `"${(v??'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+}
+
+function generateTableData(records){
+  const header = ["Tanggal","Jenis Ikan","Pasar","Organoleptik","Bau","Tekstur","Warna","Status","User","UID","ID","Catatan"];
+  const body = records.map(r=>[
+    formatDate(r.date||r.createdAt),
+    r.fishType,
+    r.market,
+    r.organoleptic,
+    r.smell,
+    r.texture,
+    r.color,
+    computeQualityStatus(r.organoleptic).label,
+    r.userName,
+    r.userId,
+    r.id,
+    r.note||''
+  ]);
+  return [header, ...body];
+}
+
+function debounce(fn, delay=350){
+  let t;
+  return (...args)=>{
+    clearTimeout(t);
+    t=setTimeout(()=>fn(...args), delay);
+  };
+}
+
+function hashFilters(o){
+  return JSON.stringify(o);
+}
+
+function highlightMatch(text, query){
+  if(!query) return sanitize(text);
+  const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'ig');
+  return sanitize(text).replace(re,'<mark style="background:hsl(var(--accent)/.5);color:#fff;border-radius:4px;padding:0 2px;">$1</mark>');
+}
+
+/* =======================================================================================
+   AUTH UI SWITCH
+   ======================================================================================= */
+const loginForm = $('#loginForm');
+const registerForm = $('#registerForm');
+const forgotForm = $('#forgotForm');
+
+$('#showRegister').addEventListener('click', e=>{
+  e.preventDefault();
+  $('#loginContainer').classList.add('hidden');
+  $('#registerContainer').classList.remove('hidden');
+  $('#forgotContainer').classList.add('hidden');
+  feather.replace();
+});
+
+$('#showLogin').addEventListener('click', e=>{
+  e.preventDefault();
+  $('#loginContainer').classList.remove('hidden');
+  $('#registerContainer').classList.add('hidden');
+  $('#forgotContainer').classList.add('hidden');
+  feather.replace();
+});
+
+$('#linkForgot').addEventListener('click', e=>{
+  e.preventDefault();
+  $('#loginContainer').classList.add('hidden');
+  $('#registerContainer').classList.add('hidden');
+  $('#forgotContainer').classList.remove('hidden');
+});
+
+$('#backToLogin').addEventListener('click', e=>{
+  e.preventDefault();
+  $('#loginContainer').classList.remove('hidden');
+  $('#registerContainer').classList.add('hidden');
+  $('#forgotContainer').classList.add('hidden');
+});
+
+/* =======================================================================================
+   REG EXTRA FIELD
+   ======================================================================================= */
+const regRoleSelect = $('#regRole');
+regRoleSelect.addEventListener('change', updateRegExtraField);
+function updateRegExtraField(){
+  const role = regRoleSelect.value;
+  const wrap = $('#regExtraFieldWrapper');
+  let label='Identifier';
+  let placeholder='Masukkan identitas';
+  if(role==='Mahasiswa'){ label='NIM'; placeholder='Nomor Induk Mahasiswa'; }
+  else if(role==='Dosen'){ label='NIP'; placeholder='Nomor Induk Pegawai / Dosen'; }
+  else if(role==='Petugas Pasar'){ label='ID Petugas'; placeholder='ID Petugas Pasar'; }
+  else { wrap.innerHTML=''; return; }
+  wrap.innerHTML = `
+    <label>${label}</label>
+    <input id="regRoleIdentity" placeholder="${placeholder}" required>
+  `;
+}
+updateRegExtraField();
+
+/* =======================================================================================
+   AUTH ACTIONS
+   ======================================================================================= */
+loginForm.addEventListener('submit', async e=>{
+  e.preventDefault();
+  $('#btnLogin').disabled=true;
+  showAlert('authAlert','info','Memproses login...');
+  try{
+    const email = $('#loginEmail').value.trim();
+    const pass = $('#loginPassword').value;
+    await auth.signInWithEmailAndPassword(email, pass);
+    showAlert('authAlert','success','Login sukses. Mengalihkan...',1500);
+  }catch(err){
+    showAlert('authAlert','danger','Login gagal: '+err.message);
+  }finally{
+    $('#btnLogin').disabled=false;
+  }
+});
+
+registerForm.addEventListener('submit', async e=>{
+  e.preventDefault();
+  const name = $('#regName').value.trim();
+  const email = $('#regEmail').value.trim();
+  const pass = $('#regPassword').value;
+  const pass2 = $('#regConfirmPassword').value;
+  const role = $('#regRole').value;
+  const identityEl = $('#regRoleIdentity');
+  const identity = identityEl ? identityEl.value.trim() : '';
+
+  if(!name || !email || !pass) return showAlert('registerAlert','danger','Isi semua field.');
+  if(pass !== pass2) return showAlert('registerAlert','danger','Konfirmasi kata sandi tidak cocok.');
+  if(identityEl && !identity) return showAlert('registerAlert','danger','Identitas peran wajib diisi.');
+  showAlert('registerAlert','info','Memproses registrasi...');
+  try{
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+    const safeRole = role === 'Admin' ? 'Mahasiswa' : role;
+    await db.collection('users').doc(cred.user.uid).set({
+      name,
+      email,
+      role: safeRole,
+      identity,
+      phone:'',
+      org:'',
+      link:'',
+      bio:'',
+      photo:'',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      emailVerified: cred.user.emailVerified
+    });
+    await cred.user.updateProfile({ displayName: name });
+    await cred.user.sendEmailVerification();
+    showAlert('registerAlert','success','Registrasi berhasil. Cek email anda untuk verifikasi.');
+    setTimeout(()=>{
+      $('#loginContainer').classList.remove('hidden');
+      $('#registerContainer').classList.add('hidden');
+    },1400);
+  }catch(err){
+    showAlert('registerAlert','danger','Gagal: '+err.message);
+  }
+});
+
+forgotForm.addEventListener('submit', async e=>{
+  e.preventDefault();
+  const email = $('#forgotEmail').value.trim();
+  if(!email) return;
+  showAlert('forgotAlert','info','Mengirim link reset...');
+  try{
+    await auth.sendPasswordResetEmail(email);
+    showAlert('forgotAlert','success','Email reset terkirim. Periksa folder spam juga.');
+  }catch(err){
+    showAlert('forgotAlert','danger','Gagal: '+err.message);
+  }
+});
+
+/* =======================================================================================
+   AUTH STATE
+   ======================================================================================= */
+auth.onAuthStateChanged(async user=>{
+  if(user){
+    state.currentUser = user;
+    await loadUserProfile(user.uid);
+    await loadMasters();
+    initApp();
+    subscribeFishData();
+    $('#authView').classList.add('hidden');
+    $('#appLayout').classList.remove('hidden');
+    refreshUserUI();
+    applyI18n();
+  } else {
+    state.currentUser = null;
+    state.userProfile = null;
+    if(state.unsubFishData){ state.unsubFishData(); state.unsubFishData=null; }
+    $('#authView').classList.remove('hidden');
+    $('#appLayout').classList.add('hidden');
+  }
+  feather.replace();
+  setTimeout(()=> $('#loadingOverlay').style.display='none', 400);
+});
+
+/* =======================================================================================
+   USER PROFILE
+   ======================================================================================= */
+async function loadUserProfile(uid){
+  const doc = await db.collection('users').doc(uid).get();
+  if(doc.exists){
+    state.userProfile = { id: doc.id, ...doc.data() };
+  } else {
+    state.userProfile = {
+      id: uid,
+      name: state.currentUser.displayName || 'Pengguna',
+      email: state.currentUser.email,
+      role: 'Mahasiswa',
+      identity:'',
+      phone:'',
+      org:'',
+      link:'',
+      bio:'',
+      photo:'',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      emailVerified: state.currentUser.emailVerified
+    };
+    await db.collection('users').doc(uid).set(state.userProfile);
+  }
+}
+
+function refreshUserUI(){
+  const u = state.userProfile || {};
+  $('#avatarInitial').textContent = (u.name||'U').substring(0,1).toUpperCase();
+  if(u.photo){
+    $('#avatarImg').src = u.photo;
+    $('#avatarImg').classList.remove('hidden');
+    $('#avatarInitial').classList.add('hidden');
+  } else {
+    $('#avatarImg').classList.add('hidden');
+    $('#avatarInitial').classList.remove('hidden');
+  }
+  $('#sidebarUserInfo').innerHTML = `
+    <div style="font-weight:700;">${sanitize(u.name||'')}</div>
+    <div style="font-size:.55rem;">${sanitize(u.email||'')}</div>
+    <div class="badge-role" style="margin-top:.35rem;">${sanitize(u.role||'')}</div>
+    <div class="xsmall" style="margin-top:.25rem;">Verif: ${u.emailVerified?'Ya':'Belum'}</div>
+  `;
+
+  $('#profName').value = u.name || '';
+  $('#profEmail').value = u.email || '';
+  $('#profRole').value = u.role || 'Mahasiswa';
+  $('#profVerified').value = u.emailVerified ? 'Ya' : 'Belum';
+  $('#profIdentity').value = u.identity || '';
+  $('#profPhone').value = u.phone || '';
+  $('#profOrg').value = u.org || '';
+  $('#profLink').value = u.link || '';
+  $('#profBio').value = u.bio || '';
+  $('#profileAvatarInitial').textContent = (u.name||'U').substring(0,1).toUpperCase();
+  if(u.photo){
+    $('#profileAvatarImg').src = u.photo;
+    $('#profileAvatarImg').classList.remove('hidden');
+    $('#profileAvatarInitial').classList.add('hidden');
+  } else {
+    $('#profileAvatarImg').classList.add('hidden');
+    $('#profileAvatarInitial').classList.remove('hidden');
+  }
+  $('#profileStatusInfo').innerHTML = `
+    <div>Status Akses: <strong>${sanitize(u.role||'-')}</strong></div>
+    <div class="xsmall">Email: ${u.emailVerified?'Terverifikasi':'Belum verifikasi'}</div>
+    <div class="xsmall">ID: ${state.currentUser?.uid?.slice(0,10)}...</div>
+  `;
+  $('#settingsUserInfo').innerHTML = `
+    <strong>${sanitize(u.name||'')}</strong><br>
+    ${sanitize(u.email||'')}<br>
+    Role: <span class="badge-inline">${sanitize(u.role||'')}</span><br>
+    Email Verified: <span class="badge-inline">${u.emailVerified?'YES':'NO'}</span><br>
+    ${u.identity?('ID: '+sanitize(u.identity)):'Tidak ada ID'}
+  `;
+  if(u.role === 'Admin'){
+    loadAllUsersForRoleManagement();
+  } else {
+    $('#roleMgmt').innerHTML = '<em class="muted">Hanya Admin.</em>';
+  }
+  // role extra field in input form
+  updateRoleExtraField();
+}
+
+async function loadAllUsersForRoleManagement(){
+  const snap = await db.collection('users').orderBy('name').get();
+  const html = snap.docs.map(d=>{
+    const u = d.data();
+    return `
+      <div style="display:flex;align-items:center;gap:.55rem;border:1px solid hsl(var(--accent)/.25);padding:.5rem .6rem;border-radius:14px;background:hsl(var(--accent)/.1);">
+        <div style="flex:1;">
+          <strong style="font-size:.65rem;">${sanitize(u.name||'')}</strong><br>
+          <span style="font-size:.55rem;opacity:.7;">${sanitize(u.email||'')}</span>
+        </div>
+        <select data-user-role="${d.id}" style="max-width:130px;font-size:.55rem;padding:.4rem .5rem;border-radius:10px;">
+          ${state.roleOptions.map(r=> `<option ${u.role===r?'selected':''}>${r}</option>`).join('')}
+        </select>
+        <button class="outline" data-user-update-role="${d.id}" style="padding:.4rem .55rem;">
+          <i data-feather="save" width="14"></i>
+        </button>
+      </div>
+    `;
+  }).join('');
+  $('#roleMgmt').innerHTML = html || '<em class="muted">Tidak ada pengguna.</em>';
+  feather.replace();
+  $all('[data-user-update-role]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const uid = btn.getAttribute('data-user-update-role');
+      const sel = document.querySelector(`[data-user-role="${uid}"]`);
+      const role = sel.value;
+      if(uid === state.currentUser.uid && role !== 'Admin'){
+        showAlert('verifyAlert','warn','Tidak dapat menurunkan role admin sendiri (demo).');
+        return;
+      }
+      try{
+        await db.collection('users').doc(uid).update({
+          role,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        showAlert('verifyAlert','success','Role diperbarui.');
+        if(uid === state.currentUser.uid){
+          await loadUserProfile(uid);
+          refreshUserUI();
+        }
+      }catch(err){
+        showAlert('verifyAlert','danger','Gagal: '+err.message);
+      }
+    });
+  });
+}
+
+/* =======================================================================================
+   LOGOUT
+   ======================================================================================= */
+$('#btnLogout').addEventListener('click', ()=> auth.signOut());
+$('#logoutDropdownBtn').addEventListener('click', ()=> auth.signOut());
+
+/* =======================================================================================
+   NAVIGATION
+   ======================================================================================= */
+$all('.nav button, .dropdown button[data-dropdown]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const view = btn.getAttribute('data-view') || btn.getAttribute('data-dropdown');
+    if(view) showView(view);
+    if($('#sidebar').classList.contains('open')) $('#sidebar').classList.remove('open');
+  });
+});
+
+function showView(view){
+  $all('[id^="view-"]').forEach(sec=> sec.classList.add('hidden'));
+  const section = $('#view-'+view);
+  if(section) section.classList.remove('hidden');
+  $all('.nav button').forEach(b=> b.classList.remove('active'));
+  const navBtn = document.querySelector(`.nav button[data-view="${view}"]`);
+  if(navBtn) navBtn.classList.add('active');
+  feather.replace();
+}
+
+/* Quick jump from empty state */
+document.addEventListener('click', e=>{
+  if(e.target.closest('[data-view-jump="form"]')){
+    showView('form');
+  }
+});
+
+$('#openSidebar').addEventListener('click', ()=> $('#sidebar').classList.add('open'));
+$('#closeSidebar').addEventListener('click', ()=> $('#sidebar').classList.remove('open'));
+$('#btnCollapseSidebar').addEventListener('click', toggleSidebarCollapse);
+
+let sidebarCollapsed = false;
+function toggleSidebarCollapse(){
+  sidebarCollapsed = !sidebarCollapsed;
+  $('.sidebar').style.width = sidebarCollapsed ? '86px':'250px';
+  document.body.classList.toggle('sidebar-collapsed', sidebarCollapsed);
+  $all('.nav button span').forEach(span=> span.style.display = sidebarCollapsed ? 'none':'inline');
+  $all('.sidebar-footer, .sidebar-header h2').forEach(el=> el.style.display = sidebarCollapsed ? 'none':'');
+  $('#btnCollapseSidebar').innerHTML = sidebarCollapsed
+    ? '<i data-feather="chevrons-right" width="16"></i>'
+    : '<i data-feather="chevrons-left" width="16"></i>';
+  feather.replace();
+}
+
+/* =======================================================================================
+   AVATAR DROPDOWN
+   ======================================================================================= */
+$('#avatarBtn').addEventListener('click', ()=>{
+  $('#userDropdown').classList.toggle('show');
+});
+document.addEventListener('click', e=>{
+  if(!$('#userDropdown').contains(e.target) && !$('#avatarBtn').contains(e.target)){
+    $('#userDropdown').classList.remove('show');
+  }
+});
+
+/* =======================================================================================
+   THEME / ACCENT / LANG / PREFS
+   ======================================================================================= */
+$('#btnToggleTheme').addEventListener('click', ()=>{
+  const root = document.documentElement;
+  const current = root.getAttribute('data-theme') === 'dark' ? 'light':'dark';
+  root.setAttribute('data-theme', current);
+  localStorage.setItem('theme', current);
+});
+(function initTheme(){
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
+$('#btnLang').addEventListener('click', ()=>{
+  state.lang = state.lang==='id' ? 'en':'id';
+  applyI18n();
+  renderTable(); // re-run for headers replaced
+  updateDashboard();
+  updateQualityList();
+});
+
+$('#languageSelect').addEventListener('change', e=>{
+  state.lang = e.target.value;
+  applyI18n();
+  renderTable();
+  updateDashboard();
+  updateQualityList();
+});
+
+$('#prefLight').addEventListener('click', ()=>{
+  document.documentElement.setAttribute('data-theme','light');
+  localStorage.setItem('theme','light');
+});
+$('#prefDark').addEventListener('click', ()=>{
+  document.documentElement.setAttribute('data-theme','dark');
+  localStorage.setItem('theme','dark');
+});
+
+function buildAccentPalette(){
+  const palette = [
+    '210 100% 50%','260 83% 60%','340 82% 52%','14 90% 57%',
+    '122 39% 49%','190 90% 45%','45 100% 51%','0 84% 56%',
+    '280 65% 55%','200 90% 55%'
+  ];
+  $('#accentPalette').innerHTML = palette.map(c=>`
+    <div class="color-swatch ${c===state.accent?'active':''}" data-accent="${c}" style="background:hsl(${c});">
+      ${c===state.accent?'<i data-feather="check" width="16"></i>':''}
+    </div>
+  `).join('');
+  feather.replace();
+  $all('.color-swatch').forEach(sw=>{
+    sw.addEventListener('click', ()=>{
+      state.accent = sw.getAttribute('data-accent');
+      document.documentElement.style.setProperty('--accent', state.accent);
+      localStorage.setItem('accent', state.accent);
+      buildAccentPalette();
+      rebuildChartsColors();
+    });
+  });
+}
+buildAccentPalette();
+
+$('#layoutStyle').value = state.layoutStyle;
+$('#layoutStyle').addEventListener('change', e=>{
+  state.layoutStyle = e.target.value;
+  localStorage.setItem('layoutStyle', state.layoutStyle);
+  if(state.layoutStyle==='list') document.body.classList.add('layout-list');
+  else document.body.classList.remove('layout-list');
+});
+
+$('#animationPref').value = state.animationPref;
+$('#animationPref').addEventListener('change', e=>{
+  state.animationPref = e.target.value;
+  localStorage.setItem('animationPref', state.animationPref);
+  applyAnimationPreference();
+});
+function applyAnimationPreference(){
+  if(state.animationPref==='off'){
+    document.documentElement.style.setProperty('--transition','0s');
+  } else if(state.animationPref==='minimal'){
+    document.documentElement.style.setProperty('--transition','.15s ease');
+  } else {
+    document.documentElement.style.setProperty('--transition','.35s cubic-bezier(.55,.2,.2,1)');
+  }
+}
+applyAnimationPreference();
+
+$('#btnSavePrefs').addEventListener('click', ()=>{
+  showAlert('verifyAlert','success','Preferensi disimpan.',2500);
+});
+$('#btnResetPrefs').addEventListener('click', ()=>{
+  localStorage.removeItem('accent');
+  localStorage.removeItem('layoutStyle');
+  localStorage.removeItem('lang');
+  localStorage.removeItem('animationPref');
+  localStorage.removeItem('theme');
+  localStorage.removeItem('pageSize');
+  location.reload();
+});
+
+/* =======================================================================================
+   MY DATA TOGGLE & REALTIME
+   ======================================================================================= */
+$('#toggleMyData').addEventListener('click', ()=>{
+  state.myDataOnly = !state.myDataOnly;
+  $('#toggleMyData').classList.toggle('active', state.myDataOnly);
+  $('#toggleMyData').setAttribute('data-state', state.myDataOnly?'mine':'all');
+  $('#toggleMyDataLabel').textContent = state.myDataOnly
+    ? (state.lang==='en'?'My Data':'Data Saya')
+    : (state.lang==='en'?'All Data':'Semua Data');
+  applyFilters();
+  updateDashboard();
+  updateQualityList();
+});
+
+$('#toggleRealtime').addEventListener('click', ()=>{
+  state.realtimeEnabled = !state.realtimeEnabled;
+  $('#toggleRealtime').classList.toggle('active', state.realtimeEnabled);
+  $('#labelRealtime').textContent = state.realtimeEnabled ? 'Realtime':'Manual';
+  if(state.realtimeEnabled){
+    subscribeFishData();
+    showAlert('formAlert','info','Realtime aktif.');
+  } else {
+    if(state.unsubFishData){ state.unsubFishData(); state.unsubFishData=null; }
+    showAlert('formAlert','warn','Realtime dimatikan. Klik refresh chart untuk update.');
+  }
+});
+
+/* =======================================================================================
+   DATA FETCH (FISH)
+   ======================================================================================= */
+function subscribeFishData(){
+  if(!state.currentUser || !state.realtimeEnabled) return;
+  if(state.unsubFishData) state.unsubFishData();
+  state.unsubFishData = db.collection('fishQuality')
+    .orderBy('createdAt','desc')
+    .onSnapshot(snap=>{
+      state.fishData = snap.docs.map(d=>{
+        const data = d.data();
+        return {
+          id:d.id,
+          ...data,
+          date: data.date ? (data.date.toDate ? data.date.toDate(): new Date(data.date)) :
+                 (data.createdAt?.toDate ? data.createdAt.toDate(): new Date())
+        };
+      });
+      applyFilters();
+      updateDashboard();
+      updateQualityList();
+      buildCharts();
+    }, err=>{
+      showAlert('formAlert','danger','Gagal realtime: '+err.message,7000);
+    });
+}
+
+/* =======================================================================================
+   MASTER DATA (fishTypes & markets)
+   ======================================================================================= */
+async function loadMasters(){
+  // Option 1: store in single doc masters/fishTypes etc. We'll use subcollections "masters" with docs "fishTypes"/"markets"
+  // Approach: read fishTypes collection under masters/fishTypes/items or fallback initial list
+  const fishSnap = await db.collection('masters').doc('fish').get();
+  const marketSnap = await db.collection('masters').doc('markets').get();
+  const defaultFish = ["Ikan Kembung","Ikan Bandeng","Ikan Nila","Tuna Kecil"];
+  const defaultMarkets = ["Pasar Terong","Pasar Pa’baeng-baeng","Pasar Maricaya","Pasar Panakkukang"];
+  state.fishTypes = fishSnap.exists ? (fishSnap.data().list||defaultFish) : defaultFish;
+  state.markets   = marketSnap.exists ? (marketSnap.data().list||defaultMarkets) : defaultMarkets;
+  refreshMasterSelects();
+}
+
+function refreshMasterSelects(){
+  // fish selects
+  const fishOptions = '<option value="">Pilih</option>' + state.fishTypes.map(f=> `<option>${sanitize(f)}</option>`).join('');
+  $('#fishType').innerHTML = fishOptions;
+  $('#qaFish').innerHTML = state.fishTypes.map(f=> `<option>${sanitize(f)}</option>`).join('');
+  $('#filterFish').innerHTML = '<option value="">Semua</option>'+state.fishTypes.map(f=> `<option>${sanitize(f)}</option>`).join('');
+  $('#reportFish').innerHTML = '<option value="">Semua</option>'+state.fishTypes.map(f=> `<option>${sanitize(f)}</option>`).join('');
+  // markets
+  const marketOptions = '<option value="">Pilih</option>'+ state.markets.map(m=> `<option>${sanitize(m)}</option>`).join('');
+  $('#market').innerHTML = marketOptions;
+  $('#qaMarket').innerHTML = state.markets.map(m=> `<option>${sanitize(m)}</option>`).join('');
+  $('#filterMarket').innerHTML = '<option value="">Semua</option>'+state.markets.map(m=> `<option>${sanitize(m)}</option>`).join('');
+  $('#reportMarket').innerHTML = '<option value="">Semua</option>'+state.markets.map(m=> `<option>${sanitize(m)}</option>`).join('');
+}
+
+async function saveMaster(type,list){
+  await db.collection('masters').doc(type).set({ list, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge:true });
+}
+
+function openMasterModal(){
+  $('#modalMaster').classList.add('show');
+  renderMasterLists();
+}
+function closeMasterModal(){
+  $('#modalMaster').classList.remove('show');
+}
+
+function renderMasterLists(){
+  $('#fishTypeList').innerHTML = state.fishTypes.map(f=>{
+    const canRemove = ['Admin','Petugas Pasar'].includes(state.userProfile?.role);
+    return `<div class="tag ${canRemove?'removable':''}">
+      <span>${sanitize(f)}</span>
+      ${canRemove?`<button type="button" data-remove-fish="${sanitize(f)}"><i data-feather="x" width="12"></i></button>`:''}
+    </div>`;
+  }).join('') || '<span class="xsmall muted">Belum ada data</span>';
+  $('#marketList').innerHTML = state.markets.map(m=>{
+    const canRemove = ['Admin','Petugas Pasar'].includes(state.userProfile?.role);
+    return `<div class="tag ${canRemove?'removable':''}">
+      <span>${sanitize(m)}</span>
+      ${canRemove?`<button type="button" data-remove-market="${sanitize(m)}"><i data-feather="x" width="12"></i></button>`:''}
+    </div>`;
+  }).join('') || '<span class="xsmall muted">Belum ada data</span>';
+  feather.replace();
+  $all('[data-remove-fish]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      if(!confirm('Hapus jenis ikan ini?')) return;
+      const val = btn.getAttribute('data-remove-fish');
+      state.fishTypes = state.fishTypes.filter(x=> x!==val);
+      await saveMaster('fish', state.fishTypes);
+      refreshMasterSelects();
+      renderMasterLists();
+    });
+  });
+  $all('[data-remove-market]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      if(!confirm('Hapus pasar ini?')) return;
+      const val = btn.getAttribute('data-remove-market');
+      state.markets = state.markets.filter(x=> x!==val);
+      await saveMaster('markets', state.markets);
+      refreshMasterSelects();
+      renderMasterLists();
+    });
+  });
+}
+
+/* Master modal open triggers */
+$('#btnAddFishType').addEventListener('click', openMasterModal);
+$('#btnAddMarket').addEventListener('click', openMasterModal);
+$('#btnQuickAddMaster').addEventListener('click', openMasterModal);
+$('#closeMasterModal').addEventListener('click', closeMasterModal);
+$('#modalMaster').addEventListener('click', e=>{
+  if(e.target.id==='modalMaster') closeMasterModal();
+});
+
+$('#btnSaveFishType').addEventListener('click', async ()=>{
+  const v = $('#newFishType').value.trim();
+  if(!v) return;
+  if(state.fishTypes.includes(v)) { showAlert('fishTypeList','warn','Sudah ada.'); return; }
+  state.fishTypes.push(v);
+  await saveMaster('fish', state.fishTypes);
+  $('#newFishType').value='';
+  refreshMasterSelects();
+  renderMasterLists();
+  showAlert('fishTypeList','success','Jenis ikan ditambahkan.',2000);
+});
+$('#btnSaveMarket').addEventListener('click', async ()=>{
+  const v = $('#newMarket').value.trim();
+  if(!v) return;
+  if(state.markets.includes(v)) { showAlert('marketList','warn','Sudah ada.'); return; }
+  state.markets.push(v);
+  await saveMaster('markets', state.markets);
+  $('#newMarket').value='';
+  refreshMasterSelects();
+  renderMasterLists();
+  showAlert('marketList','success','Pasar ditambahkan.',2000);
+});
+
+/* =======================================================================================
+   FILTERING / SORT / PAGINATION
+   ======================================================================================= */
+const filterInputs = ['filterFish','filterMarket','filterDate','filterText','filterScoreMin','filterScoreMax','sortBy'];
+filterInputs.forEach(id=>{
+  document.getElementById(id).addEventListener('input', debounce(applyFilters, 300));
+});
+$('#pageSize').addEventListener('change', e=>{
+  const size = parseInt(e.target.value,10);
+  state.pagination.size = size;
+  localStorage.setItem('pageSize', size);
+  state.pagination.page = 1;
+  applyFilters();
+});
+$('#btnResetFilters').addEventListener('click', ()=>{
+  filterInputs.forEach(id=> document.getElementById(id).value='');
+  $('#filterFish').value='';
+  $('#filterMarket').value='';
+  $('#sortBy').value='date_desc';
+  $('#filterScoreMin').value='';
+  $('#filterScoreMax').value='';
+  $('#filterDate').value='';
+  $('#filterText').value='';
+  state.pagination.page=1;
+  applyFilters();
+});
+
+function applyFilters(){
+  if(!state.fishData.length){
+    renderTable();
+    updateDashboard();
+    return;
+  }
+  const fish = $('#filterFish').value;
+  const market = $('#filterMarket').value;
+  const date = $('#filterDate').value;
+  const text = $('#filterText').value.trim().toLowerCase();
+  const scoreMin = parseInt($('#filterScoreMin').value,10) || 1;
+  const scoreMax = parseInt($('#filterScoreMax').value,10) || 9;
+  const globalText = $('#globalSearch').value.trim().toLowerCase();
+  $('#clearGlobalSearch').style.display = globalText ? 'inline-flex':'none';
+
+  const role = state.userProfile?.role || 'Mahasiswa';
+  let data = state.fishData.filter(r=>{
+    if(state.myDataOnly && r.userId !== state.currentUser.uid && !(role==='Admin'||role==='Dosen'))
+      return false;
+    if(fish && r.fishType !== fish) return false;
+    if(market && r.market !== market) return false;
+    if(date && formatISODate(r.date) !== date) return false;
+    if(r.organoleptic < scoreMin || r.organoleptic > scoreMax) return false;
+    if(text && ![r.smell,r.texture,r.color,r.fishType,r.market,r.note].some(v=> (v||'').toLowerCase().includes(text))) return false;
+    if(globalText && ![r.smell,r.texture,r.color,r.fishType,r.market,r.userName,r.note].some(v=> (v||'').toLowerCase().includes(globalText))) return false;
+    return true;
+  });
+
+  // Sorting
+  const sort = $('#sortBy').value;
+  data.sort((a,b)=>{
+    if(sort==='date_desc') return b.date - a.date;
+    if(sort==='date_asc') return a.date - b.date;
+    if(sort==='score_desc') return b.organoleptic - a.organoleptic;
+    if(sort==='score_asc') return a.organoleptic - b.organoleptic;
+    if(sort==='fish_asc') return a.fishType.localeCompare(b.fishType);
+    if(sort==='fish_desc') return b.fishType.localeCompare(a.fishType);
+    return 0;
+  });
+
+  state.filteredData = data;
+  state.pagination.totalPages = Math.max(1, Math.ceil(data.length / state.pagination.size));
+  if(state.pagination.page > state.pagination.totalPages)
+    state.pagination.page = state.pagination.totalPages;
+
+  renderTable();
+  updateDashboard();
+  updateQualityList();
+  buildCharts(); // reflect filtered dataset
+}
+
+function changePage(p){
+  if(p<1 || p>state.pagination.totalPages) return;
+  state.pagination.page = p;
+  renderTable();
+}
+
+function renderPagination(){
+  const c = $('#paginationContainer');
+  const { page, totalPages } = state.pagination;
+  if(totalPages<=1){ c.innerHTML=''; return; }
+  const pages = [];
+  for(let i=1;i<=totalPages;i++){
+    if(i===1 || i===totalPages || Math.abs(i-page)<=2){
+      pages.push(i);
+    } else if(Math.abs(i-page)===3){
+      pages.push('...');
+    }
+  }
+  c.innerHTML = `
+    <button class="page-btn" ${page===1?'disabled':''} data-page="${page-1}">&laquo;</button>
+    ${pages.map(p=> p==='...' ? `<span style="padding:.35rem .5rem;">...</span>` :
+      `<button class="page-btn ${p===page?'active':''}" data-page="${p}">${p}</button>`).join('')}
+    <button class="page-btn" ${page===totalPages?'disabled':''} data-page="${page+1}">&raquo;</button>
+    <span class="xsmall" style="margin-left:.5rem;">${state.filteredData.length} data</span>
+  `;
+  $all('.page-btn[data-page]').forEach(btn=>{
+    btn.addEventListener('click', ()=> changePage(parseInt(btn.getAttribute('data-page'),10)));
+  });
+}
+
+/* =======================================================================================
+   TABLE RENDER
+   ======================================================================================= */
+function renderTable(){
+  const tbody = $('#dataTableBody');
+  tbody.innerHTML = '';
+  const role = state.userProfile?.role || 'Mahasiswa';
+  if(!state.filteredData.length){
+    $('#dataEmptyState').classList.remove('hidden');
+  } else {
+    $('#dataEmptyState').classList.add('hidden');
+  }
+
+  // Pagination slice
+  const start = (state.pagination.page -1)* state.pagination.size;
+  const end = start + state.pagination.size;
+  const pageData = state.filteredData.slice(start,end);
+
+  const globalText = $('#globalSearch').value.toLowerCase();
+
+  pageData.forEach((r,i)=>{
+    const st = computeQualityStatus(r.organoleptic);
+    const canEdit = (r.userId === state.currentUser.uid) || ['Admin','Petugas Pasar'].includes(role);
+    const canDelete = (role==='Admin') || (role==='Petugas Pasar' && r.userId===state.currentUser.uid);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="checkbox" data-row-select="${r.id}"></td>
+      <td>${start + i + 1}</td>
+      <td>${formatDate(r.date)}</td>
+      <td>${highlightMatch(r.fishType, globalText)}</td>
+      <td>${highlightMatch(r.market, globalText)}</td>
+      <td style="font-weight:600;text-align:center;">${r.organoleptic}</td>
+      <td>${highlightMatch(String(r.organoleptic), globalText)}</td>
+      <td>${highlightMatch(r.smell, globalText)}</td>
+      <td>${highlightMatch(r.texture, globalText)}</td>
+      <td>${highlightMatch(r.color, globalText)}</td>
+      <td>
+        <div class="inline">
+          <div class="status-dot ${st.cls}"></div>
+          <span style="font-size:.58rem;font-weight:700;">${st.label}</span>
+        </div>
+      </td>
+      <td style="font-size:.58rem;">
+        ${highlightMatch(r.userName, globalText)}<br>
+        <span class="muted">${r.userId.substring(0,6)}...</span>
+      </td>
+      <td>
+        <div class="actions">
+          ${canEdit ? `<button class="outline" data-edit="${r.id}" title="Edit" style="padding:.35rem .5rem;"><i data-feather="edit-2" width="14"></i></button>`:''}
+          ${canDelete ? `<button class="outline danger" data-del="${r.id}" title="Hapus" style="padding:.35rem .5rem;"><i data-feather="trash" width="14"></i></button>`:''}
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+  feather.replace();
+  // Attach events
+  $all('[data-edit]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const rec = state.fishData.find(f=> f.id === btn.getAttribute('data-edit'));
+      if(!rec) return;
+      $('#recordId').value = rec.id;
+      $('#fishType').value = rec.fishType;
+      $('#market').value = rec.market;
+      $('#organoleptic').value = rec.organoleptic;
+      $('#smell').value = rec.smell;
+      $('#texture').value = rec.texture;
+      $('#colorField').value = rec.color;
+      $('#note').value = rec.note || '';
+      $('#submitDataBtn span').textContent = state.lang==='en'?'Update Data':'Update Data';
+      $('#cancelEditBtn').classList.remove('hidden');
+      showView('form');
+    });
+  });
+  $all('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const id = btn.getAttribute('data-del');
+      if(!confirm('Hapus data ini?')) return;
+      try{ await db.collection('fishQuality').doc(id).delete(); }
+      catch(err){ showAlert('formAlert','danger','G
