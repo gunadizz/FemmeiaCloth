@@ -6,14 +6,12 @@
 <title>Sistem Pencatatan & Monitoring Mutu Ikan Segar - Makassar</title>
 <meta name="description" content="Aplikasi pencatatan dan monitoring mutu ikan segar di pasar tradisional Kota Makassar (Single File App)">
 <link rel="icon" href="data:,">
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- External Libraries (CDN) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<!-- (Optional) If later using storage: <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -22,7 +20,7 @@
 <style>
 :root {
   --accent: 210 100% 50%;
-  --radius: 18px;
+  --radius: 20px;
   --glass-bg: 220 25% 12%;
   --glass-alpha: 0.55;
   --transition: 0.25s cubic-bezier(.4,.0,.2,1);
@@ -30,14 +28,22 @@
   --danger: #ef4444;
   --warn: #f59e0b;
   --ok: #10b981;
+  --info: #3b82f6;
   --font-sans: 'Inter', system-ui, sans-serif;
-  --gradient-accent: linear-gradient(135deg, hsl(var(--accent)/0.9), hsl(var(--accent)/0.6));
+  --gradient-accent: linear-gradient(135deg, hsl(var(--accent)/0.95), hsl(var(--accent)/0.55));
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.75rem;
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
 }
 [data-theme="light"] {
   --glass-bg: 220 40% 98%;
-  --glass-alpha: 0.65;
+  --glass-alpha: 0.68;
   --text-color: 220 25% 15%;
-  --text-dim: 220 15% 40%;
+  --text-dim: 220 15% 42%;
   --bg: 220 35% 96%;
   --panel-border: 220 20% 80%;
   --shadow: 220 40% 30%;
@@ -55,124 +61,165 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
-  height: 100%;
-}
-
+html, body { height: 100%; }
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background: radial-gradient(circle at 30% 20%, hsl(var(--accent)/0.15), transparent 60%), linear-gradient(160deg, hsl(var(--accent)/0.08), transparent 70%), hsl(var(--bg));
+  background:
+    radial-gradient(circle at 30% 20%, hsl(var(--accent)/0.15), transparent 60%),
+    linear-gradient(160deg, hsl(var(--accent)/0.08), transparent 70%),
+    hsl(var(--bg));
   color: hsl(var(--text-color));
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   font-size: 15px;
+  transition: background .6s ease;
 }
 
-h1,h2,h3,h4 { font-weight: 600; margin: 0 0 .75rem }
-p { margin: 0 0 1rem }
+h1,h2,h3,h4 { font-weight: 600; margin: 0 0 var(--space-3) }
+p { margin: 0 0 var(--space-4) }
 
-a {
-  color: hsl(var(--accent)/0.9);
-  text-decoration: none;
+a { color: hsl(var(--accent)/0.9); text-decoration: none; outline: none; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid hsl(var(--accent)/0.8);
+  outline-offset: 2px;
+  border-radius: 6px;
+  transition: outline-color .25s;
 }
 
 button {
   font-family: inherit;
   cursor: pointer;
   border: none;
-  background: hsl(var(--accent)/0.9);
+  background: var(--gradient-accent);
   color: #fff;
   padding: .7rem 1rem;
-  font-size: .9rem;
-  border-radius: 10px;
+  font-size: .85rem;
+  border-radius: 14px;
   display: inline-flex;
-  gap:.4rem;
+  gap:.5rem;
   align-items: center;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing:.3px;
-  transition: var(--transition);
-  box-shadow: 0 4px 12px -2px hsl(var(--accent)/0.5);
+  transition: transform .4s var(--ease-spring), background .4s, box-shadow .4s;
+  box-shadow: 0 6px 18px -4px hsl(var(--accent)/0.55), 0 2px 4px -1px hsl(var(--accent)/0.3);
+  position: relative;
+  overflow: hidden;
 }
-button:hover { filter: brightness(1.08); }
-button:active { transform: translateY(1px); }
+button::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(60deg,rgba(255,255,255,.15),transparent 60%);
+  opacity:0;
+  transition:opacity .4s;
+}
+button:hover::before { opacity:1; }
+button:hover { transform: translateY(-3px); }
+button:active { transform: translateY(0) scale(.97); }
 
 button.outline {
-  background: transparent;
+  background: hsl(var(--accent)/0.07);
   border: 1px solid hsl(var(--accent)/0.5);
-  color: hsl(var(--accent)/0.9);
+  color: hsl(var(--accent)/0.95);
   box-shadow:none;
 }
-button.outline:hover { background:hsl(var(--accent)/0.1); }
+button.outline:hover {
+  background:hsl(var(--accent)/0.18);
+}
 
 button.ghost {
   background: hsl(var(--accent)/0.08);
-  color: hsl(var(--accent)/0.9);
+  color: hsl(var(--accent)/0.95);
   box-shadow:none;
 }
-button.ghost:hover { background:hsl(var(--accent)/0.15); }
+button.ghost:hover { background:hsl(var(--accent)/0.16); }
 
 button.danger {
-  background: var(--danger);
-  box-shadow: 0 4px 12px -2px rgba(239,68,68,0.4);
+  background: linear-gradient(135deg,#ef4444,#b91c1c);
+  box-shadow: 0 6px 18px -4px rgba(239,68,68,0.55);
+}
+
+button.small {
+  padding:.45rem .65rem;
+  font-size:.65rem;
+  border-radius:10px;
 }
 
 input, select, textarea {
   width: 100%;
-  border: 1px solid hsl(var(--panel-border)/0.5);
-  background: hsl(var(--glass-bg)/0.5);
+  border: 1px solid hsl(var(--panel-border)/0.55);
+  background: hsl(var(--glass-bg)/0.55);
   color: hsl(var(--text-color));
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  padding: .7rem .85rem;
-  font-size: .9rem;
+  backdrop-filter: blur(20px) saturate(1.35);
+  -webkit-backdrop-filter: blur(20px) saturate(1.35);
+  padding: .65rem .85rem;
+  font-size: .85rem;
   border-radius: 12px;
   outline: none;
-  transition: var(--transition);
+  transition: border-color .35s, box-shadow .35s, background .35s;
 }
 input:focus, select:focus, textarea:focus {
   border-color: hsl(var(--accent)/0.9);
   box-shadow: 0 0 0 3px hsl(var(--accent)/0.35);
+  background:hsl(var(--glass-bg)/0.7);
 }
 
 label {
-  font-size: .75rem;
-  font-weight: 600;
+  font-size: .68rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: .5px;
-  display: block;
-  margin-bottom: .35rem;
+  letter-spacing: .6px;
+  display: flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.4rem;
+  margin-bottom: .4rem;
   color: hsl(var(--text-dim));
 }
 
-.small {
-  font-size: .75rem;
-  color: hsl(var(--text-dim));
+.inline-label-actions {
+  display:inline-flex;
+  gap:.35rem;
 }
+
+.small { font-size: .75rem; color: hsl(var(--text-dim)); }
+.xsmall { font-size:.6rem; }
 
 .hidden { display:none !important; }
+.flex { display:flex; }
+.col { flex-direction:column; }
+.center { align-items:center; justify-content:center; }
+.gap { gap:1rem; }
+.gap-s { gap:.5rem; }
 
 .container-auth {
-  max-width: 480px;
+  max-width: 500px;
   margin: clamp(2rem,6vh,4rem) auto;
-  padding: 2rem 2.2rem 2.4rem;
-  background: hsl(var(--glass-bg)/var(--glass-alpha));
-  border: 1px solid hsl(var(--panel-border)/0.6);
-  backdrop-filter: blur(22px) saturate(1.3);
-  -webkit-backdrop-filter: blur(22px) saturate(1.3);
-  border-radius: 28px;
+  padding: 2.3rem 2.35rem 2.65rem;
+  background: linear-gradient(145deg, hsl(var(--glass-bg)/var(--glass-alpha)), hsl(var(--glass-bg)/calc(var(--glass-alpha) + .08)));
+  border: 1px solid hsl(var(--panel-border)/0.5);
+  backdrop-filter: blur(26px) saturate(1.35);
+  -webkit-backdrop-filter: blur(26px) saturate(1.35);
+  border-radius: 34px;
   box-shadow:
-    0 8px 28px -6px rgba(0,0,0,0.35),
-    0 0 0 1px hsl(var(--panel-border)/0.4),
-    inset 0 0 0 1px hsl(var(--accent)/0.05);
+    0 8px 32px -10px rgba(0,0,0,0.55),
+    0 0 0 1px hsl(var(--panel-border)/0.35),
+    inset 0 0 0 1px hsl(var(--accent)/0.08);
   position: relative;
   overflow: hidden;
+  animation: cardEnter .8s var(--ease-spring);
+}
+
+@keyframes cardEnter {
+  from { transform:translateY(14px) scale(.97); opacity:0; }
+  to { transform:translateY(0) scale(1); opacity:1; }
 }
 
 .logo-circle {
   width: 62px;
   height: 62px;
-  border-radius: 18px;
+  border-radius: 20px;
   background: var(--gradient-accent);
   display: grid;
   place-items: center;
@@ -180,109 +227,139 @@ label {
   font-weight:700;
   font-size:1.15rem;
   letter-spacing:1px;
-  box-shadow: 0 8px 14px -6px hsl(var(--accent)/0.55);
-  margin-bottom: 1rem;
+  box-shadow: 0 10px 20px -6px hsl(var(--accent)/0.55);
+  margin-bottom: .85rem;
+  position:relative;
+  overflow:hidden;
+}
+.logo-circle::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 30% 30%,rgba(255,255,255,.35),transparent 60%),
+    linear-gradient(to bottom,rgba(255,255,255,.15),transparent 70%);
+  mix-blend-mode:overlay;
 }
 
 .glow {
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at 20% 15%, hsl(var(--accent)/0.25), transparent 60%),
+    radial-gradient(circle at 20% 15%, hsl(var(--accent)/0.28), transparent 60%),
     radial-gradient(circle at 80% 70%, hsl(var(--accent)/0.25), transparent 65%);
   pointer-events:none;
   mix-blend-mode: screen;
-  opacity:.45;
+  opacity:.5;
+  animation: subtlePulse 6s ease-in-out infinite;
+}
+@keyframes subtlePulse {
+  0%,100% { transform:scale(1); opacity:.45; }
+  50% { transform:scale(1.035); opacity:.6; }
 }
 
 .switch-auth {
   display:flex;
-  gap: .75rem;
-  margin-top: 1rem;
+  gap: .6rem;
+  margin-top: .9rem;
   flex-wrap: wrap;
   font-size:.8rem;
+  align-items:center;
 }
 
 .alert {
-  padding:.8rem 1rem;
-  border-radius:12px;
+  padding:.85rem 1rem;
+  border-radius:16px;
   margin-bottom:1rem;
-  font-size:.75rem;
+  font-size:.72rem;
   font-weight:500;
   display:flex;
   gap:.6rem;
   align-items:center;
   line-height:1.2;
   position:relative;
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  animation: fadeIn .5s ease;
 }
-.alert.info { background:hsl(var(--accent)/0.15); color:hsl(var(--accent)/1); }
-.alert.danger { background:rgba(239,68,68,.15); color:var(--danger); }
-.alert.success { background:rgba(16,185,129,.18); color:var(--ok); }
-.alert.warn { background:rgba(245,158,11,.18); color:var(--warn); }
+.alert.info { background:hsl(var(--accent)/0.18); color:hsl(var(--accent)/1); }
+.alert.danger { background:rgba(239,68,68,.18); color:var(--danger); }
+.alert.success { background:rgba(16,185,129,.20); color:var(--ok); }
+.alert.warn { background:rgba(245,158,11,.20); color:var(--warn); }
 
 .layout {
   display:flex;
   min-height:100dvh;
   width:100%;
   overflow:hidden;
+  position:relative;
 }
 
 .sidebar {
   width: var(--sidebar-width);
-  background: hsl(var(--glass-bg)/0.6);
-  backdrop-filter: blur(28px) saturate(1.4);
-  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  background: linear-gradient(160deg,hsl(var(--glass-bg)/0.72), hsl(var(--glass-bg)/0.55));
+  backdrop-filter: blur(34px) saturate(1.45);
+  -webkit-backdrop-filter: blur(34px) saturate(1.45);
   border-right: 1px solid hsl(var(--panel-border)/0.5);
   display:flex;
   flex-direction:column;
-  padding:1rem 1.1rem 1.4rem;
+  padding:1rem 1rem 1.4rem;
   position:relative;
-  transition: var(--transition);
+  transition: transform .55s var(--ease-spring);
+  box-shadow: 8px 0 24px -12px rgba(0,0,0,.45);
+  z-index:60;
 }
 
 .sidebar-header {
   display:flex;
   align-items:center;
   gap:.7rem;
-  margin-bottom:1.2rem;
+  margin-bottom:1.1rem;
+  padding:.25rem .25rem .3rem;
 }
-.sidebar-header h2 { font-size:1rem; letter-spacing:.5px; line-height:1.1; }
+.sidebar-header h2 { font-size:.95rem; letter-spacing:.6px; line-height:1.1; margin:0; }
 
 .nav {
   display:flex;
   flex-direction:column;
-  gap:.4rem;
+  gap:.35rem;
   flex:1;
   overflow-y:auto;
-  padding-right:.3rem;
+  padding-right:.25rem;
+  scrollbar-width:thin;
 }
 .nav button {
   justify-content: flex-start;
-  background:transparent;
-  border:1px solid transparent;
+  background:linear-gradient(to right, hsl(var(--accent)/0.0), hsl(var(--accent)/0.0));
+  border:1px solid hsl(var(--panel-border)/0.25);
   color:hsl(var(--text-dim));
   font-weight:500;
-  padding:.75rem .85rem;
-  border-radius:14px;
-  gap:.8rem;
+  padding:.7rem .75rem;
+  border-radius:16px;
+  gap:.7rem;
   position:relative;
   box-shadow:none;
+  font-size:.72rem;
+  transition: background .4s, color .4s, transform .5s var(--ease-spring), box-shadow .4s;
 }
 .nav button:hover {
-  background:hsl(var(--accent)/0.15);
+  background:hsl(var(--accent)/0.18);
   color:hsl(var(--accent)/1);
+  transform:translateX(4px);
 }
 .nav button.active {
   background:var(--gradient-accent);
   color:#fff;
-  box-shadow:0 6px 16px -4px hsl(var(--accent)/0.6);
+  box-shadow:0 8px 20px -8px hsl(var(--accent)/0.65);
+  border-color:transparent;
+  transform:translateX(0);
 }
 
 .sidebar-footer {
-  margin-top:.75rem;
+  margin-top:.9rem;
   display:flex;
   flex-direction:column;
-  gap:.75rem;
+  gap:.65rem;
   font-size:.7rem;
   color:hsl(var(--text-dim));
 }
@@ -293,139 +370,164 @@ label {
   flex-direction:column;
   min-width:0;
   position:relative;
+  animation: mainReveal .65s var(--ease-spring);
+}
+@keyframes mainReveal {
+  from { opacity:0; transform:translateY(14px); }
+  to { opacity:1; transform:translateY(0); }
 }
 
 .topbar {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:.85rem 1.3rem;
+  padding:.85rem clamp(.75rem,1.6vw,1.25rem);
   gap:1rem;
   position:sticky;
   top:0;
-  z-index:40;
-  background:linear-gradient(to bottom, hsl(var(--glass-bg)/0.8), hsl(var(--glass-bg)/0.4));
-  backdrop-filter: blur(22px) saturate(1.2);
-  -webkit-backdrop-filter: blur(22px) saturate(1.2);
-  border-bottom:1px solid hsl(var(--panel-border)/0.5);
+  z-index:50;
+  background:
+    linear-gradient(to bottom, hsl(var(--glass-bg)/0.82), hsl(var(--glass-bg)/0.55));
+  backdrop-filter: blur(24px) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  border-bottom:1px solid hsl(var(--panel-border)/0.55);
 }
 
 .search-box {
   display:flex;
   align-items:center;
-  background:hsl(var(--glass-bg)/0.55);
-  border:1px solid hsl(var(--panel-border)/0.5);
-  padding:.4rem .7rem;
-  gap:.5rem;
-  border-radius:14px;
+  background:hsl(var(--glass-bg)/0.65);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.45rem .65rem;
+  gap:.45rem;
+  border-radius:16px;
   width:100%;
-  max-width:380px;
+  max-width:360px;
   position:relative;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  transition: box-shadow .4s, border-color .4s;
+}
+.search-box:focus-within {
+  border-color:hsl(var(--accent)/0.9);
+  box-shadow:0 0 0 3px hsl(var(--accent)/0.35);
 }
 .search-box input {
   background:transparent;
-  padding:.4rem 0;
+  padding:.35rem 0;
   border:none;
-  font-size:.8rem;
+  font-size:.75rem;
+  flex:1;
 }
 
 .avatar {
-  width:38px;
-  height:38px;
-  border-radius:14px;
-  background: hsl(var(--accent)/0.2);
+  width:40px;
+  height:40px;
+  border-radius:16px;
+  background: linear-gradient(135deg,hsl(var(--accent)/0.22),hsl(var(--accent)/0.4));
   display:grid;
   place-items:center;
-  color:hsl(var(--accent)/1);
+  color:#fff;
   font-weight:600;
   font-size:.85rem;
   position:relative;
   overflow:hidden;
   cursor:pointer;
-  border:1px solid hsl(var(--panel-border)/0.5);
+  border:1px solid hsl(var(--panel-border)/0.45);
+  box-shadow:0 4px 12px -4px rgba(0,0,0,.45);
+  transition: transform .45s var(--ease-spring), box-shadow .45s;
 }
+.avatar:hover { transform:translateY(-3px); box-shadow:0 8px 20px -10px rgba(0,0,0,.55); }
 .avatar img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
+  width:100%; height:100%; object-fit:cover; display:block;
 }
 
 .dropdown {
   position:absolute;
   top:110%;
   right:0;
-  background:hsl(var(--glass-bg)/0.9);
-  backdrop-filter: blur(22px) saturate(1.3);
-  -webkit-backdrop-filter: blur(22px) saturate(1.3);
-  border:1px solid hsl(var(--panel-border)/0.5);
-  border-radius:18px;
-  min-width:240px;
+  background:linear-gradient(145deg, hsl(var(--glass-bg)/0.92), hsl(var(--glass-bg)/0.75));
+  backdrop-filter: blur(30px) saturate(1.4);
+  -webkit-backdrop-filter: blur(30px) saturate(1.4);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:20px;
+  min-width:250px;
   display:none;
   flex-direction:column;
-  padding:.6rem;
-  box-shadow:0 16px 36px -12px rgba(0,0,0,0.4);
+  padding:.55rem;
+  box-shadow:0 20px 48px -16px rgba(0,0,0,0.55);
   z-index:200;
+  animation: dropdownPop .5s var(--ease-spring);
 }
-
+@keyframes dropdownPop {
+  from { transform:translateY(10px) scale(.95); opacity:0; }
+  to { transform:translateY(0) scale(1); opacity:1; }
+}
 .dropdown.show { display:flex; }
-
 .dropdown button {
   background:transparent;
   border:1px solid transparent;
   box-shadow:none;
   padding:.65rem .7rem;
-  border-radius:12px;
+  border-radius:14px;
   color:hsl(var(--text-dim));
-  font-size:.78rem;
-  gap:.65rem;
+  font-size:.72rem;
+  gap:.55rem;
   justify-content:flex-start;
   font-weight:500;
+  transition: background .35s, color .35s;
 }
 .dropdown button:hover {
-  background:hsl(var(--accent)/0.15);
+  background:hsl(var(--accent)/0.18);
   color:hsl(var(--accent)/1);
 }
 
 .content {
-  padding: 1.2rem clamp(.9rem, 2vw, 1.6rem) 2.5rem;
+  padding: 1.2rem clamp(.8rem, 1.6vw, 1.4rem) 2.4rem;
   flex:1;
   overflow-y:auto;
   display:flex;
   flex-direction:column;
-  gap:1.8rem;
+  gap:1.9rem;
+  scroll-behavior:smooth;
+  position:relative;
 }
 
-.grid {
-  display:grid;
-  gap:1.3rem;
-}
+.grid { display:grid; gap:1.3rem; }
 
-.cards-analytics {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
+.cards-analytics { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
 .panel {
-  background: hsl(var(--glass-bg)/0.55);
-  backdrop-filter: blur(26px) saturate(1.4);
-  -webkit-backdrop-filter: blur(26px) saturate(1.4);
-  border:1px solid hsl(var(--panel-border)/0.55);
-  border-radius: 26px;
-  padding: 1.2rem 1.2rem 1.5rem;
+  background: linear-gradient(145deg,hsl(var(--glass-bg)/0.62), hsl(var(--glass-bg)/0.42));
+  backdrop-filter: blur(34px) saturate(1.45);
+  -webkit-backdrop-filter: blur(34px) saturate(1.45);
+  border:1px solid hsl(var(--panel-border)/0.6);
+  border-radius: 30px;
+  padding: 1.35rem 1.35rem 1.55rem;
   position:relative;
   overflow:hidden;
   display:flex;
   flex-direction:column;
-  gap:.9rem;
+  gap:.95rem;
   box-shadow:
-    0 4px 10px -2px rgba(0,0,0,0.45),
-    0 0 0 1px hsl(var(--panel-border)/0.3);
+    0 6px 18px -6px rgba(0,0,0,0.55),
+    0 0 0 1px hsl(var(--panel-border)/0.35),
+    inset 0 0 0 1px hsl(var(--accent)/0.08);
+  animation: panelIn .55s var(--ease-spring);
+}
+@keyframes panelIn {
+  from { opacity:0; transform:translateY(10px); }
+  to { opacity:1; transform:translateY(0); }
 }
 
-.panel.bento {
-  min-height:240px;
+.panel:hover {
+  box-shadow:
+    0 10px 28px -10px rgba(0,0,0,0.6),
+    0 0 0 1px hsl(var(--panel-border)/0.4),
+    inset 0 0 0 1px hsl(var(--accent)/0.08);
 }
+
+.panel.bento { min-height:240px; }
 
 .panel-header {
   display:flex;
@@ -433,11 +535,13 @@ label {
   justify-content:space-between;
   gap:1rem;
   flex-wrap:wrap;
+  padding-bottom:.35rem;
+  border-bottom:1px solid hsl(var(--panel-border)/0.4);
 }
 .panel-header h3 {
-  font-size:.85rem;
+  font-size:.82rem;
   text-transform:uppercase;
-  letter-spacing:.8px;
+  letter-spacing:.75px;
   font-weight:600;
   color:hsl(var(--text-dim));
   margin:0;
@@ -454,67 +558,79 @@ label {
   color:hsl(var(--accent)/0.95);
   padding:.35rem .6rem;
   border-radius:999px;
-  font-size:.65rem;
-  font-weight:600;
-  letter-spacing:.5px;
+  font-size:.58rem;
+  font-weight:700;
+  letter-spacing:.55px;
   text-transform:uppercase;
+  box-shadow:0 4px 10px -4px hsl(var(--accent)/0.5);
 }
-
-.flex { display:flex; }
-.col { flex-direction:column; }
-.gap-s { gap:.5rem; }
-.gap { gap:1rem; }
-.wrap { flex-wrap:wrap; }
-.center { justify-content:center; align-items:center; }
 
 .table-wrapper {
   width:100%;
   overflow:auto;
-  border:1px solid hsl(var(--panel-border)/0.5);
-  border-radius:18px;
-  background:hsl(var(--glass-bg)/0.3);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:22px;
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.35), hsl(var(--glass-bg)/0.3));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  max-height: 520px;
+  position:relative;
 }
 
 table {
   width:100%;
   border-collapse: collapse;
-  font-size:.72rem;
-  min-width:950px;
+  font-size:.68rem;
+  min-width:1000px;
 }
 
 thead {
-  background:hsl(var(--accent)/0.2);
-  color:hsl(var(--accent)/1);
+  background:linear-gradient(90deg,hsl(var(--accent)/0.35), hsl(var(--accent)/0.25));
+  color:#fff;
 }
 thead th {
   text-align:left;
-  padding:.75rem .7rem;
+  padding:.75rem .75rem;
   font-weight:600;
-  letter-spacing:.4px;
+  letter-spacing:.45px;
   position:sticky;
   top:0;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  z-index:2;
 }
 
 tbody tr {
-  border-bottom:1px solid hsl(var(--panel-border)/0.4);
-  transition: var(--transition);
+  border-bottom:1px solid hsl(var(--panel-border)/0.35);
+  transition: background .4s, transform .4s;
+  animation: rowIn .55s ease;
+}
+@keyframes rowIn {
+  from { opacity:0; transform:translateY(6px); }
+  to { opacity:1; transform:translateY(0); }
+}
+tbody tr:hover {
+  background:hsl(var(--accent)/0.10);
 }
 
-tbody tr:hover {
-  background:hsl(var(--accent)/0.09);
+tbody tr.flash-new {
+  animation: flashRow 2.3s ease;
+}
+@keyframes flashRow {
+  0% { background:hsl(var(--accent)/0.6); color:#fff; }
+  35% { background:hsl(var(--accent)/0.25); }
+  60% { background:hsl(var(--accent)/0.12); }
+  100% { background:transparent; }
 }
 
 td {
-  padding:.65rem .6rem;
+  padding:.6rem .65rem;
   vertical-align:top;
+  line-height:1.2;
 }
 
 .actions {
   display:flex;
-  gap:.4rem;
+  gap:.35rem;
   flex-wrap:wrap;
 }
 
@@ -524,150 +640,202 @@ td {
   border-radius:6px;
   background:gray;
   box-shadow:0 0 0 3px rgba(255,255,255,0.08);
+  position:relative;
+}
+.status-dot::after {
+  content:"";
+  position:absolute;
+  inset:-4px;
+  border-radius:inherit;
+  background:currentColor;
+  opacity:0;
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { transform:scale(1); opacity:.15; }
+  50% { transform:scale(1.5); opacity:0; }
 }
 
-.status-good { background:var(--ok); }
-.status-warn { background:var(--warn); }
-.status-bad { background:var(--danger); }
+.status-good { background:var(--ok); color:var(--ok); }
+.status-warn { background:var(--warn); color:var(--warn); }
+.status-bad { background:var(--danger); color:var(--danger); }
 
-.inline {
-  display:inline-flex;
-  align-items:center;
-  gap:.4rem;
-}
+.inline { display:inline-flex; align-items:center; gap:.4rem; }
 
 .form-grid {
   display:grid;
-  gap:1rem;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap:1.05rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  align-items:start;
 }
 
 .divider {
   height:1px;
-  background:linear-gradient(to right, transparent, hsl(var(--panel-border)/0.8), transparent);
-  margin: .5rem 0 1rem;
+  background:linear-gradient(to right, transparent, hsl(var(--panel-border)/0.9), transparent);
+  margin: .8rem 0 1.1rem;
 }
 
 .toggle-group {
   display:flex;
-  gap:.5rem;
+  gap:.45rem;
   flex-wrap:wrap;
 }
 
 .toggle-chip {
   padding:.45rem .85rem;
-  background:hsl(var(--accent)/0.15);
+  background:hsl(var(--accent)/0.16);
   color:hsl(var(--accent)/0.95);
-  font-size:.65rem;
-  letter-spacing:.5px;
-  font-weight:600;
-  border-radius:999px;
+  font-size:.62rem;
+  letter-spacing:.55px;
+  font-weight:700;
+  border-radius:14px;
   cursor:pointer;
   user-select:none;
-  border:1px solid transparent;
-  transition:var(--transition);
+  border:1px solid hsl(var(--accent)/0.0);
+  transition: background .4s, transform .4s var(--ease-spring), color .4s, box-shadow .4s;
+  position:relative;
+}
+.toggle-chip::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  box-shadow:0 4px 14px -5px hsl(var(--accent)/0.55);
+  opacity:0;
+  transition:opacity .4s;
 }
 .toggle-chip.active, .toggle-chip:hover {
   background:var(--gradient-accent);
   color:#fff;
-  box-shadow:0 4px 10px -2px hsl(var(--accent)/0.5);
+  transform:translateY(-2px);
 }
+.toggle-chip.active::after, .toggle-chip:hover::after { opacity:1; }
 
-.inline-field {
-  display:flex;
-  flex-direction:column;
-  gap:.35rem;
-}
+.inline-field { display:flex; flex-direction:column; gap:.35rem; }
 
 footer.app {
   padding:1rem 1.4rem;
-  font-size:.65rem;
+  font-size:.62rem;
   text-align:center;
   color:hsl(var(--text-dim));
-  opacity:.8;
+  opacity:.85;
+  letter-spacing:.4px;
 }
 
 .indicators {
   display:flex;
-  gap:.7rem;
+  gap:.9rem;
   flex-wrap:wrap;
+  margin-top:.2rem;
 }
 .indicators .indicator {
-  flex:1 1 140px;
-  min-width:140px;
-  background:hsl(var(--accent)/0.1);
-  border:1px solid hsl(var(--panel-border)/0.5);
-  border-radius:18px;
-  padding:.7rem .9rem .85rem;
+  flex:1 1 150px;
+  min-width:145px;
+  background:linear-gradient(160deg,hsl(var(--accent)/0.14), hsl(var(--accent)/0.08));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:20px;
+  padding:.75rem .85rem .9rem;
   display:flex;
   flex-direction:column;
   gap:.4rem;
   position:relative;
   overflow:hidden;
+  font-variant-numeric: tabular-nums;
+  isolation:isolate;
+  transition:transform .45s var(--ease-spring), box-shadow .5s;
+}
+.indicator::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 30% 20%, hsl(var(--accent)/0.35), transparent 60%),
+    radial-gradient(circle at 75% 70%, hsl(var(--accent)/0.35), transparent 65%);
+  mix-blend-mode: overlay;
+  opacity:.35;
+  pointer-events:none;
+  animation: indicatorGlow 7s linear infinite;
+}
+@keyframes indicatorGlow {
+  0% { transform:translateX(-10%) scale(1); }
+  50% { transform:translateX(10%) scale(1.02); }
+  100% { transform:translateX(-10%) scale(1); }
+}
+.indicator:hover {
+  transform:translateY(-4px);
+  box-shadow:0 12px 28px -14px rgba(0,0,0,.6), 0 4px 10px -2px hsl(var(--accent)/0.4);
 }
 .indicator h4 {
   margin:0;
-  font-size:.65rem;
-  letter-spacing:.7px;
+  font-size:.6rem;
+  letter-spacing:.75px;
   text-transform:uppercase;
   color:hsl(var(--text-dim));
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:.35rem;
 }
 .indicator .val {
-  font-size:1.3rem;
-  font-weight:600;
+  font-size:1.55rem;
+  font-weight:700;
   line-height:1;
+  letter-spacing:.5px;
+  color:hsl(var(--text-color));
 }
 .indicator .trend {
-  font-size:.6rem;
-  font-weight:600;
-  letter-spacing:.5px;
-  padding:.25rem .45rem;
-  border-radius:8px;
-  background:hsl(var(--accent)/0.25);
-  color:hsl(var(--accent)/1);
+  font-size:.58rem;
+  font-weight:700;
+  letter-spacing:.55px;
+  padding:.3rem .55rem;
+  border-radius:10px;
+  background:hsl(var(--accent)/0.28);
+  color:#fff;
   align-self:flex-start;
+  box-shadow:0 4px 10px -4px hsl(var(--accent)/0.55);
 }
 
-.chart-container {
-  position:relative;
-  width:100%;
-  height:260px;
-}
+.chart-container { position:relative; width:100%; height:260px; }
 
 .badge-role {
-  background:hsl(var(--accent)/0.2);
-  color:hsl(var(--accent)/1);
-  border-radius:10px;
-  padding:.3rem .5rem;
+  background:hsl(var(--accent)/0.28);
+  color:#fff;
+  border-radius:12px;
+  padding:.35rem .6rem;
   font-size:.55rem;
-  letter-spacing:.7px;
-  font-weight:600;
+  letter-spacing:.65px;
+  font-weight:700;
   text-transform:uppercase;
+  box-shadow:0 4px 10px -5px hsl(var(--accent)/0.55);
 }
-
-.muted { color:hsl(var(--text-dim)); }
 
 .preference-grid {
   display:grid;
-  gap:1rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:1.1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  align-items:start;
 }
 
 .color-palette {
   display:flex;
-  gap:.5rem;
+  gap:.55rem;
   flex-wrap:wrap;
 }
 .color-swatch {
-  width:34px;
-  height:34px;
-  border-radius:12px;
+  width:38px;
+  height:38px;
+  border-radius:14px;
   cursor:pointer;
   position:relative;
-  box-shadow:0 0 0 1px hsl(var(--panel-border)/0.6), 0 4px 10px -4px rgba(0,0,0,0.5);
-  transition:var(--transition);
+  box-shadow:0 0 0 1px hsl(var(--panel-border)/0.6), 0 6px 14px -6px rgba(0,0,0,0.6);
+  transition:transform .5s var(--ease-spring), box-shadow .5s, filter .5s;
+  overflow:hidden;
 }
-.color-swatch:hover { transform:translateY(-3px); }
+.color-swatch:hover { transform:translateY(-6px) rotate(-3deg); }
+.color-swatch.active {
+  transform:translateY(-3px) scale(1.05);
+  box-shadow:0 8px 22px -10px hsl(var(--accent)/0.6), 0 0 0 2px rgba(255,255,255,.4);
+}
 .color-swatch.active::after {
   content:"✓";
   position:absolute;
@@ -675,107 +843,88 @@ footer.app {
   display:grid;
   place-items:center;
   color:#fff;
-  font-size:.9rem;
-  font-weight:600;
-  text-shadow:0 2px 6px rgba(0,0,0,0.4);
+  font-size:1rem;
+  font-weight:700;
+  text-shadow:0 2px 6px rgba(0,0,0,0.5);
 }
 
 .toggle {
   display:inline-flex;
   align-items:center;
-  gap:.45rem;
-  background:hsl(var(--accent)/0.2);
-  color:hsl(var(--accent)/1);
-  padding:.45rem .75rem;
-  font-size:.65rem;
-  border-radius:999px;
+  gap:.5rem;
+  background:hsl(var(--accent)/0.22);
+  color:#fff;
+  padding:.55rem .85rem;
+  font-size:.62rem;
+  border-radius:16px;
   cursor:pointer;
-  font-weight:600;
-  letter-spacing:.5px;
+  font-weight:700;
+  letter-spacing:.55px;
   user-select:none;
-}
-
-.switch {
+  box-shadow:0 6px 16px -6px hsl(var(--accent)/0.55);
+  transition: background .4s, transform .45s var(--ease-spring);
   position:relative;
-  width:45px;
-  height:24px;
-  background:hsl(var(--accent)/0.4);
-  border-radius:24px;
-  cursor:pointer;
-  transition:var(--transition);
+  overflow:hidden;
 }
-.switch::after {
+.toggle::before {
   content:"";
   position:absolute;
-  top:3px;
-  left:3px;
-  width:18px;
-  height:18px;
-  background:#fff;
-  border-radius:18px;
-  transition:var(--transition);
-  box-shadow:0 2px 6px rgba(0,0,0,0.3);
+  inset:0;
+  background:linear-gradient(90deg,rgba(255,255,255,.2),transparent 60%);
+  opacity:0;
+  transition:opacity .5s;
 }
-.switch.on {
-  background:var(--gradient-accent);
-}
-.switch.on::after {
-  transform:translateX(21px);
-}
+.toggle:hover::before { opacity:.9; }
+.toggle:hover { transform:translateY(-3px); }
 
-.responsive-hide {
-  display:none;
-}
+.responsive-hide { display:none; }
 
 @media (max-width: 1080px) {
   .sidebar {
     position:fixed;
     inset:0 auto 0 0;
     transform:translateX(-100%);
-    z-index:500;
     max-width:82%;
   }
-  .sidebar.open {
-    transform:translateX(0);
-  }
+  .sidebar.open { transform:translateX(0); }
   .main { margin-left:0; }
   .responsive-hide { display:inline-flex; }
+  .indicators { gap:.6rem; }
 }
 
 @media (max-width: 640px) {
-  .content { padding:1rem .9rem 2rem; }
-  .panel { border-radius:22px; padding:1rem 1rem 1.2rem; }
-  .container-auth { padding:1.8rem 1.6rem 2.1rem; }
-  .topbar { padding:.7rem .9rem; }
+  .content { padding:1rem .85rem 2rem; }
+  .panel { border-radius:26px; padding:1.05rem 1.05rem 1.25rem; }
+  .container-auth { padding:2rem 1.45rem 2.2rem; }
+  .topbar { padding:.65rem .8rem; }
   .search-box { max-width:100%; }
   .chart-container { height:220px; }
+  .indicators { flex-direction:column; }
+  .indicator { flex:1; min-width:100%; }
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width:10px;
-  height:10px;
-}
-::-webkit-scrollbar-track {
-  background:transparent;
-}
+::-webkit-scrollbar { width:10px; height:10px; }
+::-webkit-scrollbar-track { background:transparent; }
 ::-webkit-scrollbar-thumb {
-  background:hsl(var(--accent)/0.25);
-  border-radius:8px;
+  background:linear-gradient(180deg,hsl(var(--accent)/0.3), hsl(var(--accent)/0.4));
+  border-radius:10px;
   border:2px solid transparent;
   background-clip:content-box;
+  transition:background .4s;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background:hsl(var(--accent)/0.4);
-  border:2px solid transparent;
+  background:linear-gradient(180deg,hsl(var(--accent)/0.45), hsl(var(--accent)/0.55));
 }
 
-.fade-in {
-  animation: fade .6s ease;
+.fade-in { animation: fade .6s ease; }
+@keyframes fade { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+.view-transition-enter {
+  animation: viewEnter .55s var(--ease-spring);
 }
-@keyframes fade {
-  from { opacity:0; transform:translateY(6px); }
-  to { opacity:1; transform:translateY(0); }
+@keyframes viewEnter {
+  from { opacity:0; transform:translateY(14px) scale(.98); }
+  to { opacity:1; transform:translateY(0) scale(1); }
 }
 
 #loadingOverlay {
@@ -783,37 +932,35 @@ footer.app {
   inset:0;
   display:grid;
   place-items:center;
-  background:linear-gradient(135deg, hsl(var(--accent)/0.25), hsl(var(--glass-bg)/0.85));
-  backdrop-filter:blur(30px);
-  -webkit-backdrop-filter:blur(30px);
+  background:linear-gradient(135deg, hsl(var(--accent)/0.32), hsl(var(--glass-bg)/0.9));
+  backdrop-filter:blur(34px) saturate(1.3);
+  -webkit-backdrop-filter:blur(34px) saturate(1.3);
   z-index:9999;
   color:#fff;
   font-size:.9rem;
   flex-direction:column;
-  gap:1rem;
+  gap:1.1rem;
+  letter-spacing:.4px;
 }
 
 .spinner {
-  width:54px;
-  height:54px;
-  border:5px solid hsl(var(--accent)/0.25);
+  width:60px;
+  height:60px;
+  border:6px solid hsl(var(--accent)/0.25);
   border-top-color:#fff;
   border-radius:50%;
   animation: spin 1s linear infinite;
+  filter:drop-shadow(0 4px 12px hsl(var(--accent)/0.6));
 }
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .inline-editable {
   cursor:text;
-  padding:.2rem .35rem;
+  padding:.25rem .4rem;
   border-radius:8px;
-  transition:var(--transition);
+  transition:background .35s;
 }
-.inline-editable:hover {
-  background:hsl(var(--accent)/0.2);
-}
+.inline-editable:hover { background:hsl(var(--accent)/0.2); }
 
 .meta {
   font-size:.6rem;
@@ -832,11 +979,10 @@ footer.app {
 hr.line {
   border:none;
   height:1px;
-  background:linear-gradient(to right, transparent, hsl(var(--panel-border)/0.7), transparent);
-  margin:1.4rem 0 1rem;
+  background:linear-gradient(to right, transparent, hsl(var(--panel-border)/0.8), transparent);
+  margin:1.5rem 0 1.15rem;
 }
 
-/* Language attribute override example (future extension) */
 html[lang="en"] .only-id { display:none; }
 html[lang="id"] .only-en { display:none; }
 
@@ -848,20 +994,17 @@ html[lang="id"] .only-en { display:none; }
   display:flex;
   flex-direction:column;
   gap:1rem;
+  animation: fade .6s ease;
 }
 
 .progress-bar {
-  width:100%;
-  height:6px;
-  border-radius:4px;
+  width:100%; height:6px; border-radius:4px;
   background:hsl(var(--accent)/0.25);
-  overflow:hidden;
-  position:relative;
+  overflow:hidden; position:relative;
 }
 .progress-bar span {
   display:block;
-  width:0%;
-  height:100%;
+  width:0%; height:100%;
   background:var(--gradient-accent);
   transition:width 1s ease;
 }
@@ -870,23 +1013,93 @@ html[lang="id"] .only-en { display:none; }
   display:inline-flex;
   align-items:center;
   gap:.4rem;
-  background:hsl(var(--accent)/0.2);
-  padding:.25rem .5rem;
-  border-radius:8px;
-  font-size:.55rem;
-  font-weight:600;
-  letter-spacing:.5px;
-  color:hsl(var(--accent)/1);
+  background:hsl(var(--accent)/0.25);
+  padding:.3rem .55rem;
+  border-radius:10px;
+  font-size:.58rem;
+  font-weight:700;
+  letter-spacing:.55px;
+  color:#fff;
   text-transform:uppercase;
+  box-shadow:0 4px 10px -4px hsl(var(--accent)/0.55);
 }
 
 .code {
   font-family: ui-monospace, monospace;
   font-size:.65rem;
-  background:hsl(var(--accent)/0.15);
-  padding:.25rem .4rem;
-  border-radius:6px;
-  color:hsl(var(--accent)/1);
+  background:hsl(var(--accent)/0.18);
+  padding:.3rem .45rem;
+  border-radius:8px;
+  color:#fff;
+  letter-spacing:.3px;
+}
+
+.chip-add {
+  background:hsl(var(--accent)/0.25);
+  border:none;
+  color:#fff;
+  padding:.35rem .55rem;
+  line-height:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:.55rem;
+  font-weight:600;
+  letter-spacing:.5px;
+  box-shadow:0 4px 10px -4px hsl(var(--accent)/0.55);
+  transition: background .4s, transform .45s var(--ease-spring);
+}
+.chip-add:hover { background:hsl(var(--accent)/0.4); transform:translateY(-3px); }
+.chip-add:active { transform:translateY(0); }
+.chip-add i { pointer-events:none; }
+
+.badge-soft {
+  display:inline-flex;
+  padding:.35rem .6rem;
+  background:hsl(var(--accent)/0.14);
+  border-radius:12px;
+  font-size:.55rem;
+  font-weight:600;
+  letter-spacing:.5px;
+  color:hsl(var(--accent)/0.95);
+  gap:.3rem;
+}
+
+.section-subtitle {
+  font-size:.62rem;
+  text-transform:uppercase;
+  font-weight:700;
+  letter-spacing:.55px;
+  color:hsl(var(--text-dim));
+  margin:0 0 .35rem;
+}
+
+/* Animasi micro hover pada ikon */
+i[data-feather] {
+  transition: transform .5s var(--ease-spring), color .35s;
+}
+button:hover i[data-feather],
+.toggle:hover i[data-feather],
+.nav button:hover i[data-feather] {
+  transform: scale(1.15) rotate(-8deg);
+}
+
+.fade-scale {
+  animation: fadeScale .55s var(--ease-spring);
+}
+@keyframes fadeScale {
+  from { opacity:0; transform:scale(.95); }
+  to { opacity:1; transform:scale(1); }
+}
+
+.slide-in-up {
+  animation: slideInUp .6s var(--ease-spring);
+}
+@keyframes slideInUp {
+  from { opacity:0; transform:translateY(18px); }
+  to { opacity:1; transform:translateY(0); }
 }
 
 </style>
@@ -906,7 +1119,7 @@ html[lang="id"] .only-en { display:none; }
     <h1 data-i18n="app_title">Monitoring Mutu Ikan Segar</h1>
     <p class="muted" data-i18n="app_subtitle">Sistem Informasi Pasar Tradisional Kota Makassar</p>
     <div id="authAlert"></div>
-    <form id="loginForm">
+    <form id="loginForm" autocomplete="on">
       <div class="inline-field">
         <label data-i18n="email">Email</label>
         <input type="email" id="loginEmail" required placeholder="you@example.com" autocomplete="email" />
@@ -915,13 +1128,13 @@ html[lang="id"] .only-en { display:none; }
         <label data-i18n="password">Kata Sandi</label>
         <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password" />
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.4rem;gap:.7rem;">
         <button type="submit" style="flex:1;" id="btnLogin">
           <i data-feather="log-in" width="16"></i>
           <span data-i18n="login">Masuk</span>
         </button>
         <div style="flex:1;text-align:right;">
-          <a href="#" id="linkForgot" style="font-size:.7rem;font-weight:600;letter-spacing:.5px;" data-i18n="forgot_password">Lupa kata sandi?</a>
+          <a href="#" id="linkForgot" style="font-size:.65rem;font-weight:700;letter-spacing:.55px;" data-i18n="forgot_password">Lupa kata sandi?</a>
         </div>
       </div>
     </form>
@@ -929,12 +1142,12 @@ html[lang="id"] .only-en { display:none; }
       <span data-i18n="no_account">Belum punya akun?</span>
       <a href="#" id="showRegister" data-i18n="register_now">Daftar sekarang</a>
     </div>
-    <div class="switch-auth">
-      <span class="small">© <span id="year"></span> Skripsi - Kota Makassar</span>
+    <div style="margin-top:.9rem;display:flex;gap:.6rem;flex-wrap:wrap;">
+      <button class="outline small" type="button" id="quickDemoAdmin"><i data-feather="user-check" width="14"></i> Demo Admin</button>
+      <button class="outline small" type="button" id="quickDemoUser"><i data-feather="user" width="14"></i> Demo Mahasiswa</button>
     </div>
-    <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
-      <button class="outline" type="button" id="quickDemoAdmin">Demo Admin</button>
-      <button class="outline" type="button" id="quickDemoUser">Demo Mahasiswa</button>
+    <div class="switch-auth" style="margin-top:1.1rem;">
+      <span class="small">© <span id="year"></span> Skripsi - Kota Makassar</span>
     </div>
   </div>
 
@@ -944,7 +1157,7 @@ html[lang="id"] .only-en { display:none; }
     <h1 data-i18n="register_account">Registrasi Akun</h1>
     <p class="muted" data-i18n="register_subtitle">Buat akun baru untuk mulai mencatat data mutu ikan.</p>
     <div id="registerAlert"></div>
-    <form id="registerForm">
+    <form id="registerForm" autocomplete="on">
       <div class="inline-field">
         <label data-i18n="full_name">Nama Lengkap</label>
         <input id="regName" required placeholder="Nama lengkap" />
@@ -969,7 +1182,8 @@ html[lang="id"] .only-en { display:none; }
           <option value="Dosen">Dosen/Pembimbing</option>
         </select>
       </div>
-      <button type="submit" style="width:100%;margin-top:.5rem;">
+      <div id="regExtraFields" class="slide-in-up"></div>
+      <button type="submit" style="width:100%;margin-top:.6rem;">
         <i data-feather="user-plus" width="16"></i>
         <span data-i18n="create_account">Buat Akun</span>
       </button>
@@ -1006,12 +1220,12 @@ html[lang="id"] .only-en { display:none; }
 <div id="appLayout" class="layout hidden">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="logo-circle" style="width:46px;height:46px;font-size:.85rem;letter-spacing:.8px;">IKN</div>
+      <div class="logo-circle" style="width:48px;height:48px;font-size:.9rem;letter-spacing:.8px;">IKN</div>
       <h2>
         <span style="display:block;">Mutu Ikan</span>
-        <span style="font-weight:400;opacity:.7;font-size:.65rem;">Makassar</span>
+        <span style="font-weight:400;opacity:.7;font-size:.6rem;letter-spacing:.5px;">Makassar</span>
       </h2>
-      <button class="ghost responsive-hide" id="closeSidebar" style="margin-left:auto;padding:.55rem .65rem;">
+      <button class="ghost responsive-hide" id="closeSidebar" style="margin-left:auto;padding:.55rem .6rem;">
         <i data-feather="x" width="16"></i>
       </button>
     </div>
@@ -1046,35 +1260,35 @@ html[lang="id"] .only-en { display:none; }
       </button>
     </div>
     <div class="sidebar-footer">
-      <div id="sidebarUserInfo" style="font-size:.65rem;line-height:1.3;"></div>
-      <div>
-        <button class="outline" id="btnLogout" style="width:100%;justify-content:center;">
-          <i data-feather="log-out" width="16"></i>
+      <div id="sidebarUserInfo" style="font-size:.6rem;line-height:1.25;"></div>
+      <div style="display:flex;gap:.5rem;">
+        <button class="outline" id="btnLogout" style="flex:1;justify-content:center;">
+          <i data-feather="log-out" width="14"></i>
           <span data-i18n="logout">Keluar</span>
         </button>
       </div>
-      <div style="text-align:center;">
-        <span class="muted" style="font-size:.55rem;">v1.0.0 Single File • Skripsi</span>
+      <div style="text-align:center;margin-top:.35rem;">
+        <span class="muted" style="font-size:.55rem;">v1.2.0 Single File • Skripsi</span>
       </div>
     </div>
   </aside>
 
   <div class="main">
     <div class="topbar">
-      <div style="display:flex;align-items:center;gap:.7rem;">
-        <button class="ghost responsive-hide" id="openSidebar" style="padding:.55rem .65rem;">
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <button class="ghost responsive-hide" id="openSidebar" style="padding:.55rem .6rem;">
           <i data-feather="menu" width="18"></i>
         </button>
         <div class="search-box">
-          <i data-feather="search" width="16" class="muted"></i>
-            <input id="globalSearch" placeholder="Cari data ikan..." autocomplete="off">
+          <i data-feather="search" width="15" class="muted"></i>
+          <input id="globalSearch" placeholder="Cari data ikan..." autocomplete="off">
         </div>
-        <div class="toggle" id="toggleMyData" data-state="all">
+        <div class="toggle" id="toggleMyData" data-state="all" title="Tampilkan data saya / semua">
           <i data-feather="toggle-right" width="14"></i>
           <span id="toggleMyDataLabel">Semua Data</span>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:.6rem;">
+      <div style="display:flex;align-items:center;gap:.55rem;">
         <button class="ghost" id="btnToggleTheme" title="Mode Gelap/Terang">
           <i data-feather="moon" width="16"></i>
         </button>
@@ -1099,7 +1313,7 @@ html[lang="id"] .only-en { display:none; }
               <i data-feather="bar-chart-2" width="15"></i>
               <span data-i18n="reports">Laporan</span>
             </button>
-            <div style="height:1px;background:hsl(var(--panel-border)/0.5);margin:.4rem 0;"></div>
+            <div style="height:1px;background:hsl(var(--panel-border)/0.55);margin:.4rem 0;"></div>
             <button id="logoutDropdownBtn">
               <i data-feather="log-out" width="15"></i>
               <span data-i18n="logout">Keluar</span>
@@ -1112,7 +1326,7 @@ html[lang="id"] .only-en { display:none; }
     <main class="content">
 
       <!-- DASHBOARD -->
-      <section id="view-dashboard" class="fade-in">
+      <section id="view-dashboard" class="fade-in view-transition-enter">
         <div class="panel bento" style="padding-bottom:1rem;">
           <div class="panel-header">
             <h3><i data-feather="activity" width="15"></i><span data-i18n="dashboard_overview">Ringkasan Mutu Terkini</span></h3>
@@ -1120,6 +1334,7 @@ html[lang="id"] .only-en { display:none; }
               <div class="toggle-chip active" data-dash-filter="today">Hari Ini</div>
               <div class="toggle-chip" data-dash-filter="7d">7 Hari</div>
               <div class="toggle-chip" data-dash-filter="30d">30 Hari</div>
+              <div class="toggle-chip" data-dash-filter="all">Semua</div>
             </div>
           </div>
           <div class="indicators" id="dashboardIndicators">
@@ -1155,51 +1370,57 @@ html[lang="id"] .only-en { display:none; }
           <div class="panel bento">
             <div class="panel-header">
               <h3><i data-feather="bar-chart-2" width="15"></i><span data-i18n="chart_comparison">Perbandingan Mutu per Pasar</span></h3>
-              <button class="ghost" id="refreshCharts1" style="padding:.4rem .55rem;">
-                <i data-feather="refresh-cw" width="14"></i>
-              </button>
+              <div style="display:flex;gap:.4rem;">
+                <button class="ghost small" id="refreshCharts1" title="Segarkan">
+                  <i data-feather="refresh-cw" width="14"></i>
+                </button>
+              </div>
             </div>
             <div class="chart-container">
               <canvas id="chartComparison"></canvas>
             </div>
           </div>
 
-            <div class="panel bento">
-              <div class="panel-header">
-                <h3><i data-feather="trending-up" width="15"></i><span data-i18n="chart_trend">Tren Skor Waktu</span></h3>
-                <button class="ghost" id="refreshCharts2" style="padding:.4rem .55rem;">
+          <div class="panel bento">
+            <div class="panel-header">
+              <h3><i data-feather="trending-up" width="15"></i><span data-i18n="chart_trend">Tren Skor Waktu</span></h3>
+              <div style="display:flex;gap:.4rem;">
+                <button class="ghost small" id="refreshCharts2">
                   <i data-feather="refresh-cw" width="14"></i>
                 </button>
               </div>
-              <div class="chart-container">
-                <canvas id="chartTrend"></canvas>
-              </div>
             </div>
+            <div class="chart-container">
+              <canvas id="chartTrend"></canvas>
+            </div>
+          </div>
 
-            <div class="panel bento">
-              <div class="panel-header">
-                <h3><i data-feather="pie-chart" width="15"></i><span data-i18n="chart_pie">Proporsi Jenis Ikan</span></h3>
-                <button class="ghost" id="refreshCharts3" style="padding:.4rem .55rem;">
+          <div class="panel bento">
+            <div class="panel-header">
+              <h3><i data-feather="pie-chart" width="15"></i><span data-i18n="chart_pie">Proporsi Jenis Ikan</span></h3>
+              <div style="display:flex;gap:.4rem;">
+                <button class="ghost small" id="refreshCharts3">
                   <i data-feather="refresh-cw" width="14"></i>
                 </button>
               </div>
-              <div class="chart-container">
-                <canvas id="chartPie"></canvas>
-              </div>
             </div>
+            <div class="chart-container">
+              <canvas id="chartPie"></canvas>
+            </div>
+          </div>
 
-            <div class="panel bento">
-              <div class="panel-header">
-                <h3><i data-feather="thermometer" width="15"></i><span data-i18n="quality_indicators">Indikator Mutu</span></h3>
-                <div class="toggle-group" style="font-size:.55rem;">
-                  <div class="toggle-chip active" data-quality-filter="all">Semua</div>
-                  <div class="toggle-chip" data-quality-filter="baik">Baik</div>
-                  <div class="toggle-chip" data-quality-filter="sedang">Sedang</div>
-                  <div class="toggle-chip" data-quality-filter="buruk">Buruk</div>
-                </div>
+          <div class="panel bento">
+            <div class="panel-header">
+              <h3><i data-feather="thermometer" width="15"></i><span data-i18n="quality_indicators">Indikator Mutu</span></h3>
+              <div class="toggle-group" style="font-size:.55rem;">
+                <div class="toggle-chip active" data-quality-filter="all">Semua</div>
+                <div class="toggle-chip" data-quality-filter="baik">Baik</div>
+                <div class="toggle-chip" data-quality-filter="sedang">Sedang</div>
+                <div class="toggle-chip" data-quality-filter="buruk">Buruk</div>
               </div>
-              <div id="qualityIndicatorList" style="display:flex;flex-direction:column;gap:.6rem;max-height:300px;overflow:auto;"></div>
             </div>
+            <div id="qualityIndicatorList" style="display:flex;flex-direction:column;gap:.6rem;max-height:320px;overflow:auto;"></div>
+          </div>
         </div>
       </section>
 
@@ -1209,32 +1430,28 @@ html[lang="id"] .only-en { display:none; }
           <div class="panel-header">
             <h3><i data-feather="database" width="15"></i><span data-i18n="data_mutu_list">Data Mutu Ikan</span></h3>
             <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
-              <button class="ghost" id="btnExportCSV"><i data-feather="download-cloud" width="14"></i>CSV</button>
-              <button class="ghost" id="btnExportExcel"><i data-feather="grid" width="14"></i>Excel</button>
-              <button class="ghost" id="btnExportPDF"><i data-feather="file-text" width="14"></i>PDF</button>
-              <button class="ghost" id="btnPrint"><i data-feather="printer" width="14"></i>Print</button>
+              <button class="ghost small" id="btnExportCSV"><i data-feather="download-cloud" width="14"></i> CSV</button>
+              <button class="ghost small" id="btnExportExcel"><i data-feather="grid" width="14"></i> Excel</button>
+              <button class="ghost small" id="btnExportPDF"><i data-feather="file-text" width="14"></i> PDF</button>
+              <button class="ghost small" id="btnPrint"><i data-feather="printer" width="14"></i> Print</button>
             </div>
           </div>
-          <div class="form-grid" style="margin-bottom:.6rem;">
+          <div class="form-grid" style="margin-bottom:.85rem;">
             <div>
-              <label data-i18n="filter_fish">Jenis Ikan</label>
-              <select id="filterFish">
-                <option value="">Semua</option>
-                <option>Ikan Kembung</option>
-                <option>Ikan Bandeng</option>
-                <option>Ikan Nila</option>
-                <option>Tuna Kecil</option>
-              </select>
+              <label data-i18n="filter_fish">Jenis Ikan
+                <div class="inline-label-actions">
+                  <button type="button" class="chip-add" id="btnAddFishTypeFilter" title="Tambah Jenis Ikan"><i data-feather="plus" width="12"></i></button>
+                </div>
+              </label>
+              <select id="filterFish"></select>
             </div>
             <div>
-              <label data-i18n="filter_market">Pasar</label>
-              <select id="filterMarket">
-                <option value="">Semua</option>
-                <option>Pasar Terong</option>
-                <option>Pasar Pa’baeng-baeng</option>
-                <option>Pasar Maricaya</option>
-                <option>Pasar Panakkukang</option>
-              </select>
+              <label data-i18n="filter_market">Pasar
+                <div class="inline-label-actions">
+                  <button type="button" class="chip-add" id="btnAddMarketFilter" title="Tambah Pasar"><i data-feather="plus" width="12"></i></button>
+                </div>
+              </label>
+              <select id="filterMarket"></select>
             </div>
             <div>
               <label data-i18n="filter_date">Tanggal</label>
@@ -1277,32 +1494,28 @@ html[lang="id"] .only-en { display:none; }
         <div class="panel">
           <div class="panel-header">
             <h3><i data-feather="edit-3" width="15"></i><span data-i18n="input_new_data">Input Data Mutu Baru</span></h3>
-            <div>
-              <button class="ghost" id="btnResetForm"><i data-feather="refresh-cw" width="14"></i>Reset</button>
+            <div style="display:flex;gap:.4rem;">
+              <button class="ghost small" id="btnResetForm"><i data-feather="refresh-cw" width="14"></i> Reset</button>
             </div>
           </div>
-          <form id="fishForm">
+          <form id="fishForm" autocomplete="off">
             <input type="hidden" id="recordId">
             <div class="form-grid">
               <div>
-                <label data-i18n="fish_type">Jenis Ikan</label>
-                <select id="fishType" required>
-                  <option value="">Pilih</option>
-                  <option>Ikan Kembung</option>
-                  <option>Ikan Bandeng</option>
-                  <option>Ikan Nila</option>
-                  <option>Tuna Kecil</option>
-                </select>
+                <label data-i18n="fish_type">Jenis Ikan
+                  <div class="inline-label-actions">
+                    <button type="button" class="chip-add" id="btnAddFishType"><i data-feather="plus" width="12"></i></button>
+                  </div>
+                </label>
+                <select id="fishType" required></select>
               </div>
               <div>
-                <label data-i18n="market_location">Lokasi Pasar</label>
-                <select id="market" required>
-                  <option value="">Pilih</option>
-                  <option>Pasar Terong</option>
-                  <option>Pasar Pa’baeng-baeng</option>
-                  <option>Pasar Maricaya</option>
-                  <option>Pasar Panakkukang</option>
-                </select>
+                <label data-i18n="market_location">Lokasi Pasar
+                  <div class="inline-label-actions">
+                    <button type="button" class="chip-add" id="btnAddMarket"><i data-feather="plus" width="12"></i></button>
+                  </div>
+                </label>
+                <select id="market" required></select>
               </div>
               <div>
                 <label data-i18n="organoleptic_score">Skor Organoleptik (1-9)</label>
@@ -1324,6 +1537,10 @@ html[lang="id"] .only-en { display:none; }
                 <label data-i18n="date_auto">Tanggal (otomatis)</label>
                 <input id="dateAuto" disabled>
               </div>
+              <div id="studentFieldWrapper" class="hidden">
+                <label data-i18n="student_id">NIM Mahasiswa</label>
+                <input id="studentNIMForm" disabled placeholder="NIM Anda (profil)">
+              </div>
             </div>
             <div class="divider"></div>
             <div style="display:flex;gap:.7rem;flex-wrap:wrap;">
@@ -1338,6 +1555,12 @@ html[lang="id"] .only-en { display:none; }
             </div>
             <div id="formAlert" style="margin-top:.8rem;"></div>
           </form>
+          <div style="margin-top:1.2rem;">
+            <p class="xsmall muted">
+              Tips: Anda dapat menambah Jenis Ikan / Pasar baru menggunakan tombol (+).
+              Data preferensi dapat diatur di Profil (default pilihan otomatis).
+            </p>
+          </div>
         </div>
       </section>
 
@@ -1347,9 +1570,9 @@ html[lang="id"] .only-en { display:none; }
           <div class="panel-header">
             <h3><i data-feather="file-text" width="15"></i><span data-i18n="reports_export">Laporan & Export</span></h3>
             <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
-              <button class="ghost" id="repExportPDF"><i data-feather="file" width="14"></i>PDF</button>
-              <button class="ghost" id="repExportCSV"><i data-feather="download" width="14"></i>CSV</button>
-              <button class="ghost" id="repPrint"><i data-feather="printer" width="14"></i>Print</button>
+              <button class="ghost small" id="repExportPDF"><i data-feather="file" width="14"></i> PDF</button>
+              <button class="ghost small" id="repExportCSV"><i data-feather="download" width="14"></i> CSV</button>
+              <button class="ghost small" id="repPrint"><i data-feather="printer" width="14"></i> Print</button>
             </div>
           </div>
           <p class="small" data-i18n="reports_desc">Pilih rentang data dan ekspor laporan yang berisi grafik dan tabel.</p>
@@ -1371,16 +1594,10 @@ html[lang="id"] .only-en { display:none; }
             </div>
             <div>
               <label data-i18n="report_fish_type">Jenis Ikan (Opsional)</label>
-              <select id="reportFish">
-                <option value="">Semua</option>
-                <option>Ikan Kembung</option>
-                <option>Ikan Bandeng</option>
-                <option>Ikan Nila</option>
-                <option>Tuna Kecil</option>
-              </select>
+              <select id="reportFish"></select>
             </div>
           </div>
-          <div style="margin-top:1rem;">
+          <div style="margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap;">
             <button id="btnGenerateReport">
               <i data-feather="file-text" width="15"></i>
               <span data-i18n="generate_report">Generate Laporan</span>
@@ -1403,20 +1620,18 @@ html[lang="id"] .only-en { display:none; }
           </div>
           <div class="preference-grid">
             <div class="panel" style="padding:1rem;">
-              <h4 style="margin:0 0 .6rem;font-size:.8rem;letter-spacing:.5px;text-transform:uppercase;" data-i18n="appearance">Tampilan</h4>
-              <div style="display:flex;flex-direction:column;gap:.65rem;">
+              <h4 class="section-subtitle" data-i18n="appearance">Tampilan</h4>
+              <div style="display:flex;flex-direction:column;gap:.75rem;">
                 <div>
                   <label data-i18n="theme_mode">Mode Tema</label>
-                  <div style="display:flex;gap:.5rem;">
-                    <button class="outline" id="prefLight"><i data-feather="sun" width="14"></i>Light</button>
-                    <button class="outline" id="prefDark"><i data-feather="moon" width="14"></i>Dark</button>
+                  <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+                    <button class="outline small" id="prefLight"><i data-feather="sun" width="14"></i>Light</button>
+                    <button class="outline small" id="prefDark"><i data-feather="moon" width="14"></i>Dark</button>
                   </div>
                 </div>
                 <div>
                   <label data-i18n="accent_color">Warna Aksen</label>
-                  <div class="color-palette" id="accentPalette">
-                    <!-- dynamic palette -->
-                  </div>
+                  <div class="color-palette" id="accentPalette"></div>
                 </div>
                 <div>
                   <label data-i18n="layout_style">Gaya Layout</label>
@@ -1436,25 +1651,42 @@ html[lang="id"] .only-en { display:none; }
             </div>
 
             <div class="panel" style="padding:1rem;">
-              <h4 style="margin:0 0 .6rem;font-size:.8rem;letter-spacing:.5px;text-transform:uppercase;" data-i18n="account_info">Info Akun</h4>
-              <div id="settingsUserInfo" style="font-size:.7rem;line-height:1.5;"></div>
-              <div style="margin-top:.7rem;">
-                <button class="ghost" id="btnResendVerification"><i data-feather="mail" width="14"></i><span data-i18n="resend_verif">Kirim Ulang Verifikasi</span></button>
-                <button class="ghost" id="btnRefreshUser"><i data-feather="refresh-cw" width="14"></i><span data-i18n="refresh">Refresh</span></button>
+              <h4 class="section-subtitle" data-i18n="account_info">Info Akun</h4>
+              <div id="settingsUserInfo" style="font-size:.68rem;line-height:1.5;"></div>
+              <div style="margin-top:.7rem;display:flex;flex-wrap:wrap;gap:.45rem;">
+                <button class="ghost small" id="btnResendVerification"><i data-feather="mail" width="14"></i><span data-i18n="resend_verif">Kirim Ulang Verifikasi</span></button>
+                <button class="ghost small" id="btnRefreshUser"><i data-feather="refresh-cw" width="14"></i><span data-i18n="refresh">Refresh</span></button>
               </div>
               <div id="verifyAlert" style="margin-top:.6rem;"></div>
             </div>
 
             <div class="panel" style="padding:1rem;">
-              <h4 style="margin:0 0 .6rem;font-size:.8rem;letter-spacing:.5px;text-transform:uppercase;" data-i18n="role_mgmt">Manajemen Peran</h4>
+              <h4 class="section-subtitle" data-i18n="role_mgmt">Manajemen Peran</h4>
               <p class="small" data-i18n="role_mgmt_desc">Hanya admin dapat mengubah peran pengguna lain. (Client-side demonstrasi)</p>
-              <div id="roleMgmt" class="small" style="display:flex;flex-direction:column;gap:.4rem;"></div>
+              <div id="roleMgmt" class="small" style="display:flex;flex-direction:column;gap:.5rem;"></div>
             </div>
 
             <div class="panel" style="padding:1rem;">
-              <h4 style="margin:0 0 .6rem;font-size:.8rem;letter-spacing:.5px;text-transform:uppercase;" data-i18n="danger_zone">Zona Berbahaya</h4>
+              <h4 class="section-subtitle">Preferensi Default Input</h4>
+              <div class="small muted" style="margin-bottom:.5rem;">Atur nilai bawaan untuk Form Input.</div>
+              <div style="display:grid;gap:.7rem;">
+                <div>
+                  <label data-i18n="default_fish_type">Default Jenis Ikan</label>
+                  <select id="prefDefaultFish"></select>
+                </div>
+                <div>
+                  <label data-i18n="default_market">Default Pasar</label>
+                  <select id="prefDefaultMarket"></select>
+                </div>
+                <button class="outline small" id="btnSavePreferences"><i data-feather="save" width="14"></i> Simpan Preferensi</button>
+                <div id="prefAlert"></div>
+              </div>
+            </div>
+
+            <div class="panel" style="padding:1rem;">
+              <h4 class="section-subtitle" data-i18n="danger_zone">Zona Berbahaya</h4>
               <p class="small" data-i18n="delete_account_warn">Penghapusan akun akan menghapus data profil (tidak menghapus histori data). (Demo)</p>
-              <button class="danger" id="btnDeleteAccount"><i data-feather="user-x" width="14"></i><span data-i18n="delete_account">Hapus Akun</span></button>
+              <button class="danger small" id="btnDeleteAccount"><i data-feather="user-x" width="14"></i><span data-i18n="delete_account">Hapus Akun</span></button>
               <div id="deleteAccountAlert" style="margin-top:.6rem;"></div>
             </div>
           </div>
@@ -1466,23 +1698,28 @@ html[lang="id"] .only-en { display:none; }
         <div class="panel">
           <div class="panel-header">
             <h3><i data-feather="user" width="15"></i><span data-i18n="profile_manage">Profil Pengguna</span></h3>
-            <button class="ghost" id="btnRefreshProfile"><i data-feather="refresh-cw" width="14"></i></button>
+            <div style="display:flex;gap:.4rem;">
+              <button class="ghost small" id="btnRefreshProfile"><i data-feather="refresh-cw" width="14"></i></button>
+            </div>
           </div>
-          <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
-            <div style="flex:0 0 170px;display:flex;flex-direction:column;align-items:center;gap:.8rem;">
-              <div class="avatar" style="width:120px;height:120px;border-radius:34px;font-size:2.2rem;" id="profileAvatar">
+          <div style="display:flex;gap:1.7rem;flex-wrap:wrap;">
+            <div style="flex:0 0 180px;display:flex;flex-direction:column;align-items:center;gap:.9rem;">
+              <div class="avatar" style="width:130px;height:130px;border-radius:38px;font-size:2.3rem;" id="profileAvatar">
                 <span id="profileAvatarInitial">U</span>
                 <img id="profileAvatarImg" alt="avatar" class="hidden">
               </div>
               <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
-              <button class="outline" id="btnChangePhoto" style="width:100%;justify-content:center;">
+              <button class="outline small" id="btnChangePhoto" style="width:100%;justify-content:center;">
                 <i data-feather="image" width="14"></i><span data-i18n="change_photo">Ganti Foto</span>
               </button>
-              <button class="outline" id="btnRemovePhoto" style="width:100%;justify-content:center;">
+              <button class="outline small" id="btnRemovePhoto" style="width:100%;justify-content:center;">
                 <i data-feather="trash" width="14"></i><span data-i18n="remove_photo">Hapus Foto</span>
               </button>
+              <button class="ghost small" id="btnSendPasswordReset">
+                <i data-feather="lock" width="14"></i> Reset Password
+              </button>
             </div>
-            <div style="flex:1;min-width:260px;">
+            <div style="flex:1;min-width:280px;">
               <form id="profileForm">
                 <div class="form-grid">
                   <div>
@@ -1506,20 +1743,38 @@ html[lang="id"] .only-en { display:none; }
                     <label data-i18n="email_verified">Email Terverifikasi</label>
                     <input id="profVerified" disabled>
                   </div>
+                  <div id="profFieldStudent" class="hidden">
+                    <label data-i18n="student_id">NIM Mahasiswa</label>
+                    <input id="profStudentId" placeholder="NIM">
+                  </div>
+                  <div id="profFieldLecturer" class="hidden">
+                    <label data-i18n="lecturer_id">NIP Dosen</label>
+                    <input id="profLecturerId" placeholder="NIP">
+                  </div>
+                  <div id="profFieldOfficer" class="hidden">
+                    <label data-i18n="officer_id">ID Petugas</label>
+                    <input id="profOfficerId" placeholder="ID Petugas">
+                  </div>
                 </div>
                 <div class="divider"></div>
                 <div style="display:flex;gap:.7rem;flex-wrap:wrap;">
-                  <button type="submit">
+                  <button type="submit" class="small">
                     <i data-feather="save" width="14"></i>
                     <span data-i18n="update_profile">Update Profil</span>
                   </button>
-                  <button type="button" class="outline" id="btnSendVerifyProfile">
+                  <button type="button" class="outline small" id="btnSendVerifyProfile">
                     <i data-feather="mail" width="14"></i>
                     <span data-i18n="send_verification">Kirim Verifikasi</span>
                   </button>
                 </div>
                 <div id="profileAlert" style="margin-top:.7rem;"></div>
               </form>
+              <hr class="line">
+              <div id="profileStats" class="fade-scale" style="display:flex;flex-direction:column;gap:.6rem;">
+                <div style="font-size:.68rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:hsl(var(--text-dim));">Statistik Kontribusi</div>
+                <div style="display:flex;flex-wrap:wrap;gap:.55rem;" id="profileStatsBadges"></div>
+                <button class="outline small" id="btnRefreshStats"><i data-feather="bar-chart" width="14"></i> Perbarui Statistik</button>
+              </div>
             </div>
           </div>
         </div>
@@ -1532,26 +1787,24 @@ html[lang="id"] .only-en { display:none; }
             <h3><i data-feather="info" width="15"></i><span>Tentang Aplikasi</span></h3>
           </div>
           <p class="small">
-            Aplikasi single-file ini dikembangkan untuk skripsi dengan judul:
+            Aplikasi single-file ini dikembangkan untuk skripsi:
             <strong>"Pengembangan Sistem Informasi Berbasis Website untuk Pencatatan dan Monitoring Mutu Ikan Segar di Pasar Tradisional Kota Makassar"</strong>.
           </p>
           <p class="small">
-            Fitur meliputi: Autentikasi Firebase, Role-based Access, CRUD Data Mutu, Dashboard Analitik, Export (CSV/Excel/PDF), Grafis Chart.js, i18n (Indonesia/English), Mode Gelap/Terang, dan Glassmorphism UI.
+            Fitur: Autentikasi Firebase, Role-based Access, CRUD Data Mutu, Dashboard Analitik, Export (CSV/Excel/PDF), Chart.js,
+            i18n (Indonesia/English), Dark/Light Mode, Glassmorphism UI, Preferensi Default, Penambahan Dinamis Jenis Ikan & Pasar, Statistik Pengguna, Animasi UI.
           </p>
           <p class="small">
-            Catatan Keamanan: Implementasi rule Firestore wajib dilakukan di sisi server (Security Rules) untuk memastikan pembatasan akses sesuai role benar-benar enforced. Kode ini hanya demonstrasi client-side.
+            Catatan Keamanan: Pastikan Firestore Security Rules diterapkan untuk enforcement role di server. Kode ini memuat logika client-side yang tidak boleh dijadikan satu-satunya mekanisme proteksi.
           </p>
           <details style="margin-top:1rem;">
-            <summary style="cursor:pointer;font-size:.75rem;font-weight:600;letter-spacing:.5px;">Contoh Firestore Security Rules (Konseptual)</summary>
-<pre class="small" style="white-space:pre-wrap;background:hsl(var(--accent)/0.1);padding:.7rem;border-radius:12px;">
+            <summary style="cursor:pointer;font-size:.7rem;font-weight:700;letter-spacing:.5px;">Contoh Firestore Security Rules (Konseptual)</summary>
+<pre class="small" style="white-space:pre-wrap;background:hsl(var(--accent)/0.18);padding:.75rem .9rem;border-radius:14px;line-height:1.35;">
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
+    function isSignedIn() { return request.auth != null; }
     function userRole() {
       return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
     }
@@ -1566,7 +1819,7 @@ service cloud.firestore {
     match /fishQuality/{docId} {
       allow read: if isSignedIn() && (
           userRole() in ['Admin','Dosen'] ||
-          request.resource.data.userId == request.auth.uid
+          resource.data.userId == request.auth.uid
       );
       allow create: if isSignedIn();
       allow update: if isSignedIn() && (
@@ -1577,6 +1830,15 @@ service cloud.firestore {
           userRole() == 'Admin' ||
           (userRole() == 'Petugas Pasar' && resource.data.userId == request.auth.uid)
       );
+    }
+
+    match /metaFishTypes/{doc} {
+      allow read: if true;
+      allow create: if isSignedIn();
+    }
+    match /metaMarkets/{doc} {
+      allow read: if true;
+      allow create: if isSignedIn();
     }
   }
 }
@@ -1594,25 +1856,22 @@ service cloud.firestore {
 </div>
 
 <script>
-/* ========================= FIREBASE CONFIG PLACEHOLDER =========================
-   Ganti nilai firebaseConfig di bawah ini dengan konfigurasi dari Firebase console.
-   ============================================================================== */
+/* ========================= FIREBASE CONFIG ========================= */
 const firebaseConfig = {
-      apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
-      authDomain: "femmeiacloth-finance.firebaseapp.com",
-      projectId: "femmeiacloth-finance",
-      storageBucket: "femmeiacloth-finance.appspot.com",
-      messagingSenderId: "517478386163",
-      appId: "1:517478386163:web:51028f5841baa311126a86",
-      measurementId: "G-K4L516Q54R"
-    };
+  apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
+  authDomain: "femmeiacloth-finance.firebaseapp.com",
+  projectId: "femmeiacloth-finance",
+  storageBucket: "femmeiacloth-finance.appspot.com",
+  messagingSenderId: "517478386163",
+  appId: "1:517478386163:web:51028f5841baa311126a86",
+  measurementId: "G-K4L516Q54R"
+};
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-/* ====================== GLOBAL STATE & CONSTANTS ====================== */
+/* ====================== GLOBAL STATE ====================== */
 const state = {
   currentUser: null,
   userProfile: null,
@@ -1625,14 +1884,19 @@ const state = {
   accent: localStorage.getItem('accent') || '210 100% 50%',
   layoutStyle: localStorage.getItem('layoutStyle') || 'grid',
   dashRange: 'today',
-  roleOptions: ['Admin','Mahasiswa','Dosen','Petugas Pasar']
+  roleOptions: ['Admin','Mahasiswa','Dosen','Petugas Pasar'],
+  fishTypes: [],
+  markets: [],
+  defaultsLoaded: false,
+  lastAddedId: null,
+  metadataUnsub: { fish:null, markets:null }
 };
 
 document.documentElement.lang = state.lang;
 document.documentElement.style.setProperty('--accent', state.accent);
 if (state.layoutStyle === 'list') document.body.classList.add('layout-list');
 
-/* ====================== I18N DICTIONARY ====================== */
+/* ====================== I18N ====================== */
 const i18n = {
   id: {
     app_title: "Monitoring Mutu Ikan Segar",
@@ -1725,7 +1989,12 @@ const i18n = {
     remove_photo: "Hapus Foto",
     update_profile: "Update Profil",
     send_verification: "Kirim Verifikasi",
-    email_verified: "Email Terverifikasi"
+    email_verified: "Email Terverifikasi",
+    student_id: "NIM Mahasiswa",
+    lecturer_id: "NIP Dosen",
+    officer_id: "ID Petugas",
+    default_fish_type: "Default Jenis Ikan",
+    default_market: "Default Pasar"
   },
   en: {
     app_title: "Fresh Fish Quality Monitoring",
@@ -1818,7 +2087,12 @@ const i18n = {
     remove_photo: "Remove Photo",
     update_profile: "Update Profile",
     send_verification: "Send Verification",
-    email_verified: "Email Verified"
+    email_verified: "Email Verified",
+    student_id: "Student ID",
+    lecturer_id: "Lecturer ID",
+    officer_id: "Officer ID",
+    default_fish_type: "Default Fish Type",
+    default_market: "Default Market"
   }
 };
 
@@ -1830,11 +2104,15 @@ function applyI18n() {
   });
   document.documentElement.lang = state.lang;
   localStorage.setItem('lang', state.lang);
+  // Update toggle label
+  document.getElementById('toggleMyDataLabel').textContent = state.myDataOnly
+    ? (state.lang==='en'?'My Data':'Data Saya')
+    : (state.lang==='en'?'All Data':'Semua Data');
 }
 
 /* ====================== UTILITIES ====================== */
-function $(sel) { return document.querySelector(sel); }
-function $all(sel) { return Array.from(document.querySelectorAll(sel)); }
+const $ = sel => document.querySelector(sel);
+const $all = sel => Array.from(document.querySelectorAll(sel));
 
 function showAlert(targetId, type, msg, timeout=5000) {
   const container = typeof targetId === 'string' ? document.getElementById(targetId) : targetId;
@@ -1843,42 +2121,34 @@ function showAlert(targetId, type, msg, timeout=5000) {
     <div class="alert ${type}">
       <i data-feather="${type==='danger'?'alert-triangle':type==='success'?'check-circle':type==='warn'?'alert-octagon':'info'}" width="16"></i>
       <span style="flex:1;">${msg}</span>
-      <button style="background:transparent;border:none;color:inherit;padding:.2rem .3rem;" onclick="this.closest('.alert').remove();">
+      <button style="background:transparent;border:none;color:inherit;padding:.2rem .3rem;cursor:pointer;" onclick="this.closest('.alert').remove();">
         <i data-feather="x" width="14"></i>
       </button>
     </div>
   `;
   feather.replace();
-  if (timeout) setTimeout(()=> { if (container.firstElementChild) container.firstElementChild.remove(); }, timeout);
+  if (timeout) setTimeout(()=> {
+    if (container.firstElementChild) container.firstElementChild.remove();
+  }, timeout);
 }
 
 function formatDate(ts) {
   const d = ts instanceof Date ? ts : new Date(ts);
   return d.toLocaleDateString(state.lang === 'en' ? 'en-US':'id-ID', {year:'numeric',month:'2-digit',day:'2-digit'});
 }
-
-function nowDateInput() {
-  const d = new Date();
-  return d.toISOString().split('T')[0];
+function isoDateOnly(d) {
+  const dt = d instanceof Date ? d : new Date(d);
+  return dt.toISOString().split('T')[0];
 }
-
+function nowDateInput() { return new Date().toISOString().split('T')[0]; }
 function computeQualityStatus(score) {
   if (score >= 7) return { label: 'Baik', cls: 'status-good'};
   if (score >= 4) return { label: 'Sedang', cls: 'status-warn'};
   return { label: 'Buruk', cls: 'status-bad'};
 }
-
-function sanitize(str) {
-  return (str||'').replace(/[<>]/g,'');
-}
-
+function sanitize(str) { return (str||'').replace(/[<>]/g,''); }
 function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
-
-function average(arr) {
-  if (!arr.length) return 0;
-  return arr.reduce((a,b)=> a + b, 0)/arr.length;
-}
-
+function average(arr) { return !arr.length ? 0 : arr.reduce((a,b)=> a + b, 0)/arr.length; }
 function download(filename, content, type='text/plain') {
   const blob = new Blob([content], {type});
   const a = document.createElement('a');
@@ -1887,11 +2157,9 @@ function download(filename, content, type='text/plain') {
   a.click();
   setTimeout(()=> URL.revokeObjectURL(a.href), 2000);
 }
-
 function toCSV(rows) {
   return rows.map(r => r.map(v => `"${(v??'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
 }
-
 function generateTableData(records) {
   const header = ["Tanggal","Jenis Ikan","Pasar","Organoleptik","Bau","Tekstur","Warna","Status","User","UID","ID"];
   const body = records.map(r => [
@@ -1909,12 +2177,11 @@ function generateTableData(records) {
   ]);
   return [header, ...body];
 }
+function smoothScrollTop() {
+  document.querySelector('.content').scrollTo({top:0,behavior:'smooth'});
+}
 
-/* ====================== AUTH HANDLERS ====================== */
-const loginForm = $('#loginForm');
-const registerForm = $('#registerForm');
-const forgotForm = $('#forgotForm');
-
+/* ====================== AUTH UI SWITCHES ====================== */
 $('#showRegister').addEventListener('click', e=>{
   e.preventDefault();
   $('#loginContainer').classList.add('hidden');
@@ -1922,7 +2189,6 @@ $('#showRegister').addEventListener('click', e=>{
   $('#forgotContainer').classList.add('hidden');
   feather.replace();
 });
-
 $('#showLogin').addEventListener('click', e=>{
   e.preventDefault();
   $('#loginContainer').classList.remove('hidden');
@@ -1930,14 +2196,12 @@ $('#showLogin').addEventListener('click', e=>{
   $('#forgotContainer').classList.add('hidden');
   feather.replace();
 });
-
 $('#linkForgot').addEventListener('click', e=>{
   e.preventDefault();
   $('#loginContainer').classList.add('hidden');
   $('#registerContainer').classList.add('hidden');
   $('#forgotContainer').classList.remove('hidden');
 });
-
 $('#backToLogin').addEventListener('click', e=>{
   e.preventDefault();
   $('#loginContainer').classList.remove('hidden');
@@ -1945,7 +2209,38 @@ $('#backToLogin').addEventListener('click', e=>{
   $('#forgotContainer').classList.add('hidden');
 });
 
-loginForm.addEventListener('submit', async e=>{
+/* ====================== REGISTRATION EXTRA FIELDS ====================== */
+function renderRegExtraFields() {
+  const role = $('#regRole').value;
+  const c = $('#regExtraFields');
+  let html = '';
+  if (role === 'Mahasiswa') {
+    html = `
+      <div class="inline-field slide-in-up">
+        <label data-i18n="student_id">${state.lang==='en'?'Student ID':'NIM Mahasiswa'}</label>
+        <input id="regStudentId" placeholder="${state.lang==='en'?'Student ID':'NIM'}">
+      </div>`;
+  } else if (role === 'Dosen') {
+    html = `
+      <div class="inline-field slide-in-up">
+        <label data-i18n="lecturer_id">${state.lang==='en'?'Lecturer ID':'NIP Dosen'}</label>
+        <input id="regLecturerId" placeholder="NIP">
+      </div>`;
+  } else if (role === 'Petugas Pasar') {
+    html = `
+      <div class="inline-field slide-in-up">
+        <label data-i18n="officer_id">${state.lang==='en'?'Officer ID':'ID Petugas'}</label>
+        <input id="regOfficerId" placeholder="ID Petugas">
+      </div>`;
+  }
+  c.innerHTML = html;
+  feather.replace();
+}
+$('#regRole').addEventListener('change', renderRegExtraFields);
+renderRegExtraFields();
+
+/* ====================== LOGIN ====================== */
+$('#loginForm').addEventListener('submit', async e=>{
   e.preventDefault();
   $('#btnLogin').disabled = true;
   showAlert('authAlert','info','Memproses login...');
@@ -1961,14 +2256,18 @@ loginForm.addEventListener('submit', async e=>{
   }
 });
 
-registerForm.addEventListener('submit', async e=>{
+/* ====================== REGISTER ====================== */
+$('#registerForm').addEventListener('submit', async e=>{
   e.preventDefault();
   const name = $('#regName').value.trim();
   const email = $('#regEmail').value.trim();
   const pass = $('#regPassword').value;
   const pass2 = $('#regConfirmPassword').value;
-  const role = $('#regRole').value;
-  if (!name || !email || !pass || !role) {
+  const roleSel = $('#regRole').value;
+  const studentId = $('#regStudentId')?.value?.trim() || '';
+  const lecturerId = $('#regLecturerId')?.value?.trim() || '';
+  const officerId = $('#regOfficerId')?.value?.trim() || '';
+  if (!name || !email || !pass) {
     return showAlert('registerAlert','danger','Isi semua field.');
   }
   if (pass !== pass2) {
@@ -1977,10 +2276,16 @@ registerForm.addEventListener('submit', async e=>{
   showAlert('registerAlert','info','Memproses registrasi...');
   try {
     const cred = await auth.createUserWithEmailAndPassword(email, pass);
+    const role = roleSel === 'Admin' ? 'Mahasiswa' : roleSel;
     await db.collection('users').doc(cred.user.uid).set({
       name,
       email,
-      role: role === 'Admin' ? 'Mahasiswa' : role, // blok admin definisi manual
+      role,
+      studentId: role==='Mahasiswa'? studentId:'',
+      lecturerId: role==='Dosen'? lecturerId:'',
+      officerId: role==='Petugas Pasar'? officerId:'',
+      defaultFishType:'',
+      defaultMarket:'',
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       photo: '',
@@ -1998,7 +2303,8 @@ registerForm.addEventListener('submit', async e=>{
   }
 });
 
-forgotForm.addEventListener('submit', async e=>{
+/* ====================== FORGOT PASSWORD ====================== */
+$('#forgotForm').addEventListener('submit', async e=>{
   e.preventDefault();
   const email = $('#forgotEmail').value.trim();
   if (!email) return;
@@ -2016,14 +2322,18 @@ auth.onAuthStateChanged(async user=>{
   if (user) {
     state.currentUser = user;
     await loadUserProfile(user.uid);
+    await loadMetadata();
     initApp();
     $('#authView').classList.add('hidden');
     $('#appLayout').classList.remove('hidden');
     refreshUserUI();
     fetchFishDataRealtime();
   } else {
+    cleanupRealtime();
     state.currentUser = null;
     state.userProfile = null;
+    state.fishData = [];
+    state.filteredData = [];
     $('#authView').classList.remove('hidden');
     $('#appLayout').classList.add('hidden');
   }
@@ -2031,18 +2341,27 @@ auth.onAuthStateChanged(async user=>{
   setTimeout(()=> $('#loadingOverlay').style.display='none', 400);
 });
 
-/* ====================== USER PROFILE ====================== */
+function cleanupRealtime() {
+  if (state.metadataUnsub.fish) state.metadataUnsub.fish();
+  if (state.metadataUnsub.markets) state.metadataUnsub.markets();
+}
+
+/* ====================== USER PROFILE LOAD ====================== */
 async function loadUserProfile(uid) {
   const doc = await db.collection('users').doc(uid).get();
   if (doc.exists) {
     state.userProfile = { id: doc.id, ...doc.data() };
   } else {
-    // create placeholder if missing
     state.userProfile = {
       id: uid,
       name: state.currentUser.displayName || 'Pengguna',
       email: state.currentUser.email,
       role: 'Mahasiswa',
+      studentId:'',
+      lecturerId:'',
+      officerId:'',
+      defaultFishType:'',
+      defaultMarket:'',
       photo: '',
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -2052,6 +2371,110 @@ async function loadUserProfile(uid) {
   }
 }
 
+/* ====================== METADATA (FISH TYPES & MARKETS) ====================== */
+const defaultFishTypes = ["Ikan Kembung","Ikan Bandeng","Ikan Nila","Tuna Kecil"];
+const defaultMarkets = ["Pasar Terong","Pasar Pa’baeng-baeng","Pasar Maricaya","Pasar Panakkukang"];
+
+async function loadMetadata() {
+  // Listen fish types
+  state.metadataUnsub.fish = db.collection('metaFishTypes').orderBy('name','asc').onSnapshot(snap=>{
+    const names = new Set(defaultFishTypes);
+    snap.docs.forEach(d=> names.add(d.data().name));
+    state.fishTypes = Array.from(names).sort();
+    populateDynamicSelects();
+  });
+  // Listen markets
+  state.metadataUnsub.markets = db.collection('metaMarkets').orderBy('name','asc').onSnapshot(snap=>{
+    const names = new Set(defaultMarkets);
+    snap.docs.forEach(d=> names.add(d.data().name));
+    state.markets = Array.from(names).sort();
+    populateDynamicSelects();
+  });
+}
+
+async function addNewFishType(name) {
+  name = (name||'').trim();
+  if (!name) return;
+  if (state.fishTypes.includes(name)) {
+    showAlert('formAlert','warn','Jenis ikan sudah ada.');
+    return;
+  }
+  try {
+    await db.collection('metaFishTypes').add({
+      name,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdBy: state.currentUser.uid
+    });
+    showAlert('formAlert','success','Jenis ikan ditambahkan.');
+  } catch(err) {
+    showAlert('formAlert','danger','Gagal tambah jenis: ' + err.message);
+  }
+}
+async function addNewMarket(name) {
+  name = (name||'').trim();
+  if (!name) return;
+  if (state.markets.includes(name)) {
+    showAlert('formAlert','warn','Pasar sudah ada.');
+    return;
+  }
+  try {
+    await db.collection('metaMarkets').add({
+      name,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdBy: state.currentUser.uid
+    });
+    showAlert('formAlert','success','Pasar ditambahkan.');
+  } catch(err) {
+    showAlert('formAlert','danger','Gagal tambah pasar: ' + err.message);
+  }
+}
+
+function populateDynamicSelects() {
+  const fishOpts = ['<option value="">Semua</option>'].concat(state.fishTypes.map(f=> `<option>${sanitize(f)}</option>`)).join('');
+  $('#filterFish').innerHTML = fishOpts;
+  const mktOpts = ['<option value="">Semua</option>'].concat(state.markets.map(m=> `<option>${sanitize(m)}</option>`)).join('');
+  $('#filterMarket').innerHTML = mktOpts;
+
+  const fishFormOpts = ['<option value="">Pilih</option>'].concat(state.fishTypes.map(f=> `<option>${sanitize(f)}</option>`)).join('');
+  $('#fishType').innerHTML = fishFormOpts;
+
+  const marketFormOpts = ['<option value="">Pilih</option>'].concat(state.markets.map(m=> `<option>${sanitize(m)}</option>`)).join('');
+  $('#market').innerHTML = marketFormOpts;
+
+  // Report selects
+  $('#reportFish').innerHTML = ['<option value="">Semua</option>'].concat(state.fishTypes.map(f=> `<option>${sanitize(f)}</option>`)).join('');
+
+  // Preferences
+  $('#prefDefaultFish').innerHTML = ['<option value="">(Kosong)</option>'].concat(state.fishTypes.map(f=> `<option ${state.userProfile?.defaultFishType===f?'selected':''}>${sanitize(f)}</option>`)).join('');
+  $('#prefDefaultMarket').innerHTML = ['<option value="">(Kosong)</option>'].concat(state.markets.map(m=> `<option ${state.userProfile?.defaultMarket===m?'selected':''}>${sanitize(m)}</option>`)).join('');
+
+  // If default preferences exist & we are in form (only if not editing)
+  if (!$('#recordId').value) {
+    if (state.userProfile?.defaultFishType && state.fishTypes.includes(state.userProfile.defaultFishType)) {
+      $('#fishType').value = state.userProfile.defaultFishType;
+    }
+    if (state.userProfile?.defaultMarket && state.markets.includes(state.userProfile.defaultMarket)) {
+      $('#market').value = state.userProfile.defaultMarket;
+    }
+  }
+  feather.replace();
+}
+
+/* Add handlers for add buttons */
+['btnAddFishType','btnAddFishTypeFilter'].forEach(id=>{
+  document.getElementById(id).addEventListener('click', ()=>{
+    const name = prompt(state.lang==='en'?'Enter new fish type:':'Masukkan jenis ikan baru:');
+    if (name) addNewFishType(name);
+  });
+});
+['btnAddMarket','btnAddMarketFilter'].forEach(id=>{
+  document.getElementById(id).addEventListener('click', ()=>{
+    const name = prompt(state.lang==='en'?'Enter new market name:':'Masukkan nama pasar baru:');
+    if (name) addNewMarket(name);
+  });
+});
+
+/* ====================== USER UI REFRESH ====================== */
 function refreshUserUI() {
   const u = state.userProfile || {};
   $('#avatarInitial').textContent = (u.name||'U').substring(0,1).toUpperCase();
@@ -2063,26 +2486,34 @@ function refreshUserUI() {
     $('#avatarImg').classList.add('hidden');
     $('#avatarInitial').classList.remove('hidden');
   }
-  const info = `
-    <div style="font-weight:600;">${sanitize(u.name||'')}</div>
-    <div style="font-size:.55rem;">${sanitize(u.email||'')}</div>
-    <div class="badge-role" style="margin-top:.3rem;">${sanitize(u.role||'')}</div>
-    <div style="margin-top:.3rem;font-size:.55rem;">Verif: ${u.emailVerified ? 'Ya':'Belum'}</div>
+  $('#sidebarUserInfo').innerHTML = `
+    <div style="font-weight:700;">${sanitize(u.name||'')}</div>
+    <div style="font-size:.5rem;letter-spacing:.5px;">${sanitize(u.email||'')}</div>
+    <div class="badge-role" style="margin-top:.35rem;">${sanitize(u.role||'')}</div>
+    <div style="margin-top:.35rem;font-size:.5rem;">Verif: ${u.emailVerified ? 'Ya':'Belum'}</div>
   `;
-  $('#sidebarUserInfo').innerHTML = info;
-  // Settings user info
   $('#settingsUserInfo').innerHTML = `
     <strong>${sanitize(u.name||'')}</strong><br>
     ${sanitize(u.email||'')}<br>
     Role: <span class="inline-stat">${sanitize(u.role||'')}</span><br>
-    Email Verified: <span class="inline-stat">${u.emailVerified?'YES':'NO'}</span>
+    Email Verified: <span class="inline-stat">${u.emailVerified?'YES':'NO'}</span><br>
+    ${(u.studentId)?'NIM: '+sanitize(u.studentId)+'<br>':''}
+    ${(u.lecturerId)?'NIP: '+sanitize(u.lecturerId)+'<br>':''}
+    ${(u.officerId)?'ID: '+sanitize(u.officerId)+'<br>':''}
   `;
-  // Profile form
   $('#profName').value = u.name || '';
   $('#profEmail').value = u.email || '';
   $('#profRole').value = u.role || 'Mahasiswa';
   $('#profVerified').value = u.emailVerified ? 'Ya' : 'Belum';
-  $('#profileAvatarInitial').textContent = (u.name||'U').substring(0,1).toUpperCase();
+  $('#profStudentId').value = u.studentId || '';
+  $('#profLecturerId').value = u.lecturerId || '';
+  $('#profOfficerId').value = u.officerId || '';
+
+  // show extra profile fields per role
+  $('#profFieldStudent').classList.toggle('hidden', u.role!=='Mahasiswa');
+  $('#profFieldLecturer').classList.toggle('hidden', u.role!=='Dosen');
+  $('#profFieldOfficer').classList.toggle('hidden', u.role!=='Petugas Pasar');
+
   if (u.photo) {
     $('#profileAvatarImg').src = u.photo;
     $('#profileAvatarImg').classList.remove('hidden');
@@ -2090,14 +2521,24 @@ function refreshUserUI() {
   } else {
     $('#profileAvatarImg').classList.add('hidden');
     $('#profileAvatarInitial').classList.remove('hidden');
+    $('#profileAvatarInitial').textContent = (u.name||'U').substring(0,1).toUpperCase();
   }
-  // Role management populate if admin
   if (u.role === 'Admin') {
     loadAllUsersForRoleManagement();
     $('#roleMgmt').parentElement.classList.remove('hidden');
   } else {
     $('#roleMgmt').innerHTML = '<em class="muted">Hanya Admin.</em>';
   }
+  // Student field in form
+  if (u.role === 'Mahasiswa') {
+    $('#studentFieldWrapper').classList.remove('hidden');
+    $('#studentNIMForm').value = u.studentId || '';
+  } else {
+    $('#studentFieldWrapper').classList.add('hidden');
+  }
+  populateDynamicSelects();
+  updateProfileStats();
+  feather.replace();
 }
 
 async function loadAllUsersForRoleManagement() {
@@ -2105,16 +2546,16 @@ async function loadAllUsersForRoleManagement() {
   const html = snap.docs.map(d=>{
     const u = d.data();
     return `
-      <div style="display:flex;align-items:center;gap:.5rem;">
-        <div style="flex:1;">
-          <strong>${sanitize(u.name||'')}</strong><br>
-          <span style="font-size:.55rem;">${sanitize(u.email||'')}</span>
+      <div style="display:flex;align-items:center;gap:.6rem;background:hsl(var(--accent)/0.1);padding:.55rem .6rem;border-radius:14px;border:1px solid hsl(var(--panel-border)/0.4);">
+        <div style="flex:1;min-width:120px;">
+          <strong style="font-size:.6rem;letter-spacing:.4px;">${sanitize(u.name||'')}</strong><br>
+          <span style="font-size:.48rem;">${sanitize(u.email||'')}</span>
         </div>
-        <select data-user-role="${d.id}" style="max-width:140px;">
+        <select data-user-role="${d.id}" style="max-width:135px;font-size:.55rem;padding:.35rem .45rem;border-radius:10px;">
           ${state.roleOptions.map(r=> `<option ${u.role===r?'selected':''}>${r}</option>`).join('')}
         </select>
-        <button class="outline" data-user-update-role="${d.id}" style="padding:.45rem .55rem;">
-          <i data-feather="save" width="14"></i>
+        <button class="outline small" data-user-update-role="${d.id}" style="padding:.4rem .55rem;">
+          <i data-feather="save" width="12"></i>
         </button>
       </div>
     `;
@@ -2164,10 +2605,15 @@ $all('.nav button, .dropdown button[data-dropdown]').forEach(btn=>{
 function showView(view) {
   $all('[id^="view-"]').forEach(sec=> sec.classList.add('hidden'));
   const section = document.getElementById('view-'+view);
-  if (section) section.classList.remove('hidden');
+  if (section) {
+    section.classList.remove('hidden');
+    section.classList.add('view-transition-enter');
+    setTimeout(()=> section.classList.remove('view-transition-enter'),600);
+  }
   $all('.nav button').forEach(b=> b.classList.remove('active'));
   const navBtn = document.querySelector(`.nav button[data-view="${view}"]`);
   if (navBtn) navBtn.classList.add('active');
+  smoothScrollTop();
   feather.replace();
 }
 
@@ -2192,7 +2638,6 @@ $('#btnToggleTheme').addEventListener('click', ()=>{
   localStorage.setItem('theme', current);
   feather.replace();
 });
-
 (function initTheme() {
   const saved = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
@@ -2201,11 +2646,13 @@ $('#btnToggleTheme').addEventListener('click', ()=>{
 $('#btnLang').addEventListener('click', ()=>{
   state.lang = state.lang==='id' ? 'en':'id';
   applyI18n();
+  feather.replace();
 });
 
 $('#languageSelect').addEventListener('change', e=>{
   state.lang = e.target.value;
   applyI18n();
+  feather.replace();
 });
 
 function buildAccentPalette() {
@@ -2226,10 +2673,10 @@ function buildAccentPalette() {
       document.documentElement.style.setProperty('--accent', state.accent);
       localStorage.setItem('accent', state.accent);
       buildAccentPalette();
+      buildCharts(); // refresh colors
     });
   });
 }
-
 buildAccentPalette();
 
 $('#layoutStyle').value = state.layoutStyle;
@@ -2252,26 +2699,34 @@ $('#prefDark').addEventListener('click', ()=>{
   localStorage.setItem('theme','dark');
 });
 
-/* ====================== TOGGLE MY DATA ====================== */
+/* ====================== TOGGLE MY DATA FIX ====================== */
 $('#toggleMyData').addEventListener('click', ()=>{
   state.myDataOnly = !state.myDataOnly;
   $('#toggleMyData').setAttribute('data-state', state.myDataOnly ? 'mine':'all');
   $('#toggleMyDataLabel').textContent = state.myDataOnly ? (state.lang==='en'?'My Data':'Data Saya') : (state.lang==='en'?'All Data':'Semua Data');
   applyFilters();
+  updateDashboard();
 });
 
-/* ====================== FISH DATA CRUD ====================== */
+/* ====================== FISH DATA CRUD / REALTIME ====================== */
 function fetchFishDataRealtime() {
   if (!state.currentUser) return;
   db.collection('fishQuality').orderBy('createdAt','desc')
     .onSnapshot(snap=>{
+      const existingIds = new Set(state.fishData.map(r=> r.id));
       state.fishData = snap.docs.map(d=>{
         const data = d.data();
         return {
           id: d.id,
-            ...data,
-          date: data.date ? data.date.toDate() : (data.createdAt ? data.createdAt.toDate() : new Date())
+          ...data,
+          date: data.date ? (data.date.toDate ? data.date.toDate(): data.date) : (data.createdAt ? data.createdAt.toDate() : new Date())
         };
+      });
+      // Determine new id
+      snap.docChanges().forEach(ch=>{
+        if (ch.type === 'added' && !existingIds.has(ch.doc.id)) {
+          state.lastAddedId = ch.doc.id;
+        }
       });
       applyFilters();
       updateDashboard();
@@ -2286,13 +2741,11 @@ function applyFilters() {
   const date = $('#filterDate').value;
   const text = $('#filterText').value.toLowerCase();
   const globalText = $('#globalSearch').value.toLowerCase();
-
-  const role = state.userProfile?.role || 'Mahasiswa';
   state.filteredData = state.fishData.filter(r=>{
-    if (state.myDataOnly && r.userId !== state.currentUser.uid && !(role==='Admin' || role==='Dosen')) return false;
+    if (state.myDataOnly && r.userId !== state.currentUser.uid) return false;
     if (fish && r.fishType !== fish) return false;
     if (market && r.market !== market) return false;
-    if (date && formatDate(r.date) !== formatDate(date)) return false;
+    if (date && isoDateOnly(r.date) !== date) return false;
     if (text && ![r.smell,r.texture,r.color,r.fishType,r.market].some(v=> (v||'').toLowerCase().includes(text))) return false;
     if (globalText && ![r.smell,r.texture,r.color,r.fishType,r.market, r.userName].some(v=> (v||'').toLowerCase().includes(globalText))) return false;
     return true;
@@ -2304,7 +2757,7 @@ function applyFilters() {
   document.getElementById(id).addEventListener('input', applyFilters);
 });
 
-document.getElementById('fishForm').addEventListener('submit', async e=>{
+$('#fishForm').addEventListener('submit', async e=>{
   e.preventDefault();
   if (!state.currentUser) return;
   const id = $('#recordId').value;
@@ -2318,35 +2771,34 @@ document.getElementById('fishForm').addEventListener('submit', async e=>{
     showAlert('formAlert','danger','Lengkapi semua field.');
     return;
   }
-
   const payload = {
     fishType, market, organoleptic,
     smell, texture, color,
     userId: state.currentUser.uid,
     userName: state.userProfile.name,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-    date: new Date(),
+    date: new Date()
   };
   try {
     if (id) {
-      // Update
       const doc = state.fishData.find(r=> r.id === id);
       const role = state.userProfile.role;
       if (role === 'Dosen') {
         showAlert('formAlert','warn','Role Dosen tidak dapat mengubah data (demo).');
         return;
       }
-      if (doc.userId !== state.currentUser.uid && role !== 'Admin' && role !== 'Petugas Pasar') {
+      if (doc.userId !== state.currentUser.uid && !['Admin','Petugas Pasar'].includes(role)) {
         showAlert('formAlert','danger','Tidak memiliki izin edit.');
         return;
       }
       await db.collection('fishQuality').doc(id).update(payload);
       showAlert('formAlert','success','Data diperbarui.');
     } else {
-      await db.collection('fishQuality').add({
+      const ref = await db.collection('fishQuality').add({
         ...payload,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
+      state.lastAddedId = ref.id;
       showAlert('formAlert','success','Data tersimpan.');
     }
     resetForm();
@@ -2381,20 +2833,24 @@ function renderTable() {
       <td>
         <div class="inline">
           <div class="status-dot ${st.cls}"></div>
-          <span style="font-size:.6rem;font-weight:600;">${st.label}</span>
+          <span style="font-size:.55rem;font-weight:700;letter-spacing:.4px;">${st.label}</span>
         </div>
       </td>
-      <td style="font-size:.6rem;">
+      <td style="font-size:.55rem;">
         ${sanitize(r.userName)}<br>
         <span class="muted">${r.userId.substring(0,6)}...</span>
       </td>
       <td>
         <div class="actions">
-          ${canEdit ? `<button class="outline" data-edit="${r.id}" style="padding:.35rem .5rem;"><i data-feather="edit-2" width="14"></i></button>`:''}
-          ${canDelete ? `<button class="outline danger" data-del="${r.id}" style="padding:.35rem .5rem;"><i data-feather="trash" width="14"></i></button>`:''}
+          ${canEdit ? `<button class="outline small" data-edit="${r.id}" title="Edit"><i data-feather="edit-2" width="12"></i></button>`:''}
+          ${canDelete ? `<button class="outline danger small" data-del="${r.id}" title="Hapus"><i data-feather="trash" width="12"></i></button>`:''}
         </div>
       </td>
     `;
+    if (r.id === state.lastAddedId) {
+      tr.classList.add('flash-new');
+      setTimeout(()=> tr.classList.remove('flash-new'), 2500);
+    }
     tbody.appendChild(tr);
   });
   feather.replace();
@@ -2438,19 +2894,41 @@ function resetForm() {
   $('#submitDataBtn span').textContent = state.lang==='en'?'Save Data':'Simpan Data';
   $('#cancelEditBtn').style.display='none';
   $('#dateAuto').value = nowDateInput();
+  if (state.userProfile?.defaultFishType) $('#fishType').value = state.userProfile.defaultFishType;
+  if (state.userProfile?.defaultMarket) $('#market').value = state.userProfile.defaultMarket;
 }
 
-$('#btnResetForm').addEventListener('click', e=>{
+$('#btnResetForm').addEventListener('click', ()=>{
   resetForm();
   showAlert('formAlert','info','Form direset.',2000);
 });
-$('#cancelEditBtn').addEventListener('click', e=>{
+$('#cancelEditBtn').addEventListener('click', ()=>{
   resetForm();
 });
 
 /* ====================== DASHBOARD & ANALYTICS ====================== */
+function filterByDashRange(records) {
+  const range = state.dashRange;
+  const now = new Date();
+  if (range === 'today') {
+    return records.filter(r=> isoDateOnly(r.date) === isoDateOnly(now));
+  }
+  if (range === '7d') {
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-7);
+    return records.filter(r=> r.date >= cutoff);
+  }
+  if (range === '30d') {
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-30);
+    return records.filter(r=> r.date >= cutoff);
+  }
+  return records;
+}
+
 function updateDashboard() {
-  const data = state.myDataOnly ? state.filteredData.filter(r=> r.userId===state.currentUser.uid) : state.filteredData;
+  const base = state.myDataOnly
+    ? state.fishData.filter(r=> r.userId===state.currentUser.uid)
+    : state.fishData.slice();
+  const data = filterByDashRange(base);
   $('#indTotal').textContent = data.length;
   const avg = average(data.map(r=> r.organoleptic));
   $('#indAvg').textContent = data.length ? avg.toFixed(2) : '-';
@@ -2460,7 +2938,8 @@ function updateDashboard() {
   $('#indGood').textContent = good;
   $('#indWarn').textContent = warn;
   $('#indBad').textContent = bad;
-  // Trend placeholders: compute relative to total
+
+  // Simple trend placeholder relative to total (improve: compute diff vs previous period)
   $('#indTotalTrend').textContent = data.length ? '+0%' : '0%';
   $('#indAvgTrend').textContent = '+0%';
   $('#indGoodTrend').textContent = '+0%';
@@ -2479,13 +2958,13 @@ function updateQualityList() {
       if (state.qualityFilter==='buruk') return st==='Buruk';
       return true;
     })
-    .slice(0, 40);
+    .slice(0, 50);
   container.innerHTML = subset.map(r=>{
     const st = computeQualityStatus(r.organoleptic);
     return `
-      <div style="display:flex;gap:.7rem;align-items:flex-start;background:hsl(var(--accent)/0.08);padding:.55rem .7rem;border-radius:14px;border:1px solid hsl(var(--panel-border)/0.5);">
+      <div style="display:flex;gap:.75rem;align-items:flex-start;background:hsl(var(--accent)/0.1);padding:.6rem .75rem;border-radius:16px;border:1px solid hsl(var(--panel-border)/0.45);animation:fadeScale .5s ease;">
         <div class="status-dot ${st.cls}" style="flex-shrink:0;"></div>
-        <div style="flex:1;font-size:.65rem;">
+        <div style="flex:1;font-size:.6rem;line-height:1.3;">
           <strong>${sanitize(r.fishType)}</strong> • <span>${sanitize(r.market)}</span><br>
           <span class="muted">${formatDate(r.date)} | Org: ${r.organoleptic}</span><br>
           <span>${sanitize(r.smell)}, ${sanitize(r.texture)}, ${sanitize(r.color)}</span>
@@ -2509,19 +2988,26 @@ $all('[data-dash-filter]').forEach(btn=>{
     $all('[data-dash-filter]').forEach(b=> b.classList.remove('active'));
     btn.classList.add('active');
     state.dashRange = btn.getAttribute('data-dash-filter');
-    updateDashboard(); // Could implement range filtering
+    updateDashboard();
+    buildCharts();
   });
 });
 
 /* ====================== CHARTS ====================== */
 function buildCharts() {
-  const data = state.filteredData;
-  // Comparison per market: average organoleptic by market
-  const markets = ["Pasar Terong","Pasar Pa’baeng-baeng","Pasar Maricaya","Pasar Panakkukang"];
+  if (!document.getElementById('chartComparison')) return;
+  const base = state.myDataOnly
+    ? state.fishData.filter(r=> r.userId===state.currentUser.uid)
+    : state.fishData.slice();
+  const data = filterByDashRange(base);
+
+  // Market comparison
+  const markets = state.markets.length ? state.markets : defaultMarkets;
   const marketAvg = markets.map(m=>{
     const subset = data.filter(r=> r.market === m);
     return subset.length ? average(subset.map(r=> r.organoleptic)).toFixed(2) : 0;
   });
+  const accent = state.accent;
 
   if (!state.charts.comparison) {
     state.charts.comparison = new Chart($('#chartComparison'), {
@@ -2531,28 +3017,32 @@ function buildCharts() {
         datasets:[{
           label:'Rata-rata Skor',
           data: marketAvg,
-          backgroundColor: marketAvg.map(()=> `hsl(${state.accent}/0.6)`),
-          borderRadius:6
+          backgroundColor: marketAvg.map(()=> `hsl(${accent}/0.65)`),
+          borderRadius:8,
+          borderSkipped:false
         }]
       },
       options:{
         responsive:true,
         maintainAspectRatio:false,
+        animation:{ duration:900, easing:'easeOutQuart' },
         plugins:{ legend:{display:false} },
         scales:{
-          y:{ beginAtZero:true, suggestedMax:9 }
+          y:{ beginAtZero:true, suggestedMax:9, ticks:{ stepSize:1 } }
         }
       }
     });
   } else {
+    state.charts.comparison.data.labels = markets;
     state.charts.comparison.data.datasets[0].data = marketAvg;
+    state.charts.comparison.data.datasets[0].backgroundColor = marketAvg.map(()=> `hsl(${accent}/0.65)`);
     state.charts.comparison.update();
   }
 
-  // Trend over time (group by date)
+  // Trend
   const byDate = {};
   data.forEach(r=>{
-    const d = formatDate(r.date);
+    const d = isoDateOnly(r.date);
     if (!byDate[d]) byDate[d] = [];
     byDate[d].push(r.organoleptic);
   });
@@ -2568,15 +3058,20 @@ function buildCharts() {
           label:'Skor Rata-rata',
           data: trendValues,
           fill:false,
-          borderColor:`hsl(${state.accent}/0.9)`,
-          tension:.3,
-          pointRadius:4,
-          pointBackgroundColor:`hsl(${state.accent}/0.9)`
+          borderColor:`hsl(${accent}/0.95)`,
+          backgroundColor:`hsl(${accent}/0.95)`,
+          tension:.35,
+          pointRadius:5,
+          pointHoverRadius:7,
+          pointBackgroundColor:`hsl(${accent}/0.95)`,
+          pointBorderWidth:2,
+          pointBorderColor:'#fff'
         }]
       },
       options:{
         responsive:true,
         maintainAspectRatio:false,
+        animation:{ duration:1000, easing:'easeInOutQuart' },
         plugins:{ legend:{display:false} },
         scales:{
           y:{ beginAtZero:true, suggestedMax:9 }
@@ -2586,11 +3081,13 @@ function buildCharts() {
   } else {
     state.charts.trend.data.labels = trendLabels;
     state.charts.trend.data.datasets[0].data = trendValues;
+    state.charts.trend.data.datasets[0].borderColor = `hsl(${accent}/0.95)`;
+    state.charts.trend.data.datasets[0].pointBackgroundColor = `hsl(${accent}/0.95)`;
     state.charts.trend.update();
   }
 
-  // Pie Chart fish type proportion
-  const fishTypes = ["Ikan Kembung","Ikan Bandeng","Ikan Nila","Tuna Kecil"];
+  // Pie chart
+  const fishTypes = state.fishTypes.length ? state.fishTypes : defaultFishTypes;
   const fishCounts = fishTypes.map(f=> data.filter(r=> r.fishType===f).length);
   if (!state.charts.pie) {
     state.charts.pie = new Chart($('#chartPie'),{
@@ -2599,21 +3096,19 @@ function buildCharts() {
         labels: fishTypes,
         datasets:[{
           data: fishCounts,
-          backgroundColor: [
-            `hsl(${state.accent}/0.85)`,
-            `hsl(${state.accent}/0.6)`,
-            `hsl(${state.accent}/0.4)`,
-            `hsl(${state.accent}/0.25)`
-          ]
+          backgroundColor: fishTypes.map((_,i)=> `hsl(${accent}/${0.9 - i*0.1})`)
         }]
       },
       options:{
         responsive:true,
-        maintainAspectRatio:false
+        maintainAspectRatio:false,
+        animation:{ duration:900, easing:'easeOutCubic' }
       }
     });
   } else {
+    state.charts.pie.data.labels = fishTypes;
     state.charts.pie.data.datasets[0].data = fishCounts;
+    state.charts.pie.data.datasets[0].backgroundColor = fishTypes.map((_,i)=> `hsl(${accent}/${0.9 - i*0.1})`);
     state.charts.pie.update();
   }
 }
@@ -2624,12 +3119,10 @@ function doExportCSV(records, filename='mutu_ikan.csv') {
   const csv = toCSV(rows);
   download(filename, csv, 'text/csv;charset=utf-8;');
 }
-
 $('#btnExportCSV').addEventListener('click', ()=> doExportCSV(state.filteredData));
 $('#repExportCSV').addEventListener('click', ()=> doExportCSV(state.filteredData, 'laporan_mutu.csv'));
 
 function doExportExcel(records) {
-  // Simple Excel from HTML table approach
   const rows = generateTableData(records);
   const html = '<table>' + rows.map(r=> '<tr>' + r.map(c=> `<td>${c}</td>`).join('') + '</tr>').join('') + '</table>';
   const blob = new Blob([`\ufeff${html}`], {type:'application/vnd.ms-excel'});
@@ -2639,9 +3132,9 @@ function doExportExcel(records) {
   a.click();
   setTimeout(()=> URL.revokeObjectURL(a.href), 1500);
 }
-
 $('#btnExportExcel').addEventListener('click', ()=> doExportExcel(state.filteredData));
 
+/* ====================== LANJUTAN EXPORT PDF (yang sebelumnya terpotong) ====================== */
 async function doExportPDF(records, includeCharts=true) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF('p','pt','a4');
@@ -2651,48 +3144,54 @@ async function doExportPDF(records, includeCharts=true) {
   doc.text('Laporan Mutu Ikan Segar', margin, y); y+=20;
   doc.setFontSize(9);
   doc.text(`Tanggal Generate: ${formatDate(new Date())}`, margin, y); y+=14;
-  doc.text(`Total Data: ${records.length}`, margin, y); y+=20;
+  doc.text(`Total Data: ${records.length}`, margin, y); y+=18;
+
+  // Ringkasan mutu
+  const good = records.filter(r=> r.organoleptic>=7).length;
+  const medium = records.filter(r=> r.organoleptic>=4 && r.organoleptic<7).length;
+  const bad = records.filter(r=> r.organoleptic<4).length;
+  doc.text(`Mutu Baik: ${good} | Mutu Sedang: ${medium} | Mutu Buruk: ${bad}`, margin, y); y+=18;
 
   if (includeCharts && state.charts.comparison) {
-    // Capture chart canvases
     const charts = [
       { canvas: $('#chartComparison'), title:'Perbandingan Mutu Pasar' },
       { canvas: $('#chartTrend'), title:'Tren Skor' },
       { canvas: $('#chartPie'), title:'Proporsi Jenis Ikan' }
     ];
     for (const ch of charts) {
-      const img = ch.canvas.toDataURL('image/png', 1.0);
-      doc.setFontSize(11);
-      doc.text(ch.title, margin, y);
-      y += 8;
-      doc.addImage(img, 'PNG', margin, y, 520, 200, null, 'FAST');
-      y += 210;
-      if (y > 700) { doc.addPage(); y = margin; }
+      try {
+        const img = ch.canvas.toDataURL('image/png', 1.0);
+        doc.setFontSize(11);
+        doc.text(ch.title, margin, y);
+        y += 8;
+        doc.addImage(img, 'PNG', margin, y, 520, 200, null, 'FAST');
+        y += 210;
+        if (y > 760) { doc.addPage(); y = margin; }
+      } catch {}
     }
   }
 
-  // Table
+  // Tabel Data
   const rows = generateTableData(records);
-  doc.setFontSize(11);
-  if (y > 650) { doc.addPage(); y = margin; }
-  doc.text('Tabel Data', margin, y); y+=12;
+  doc.setFontSize(12);
+  if (y > 700) { doc.addPage(); y = margin; }
+  doc.text('Tabel Data', margin, y); y+=10;
   doc.setFontSize(7);
-
-  const colWidths = [60,60,60,50,60,60,60,50,60,40];
+  const colWidths = [55,60,60,45,60,60,50,50,60,40,30];
   let x = margin;
   doc.setFont(undefined,'bold');
-  rows[0].slice(0,10).forEach((h,i)=>{
+  rows[0].forEach((h,i)=>{
     doc.text(String(h).substring(0,15), x, y);
-    x += colWidths[i] || 50;
+    x += colWidths[i]||40;
   });
   doc.setFont(undefined,'normal');
   y+=10;
   for (let i=1;i<rows.length;i++){
     x = margin;
-    if (y > 780) { doc.addPage(); y = margin; }
-    rows[i].slice(0,10).forEach((cell,ci)=>{
+    if (y > 790) { doc.addPage(); y = margin; }
+    rows[i].forEach((cell,ci)=>{
       doc.text(String(cell).substring(0,15), x, y);
-      x += colWidths[ci] || 50;
+      x += colWidths[ci]||40;
     });
     y+=10;
   }
@@ -2701,8 +3200,6 @@ async function doExportPDF(records, includeCharts=true) {
 
 $('#btnExportPDF').addEventListener('click', ()=> doExportPDF(state.filteredData));
 $('#repExportPDF').addEventListener('click', ()=> doExportPDF(state.filteredData));
-
-$('#btnPrint, #repPrint').forEach ? null : null; // fallback if NodeList not polyfilled
 $('#btnPrint').addEventListener('click', ()=> window.print());
 $('#repPrint').addEventListener('click', ()=> window.print());
 
@@ -2723,22 +3220,22 @@ $('#btnGenerateReport').addEventListener('click', ()=>{
     toDate.setHours(23,59,59,999);
     recs = recs.filter(r=> r.date <= toDate);
   }
-
   const rows = generateTableData(recs);
   const tableHTML = `
-    <div style="font-size:.8rem;font-weight:600;margin-bottom:.5rem;">Hasil Laporan (${recs.length} data)</div>
-    <div style="overflow:auto;max-height:300px;border:1px solid hsl(var(--panel-border)/0.4);border-radius:12px;">
-      <table style="width:100%;border-collapse:collapse;font-size:.6rem;min-width:800px;">
-        <thead style="background:hsl(var(--accent)/0.25);color:#fff;">
-          <tr>${rows[0].map(h=> `<th style="padding:.4rem .5rem;text-align:left;">${h}</th>`).join('')}</tr>
+    <div style="font-size:.75rem;font-weight:600;margin-bottom:.5rem;">Hasil Laporan (${recs.length} data)</div>
+    <div style="overflow:auto;max-height:320px;border:1px solid hsl(var(--panel-border)/0.4);border-radius:14px;">
+      <table style="width:100%;border-collapse:collapse;font-size:.58rem;min-width:800px;">
+        <thead style="background:hsl(var(--accent)/0.35);color:#fff;">
+          <tr>${rows[0].map(h=> `<th style="padding:.45rem .55rem;text-align:left;">${h}</th>`).join('')}</tr>
         </thead>
         <tbody>
-          ${rows.slice(1).map(r=> `<tr>${r.map(c=> `<td style="padding:.35rem .5rem;border-bottom:1px solid hsl(var(--panel-border)/0.3);">${c}</td>`).join('')}</tr>`).join('')}
+          ${rows.slice(1).map(r=> `<tr>${r.map(c=> `<td style="padding:.4rem .55rem;border-bottom:1px solid hsl(var(--panel-border)/0.25);">${c}</td>`).join('')}</tr>`).join('')}
         </tbody>
       </table>
     </div>
   `;
   $('#reportResult').innerHTML = tableHTML;
+  feather.replace();
 });
 
 $('#btnClearReport').addEventListener('click', ()=>{
@@ -2754,9 +3251,15 @@ $('#profileForm').addEventListener('submit', async e=>{
   e.preventDefault();
   const name = $('#profName').value.trim();
   if (!name) return showAlert('profileAlert','danger','Nama wajib.');
+  const studentId = $('#profStudentId')?.value?.trim() || '';
+  const lecturerId = $('#profLecturerId')?.value?.trim() || '';
+  const officerId = $('#profOfficerId')?.value?.trim() || '';
   try {
     await db.collection('users').doc(state.currentUser.uid).update({
       name,
+      studentId,
+      lecturerId,
+      officerId,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     await state.currentUser.updateProfile({ displayName: name });
@@ -2777,6 +3280,16 @@ $('#btnSendVerifyProfile').addEventListener('click', async ()=>{
   try {
     await state.currentUser.sendEmailVerification();
     showAlert('profileAlert','success','Email verifikasi dikirim.');
+  } catch(err) {
+    showAlert('profileAlert','danger','Gagal: '+err.message);
+  }
+});
+
+$('#btnSendPasswordReset').addEventListener('click', async ()=>{
+  if (!state.userProfile?.email) return;
+  try {
+    await auth.sendPasswordResetEmail(state.userProfile.email);
+    showAlert('profileAlert','success','Email reset password dikirim.');
   } catch(err) {
     showAlert('profileAlert','danger','Gagal: '+err.message);
   }
@@ -2804,7 +3317,6 @@ $('#btnRefreshUser').addEventListener('click', async ()=>{
     showAlert('verifyAlert','success','Profil direfresh.');
   }
 });
-
 $('#btnRefreshProfile').addEventListener('click', async ()=>{
   if (state.currentUser) {
     await state.currentUser.reload();
@@ -2836,7 +3348,6 @@ $('#profilePhotoInput').addEventListener('change', async e=>{
   };
   reader.readAsDataURL(file);
 });
-
 $('#btnRemovePhoto').addEventListener('click', async ()=>{
   if (!confirm('Hapus foto profil?')) return;
   try {
@@ -2852,6 +3363,48 @@ $('#btnRemovePhoto').addEventListener('click', async ()=>{
   }
 });
 
+/* ====================== PREFERENCES DEFAULT FORM ====================== */
+$('#btnSavePreferences').addEventListener('click', async ()=>{
+  const defFish = $('#prefDefaultFish').value;
+  const defMarket = $('#prefDefaultMarket').value;
+  try {
+    await db.collection('users').doc(state.currentUser.uid).update({
+      defaultFishType: defFish || '',
+      defaultMarket: defMarket || '',
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showAlert('prefAlert','success','Preferensi disimpan.');
+    await loadUserProfile(state.currentUser.uid);
+    refreshUserUI();
+  } catch(err) {
+    showAlert('prefAlert','danger','Gagal simpan: '+err.message);
+  }
+});
+
+/* ====================== PROFILE STATS ====================== */
+function updateProfileStats() {
+  if (!state.userProfile) return;
+  const myData = state.fishData.filter(r=> r.userId === state.userProfile.id);
+  const total = myData.length;
+  const avg = total ? average(myData.map(r=> r.organoleptic)).toFixed(2) : '-';
+  const g = myData.filter(r=> r.organoleptic>=7).length;
+  const m = myData.filter(r=> r.organoleptic>=4 && r.organoleptic<7).length;
+  const b = myData.filter(r=> r.organoleptic<4).length;
+  const badges = [];
+  if (total >= 1) badges.push({icon:'check-circle', text:`${total} Input`});
+  if (g) badges.push({icon:'smile', text:`${g} Baik`});
+  if (m) badges.push({icon:'alert-triangle', text:`${m} Sedang`});
+  if (b) badges.push({icon:'x-octagon', text:`${b} Buruk`});
+  if (avg !== '-') badges.push({icon:'bar-chart-2', text:`Avg ${avg}`});
+  $('#profileStatsBadges').innerHTML = badges.map(b=> `
+    <span class="badge-soft" style="animation:fadeScale .5s;">
+      <i data-feather="${b.icon}" width="12"></i>${b.text}
+    </span>
+  `).join('') || '<span class="small muted">Belum ada statistik.</span>';
+  feather.replace();
+}
+$('#btnRefreshStats').addEventListener('click', updateProfileStats);
+
 /* ====================== ACCOUNT DELETE (DEMO) ====================== */
 $('#btnDeleteAccount').addEventListener('click', async ()=>{
   if (!confirm('Hapus profil? (Demo - tidak hapus data historis)')) return;
@@ -2864,28 +3417,12 @@ $('#btnDeleteAccount').addEventListener('click', async ()=>{
   }
 });
 
-/* ====================== LISTENERS / EVENTS ====================== */
-$('#btnExportPDF').addEventListener('click', ()=> doExportPDF(state.filteredData));
-$('#repExportPDF').addEventListener('click', ()=> doExportPDF(state.filteredData));
-
-$('#globalSearch').addEventListener('input', applyFilters);
-
-['btnExportExcel','btnExportCSV','btnExportPDF'].forEach(id=>{
-  if (!document.getElementById(id)) return;
-});
-
-['refreshCharts1','refreshCharts2','refreshCharts3'].forEach(id=>{
-  const el = document.getElementById(id);
-  if (el) el.addEventListener('click', buildCharts);
-});
-
-/* ====================== DEMO ACCOUNTS (Optional) ====================== */
+/* ====================== DEMO ACCOUNTS ====================== */
 $('#quickDemoAdmin').addEventListener('click', async ()=>{
-  showAlert('authAlert','info','Membuat akun demo admin (dummy)...');
+  showAlert('authAlert','info','Membuat / masuk akun demo admin...');
   try {
     const email = 'admin_demo@example.com';
     const pass = 'password123';
-    // Try login first
     try {
       await auth.signInWithEmailAndPassword(email, pass);
     } catch {
@@ -2894,6 +3431,11 @@ $('#quickDemoAdmin').addEventListener('click', async ()=>{
         name: 'Admin Demo',
         email,
         role: 'Admin',
+        studentId:'',
+        lecturerId:'',
+        officerId:'ADM-DEMO',
+        defaultFishType:'',
+        defaultMarket:'',
         photo:'',
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -2907,7 +3449,7 @@ $('#quickDemoAdmin').addEventListener('click', async ()=>{
 });
 
 $('#quickDemoUser').addEventListener('click', async ()=>{
-  showAlert('authAlert','info','Membuat akun demo mahasiswa (dummy)...');
+  showAlert('authAlert','info','Membuat / masuk akun demo mahasiswa...');
   try {
     const email = 'user_demo@example.com';
     const pass = 'password123';
@@ -2919,6 +3461,11 @@ $('#quickDemoUser').addEventListener('click', async ()=>{
         name: 'Mahasiswa Demo',
         email,
         role: 'Mahasiswa',
+        studentId:'D1234567',
+        lecturerId:'',
+        officerId:'',
+        defaultFishType:'',
+        defaultMarket:'',
         photo:'',
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -2938,16 +3485,15 @@ function initApp() {
   $('#dateAuto').value = nowDateInput();
   applyI18n();
   resetForm();
+  buildAccentPalette();
   feather.replace();
 }
 
 applyI18n();
 feather.replace();
-
 window.addEventListener('load', ()=> {
   setTimeout(()=> $('#loadingOverlay').style.display='none', 1200);
 });
-
 </script>
 </body>
 </html>
