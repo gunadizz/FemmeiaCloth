@@ -45,6 +45,7 @@
   --gradient-bg: radial-gradient(circle at 35% 15%, hsl(var(--accent)/0.22), transparent 70%),
     radial-gradient(circle at 85% 75%, hsl(var(--accent)/0.15), transparent 65%),
     linear-gradient(160deg, hsl(var(--accent)/0.08), transparent 70%);
+  --topbar-height: 66px;
 }
 [data-theme="light"] {
   --glass-bg: 220 40% 98%;
@@ -371,10 +372,6 @@ body.lite-mode #appModal .modal-box { backdrop-filter:none; -webkit-backdrop-fil
   to { opacity:1; transform:translateY(0); }
 }
 
-.:root {
-  --topbar-height: 66px;
-}
-
 .topbar {
   position: fixed;
   left:var(--sidebar-width);
@@ -603,7 +600,7 @@ table {
   width:100%;
   border-collapse:collapse;
   font-size:.62rem;
-  min-width:1240px;
+  min-width:1400px;
 }
 
 thead {
@@ -706,9 +703,9 @@ td {
 .toggle-chip::after {
   content:"";
   position:absolute; inset:0;
-  border-radius:inherit;
   box-shadow:0 4px 14px -5px hsl(var(--accent)/0.55);
   opacity:0;
+  border-radius:inherit;
   transition:opacity .45s;
 }
 .toggle-chip.active, .toggle-chip:hover {
@@ -881,8 +878,7 @@ footer.app {
 
 .responsive-hide { display:none; }
 
-/* Modal (konfirmasi dan info) */
-#appModal {
+#appModal, #userProfileModal {
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.55);
@@ -894,8 +890,8 @@ footer.app {
   justify-content:center;
   padding:1.5rem;
 }
-#appModal.show { display:flex; }
-#appModal .modal-box {
+#appModal.show, #userProfileModal.show { display:flex; }
+#appModal .modal-box, #userProfileModal .modal-box {
   width:100%;
   max-width:420px;
   background:linear-gradient(145deg,hsl(var(--glass-bg)/0.92),hsl(var(--glass-bg)/0.72));
@@ -919,7 +915,6 @@ footer.app {
 .modal-title { font-size:.8rem; font-weight:700; letter-spacing:.6px; display:flex; gap:.5rem; align-items:center; }
 .modal-text { font-size:.65rem; line-height:1.4; color:hsl(var(--text-dim)); }
 
-/* Detail Record Modal */
 #recordDetailModal {
   position:fixed;
   inset:0;
@@ -998,7 +993,7 @@ footer.app {
   margin-top:.35rem;
 }
 
-/* Social (Sosial) */
+/* Sosial */
 .social-container {
   display:grid;
   gap:1.2rem;
@@ -1108,7 +1103,10 @@ footer.app {
   font-size:.55rem;
   line-height:1.25;
   border:1px solid hsl(var(--panel-border)/0.55);
+  cursor:pointer;
+  transition:background .35s;
 }
+.social-user-item:hover { background:hsl(var(--accent)/0.22); }
 .social-user-item .avatar-mini {
   width:38px; height:38px;
   border-radius:14px;
@@ -1123,6 +1121,92 @@ footer.app {
 }
 .social-user-item .avatar-mini img {
   width:100%; height:100%; object-fit:cover;
+}
+
+/* Reactions & Comments */
+.social-post-reactions {
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  font-size:.55rem;
+  margin-top:.2rem;
+}
+.reaction-btn {
+  background:hsl(var(--accent)/0.22);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.3rem .55rem;
+  border-radius:14px;
+  font-size:.55rem;
+  display:inline-flex;
+  gap:.35rem;
+  align-items:center;
+  cursor:pointer;
+  font-weight:600;
+  letter-spacing:.4px;
+  transition:background .35s, transform .45s var(--ease-spring);
+}
+.reaction-btn.active {
+  background:var(--gradient-accent);
+  color:#fff;
+  box-shadow:0 6px 18px -8px hsl(var(--accent)/0.55);
+  transform:translateY(-2px);
+}
+.reaction-btn:hover { background:hsl(var(--accent)/0.32); }
+.comments-box {
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.75), hsl(var(--glass-bg)/0.60));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:18px;
+  padding:.65rem .7rem .75rem;
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  font-size:.55rem;
+  margin-top:.5rem;
+  max-height:260px;
+  overflow:auto;
+}
+.comment-item {
+  background:hsl(var(--accent)/0.16);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.45rem .55rem .5rem;
+  border-radius:14px;
+  display:flex;
+  gap:.55rem;
+  line-height:1.3;
+  position:relative;
+}
+.comment-item .del-comment-btn {
+  position:absolute;
+  top:.3rem;
+  right:.35rem;
+  background:rgba(0,0,0,.25);
+  color:#fff;
+  border:none;
+  font-size:.48rem;
+  padding:.15rem .35rem;
+  border-radius:8px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:.2rem;
+}
+.comment-form {
+  display:flex;
+  gap:.4rem;
+  flex-wrap:wrap;
+  margin-top:.35rem;
+}
+.comment-form textarea {
+  flex:1;
+  min-height:52px;
+  font-size:.55rem;
+  resize:vertical;
+}
+.comment-meta {
+  font-size:.42rem;
+  opacity:.75;
+  display:flex;
+  gap:.35rem;
 }
 
 /* Quality indicator list refined */
@@ -1265,7 +1349,6 @@ body.font-large { --font-base: 17px; }
   box-shadow:0 6px 18px -8px rgba(220,38,38,0.6);
 }
 
-/* Mobile refinement */
 @media (max-width:1080px) {
   .sidebar {
     position:fixed;
@@ -1280,12 +1363,12 @@ body.font-large { --font-base: 17px; }
   main.content { padding:1rem .9rem 2.2rem; }
 }
 @media (max-width:780px){
-  table { font-size:.56rem; min-width:1000px; }
+  table { font-size:.56rem; min-width:1100px; }
   .panel { border-radius:28px; }
   .indicators .indicator { padding:.65rem .7rem .8rem; }
 }
 @media (max-width:640px) {
-  .content { padding:.85rem .75rem 2.2rem; gap:1.4rem; }
+  .content { padding:.85rem .75rem 3.8rem; gap:1.4rem; }
   .panel { border-radius:24px; padding:1rem .95rem 1.15rem; }
   .container-auth { margin-left:13px;margin-right:13px;padding:2rem 1.25rem 2.1rem; border-radius:30px; }
   .topbar { padding:.6rem .75rem; }
@@ -1541,6 +1624,103 @@ body.font-large { --font-base: 17px; }
   gap:.35rem;
   align-items:center;
 }
+
+/* FAB */
+.fab {
+  position:fixed;
+  bottom:1.35rem;
+  right:1.25rem;
+  width:62px;
+  height:62px;
+  border-radius:22px;
+  background:var(--gradient-accent);
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-weight:700;
+  font-size:.75rem;
+  box-shadow:0 14px 36px -12px hsl(var(--accent)/0.65), 0 4px 8px -3px hsl(var(--accent)/0.5);
+  z-index:300;
+  border:1px solid hsl(var(--panel-border)/0.45);
+  cursor:pointer;
+  transition:transform .55s var(--ease-spring), box-shadow .55s;
+}
+.fab:hover {
+  transform:translateY(-6px) scale(1.04);
+}
+.fab:active {
+  transform:translateY(-1px) scale(.97);
+}
+
+/* Pagination & Selection */
+.table-footer {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  gap:.8rem;
+  margin-top:.65rem;
+  font-size:.55rem;
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.55),hsl(var(--glass-bg)/0.40));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.55rem .85rem;
+  border-radius:18px;
+}
+.table-footer select {
+  max-width:110px;
+  font-size:.55rem;
+  padding:.3rem .45rem;
+}
+.pagination-controls {
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  flex-wrap:wrap;
+}
+.pagination-controls button {
+  padding:.4rem .65rem;
+  font-size:.55rem;
+  border-radius:10px;
+}
+#selectionInfo {
+  font-weight:600;
+  letter-spacing:.4px;
+  display:flex;
+  gap:.5rem;
+  align-items:center;
+}
+.select-all-wrap {
+  display:flex;
+  align-items:center;
+  gap:.3rem;
+  font-size:.48rem;
+  font-weight:600;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+}
+
+/* User profile modal (other users) */
+#userProfileModal .modal-box {
+  max-width:480px;
+}
+.user-profile-body {
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+  font-size:.6rem;
+}
+.user-profile-body .avatar {
+  width:86px;
+  height:86px;
+  font-size:1.35rem;
+  border-radius:24px;
+}
+.user-profile-stats {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+  margin-top:.45rem;
+}
 </style>
 </head>
 <body>
@@ -1552,7 +1732,7 @@ body.font-large { --font-base: 17px; }
 
 <div id="toastContainer"></div>
 
-<!-- Modal (global confirm / info) -->
+<!-- Modal (global confirm/info) -->
 <div id="appModal" aria-hidden="true">
   <div class="modal-box">
     <div class="modal-title" id="modalTitle">
@@ -1567,6 +1747,24 @@ body.font-large { --font-base: 17px; }
       </button>
       <button class="danger small" id="modalOkBtn">
         <i data-feather="check" width="13"></i> <span id="modalOkText">Ya</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal profil pengguna lain -->
+<div id="userProfileModal" aria-hidden="true">
+  <div class="modal-box">
+    <div class="modal-title">
+      <i data-feather="user" width="18"></i>
+      <span id="userProfileModalTitle">Profil Pengguna</span>
+    </div>
+    <div id="userProfileContent" class="user-profile-body">
+      <!-- Filled dynamically -->
+    </div>
+    <div class="modal-actions">
+      <button class="outline small" id="closeUserProfileModal">
+        <i data-feather="x" width="13"></i> Tutup
       </button>
     </div>
   </div>
@@ -1744,7 +1942,6 @@ body.font-large { --font-base: 17px; }
         <i data-feather="shield" width="18"></i>
         <span data-i18n="safety">Keamanan</span>
       </button>
-      <!-- NEW: Sosial -->
       <button data-view="sosial">
         <i data-feather="users" width="18"></i>
         <span data-i18n="social">Sosial</span>
@@ -1763,7 +1960,7 @@ body.font-large { --font-base: 17px; }
         </button>
       </div>
       <div style="text-align:center;margin-top:.35rem;">
-        <span class="muted" style="font-size:.5rem;">v1.5.0 Single File • Skripsi</span>
+        <span class="muted" style="font-size:.5rem;">v1.6.0 Single File • Skripsi</span>
       </div>
     </div>
   </aside>
@@ -1965,6 +2162,12 @@ body.font-large { --font-base: 17px; }
             <table id="dataTable">
               <thead>
                 <tr>
+                  <th>
+                    <div class="select-all-wrap">
+                      <input type="checkbox" id="selectAllPage">
+                      <span>Pilih</span>
+                    </div>
+                  </th>
                   <th data-i18n="th_no">No</th>
                   <th data-i18n="th_date">Tanggal</th>
                   <th data-i18n="th_fish">Jenis Ikan</th>
@@ -1986,6 +2189,26 @@ body.font-large { --font-base: 17px; }
           <div id="dataEmptyState" class="empty-state hidden">
             <i data-feather="inbox" width="38"></i>
             <div data-i18n="empty_data">Belum ada data. Silakan input.</div>
+          </div>
+
+          <div class="table-footer">
+            <div style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;">
+              <label style="display:flex;align-items:center;gap:.35rem;">
+                <span>Per halaman</span>
+                <select id="perPageSelect">
+                  <option value="10">10</option>
+                  <option value="25" selected>25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+              <div id="selectionInfo">0 dipilih</div>
+            </div>
+            <div class="pagination-controls">
+              <button class="outline small" id="prevPage"><i data-feather="chevron-left" width="12"></i>Prev</button>
+              <span id="pageInfo" style="font-weight:700;">Hal 1/1</span>
+              <button class="outline small" id="nextPage">Next<i data-feather="chevron-right" width="12"></i></button>
+            </div>
           </div>
         </div>
       </section>
@@ -2382,7 +2605,7 @@ body.font-large { --font-base: 17px; }
             <h3><i data-feather="users" width="14"></i><span data-i18n="social_feed_title">Sosial & Aktivitas Pengguna</span></h3>
           </div>
           <p class="small" data-i18n="social_intro">
-            Bagian ini menampilkan daftar pengguna dan posting singkat (mirip feed). Anda dapat memposting update singkat.
+            Bagian ini menampilkan daftar pengguna, posting singkat, reaksi, dan komentar. Klik avatar/nama untuk melihat profil.
           </p>
           <div class="social-container">
             <div style="display:flex;flex-direction:column;gap:1rem;">
@@ -2438,12 +2661,12 @@ body.font-large { --font-base: 17px; }
             <strong>"Pengembangan Sistem Informasi Berbasis Website untuk Pencatatan dan Monitoring Mutu Ikan Segar di Pasar Tradisional Kota Makassar"</strong>.
           </p>
           <p class="small">
-            Fitur: Autentikasi Firebase, Role-based Access, CRUD Data Mutu, Dashboard Analitik, Export (CSV/Excel/PDF), Chart.js,
-            i18n, Dark/Light Mode, Glassmorphism UI, Preferensi Default, Type-in Fish & Market, Image Upload, Statistik Pengguna,
-            Toast Notifications, Pengaturan Aksen & Font, Keamanan Pangan, Detail Modal, Feed Sosial.
+            Fitur: Auth Firebase, Role-based Access, CRUD Data Mutu, Dashboard, Export, Chart.js, i18n, Dark/Light Mode, Glassmorphism,
+            Preferensi Default, Input Dinamis, Upload Gambar, Statistik, Toast, Aksen & Font, Keamanan Pangan, Detail Modal,
+            Feed Sosial + Reaksi + Komentar + Modal Profil, Pagination & Seleksi Tabel, FAB Input Cepat.
           </p>
           <p class="small">
-            Catatan Keamanan: Gunakan Firestore Security Rules untuk enforcement role di server. Kode ini hanya contoh client-side.
+            Catatan Keamanan: Gunakan Firestore Security Rules untuk enforcement role di server. Kode ini contoh client-side.
           </p>
           <details style="margin-top:1rem;">
             <summary style="cursor:pointer;font-size:.6rem;font-weight:800;letter-spacing:.5px;">Contoh Firestore Security Rules (Konseptual)</summary>
@@ -2480,8 +2703,13 @@ service cloud.firestore {
         request.auth.uid == resource.data.userId || userRole() == 'Admin'
       );
     }
-    match /metaFishTypes/{doc} { allow read: if true; allow create: if isSignedIn(); }
-    match /metaMarkets/{doc} { allow read: if true; allow create: if isSignedIn(); }
+    match /socialPosts/{p}/comments/{c} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow delete: if isSignedIn() && (
+        request.auth.uid == resource.data.userId || userRole() == 'Admin'
+      );
+    }
   }
 }
 </pre>
@@ -2497,17 +2725,22 @@ service cloud.firestore {
   </div>
 </div>
 
+<!-- Floating Action Button -->
+<button id="fabInputData" class="fab" title="Input Data">
+  <i data-feather="plus" width="22"></i>
+</button>
+
 <script>
 /* ============================================================
-   APP.JS (Refactor + Enhancements v1.5.0)
-   Tambahan:
-   - Perbaikan indikator mutu (scroll rapi, struktur grid)
-   - Modal Detail Data (lihat semua field & gambar)
-   - Halaman Sosial (feed posting + daftar pengguna)
-   - Last Login & Created At di Pengaturan
+   APP.JS (Refactor + Enhancements v1.6.0)
+   Tambahan v1.6.0:
+   - Reaksi (Like/Dislike) & Komentar Sosial
+   - Modal Profil Pengguna lain
+   - Pagination & Seleksi Tabel Data
+   - FAB tombol cepat ke Input Data
+   - Perbaikan bug minor & penataan ulang
    ============================================================ */
 
-/* ------------------ FIREBASE CONFIG ------------------ */
 const firebaseConfig = {
   apiKey: "AIzaSyAxMT-bM6FEPrD-o3I2G-VHdZP7hxhj0uo",
   authDomain: "femmeiacloth-finance.firebaseapp.com",
@@ -2522,10 +2755,8 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
-/* ------------------ GLOBAL SINGLE NAMESPACE ------------------ */
 window.App = (()=> {
 
-  /* ================== STATE ================== */
   const state = {
     currentUser: null,
     userProfile: null,
@@ -2550,17 +2781,23 @@ window.App = (()=> {
     formHazards: [],
     debounceTimers: {},
     chartBuildTimer: null,
+    table: {
+      page: 1,
+      perPage: 25,
+      selected: new Set()
+    },
     social: {
       posts: [],
       imageData: null,
       usersCache: [],
+      commentUnsubs: {},
+      openComments: new Set()
     }
   };
 
   const defaultFishTypes = ["Ikan Kembung","Ikan Bandeng","Ikan Nila","Tuna Kecil"];
   const defaultMarkets   = ["Pasar Terong","Pasar Pa’baeng-baeng","Pasar Maricaya","Pasar Panakkukang"];
 
-  /* ================== I18N ================== */
   const i18n = {
     id: {
       app_title:"Monitoring Mutu Ikan Segar", app_subtitle:"Sistem Informasi Pasar Tradisional Kota Makassar",
@@ -2643,19 +2880,25 @@ window.App = (()=> {
     }
   };
 
-  /* ================== HELPER ================== */
   const $    = sel => document.querySelector(sel);
   const $all = sel => Array.from(document.querySelectorAll(sel));
+  <!-- === LANJUTAN SCRIPT DARI BARIS TERPUTUS === -->
+
   const sanitize = s => (s||'').toString().replace(/[<>]/g,'');
   const clamp = (n,min,max)=> Math.max(min,Math.min(max,n));
-  const isoDateOnly = d => (d instanceof Date? d: new Date(d)).toISOString().split('T')[0];
+  const isoDateOnly = d => {
+    const dt = (d instanceof Date)? d : new Date(d);
+    return dt.toISOString().split('T')[0];
+  };
   const formatDate = ts => {
-    const d = ts instanceof Date ? ts : new Date(ts);
+    if(!ts) return '-';
+    const d = ts instanceof Date ? ts : (ts.toDate? ts.toDate(): new Date(ts));
     return d.toLocaleDateString(state.lang==='en'?'en-US':'id-ID',{year:'numeric',month:'2-digit',day:'2-digit'});
   };
   const formatDateTime = ts => {
-    const d = ts instanceof Date ? ts : new Date(ts);
-    return d.toLocaleString(state.lang==='en'?'en-US':'id-ID',{year:'numeric',month:'2-digit',day:'2-digit', hour:'2-digit', minute:'2-digit'});
+    if(!ts) return '-';
+    const d = ts instanceof Date ? ts : (ts.toDate? ts.toDate(): new Date(ts));
+    return d.toLocaleString(state.lang==='en'?'en-US':'id-ID',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
   };
   const average = arr => !arr.length?0: arr.reduce((a,b)=>a+b,0)/arr.length;
   const nowDateInput = ()=> new Date().toISOString().split('T')[0];
@@ -2867,13 +3110,15 @@ window.App = (()=> {
     return [header,...body];
   }
 
+  /* ===================== FILTER & PAGINATION ===================== */
   function applyFilters(){
     const fish = $('#filterFish')?.value || '';
     const market = $('#filterMarket')?.value || '';
     const date = $('#filterDate')?.value || '';
     const text = ($('#filterText')?.value || '').toLowerCase();
     const globalText = ($('#globalSearch')?.value || '').toLowerCase();
-    state.filteredData = state.fishData.filter(r=>{
+
+    let data = state.fishData.filter(r=>{
       if(state.myDataOnly && r.userId !== state.currentUser?.uid) return false;
       if(fish && r.fishType !== fish) return false;
       if(market && r.market !== market) return false;
@@ -2882,10 +3127,50 @@ window.App = (()=> {
       if(globalText && ![r.smell,r.texture,r.color,r.fishType,r.market,r.userName,(r.hazardNotes||''),(r.hazards||[]).join(' ')].some(v=> (v||'').toLowerCase().includes(globalText))) return false;
       return true;
     });
+
+    state.filteredData = data;
+    resetToFirstPage();
     renderTable();
     updateQualityList();
   }
 
+  function getPagedData(){
+    const { page, perPage } = state.table;
+    const start = (page-1)*perPage;
+    return state.filteredData.slice(start, start+perPage);
+  }
+
+  function resetToFirstPage(){
+    state.table.page = 1;
+  }
+
+  function updatePaginationInfo(){
+    const pageInfo = $('#pageInfo');
+    if(!pageInfo) return;
+    const total = state.filteredData.length;
+    const perPage = state.table.perPage;
+    const pages = Math.max(1, Math.ceil(total/perPage));
+    if(state.table.page > pages) state.table.page = pages;
+    pageInfo.textContent = `Hal ${pages?state.table.page:0}/${pages}`;
+  }
+
+  function updateSelectionInfo(){
+    const el = $('#selectionInfo');
+    if(!el) return;
+    el.textContent = `${state.table.selected.size} dipilih`;
+  }
+
+  function toggleSelectAllCurrentPage(checked){
+    const paged = getPagedData();
+    paged.forEach(r=>{
+      if(checked) state.table.selected.add(r.id);
+      else state.table.selected.delete(r.id);
+    });
+    updateSelectionInfo();
+    renderTable(); // re-render to update checkbox state
+  }
+
+  /* ===================== DYNAMIC OPTIONS ===================== */
   function populateDynamic(){
     const dFish = $('#fishTypeList');
     const dMarket = $('#marketList');
@@ -2915,11 +3200,125 @@ window.App = (()=> {
     }
   }
 
+  /* ===================== DASHBOARD TRENDS ===================== */
+  function startOfDay(d){
+    const x = new Date(d);
+    x.setHours(0,0,0,0);
+    return x;
+  }
+  function getPeriod(range, records){
+    const today = startOfDay(new Date());
+    let current = [];
+    let previous = [];
+    const dayMs = 86400000;
+
+    if(range === 'today'){
+      const yesterday = new Date(today.getTime()-dayMs);
+      current  = records.filter(r => startOfDay(r.date).getTime() === today.getTime());
+      previous = records.filter(r => startOfDay(r.date).getTime() === yesterday.getTime());
+    } else if(range === '7d'){
+      const startCurrent = new Date(today.getTime() - 6*dayMs);
+      const endCurrent   = today;
+      const endPrev      = new Date(startCurrent.getTime() - dayMs);
+      const startPrev    = new Date(endPrev.getTime() - 6*dayMs);
+      current  = records.filter(r => {
+        const d = startOfDay(r.date);
+        return d >= startCurrent && d <= endCurrent;
+      });
+      previous = records.filter(r => {
+        const d = startOfDay(r.date);
+        return d >= startPrev && d <= endPrev;
+      });
+    } else if(range === '30d'){
+      const startCurrent = new Date(today.getTime() - 29*dayMs);
+      const endCurrent   = today;
+      const endPrev      = new Date(startCurrent.getTime() - dayMs);
+      const startPrev    = new Date(endPrev.getTime() - 29*dayMs);
+      current  = records.filter(r => {
+        const d = startOfDay(r.date);
+        return d >= startCurrent && d <= endCurrent;
+      });
+      previous = records.filter(r => {
+        const d = startOfDay(r.date);
+        return d >= startPrev && d <= endPrev;
+      });
+    } else {
+      if(records.length === 0){
+        return { current:[], previous:[] };
+      }
+      const sorted = [...records].sort((a,b)=> a.date - b.date);
+      const earliest = startOfDay(sorted[0].date);
+      const latest   = startOfDay(sorted[sorted.length -1].date);
+      current = records.slice();
+      const spanDays = Math.max(1, Math.ceil((latest - earliest)/dayMs) + 1);
+      const prevEnd   = new Date(earliest.getTime() - dayMs);
+      const prevStart = new Date(prevEnd.getTime() - (spanDays-1)*dayMs);
+      previous = records.filter(r => {
+        const d = startOfDay(r.date);
+        return d >= prevStart && d <= prevEnd;
+      });
+    }
+    return { current, previous };
+  }
+  function calcTrend(curVal, prevVal){
+    if(prevVal === 0 && curVal === 0) return { value:0, text:'0%' };
+    if(prevVal === 0 && curVal > 0)   return { value:100, text:'+100%' };
+    const diffPct = ((curVal - prevVal)/prevVal)*100;
+    return {
+      value: diffPct,
+      text: (diffPct>0? '+' : '') + diffPct.toFixed(1) + '%'
+    };
+  }
+  function formatTrend(tr){
+    const v = tr.value;
+    let arrow = '▬';
+    if(v > 0.5) arrow = '▲';
+    else if(v < -0.5) arrow = '▼';
+    return `${arrow} ${tr.text}`;
+  }
+  function updateDashboard(){
+    const base = state.myDataOnly
+      ? state.fishData.filter(r=> r.userId === state.currentUser?.uid)
+      : state.fishData.slice();
+
+    const { current, previous } = getPeriod(state.dashRange, base);
+
+    const totalCur = current.length;
+    const totalPrev= previous.length;
+    const avgCur = totalCur ? average(current.map(r=> r.organoleptic)) : 0;
+    const avgPrev= totalPrev ? average(previous.map(r=> r.organoleptic)) : 0;
+    const goodCur = current.filter(r=> r.organoleptic >= 7).length;
+    const goodPrev= previous.filter(r=> r.organoleptic >= 7).length;
+    const warnCur = current.filter(r=> r.organoleptic >= 4 && r.organoleptic < 7).length;
+    const warnPrev= previous.filter(r=> r.organoleptic >= 4 && r.organoleptic < 7).length;
+    const badCur  = current.filter(r=> r.organoleptic < 4).length;
+    const badPrev = previous.filter(r=> r.organoleptic < 4).length;
+    const hazCur  = current.filter(r=> (r.hazards||[]).length).length;
+    const hazPrev = previous.filter(r=> (r.hazards||[]).length).length;
+
+    setText('#indTotal', totalCur);
+    setText('#indAvg', totalCur ? avgCur.toFixed(2) : '-');
+    setText('#indGood', goodCur);
+    setText('#indWarn', warnCur);
+    setText('#indBad', badCur);
+    setText('#indHazard', hazCur);
+
+    setText('#indTotalTrend', formatTrend(calcTrend(totalCur,totalPrev)));
+    setText('#indAvgTrend',   formatTrend(calcTrend(avgCur,avgPrev)));
+    setText('#indGoodTrend',  formatTrend(calcTrend(goodCur,goodPrev)));
+    setText('#indWarnTrend',  formatTrend(calcTrend(warnCur,warnPrev)));
+    setText('#indBadTrend',   formatTrend(calcTrend(badCur,badPrev)));
+    setText('#indHazardTrend',formatTrend(calcTrend(hazCur,hazPrev)));
+  }
+
+  function setText(sel,val){ const el=$(sel); if(el) el.textContent=val; }
+  function setVal(sel,val){ const el=$(sel); if(el) el.value=val; }
+  function setHTML(sel, html){ const el=$(sel); if(el) el.innerHTML=html; }
+
   function rebuildCharts(){
     clearTimeout(state.chartBuildTimer);
     state.chartBuildTimer = setTimeout(buildCharts, 250);
   }
-
   function filterByDashRange(records){
     const now = new Date();
     if(state.dashRange==='today') return records.filter(r=> isoDateOnly(r.date)===isoDateOnly(now));
@@ -2934,143 +3333,6 @@ window.App = (()=> {
     return records;
   }
 
-
-// ====== Tambahkan HELPER baru (letakkan dekat kumpulan helper lain) ======
-function startOfDay(d){
-  const x = new Date(d);
-  x.setHours(0,0,0,0);
-  return x;
-}
-
-function getPeriod(range, records){
-  // records: array berisi { date: Date, organoleptic, hazards, ... }
-  const today = startOfDay(new Date());
-  let current = [];
-  let previous = [];
-
-  const dayMs = 86400000;
-
-  if(range === 'today'){
-    const yesterday = new Date(today.getTime()-dayMs);
-    current  = records.filter(r => startOfDay(r.date).getTime() === today.getTime());
-    previous = records.filter(r => startOfDay(r.date).getTime() === yesterday.getTime());
-  } else if(range === '7d'){
-    // 7 hari termasuk hari ini: (today -6) .. today
-    const startCurrent = new Date(today.getTime() - 6*dayMs);
-    const endCurrent   = today;
-    const endPrev      = new Date(startCurrent.getTime() - dayMs);
-    const startPrev    = new Date(endPrev.getTime() - 6*dayMs);
-    current  = records.filter(r => {
-      const d = startOfDay(r.date);
-      return d >= startCurrent && d <= endCurrent;
-    });
-    previous = records.filter(r => {
-      const d = startOfDay(r.date);
-      return d >= startPrev && d <= endPrev;
-    });
-  } else if(range === '30d'){
-    const startCurrent = new Date(today.getTime() - 29*dayMs);
-    const endCurrent   = today;
-    const endPrev      = new Date(startCurrent.getTime() - dayMs);
-    const startPrev    = new Date(endPrev.getTime() - 29*dayMs);
-    current  = records.filter(r => {
-      const d = startOfDay(r.date);
-      return d >= startCurrent && d <= endCurrent;
-    });
-    previous = records.filter(r => {
-      const d = startOfDay(r.date);
-      return d >= startPrev && d <= endPrev;
-    });
-  } else { // 'all'
-    if(records.length === 0){
-      return { current:[], previous:[] };
-    }
-    // Ambil earliest & latest
-    const sorted = [...records].sort((a,b)=> a.date - b.date);
-    const earliest = startOfDay(sorted[0].date);
-    const latest   = startOfDay(sorted[sorted.length -1].date);
-    current = records.slice(); // semua
-    const spanDays = Math.max(1, Math.ceil((latest - earliest)/dayMs) + 1);
-    const prevEnd   = new Date(earliest.getTime() - dayMs);
-    const prevStart = new Date(prevEnd.getTime() - (spanDays-1)*dayMs);
-    previous = records.filter(r => {
-      const d = startOfDay(r.date);
-      return d >= prevStart && d <= prevEnd;
-    });
-  }
-  return { current, previous };
-}
-
-function calcTrend(curVal, prevVal){
-  if(prevVal === 0 && curVal === 0) return { value:0, text:'0%' };
-  if(prevVal === 0 && curVal > 0)   return { value:100, text:'+100%' };
-  const diffPct = ((curVal - prevVal)/prevVal)*100;
-  return {
-    value: diffPct,
-    text: (diffPct>0? '+' : '') + diffPct.toFixed(1) + '%'
-  };
-}
-
-function formatTrend(tr){
-  const v = tr.value;
-  let arrow = '▬';
-  if(v > 0.5) arrow = '▲';
-  else if(v < -0.5) arrow = '▼';
-  return `${arrow} ${tr.text}`;
-}
-
-// ====== GANTI fungsi updateDashboard lama dengan yang baru ======
-function updateDashboard(){
-  const base = App.state.myDataOnly
-    ? App.state.fishData.filter(r=> r.userId === App.state.currentUser?.uid)
-    : App.state.fishData.slice();
-
-  const { current, previous } = getPeriod(App.state.dashRange, base);
-
-  // --- Metrik saat ini ---
-  const totalCur = current.length;
-  const totalPrev= previous.length;
-
-  const avgCur = totalCur ? average(current.map(r=> r.organoleptic)) : 0;
-  const avgPrev= totalPrev ? average(previous.map(r=> r.organoleptic)) : 0;
-
-  const goodCur = current.filter(r=> r.organoleptic >= 7).length;
-  const goodPrev= previous.filter(r=> r.organoleptic >= 7).length;
-
-  const warnCur = current.filter(r=> r.organoleptic >= 4 && r.organoleptic < 7).length;
-  const warnPrev= previous.filter(r=> r.organoleptic >= 4 && r.organoleptic < 7).length;
-
-  const badCur  = current.filter(r=> r.organoleptic < 4).length;
-  const badPrev = previous.filter(r=> r.organoleptic < 4).length;
-
-  const hazCur  = current.filter(r=> (r.hazards||[]).length).length;
-  const hazPrev = previous.filter(r=> (r.hazards||[]).length).length;
-
-  // --- Set nilai dasar ---
-  setText('#indTotal', totalCur);
-  setText('#indAvg', totalCur ? avgCur.toFixed(2) : '-');
-  setText('#indGood', goodCur);
-  setText('#indWarn', warnCur);
-  setText('#indBad', badCur);
-  setText('#indHazard', hazCur);
-
-  // --- Hitung tren ---
-  const tTotal = calcTrend(totalCur, totalPrev);
-  const tAvg   = calcTrend(avgCur, avgPrev);
-  const tGood  = calcTrend(goodCur, goodPrev);
-  const tWarn  = calcTrend(warnCur, warnPrev);
-  const tBad   = calcTrend(badCur, badPrev);
-  const tHaz   = calcTrend(hazCur, hazPrev);
-
-  setText('#indTotalTrend', formatTrend(tTotal));
-  setText('#indAvgTrend',   formatTrend(tAvg));
-  setText('#indGoodTrend',  formatTrend(tGood));
-  setText('#indWarnTrend',  formatTrend(tWarn));
-  setText('#indBadTrend',   formatTrend(tBad));
-  setText('#indHazardTrend',formatTrend(tHaz));
-}
-
-
   function buildCharts(){
     if(!$('#chartComparison')) return;
     const accent = state.accent;
@@ -3079,7 +3341,6 @@ function updateDashboard(){
       : state.fishData.slice();
     const data = filterByDashRange(base);
 
-    /* Comparison */
     const markets = state.markets.length? state.markets: defaultMarkets;
     const marketAvg = markets.map(m=>{
       const subset = data.filter(r=> r.market===m);
@@ -3107,7 +3368,6 @@ function updateDashboard(){
       state.charts.comparison.update();
     }
 
-    /* Trend */
     const byDate = {};
     data.forEach(r=>{
       const d = isoDateOnly(r.date);
@@ -3140,7 +3400,6 @@ function updateDashboard(){
       state.charts.trend.update();
     }
 
-    /* Pie */
     const fishTypes = state.fishTypes.length? state.fishTypes: defaultFishTypes;
     const fishCounts = fishTypes.map(f=> data.filter(r=> r.fishType===f).length);
     if(!state.charts.pie){
@@ -3163,6 +3422,7 @@ function updateDashboard(){
     }
   }
 
+  /* ===================== QUALITY LIST ===================== */
   function updateQualityList(){
     const container = $('#qualityIndicatorList');
     if(!container) return;
@@ -3206,7 +3466,7 @@ function updateDashboard(){
     });
   }
 
-  /* DETAIL MODAL */
+  /* ===================== DETAIL DATA MODAL ===================== */
   function openRecordDetail(id){
     const rec = state.fishData.find(r=> r.id===id);
     if(!rec) return toast('Data tidak ditemukan','warn');
@@ -3265,7 +3525,7 @@ function updateDashboard(){
       </div>
       <div>
         <span class="detail-label">Updated</span>
-        <span>${rec.updatedAt? formatDateTime(rec.updatedAt.toDate? rec.updatedAt.toDate(): rec.updatedAt):'-'}</span>
+        <span>${rec.updatedAt? formatDateTime(rec.updatedAt):'-'}</span>
       </div>
     `;
 
@@ -3294,17 +3554,26 @@ function updateDashboard(){
     if(e.target.id==='recordDetailModal') e.currentTarget.classList.remove('show');
   });
 
-  /* Table rendering */
+  /* ===================== TABLE RENDER ===================== */
   function renderTable(){
     const tbody = $('#dataTableBody');
     if(!tbody) return;
     tbody.innerHTML='';
     const role = state.userProfile?.role || 'Mahasiswa';
+
     if(!state.filteredData.length){
       $('#dataEmptyState')?.classList.remove('hidden');
     } else $('#dataEmptyState')?.classList.add('hidden');
 
-    state.filteredData.forEach((r,i)=>{
+    updatePaginationInfo();
+
+    const pageData = getPagedData();
+
+    const allOnPageSelected = pageData.every(r=> state.table.selected.has(r.id)) && pageData.length>0;
+    const selectAllPageCb = $('#selectAllPage');
+    if(selectAllPageCb) selectAllPageCb.checked = allOnPageSelected;
+
+    pageData.forEach((r,i)=>{
       const st = computeQualityStatus(r.organoleptic);
       const safety = computeSafetyStatus(r);
       const canEdit = (r.userId===state.currentUser?.uid) || ['Admin','Petugas Pasar'].includes(role);
@@ -3313,8 +3582,12 @@ function updateDashboard(){
         ? `<span class="hazard-badge safe"><i data-feather="shield" width="10"></i>Aman</span>`
         : `<span class="hazard-badge"><i data-feather="alert-triangle" width="10"></i>Perhatian</span>`;
       const tr = document.createElement('tr');
+      const globalIndex = (state.table.page-1)*state.table.perPage + i + 1;
       tr.innerHTML = `
-        <td>${i+1}</td>
+        <td>
+          <input type="checkbox" data-row-select="${r.id}" ${state.table.selected.has(r.id)?'checked':''} />
+        </td>
+        <td>${globalIndex}</td>
         <td>${formatDate(r.date)}</td>
         <td>${sanitize(r.fishType)}</td>
         <td>${sanitize(r.market)}</td>
@@ -3333,7 +3606,7 @@ function updateDashboard(){
             <span style="font-size:.5rem;font-weight:700;">${st.label}</span>
           </div>
         </td>
-        <td style="font-size:.5rem;">
+        <td style="font-size:.5rem;cursor:pointer;" data-open-user="${r.userId}" title="Lihat Profil">
           ${sanitize(r.userName)}<br><span class="muted">${r.userId.substring(0,6)}...</span>
         </td>
         <td>
@@ -3352,12 +3625,28 @@ function updateDashboard(){
       }
       tbody.appendChild(tr);
     });
+
     feather.replace();
 
     $all('[data-edit]').forEach(btn=> btn.onclick = ()=> enterEdit(btn.getAttribute('data-edit')));
     $all('[data-del]').forEach(btn=> btn.onclick = ()=> confirmDelete(btn.getAttribute('data-del')));
     $all('[data-view-img]').forEach(btn=> btn.onclick = ()=> viewImage(btn.getAttribute('data-view-img')));
     $all('[data-detail]').forEach(btn=> btn.onclick = ()=> openRecordDetail(btn.getAttribute('data-detail')));
+    $all('[data-row-select]').forEach(cb=>{
+      cb.addEventListener('change', ()=>{
+        const id = cb.getAttribute('data-row-select');
+        if(cb.checked) state.table.selected.add(id);
+        else state.table.selected.delete(id);
+        updateSelectionInfo();
+      });
+    });
+    $all('[data-open-user]').forEach(cell=>{
+      cell.addEventListener('click', ()=>{
+        openOtherUserProfile(cell.getAttribute('data-open-user'));
+      });
+    });
+
+    updateSelectionInfo();
   }
 
   function enterEdit(id){
@@ -3396,6 +3685,8 @@ function updateDashboard(){
         try{
           await db.collection('fishQuality').doc(id).delete();
           toast('Data dihapus','success');
+          state.table.selected.delete(id);
+          updateSelectionInfo();
         }catch(err){
           toast('Gagal hapus','danger');
         }
@@ -3415,7 +3706,7 @@ function updateDashboard(){
         <div style="background:#fff;max-width:92%;max-height:90%;border-radius:20px;position:relative;padding:1rem 1.2rem 1.2rem;display:flex;flex-direction:column;gap:.6rem;">
           <button id="closeImgModal" class="outline small" style="position:absolute;top:.5rem;right:.5rem;"><i data-feather="x" width="14"></i></button>
           <div style="font-size:.6rem;font-weight:700;letter-spacing:.5px;">Gambar</div>
-          <img id="imgModalPic" src="${rec.image}" style="max-width:100%;max-height:70vh;border-radius:10px;object-fit:contain;">
+            <img id="imgModalPic" src="${rec.image}" style="max-width:100%;max-height:70vh;border-radius:10px;object-fit:contain;">
           <div id="imgModalCaption" style="font-size:.55rem;opacity:.7;">${sanitize(rec.fishType)} - ${sanitize(rec.market)}</div>
         </div>
       `;
@@ -3445,10 +3736,7 @@ function updateDashboard(){
     setVal('#dateAuto', nowDateInput());
   }
 
-  function setVal(sel,val){ const el=$(sel); if(el) el.value=val; }
-  function setText(sel,val){ const el=$(sel); if(el) el.textContent=val; }
-
-  /* ================== FIRESTORE / METADATA ================== */
+  /* ===================== FIRESTORE: USER PROFILE ===================== */
   async function loadUserProfile(uid){
     const doc = await db.collection('users').doc(uid).get();
     if(doc.exists){
@@ -3496,15 +3784,16 @@ function updateDashboard(){
         const oldIds = new Set(state.fishData.map(r=> r.id));
         state.fishData = snap.docs.map(d=>{
           const data = d.data();
-          return {
-            id: d.id,
-            ...data,
-            hazards: data.hazards || [],
-            hazardNotes: data.hazardNotes || '',
-            date: data.date
-              ? (data.date.toDate ? data.date.toDate(): data.date)
-              : (data.createdAt? data.createdAt.toDate(): new Date())
-          };
+            return {
+              id: d.id,
+              ...data,
+              hazards: data.hazards || [],
+              hazardNotes: data.hazardNotes || '',
+              date: data.date
+                ? (data.date.toDate ? data.date.toDate(): data.date)
+                : (data.createdAt? (data.createdAt.toDate? data.createdAt.toDate(): data.createdAt): new Date()),
+              updatedAt: data.updatedAt? (data.updatedAt.toDate? data.updatedAt.toDate(): data.updatedAt): null
+            };
         });
         snap.docChanges().forEach(ch=>{
           if(ch.type==='added' && !oldIds.has(ch.doc.id)){
@@ -3517,12 +3806,12 @@ function updateDashboard(){
       });
   }
 
-  /* ============ SOSIAL (Feed) ============ */
+  /* ===================== SOSIAL: POSTS, REACTIONS, COMMENTS ===================== */
   function subscribeSocial(){
     if(state.metadataUnsub.social) state.metadataUnsub.social();
     state.metadataUnsub.social = db.collection('socialPosts')
       .orderBy('createdAt','desc')
-      .limit(150)
+      .limit(200)
       .onSnapshot(snap=>{
         state.social.posts = snap.docs.map(d=> ({ id:d.id, ...d.data() }));
         renderSocialFeed();
@@ -3539,7 +3828,7 @@ function updateDashboard(){
     const wrap = $('#socialUsersList');
     if(!wrap) return;
     wrap.innerHTML = state.social.usersCache.map(u=> `
-      <div class="social-user-item">
+      <div class="social-user-item" data-view-user="${u.id}" title="Klik untuk lihat profil">
         <div class="avatar-mini">
           ${u.photo? `<img src="${u.photo}" alt="">` : sanitize((u.name||'U').substring(0,1).toUpperCase())}
         </div>
@@ -3552,6 +3841,10 @@ function updateDashboard(){
         </div>
       </div>
     `).join('') || '<div class="small muted">Tidak ada pengguna.</div>';
+    feather.replace();
+    $all('[data-view-user]').forEach(el=>{
+      el.addEventListener('click', ()=> openOtherUserProfile(el.getAttribute('data-view-user')));
+    });
   }
 
   function renderSocialFeed(){
@@ -3564,12 +3857,18 @@ function updateDashboard(){
       return;
     }
     empty?.classList.add('hidden');
+
     feed.innerHTML = state.social.posts.map(p=>{
-      const canDel = state.currentUser && (p.userId===state.currentUser.uid || state.userProfile?.role==='Admin');
+      const likes = (p.likes||[]).length;
+      const dislikes = (p.dislikes||[]).length;
+      const userLiked = state.currentUser && (p.likes||[]).includes(state.currentUser.uid);
+      const userDisliked = state.currentUser && (p.dislikes||[]).includes(state.currentUser.uid);
+      const commentsOpen = state.social.openComments.has(p.id);
+      const commentCount = p.commentCount || 0;
       return `
         <div class="social-post" data-post-id="${p.id}">
           <div class="social-post-header">
-            <div style="display:flex;align-items:center;gap:.45rem;">
+            <div style="display:flex;align-items:center;gap:.45rem;cursor:pointer;" data-view-user="${p.userId}">
               <div style="width:34px;height:34px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,hsl(var(--accent)/0.3),hsl(var(--accent)/0.5));display:grid;place-items:center;font-size:.65rem;color:#fff;font-weight:700;">
                 ${p.userPhoto? `<img src="${p.userPhoto}" style="width:100%;height:100%;object-fit:cover;">` : sanitize((p.userName||'U').substring(0,1).toUpperCase())}
               </div>
@@ -3578,27 +3877,51 @@ function updateDashboard(){
                 <div style="font-size:.45rem;opacity:.75;">${sanitize(p.userRole||'')}</div>
               </div>
             </div>
-            <div class="social-post-time">${p.createdAt? formatDateTime(p.createdAt.toDate? p.createdAt.toDate(): p.createdAt): ''}</div>
+            <div class="social-post-time">${p.createdAt? formatDateTime(p.createdAt): ''}</div>
           </div>
           <div class="social-post-content">${sanitize(p.content||'')}</div>
           ${p.image? `<img class="social-post-image" src="${p.image}" alt="post-img">`:''}
-          <div class="social-post-actions">
-            <button class="outline small" data-open-detail-post="${p.refRecordId||''}" ${p.refRecordId?'':'disabled'} style="${p.refRecordId?'':'opacity:.4;cursor:not-allowed;'}">
-              <i data-feather="file-text" width="11"></i>${state.lang==='en'?'Data':'Data'}
+          <div class="social-post-reactions">
+            <button class="reaction-btn ${userLiked?'active':''}" data-like="${p.id}">
+              👍 <span>${likes}</span>
             </button>
-            ${canDel? `<button class="outline danger small" data-del-post="${p.id}"><i data-feather="trash" width="11"></i></button>`:''}
+            <button class="reaction-btn ${userDisliked?'active':''}" data-dislike="${p.id}">
+              👎 <span>${dislikes}</span>
+            </button>
+            <button class="reaction-btn" data-toggle-comments="${p.id}">
+              💬 <span>${commentCount}</span>
+            </button>
+            <button class="reaction-btn" data-open-detail-post="${p.refRecordId||''}" ${p.refRecordId?'':'disabled'} style="${p.refRecordId?'':'opacity:.4;cursor:not-allowed;'}">
+              <i data-feather="file-text" width="11"></i>
+            </button>
+            ${(state.currentUser && (p.userId===state.currentUser.uid || state.userProfile?.role==='Admin')) ?
+              `<button class="reaction-btn" data-del-post="${p.id}" style="background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;">
+                 <i data-feather="trash" width="11"></i>
+               </button>` : ''
+            }
           </div>
+          <div id="comments_${p.id}" class="${commentsOpen?'':'hidden'}"></div>
         </div>
       `;
     }).join('');
     feather.replace();
+
+    // Bind profile view
+    $all('[data-view-user]').forEach(el=>{
+      el.addEventListener('click', e=>{
+        e.stopPropagation();
+        openOtherUserProfile(el.getAttribute('data-view-user'));
+      });
+    });
+
+    // Delete post
     $all('[data-del-post]').forEach(b=>{
-      b.onclick = ()=> {
+      b.onclick = ()=>{
         const id = b.getAttribute('data-del-post');
         Modal.open({
           title:'Hapus Post',
           message:'Yakin hapus posting ini?',
-            icon:'trash',
+          icon:'trash',
           confirmText:'Hapus',
           onConfirm: async ()=>{
             try{
@@ -3611,12 +3934,189 @@ function updateDashboard(){
         });
       };
     });
+    // Open record detail link
     $all('[data-open-detail-post]').forEach(b=>{
       b.onclick = ()=>{
         const rid = b.getAttribute('data-open-detail-post');
         if(rid) openRecordDetail(rid);
       };
     });
+    // Like / dislike
+    $all('[data-like]').forEach(btn=>{
+      btn.onclick = ()=> toggleReaction(btn.getAttribute('data-like'),'like');
+    });
+    $all('[data-dislike]').forEach(btn=>{
+      btn.onclick = ()=> toggleReaction(btn.getAttribute('data-dislike'),'dislike');
+    });
+    // Comments toggle
+    $all('[data-toggle-comments]').forEach(btn=>{
+      btn.onclick = ()=> toggleCommentsBox(btn.getAttribute('data-toggle-comments'));
+    });
+
+    // Render already open comments
+    state.social.openComments.forEach(id=> renderCommentsBox(id));
+  }
+
+  async function toggleReaction(postId, type){
+    if(!state.currentUser) return toast('Harus login','warn');
+    const ref = db.collection('socialPosts').doc(postId);
+    try{
+      await db.runTransaction(async tx=>{
+        const snap = await tx.get(ref);
+        if(!snap.exists) return;
+        const data = snap.data();
+        const uid = state.currentUser.uid;
+        let likes = data.likes||[];
+        let dislikes = data.dislikes||[];
+        if(type==='like'){
+          if(likes.includes(uid)){
+            likes = likes.filter(x=> x!==uid);
+          } else {
+            likes.push(uid);
+            dislikes = dislikes.filter(x=> x!==uid);
+          }
+        } else {
+          if(dislikes.includes(uid)){
+            dislikes = dislikes.filter(x=> x!==uid);
+          } else {
+            dislikes.push(uid);
+            likes = likes.filter(x=> x!==uid);
+          }
+        }
+        tx.update(ref,{ likes, dislikes });
+      });
+    }catch(err){
+      toast('Gagal reaksi','danger');
+    }
+  }
+
+  function toggleCommentsBox(postId){
+    if(state.social.openComments.has(postId)){
+      state.social.openComments.delete(postId);
+      unsubscribeComments(postId);
+      renderSocialFeed(); // re-render hides box
+    } else {
+      state.social.openComments.add(postId);
+      renderSocialFeed(); // will show container
+      subscribeComments(postId);
+    }
+  }
+
+  function subscribeComments(postId){
+    unsubscribeComments(postId);
+    const ref = db.collection('socialPosts').doc(postId).collection('comments').orderBy('createdAt','asc');
+    const unsub = ref.onSnapshot(snap=>{
+      const comments = snap.docs.map(d=> ({ id:d.id, ...d.data() }));
+      renderComments(postId, comments);
+      // update commentCount in post doc
+      db.collection('socialPosts').doc(postId).update({ commentCount: comments.length }).catch(()=>{});
+    });
+    state.social.commentUnsubs[postId] = unsub;
+  }
+
+  function unsubscribeComments(postId){
+    if(state.social.commentUnsubs[postId]){
+      state.social.commentUnsubs[postId]();
+      delete state.social.commentUnsubs[postId];
+    }
+  }
+
+  function renderCommentsBox(postId){
+    // Called after re-render feed
+    subscribeComments(postId);
+  }
+
+  function renderComments(postId, comments){
+    const box = $('#comments_'+postId);
+    if(!box) return;
+    const canComment = !!state.currentUser;
+    box.classList.remove('hidden');
+    box.innerHTML = `
+      <div class="comments-box">
+        <div style="font-size:.52rem;font-weight:700;letter-spacing:.4px;display:flex;align-items:center;gap:.4rem;">
+          <i data-feather="message-square" width="11"></i> Komentar
+        </div>
+        <div id="commentList_${postId}" style="display:flex;flex-direction:column;gap:.45rem;">
+          ${
+            comments.map(c=> {
+              const own = state.currentUser && c.userId===state.currentUser.uid;
+              const canDel = own || state.userProfile?.role==='Admin';
+              return `
+                <div class="comment-item">
+                  <div style="width:28px;height:28px;border-radius:9px;overflow:hidden;background:linear-gradient(135deg,hsl(var(--accent)/0.3),hsl(var(--accent)/0.5));display:grid;place-items:center;font-size:.55rem;color:#fff;font-weight:700;">
+                    ${c.userPhoto? `<img src="${c.userPhoto}" style="width:100%;height:100%;object-fit:cover;">` : sanitize((c.userName||'U').substring(0,1).toUpperCase())}
+                  </div>
+                  <div style="flex:1;">
+                    <div style="font-weight:700;font-size:.52rem;">${sanitize(c.userName||'')}</div>
+                    <div style="font-size:.55rem;line-height:1.35;margin-top:.15rem;white-space:pre-wrap;">${sanitize(c.content||'')}</div>
+                    <div class="comment-meta">
+                      <span>${c.createdAt? formatDateTime(c.createdAt):''}</span>
+                    </div>
+                  </div>
+                  ${canDel? `<button class="del-comment-btn" data-del-comment="${postId}|${c.id}" title="Hapus"><i data-feather="x" width="10"></i></button>`:''}
+                </div>
+              `;
+            }).join('')
+          }
+          ${comments.length===0? `<div class="small muted" style="text-align:center;">Belum ada komentar.</div>`:''}
+        </div>
+        ${canComment? `
+          <form class="comment-form" data-comment-form="${postId}">
+            <textarea placeholder="Tulis komentar..." maxlength="400" required></textarea>
+            <button class="outline small" type="submit" style="align-self:flex-end;">
+              <i data-feather="send" width="11"></i>
+            </button>
+          </form>
+        `: `<div class="small muted">Login untuk berkomentar.</div>`}
+      </div>
+    `;
+    feather.replace();
+
+    // Bind delete comment
+    $all('[data-del-comment]').forEach(btn=>{
+      btn.onclick = ()=>{
+        const [pid,cid] = btn.getAttribute('data-del-comment').split('|');
+        Modal.open({
+          title:'Hapus Komentar',
+          message:'Yakin menghapus komentar?',
+          icon:'trash',
+          confirmText:'Hapus',
+          onConfirm: async ()=>{
+            try{
+              await db.collection('socialPosts').doc(pid).collection('comments').doc(cid).delete();
+              toast('Komentar dihapus','success');
+            }catch{
+              toast('Gagal hapus komentar','danger');
+            }
+          }
+        });
+      };
+    });
+
+    // Bind add comment
+    const form = box.querySelector(`[data-comment-form="${postId}"]`);
+    if(form){
+      form.onsubmit = async e=>{
+        e.preventDefault();
+        if(!state.currentUser) return toast('Login dulu','warn');
+        const ta = form.querySelector('textarea');
+        const content = ta.value.trim();
+        if(!content) return;
+        try{
+          await db.collection('socialPosts').doc(postId).collection('comments').add({
+            content,
+            userId: state.userProfile.id,
+            userName: state.userProfile.name,
+            userPhoto: state.userProfile.photo || '',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          ta.value='';
+          toast('Komentar ditambahkan','success');
+        }catch{
+          toast('Gagal komentar','danger');
+        }
+      };
+    }
   }
 
   function bindSocialForm(){
@@ -3655,7 +4155,10 @@ function updateDashboard(){
           userName: state.userProfile.name,
           userRole: state.userProfile.role,
           userPhoto: state.userProfile.photo || '',
-          refRecordId: '', // bisa diisi kalau suatu saat ingin referensi data mutu
+          refRecordId: '',
+          likes:[],
+          dislikes:[],
+          commentCount:0,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
         $('#socialPostContent').value='';
@@ -3670,6 +4173,49 @@ function updateDashboard(){
     });
   }
 
+  /* ===================== OTHER USER PROFILE MODAL ===================== */
+  async function openOtherUserProfile(uid){
+    if(!uid) return;
+    try{
+      const doc = await db.collection('users').doc(uid).get();
+      if(!doc.exists) return toast('User tidak ditemukan','warn');
+      const u = doc.data();
+      const modal = $('#userProfileModal');
+      const c = $('#userProfileContent');
+      c.innerHTML = `
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+          <div class="avatar" style="width:86px;height:86px;border-radius:24px;font-size:1.6rem;">
+            ${u.photo? `<img src="${u.photo}" alt="pfp" style="object-fit:cover;width:100%;height:100%;">`: sanitize((u.name||'U').substring(0,1).toUpperCase())}
+          </div>
+          <div style="flex:1;min-width:150px;">
+            <div style="font-size:.85rem;font-weight:700;letter-spacing:.5px;">${sanitize(u.name||'')}</div>
+            <div style="font-size:.55rem;opacity:.8;margin-top:.2rem;">${sanitize(u.email||'')}</div>
+            <div style="margin-top:.4rem;">
+              <span class="badge-role" style="background:hsl(var(--accent)/0.45)">${sanitize(u.role||'')}</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:.55rem;display:flex;flex-direction:column;gap:.35rem;margin-top:.4rem;">
+          <div><strong>Created:</strong> ${u.createdAt? formatDateTime(u.createdAt):'-'}</div>
+          <div><strong>Last Login:</strong> ${u.lastLogin? formatDateTime(u.lastLogin):'-'}</div>
+          ${u.studentId? `<div><strong>NIM:</strong> ${sanitize(u.studentId)}</div>`:''}
+          ${u.lecturerId? `<div><strong>NIP:</strong> ${sanitize(u.lecturerId)}</div>`:''}
+          ${u.officerId? `<div><strong>ID Petugas:</strong> ${sanitize(u.officerId)}</div>`:''}
+          <div><strong>Email Verified:</strong> ${u.emailVerified?'Ya':'Belum'}</div>
+        </div>
+      `;
+      modal.classList.add('show');
+      feather.replace();
+    }catch{
+      toast('Gagal memuat profil','danger');
+    }
+  }
+  $('#closeUserProfileModal')?.addEventListener('click', ()=> $('#userProfileModal')?.classList.remove('show'));
+  $('#userProfileModal')?.addEventListener('click', e=>{
+    if(e.target.id==='userProfileModal') e.currentTarget.classList.remove('show');
+  });
+
+  /* ===================== ADDING NEW FISH/MARKET META ===================== */
   async function addNewFishType(name){
     name = (name||'').trim();
     if(!name || state.fishTypes.includes(name)) return;
@@ -3754,12 +4300,11 @@ function updateDashboard(){
       setVal('#studentNIMForm', u.studentId||'');
     } else toggle('#studentFieldWrapper', true);
 
-    // last login & created
     if($('#lastLoginField')) $('#lastLoginField').value = u.lastLogin
-      ? formatDateTime(u.lastLogin.toDate? u.lastLogin.toDate(): u.lastLogin)
+      ? formatDateTime(u.lastLogin)
       : '-';
     if($('#createdAtField')) $('#createdAtField').value = u.createdAt
-      ? formatDateTime(u.createdAt.toDate? u.createdAt.toDate(): u.createdAt)
+      ? formatDateTime(u.createdAt)
       : '-';
 
     populateDynamic();
@@ -3788,7 +4333,7 @@ function updateDashboard(){
       const u = d.data();
       return `
         <div style="display:flex;align-items:center;gap:.55rem;background:hsl(var(--accent)/0.12);padding:.5rem .55rem;border:1px solid hsl(var(--panel-border)/0.4);border-radius:14px;">
-          <div style="flex:1;min-width:110px;">
+          <div style="flex:1;min-width:110px;cursor:pointer;" data-view-user="${d.id}">
             <strong style="font-size:.52rem;">${sanitize(u.name||'')}</strong><br>
             <span style="font-size:.45rem;">${sanitize(u.email||'')}</span>
           </div>
@@ -3829,6 +4374,9 @@ function updateDashboard(){
           }
         };
       });
+      $all('[data-view-user]').forEach(el=>{
+        el.addEventListener('click', ()=> openOtherUserProfile(el.getAttribute('data-view-user')));
+      });
     }
   }
 
@@ -3840,7 +4388,7 @@ function updateDashboard(){
         const u = d.data();
         return `
           <div style="display:flex;align-items:center;gap:.5rem;background:hsl(var(--accent)/0.1);padding:.45rem .55rem;border-radius:12px;border:1px solid hsl(var(--panel-border)/0.4);">
-            <div style="flex:1;">
+            <div style="flex:1;cursor:pointer;" data-view-user="${d.id}">
               <strong style="font-size:.5rem;">${sanitize(u.name||'')}</strong><br>
               <span style="font-size:.45rem;">${sanitize(u.email||'')}</span>
             </div>
@@ -3875,6 +4423,9 @@ function updateDashboard(){
           });
         };
       });
+      $all('[data-view-user]').forEach(el=>{
+        el.addEventListener('click', ()=> openOtherUserProfile(el.getAttribute('data-view-user')));
+      });
     }
   }
 
@@ -3905,11 +4456,10 @@ function updateDashboard(){
     }
   }
 
-  /* ================== AUTH LISTENER ================== */
+  /* ===================== AUTH LISTENER ===================== */
   auth.onAuthStateChanged(async user=>{
     if(user){
       state.currentUser = user;
-      // update lastLogin
       try{
         await db.collection('users').doc(user.uid).set({
           lastLogin: firebase.firestore.FieldValue.serverTimestamp()
@@ -3937,7 +4487,11 @@ function updateDashboard(){
     Object.values(state.metadataUnsub).forEach(unsub=>{
       if(typeof unsub==='function') unsub();
     });
+    Object.values(state.social.commentUnsubs).forEach(unsub=>{
+      if(typeof unsub==='function') unsub();
+    });
     state.metadataUnsub = {fish:null, markets:null, data:null, social:null};
+    state.social.commentUnsubs = {};
   }
 
   function toggleViewAuth(showAuth){
@@ -3961,7 +4515,7 @@ function updateDashboard(){
     rebuildCharts();
   }
 
-  /* ================== FORM & CRUD ================== */
+  /* ===================== FORM SUBMIT ===================== */
   async function submitForm(){
     if(!state.currentUser) return;
     const id = $('#recordId')?.value;
@@ -4018,7 +4572,7 @@ function updateDashboard(){
     }
   }
 
-  /* ================== EXPORT ================== */
+  /* ===================== EXPORTS ===================== */
   function toCSV(rows){
     return rows.map(r=> r.map(v=> `"${(v??'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
   }
@@ -4097,7 +4651,7 @@ function updateDashboard(){
     toast('PDF diekspor','success');
   }
 
-  /* ============= IMAGE COMPRESSION ============= */
+  /* ===================== IMAGE COMPRESS ===================== */
   function compressImage(file, maxW=1000){
     return new Promise((resolve,reject)=>{
       const reader = new FileReader();
@@ -4120,7 +4674,7 @@ function updateDashboard(){
     });
   }
 
-  /* ============= VIEW SWITCHING ============= */
+  /* ===================== VIEW SWITCHING ===================== */
   function showView(view){
     $all('[id^="view-"]').forEach(sec=> sec.classList.add('hidden'));
     const section = $('#view-'+view);
@@ -4183,6 +4737,11 @@ function updateDashboard(){
       if(!$('#userDropdown')?.contains(e.target) && !$('#avatarBtn')?.contains(e.target)){
         $('#userDropdown')?.classList.remove('show');
       }
+    });
+    // FAB
+    $('#fabInputData')?.addEventListener('click', ()=>{
+      showView('form');
+      toast('Input Data','info',1200);
     });
   }
 
@@ -4381,8 +4940,6 @@ function updateDashboard(){
       toast('Filter laporan dibersihkan','info');
     });
   }
-
-  function setHTML(sel, html){ const el=$(sel); if(el) el.innerHTML=html; }
 
   function bindProfileActions(){
     $('#profileForm')?.addEventListener('submit', async e=>{
@@ -4696,6 +5253,31 @@ function updateDashboard(){
     }
   }
 
+  function bindPaginationControls(){
+    $('#perPageSelect')?.addEventListener('change', e=>{
+      state.table.perPage = parseInt(e.target.value,10)||25;
+      resetToFirstPage();
+      renderTable();
+    });
+    $('#prevPage')?.addEventListener('click', ()=>{
+      if(state.table.page>1){
+        state.table.page--;
+        renderTable();
+      }
+    });
+    $('#nextPage')?.addEventListener('click', ()=>{
+      const total = state.filteredData.length;
+      const pages = Math.max(1, Math.ceil(total/state.table.perPage));
+      if(state.table.page < pages){
+        state.table.page++;
+        renderTable();
+      }
+    });
+    $('#selectAllPage')?.addEventListener('change', e=>{
+      toggleSelectAllCurrentPage(e.target.checked);
+    });
+  }
+
   function bindMisc(){
     renderHazardChips();
     bindSocialForm();
@@ -4728,6 +5310,7 @@ function updateDashboard(){
     bindProfileActions();
     bindLogout();
     bindDemoAccounts();
+    bindPaginationControls();
     bindMisc();
     feather.replace();
     window.addEventListener('load', ()=>{
@@ -4738,8 +5321,6 @@ function updateDashboard(){
   init();
   return PublicAPI;
 })();
-
-/* End of app.js */
 </script>
 </body>
 </html>
