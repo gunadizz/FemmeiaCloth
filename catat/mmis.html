@@ -24,7 +24,110 @@
    orchestrated entrances, subtle motion layering, feedback states.
    Struktur UI, ukuran, dan layout dipertahankan (NO UI CHANGE).
    =========================================================== */
+/* =========================================================
+   iOS Safe Area & Topbar Stabilizer
+   Fokus: perbaiki overlap di iPhone (notch, address bar safari)
+   Tidak mengubah struktur HTML.
+   ========================================================= */
 
+/* ------------- Variabel Safe Area ------------- */
+:root {
+  /* Fallback 0 jika browser tidak mendukung env() */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Untuk device iOS lama yang masih memakai constant() */
+@supports(padding: constant(safe-area-inset-top)) {
+  :root {
+    --safe-top: constant(safe-area-inset-top);
+    --safe-bottom: constant(safe-area-inset-bottom);
+  }
+}
+
+/* ------------- Top Bar ------------- */
+.topbar {
+  /* Tinggi asli + safe area */
+  height: calc(var(--topbar-height) + var(--safe-top));
+  padding-top: calc(.45rem + var(--safe-top));
+  /* Pastikan z-index cukup tinggi & tidak dipotong */
+  z-index: 120;
+  box-sizing: border-box;
+  /* Hindari layout shift saat address bar Safari shrink/expand */
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  /* Kontrol overscroll agar tidak “nyangkut” di tepi atas */
+  overscroll-behavior: contain;
+}
+
+/* ------------- Konten Utama Offset ------------- */
+.content {
+  /* Tambahkan safe-top agar bagian pertama tidak tertutup notch */
+  padding-top: calc(var(--topbar-height) + var(--safe-top) + 1rem);
+  box-sizing: border-box;
+}
+
+/* ------------- Avatar & Tombol Dalam Topbar ------------- */
+.topbar .avatar,
+.topbar button,
+.topbar .toggle,
+.topbar .lang-pill {
+  /* Hindari line-wrap aneh di iOS saat safe-area padding berubah */
+  flex-shrink: 0;
+}
+
+.topbar .group-inline {
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: .55rem;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Jika ruang sempit, izinkan wrap tetapi tetap rapi */
+@media (max-width: 520px) {
+  .topbar .group-inline {
+    flex-wrap: wrap;
+    row-gap: .4rem;
+  }
+}
+
+/* ------------- Sidebar vs Topbar (mobile) ------------- */
+@media (max-width:1080px) {
+  .topbar {
+    left: 0; /* Pastikan tidak ada jarak sisa bekas sidebar */
+  }
+  .sidebar {
+    /* Hindari tumpang-tindih safe-area saat slide in */
+    padding-top: calc(1rem + var(--safe-top));
+  }
+}
+
+/* ------------- Dark/Light adapt (tidak wajib) ------------- */
+[data-theme="light"] .topbar {
+  backdrop-filter: blur(28px) saturate(1.35);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+}
+
+/* ------------- Fix untuk Safari yang kadang memberi gap putih di atas ------------- */
+body {
+  /* Pastikan background ‘menyapu’ area notch penuh */
+  background-attachment: fixed;
+}
+
+/* ------------- Mode iOS PWA (standalone) ------------- */
+@supports (-webkit-touch-callout: none) {
+  /* Tambahan kecil agar tidak melompat saat scroll bounce */
+  .topbar {
+    transition: padding-top .25s ease;
+  }
+}
+
+/* ------------- Kelas Opsional Jika Ingin Memaksa Body Offset ------------- */
+/* Tambahkan ke <body class="ios-notch-fix"> via JS deteksi iPhone */
+body.ios-notch-fix .content {
+  padding-top: calc(var(--topbar-height) + var(--safe-top) + 1rem);
+}
 :root {
   --accent: 210 100% 50%;
   --radius: 20px;
@@ -7087,5 +7190,6 @@ window.App = (()=>{
 </html>
 
           
+
 
 
