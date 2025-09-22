@@ -3144,6 +3144,159 @@ body.layout-list .fab {
   font-size: .68rem;
 }
 */
+/* =========================================
+   PERFORMANCE MODES
+   Ultra  : (default) gunakan styling existing.
+   Default: kurangi blur, glow, intensitas animasi & shadow.
+   Lite   : hilangkan blur + animasi + heavy shadow + gradient -> solid.
+   ========================================= */
+
+body[class*="perf-"] {
+  /* variabel dasar bisa ditimpa per mode */
+}
+
+/* ---------- DEFAULT MODE (ringan) ---------- */
+body.perf-default .panel,
+body.perf-default .sidebar,
+body.perf-default .topbar,
+body.perf-default .dropdown,
+body.perf-default .container-auth,
+body.perf-default .table-wrapper {
+  backdrop-filter: blur(14px) saturate(1.15) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.15) !important;
+  box-shadow: 0 6px 20px -10px rgba(0,0,0,.45);
+}
+
+body.perf-default .indicator,
+body.perf-default .social-post,
+body.perf-default .ranking-block,
+body.perf-default .material-category,
+body.perf-default .org-criterion {
+  box-shadow: 0 6px 18px -10px rgba(0,0,0,.45);
+}
+
+body.perf-default {
+  /* Kurangi intensitas animasi via custom var (dipakai beberapa tempat) */
+  --dur-m: .28s;
+  --dur-l: .55s;
+  --glass-alpha: 0.55;
+}
+
+/* ---------- LITE MODE (sangat ringan) ---------- */
+body.perf-lite {
+  --glass-alpha: 0.95;
+  --panel-border: 220 18% 80%;
+  --shadow: 220 10% 35%;
+}
+
+/* Matikan semua animasi & transition di lite */
+body.perf-lite * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Ganti background blur menjadi solid */
+body.perf-lite .panel,
+body.perf-lite .sidebar,
+body.perf-lite .topbar,
+body.perf-lite .dropdown,
+body.perf-lite .container-auth,
+body.perf-lite .table-wrapper,
+body.perf-lite .social-post,
+body.perf-lite .ranking-block,
+body.perf-lite .indicator,
+body.perf-lite .material-category,
+body.perf-lite .org-criterion {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: hsl(var(--glass-bg)/0.98) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.12) !important;
+  border:1px solid hsl(var(--panel-border)/0.6) !important;
+}
+
+/* Hilangkan gradient kuat & glow */
+body.perf-lite .panel::before,
+body.perf-lite .indicator::before,
+body.perf-lite .logo-circle::after,
+body.perf-lite .quality-item::after,
+body.perf-lite .org-option::after,
+body.perf-lite .hazard-chip::after,
+body.perf-lite .toggle-chip::before,
+body.perf-lite .nav button::after {
+  display:none !important;
+}
+
+body.perf-lite .indicator,
+body.perf-lite .social-post,
+body.perf-lite .ranking-block,
+body.perf-lite .material-category,
+body.perf-lite .org-criterion,
+body.perf-lite .quality-item,
+body.perf-lite .org-option,
+body.perf-lite .hazard-chip,
+body.perf-lite button,
+body.perf-lite .toggle,
+body.perf-lite .toggle-chip,
+body.perf-lite .reaction-btn {
+  transform:none !important;
+}
+
+/* Buttons di-lite */
+body.perf-lite button,
+body.perf-lite .toggle,
+body.perf-lite .toggle-chip,
+body.perf-lite .reaction-btn {
+  background: hsl(var(--accent)/0.15) !important;
+  box-shadow: none !important;
+  filter:none !important;
+}
+
+/* FAB minimal */
+body.perf-lite .fab {
+  background:hsl(var(--accent)/0.55) !important;
+  box-shadow:0 3px 8px -4px rgba(0,0,0,.35) !important;
+}
+
+/* Chart container tanpa animasi bawaan Chart.js (opsional) */
+body.perf-lite canvas {
+  animation:none !important;
+  transition:none !important;
+}
+
+/* Toast sederhana */
+body.perf-lite .toast {
+  box-shadow:0 4px 12px -6px rgba(0,0,0,.35) !important;
+  background: hsl(var(--accent)/0.85) !important;
+}
+
+/* Hilangkan efek hover intens */
+body.perf-lite .panel:hover,
+body.perf-lite .indicator:hover,
+body.perf-lite .social-post:hover,
+body.perf-lite .ranking-block:hover,
+body.perf-lite .quality-item:hover,
+body.perf-lite .org-option:hover {
+  transform:none !important;
+  box-shadow:0 1px 3px rgba(0,0,0,.15) !important;
+  background:hsl(var(--glass-bg)/1) !important;
+}
+
+/* Sidebar shadow ringan */
+body.perf-lite .sidebar {
+  box-shadow: 2px 0 6px -3px rgba(0,0,0,.25) !important;
+}
+
+/* Nonaktifkan pulse / glow decorative */
+body.perf-lite .glow,
+body.perf-lite .indicator::before,
+body.perf-lite .badge-dot {
+  display:none !important;
+}
+
+/* Simplify gradients global (bisa optional) */
+body.perf-lite {
+  background: hsl(var(--bg)) !important;
+}
 </style>
 </head>
 <body>
@@ -3977,9 +4130,16 @@ body.layout-list .fab {
                   </select>
                 </div>
                 <div>
-                  <label data-i18n="lite_mode">Mode Lite (Tanpa Blur)</label>
-                  <button class="outline small" id="toggleLiteMode"><i data-feather="zap" width="13"></i><span id="liteModeLabel">Aktifkan</span></button>
-                </div>
+  <label>Mode Kinerja (Performance Mode)</label>
+  <select id="performanceMode">
+    <option value="ultra">Ultra (Penuh)</option>
+    <option value="default">Default (Ringan)</option>
+    <option value="lite">Lite (Sangat Ringan)</option>
+  </select>
+  <small class="small" style="display:block;margin-top:.35rem;">
+    Ultra: semua efek • Default: efek moderat • Lite: tanpa blur & animasi.
+  </small>
+</div>
                 <div>
                   <label data-i18n="language">Bahasa</label>
                   <select id="languageSelect">
@@ -4553,6 +4713,7 @@ window.App = (()=>{
     charts: {},
     myDataOnly: false,
     qualityFilter: 'all',
+    perfMode: localStorage.getItem('perfMode') || 'ultra',
     lang: localStorage.getItem('lang') || 'id',
     accent: localStorage.getItem('accent') || '210 100% 50%',
     layoutStyle: localStorage.getItem('layoutStyle') || 'grid',
@@ -4859,6 +5020,14 @@ window.App = (()=>{
   if(select) select.value = size;
 }
 
+function applyPerformanceMode(mode){
+  ['perf-ultra','perf-default','perf-lite'].forEach(c=> document.body.classList.remove(c));
+  if(!['ultra','default','lite'].includes(mode)) mode='ultra';
+  document.body.classList.add('perf-'+mode);
+  localStorage.setItem('perfMode', mode);
+  state.perfMode = mode;
+}
+
   /* ------------------ ACCENT PALETTE ------------------ */
   function buildAccentPalette(){
 const palette = [
@@ -4949,6 +5118,21 @@ const palette = [
   });
 })();
 
+applyPerformanceMode(state.perfMode);
+const perfSel = document.getElementById('performanceMode');
+if(perfSel){
+  perfSel.value = state.perfMode;
+  perfSel.addEventListener('change', e=>{
+    applyPerformanceMode(e.target.value);
+    App.toast('Mode: '+e.target.value,'info');
+    // Jika mode lite, bisa otomatis aktifkan reduce-motion bila mau:
+    if(e.target.value === 'lite'){
+      document.body.classList.add('reduce-motion');
+    } else {
+      // Biarkan preferensi reduce motion user sendiri
+    }
+  });
+}
   /* ------------------ HAZARD CHIPS ------------------ */
   function renderHazardChips(){
     const wrap = $('#hazardChips');
@@ -6846,13 +7030,7 @@ const palette = [
       toast('Layout: '+state.layoutStyle,'info');
     });
 
-    $('#toggleLiteMode')?.addEventListener('click', ()=>{
-      state.liteMode = !state.liteMode;
-      document.body.classList.toggle('lite-mode', state.liteMode);
-      localStorage.setItem('liteMode', state.liteMode?'1':'0');
-      applyI18n();
-      toast('Lite Mode: '+(state.liteMode?'ON':'OFF'),'info');
-    });
+    
 
     $('#toggleMotion')?.addEventListener('click', ()=>{
       state.reduceMotion = !state.reduceMotion;
