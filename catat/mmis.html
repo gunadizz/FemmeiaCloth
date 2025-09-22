@@ -2,7 +2,7 @@
 <html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=0.9" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Sistem Pencatatan & Monitoring Mutu Ikan Segar - Makassar</title>
 <meta name="description" content="Aplikasi pencatatan dan monitoring mutu ikan segar di pasar tradisional Kota Makassar (Single File App)">
 <link rel="icon" href="data:,">
@@ -3965,7 +3965,56 @@ service cloud.firestore {
 <button id="fabInputData" class="fab" title="Input Data">
   <i data-feather="plus" width="22"></i>
 </button>
+<script>
+(function applyIOSViewportScale() {
+  // Deteksi iOS & iPadOS (termasuk iPadOS yang melaporkan MacIntel + touch)
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isIOSDevice =
+      /iP(hone|od|ad)/.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
+  if (!isIOSDevice) return;
+
+  // Ambil / buat meta viewport
+  let meta = document.querySelector('meta[name="viewport"]');
+  if (!meta) {
+    meta = document.createElement('meta');
+    meta.name = 'viewport';
+    document.head.appendChild(meta);
+  }
+
+  // Pecah konten lama (jika ada) supaya kita tidak kehilangan parameter lain.
+  const existing = meta.getAttribute('content') || '';
+  const parts = existing.split(',').map(p => p.trim()).filter(Boolean);
+  const map = {};
+  parts.forEach(p => {
+    const [k,v] = p.split('=');
+    if (k) map[k]=v===undefined?true:v;
+  });
+
+  // Override / set nilai yang diinginkan
+  map['width'] = 'device-width';
+  map['initial-scale'] = '0.8';
+
+  // (Opsional) tetap pertahankan viewport-fit agar aman di notch
+  if (!('viewport-fit' in map)) {
+    map['viewport-fit'] = 'cover';
+  }
+
+  // (Opsional) bisa menonaktifkan zoom user (tidak wajib)
+  // map['user-scalable'] = 'no';
+
+  // Susun kembali
+  const rebuilt = Object.entries(map)
+    .map(([k,v]) => v===true ? k : `${k}=${v}`)
+    .join(', ');
+
+  meta.setAttribute('content', rebuilt);
+
+  // Tambahkan kelas di <html> atau <body> jika ingin styling kondisional
+  document.documentElement.classList.add('is-ios-scale-08');
+})();
+</script>
 <script>
 /* ============================================================
    APP.JS (Full Single-File Logic)
@@ -7074,5 +7123,4 @@ window.App = (()=>{
 </script>
 </body>
 </html>
-
           
