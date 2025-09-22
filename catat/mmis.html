@@ -2512,10 +2512,25 @@ body.font-large { --font-base: 17px; }
 }
 .badge-dot.hidden { display:none; }
 #notifDropdown {
-  max-height:380px;
-  overflow:auto;
-  animation: dropdownPop .6s var(--spring);
-  scrollbar-width:thin;
+  left:60% !important;
+  transform:translateX(-66%) !important; /* tadinya -50%, geser 10% lebih kiri */
+}
+/* Scrollable notif list */
+#notifList {
+  max-height: 300px;          /* atur tinggi maksimum sesuai selera */
+  overflow-y: auto;
+  padding-right: .25rem;
+  scrollbar-width: thin;
+}
+#notifList::-webkit-scrollbar {
+  width: 8px;
+}
+#notifList::-webkit-scrollbar-thumb {
+  background: hsl(var(--accent)/0.45);
+  border-radius: 10px;
+}
+#notifList::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent)/0.65);
 }
 .notif-item {
   display:flex;
@@ -2731,14 +2746,258 @@ body.font-large { --font-base: 17px; }
   0%,100% { box-shadow:0 0 0 0 hsl(var(--accent)/0.4); }
   50% { box-shadow:0 0 0 4px hsl(var(--accent)/0.0); }
 }
+/* Override tombol hapus notifikasi agar selalu jelas */
+.del-notif-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #dc2626;           /* merah solid */
+  border: 1px solid #b91c1c;
+  color: #fff !important;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .55rem;
+  line-height: 1;
+  box-shadow: 0 3px 6px -2px rgba(0,0,0,.35);
+  transition: background .25s, transform .25s, box-shadow .25s;
+  z-index: 5;                    /* pastikan di atas isi lain */
+}
+.del-notif-btn i { color: #fff; stroke: #fff; }
+.del-notif-btn:hover {
+  background:#ef4444;
+  transform: translateY(-3px);
+  box-shadow:0 6px 14px -6px rgba(0,0,0,.45);
+}
+.del-notif-btn:active {
+  transform:translateY(0) scale(.92);
+}
+/* ===== RANKING PANEL IMPROVED ===== */
+#rankingPanel .panel-header .toggle-chip {
+  background:hsl(var(--accent)/0.15);
+  border:1px solid hsl(var(--accent)/0.2);
+  margin-right:.15rem;
+}
+#rankingPanel .panel-header .toggle-chip.active {
+  background:var(--gradient-accent);
+  color:#fff;
+  box-shadow:0 4px 14px -6px hsl(var(--accent)/0.55);
+  transform:translateY(-3px);
+}
 
+.ranking-grid {
+  display:grid;
+  gap:1rem;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  align-items:start;
+  margin-top:.2rem;
+}
+@media (max-width:880px){
+  .ranking-grid { grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); }
+}
+@media (max-width:560px){
+  .ranking-grid { grid-template-columns:1fr; }
+}
+
+.ranking-block {
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.55), hsl(var(--glass-bg)/0.40));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:22px;
+  padding:.75rem .85rem .85rem;
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  position:relative;
+  overflow:hidden;
+  font-size:.55rem;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:
+    transform var(--dur-m),
+    box-shadow var(--dur-m),
+    background var(--dur-m),
+    border-color var(--dur-m);
+}
+.ranking-block:hover {
+  transform:translateY(-6px);
+  box-shadow:0 10px 28px -14px rgba(0,0,0,.55);
+}
+
+.rb-title {
+  font-size:.55rem;
+  font-weight:800;
+  letter-spacing:.55px;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  opacity:.8;
+  position:relative;
+}
+.rb-title::after {
+  content:"";
+  height:2px;
+  width:42%;
+  background:hsl(var(--accent)/0.5);
+  position:absolute;
+  bottom:-4px;
+  left:0;
+  border-radius:2px;
+  transition:width var(--dur-m);
+}
+.ranking-block:hover .rb-title::after { width:100%; }
+
+.ranking-list {
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:.45rem;
+  max-height:230px;
+  overflow:auto;
+  scrollbar-width:thin;
+}
+.ranking-list::-webkit-scrollbar { width:6px; }
+.ranking-list::-webkit-scrollbar-thumb {
+  background:hsl(var(--accent)/0.35);
+  border-radius:6px;
+}
+.ranking-list li {
+  background:hsl(var(--accent)/0.15);
+  border:1px solid hsl(var(--panel-border)/0.5);
+  padding:.5rem .55rem .55rem;
+  border-radius:16px;
+  display:grid;
+  grid-template-columns: 26px 1fr auto;
+  gap:.55rem;
+  align-items:flex-start;
+  font-size:.52rem;
+  line-height:1.25;
+  position:relative;
+  transition:
+    background var(--dur-m),
+    transform var(--dur-m),
+    box-shadow var(--dur-m);
+}
+.ranking-list li:hover {
+  background:hsl(var(--accent)/0.25);
+  transform:translateY(-4px);
+  box-shadow:0 6px 16px -8px hsl(var(--accent)/0.55);
+}
+.rank-pos {
+  width:26px;
+  height:26px;
+  border-radius:10px;
+  background:hsl(var(--accent)/0.30);
+  display:grid;
+  place-items:center;
+  font-size:.66rem;
+  font-weight:800;
+  color:#fff;
+  box-shadow:0 4px 10px -6px hsl(var(--accent)/0.55);
+}
+.rank-pos.gold {
+  background:linear-gradient(135deg,#fbbf24,#d97706);
+}
+.rank-pos.silver {
+  background:linear-gradient(135deg,#cbd5e1,#64748b);
+}
+.rank-pos.bronze {
+  background:linear-gradient(135deg,#d97706,#92400e);
+}
+
+.rank-main {
+  font-weight:700;
+  letter-spacing:.3px;
+  font-size:.54rem;
+  line-height:1.2;
+}
+.rank-meta {
+  font-size:.42rem;
+  opacity:.75;
+  letter-spacing:.4px;
+  margin-top:.18rem;
+  text-transform:uppercase;
+  font-weight:700;
+}
+
+.rank-score-badge {
+  background:var(--gradient-accent);
+  color:#fff;
+  font-weight:700;
+  font-size:.55rem;
+  padding:.3rem .55rem;
+  border-radius:12px;
+  display:inline-flex;
+  align-items:center;
+  letter-spacing:.4px;
+  box-shadow:0 4px 12px -6px hsl(var(--accent)/0.55);
+}
+.rank-score-badge.bad { background:linear-gradient(135deg,#ef4444,#b91c1c); }
+.rank-score-badge.mid { background:linear-gradient(135deg,#f59e0b,#b45309); }
+
+.rec-wrap {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+  font-size:.5rem;
+  line-height:1.35;
+  min-height:56px;
+}
+.rec-chip {
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  padding:.35rem .55rem;
+  background:hsl(var(--accent)/0.25);
+  border-radius:12px;
+  font-size:.5rem;
+  font-weight:600;
+  letter-spacing:.4px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+  cursor:default;
+}
+.rec-chip.good { background:linear-gradient(135deg,#10b981,#059669); }
+.rec-chip.warn { background:linear-gradient(135deg,#f59e0b,#b45309); }
+.rec-chip.low  { background:linear-gradient(135deg,#ef4444,#b91c1c); }
+.rec-chip i { stroke-width:2px; }
+.rec-empty {
+  font-size:.5rem;
+  opacity:.65;
+  font-style:italic;
+}
+
+.ranking-foot {
+  margin-top:.9rem;
+  padding-top:.55rem;
+  border-top:1px solid hsl(var(--panel-border)/0.35);
+  font-size:.48rem;
+  letter-spacing:.4px;
+}
+.ranking-list.loading li {
+  animation: pulseLoad 1.2s ease-in-out infinite;
+  background:linear-gradient(90deg, hsl(var(--accent)/0.12), hsl(var(--accent)/0.20), hsl(var(--accent)/0.12));
+  background-size:200% 100%;
+  color:transparent;
+}
+@keyframes pulseLoad {
+  0% { background-position:0% 0; }
+  100% { background-position:200% 0; }
+}
 </style>
 </head>
 <body>
 
 <div id="loadingOverlay">
   <div class="spinner"></div>
-  <div id="loadingText">Memuat aplikasi....</div>
+  <div id="loadingText">Memuat aplikasi...</div>
 </div>
 
 <div id="toastContainer"></div>
@@ -3105,6 +3364,59 @@ body.font-large { --font-base: 17px; }
           </div>
         </div>
         <div style="opacity:0">sk</div>
+        
+              <!-- PANEL RANKING & REKOMENDASI (IMPROVED) -->
+<div class="panel bento" id="rankingPanel">
+  <div class="panel-header">
+    <h3>
+      <i data-feather="award" width="14"></i>
+      <span>Ranking & Rekomendasi</span>
+    </h3>
+    <div style="display:flex;gap:.45rem;align-items:center;flex-wrap:wrap;">
+      <div class="toggle-chip" id="rankingModeAll" data-mode="all" style="cursor:pointer;">Semua</div>
+      <div class="toggle-chip" id="rankingModeActive" data-mode="active" style="cursor:pointer;">Rentang</div>
+      <button class="ghost small" id="rankingRefreshBtn" title="Segarkan Ranking">
+        <i data-feather="refresh-cw" width="13"></i>
+      </button>
+    </div>
+  </div>
+  <div class="ranking-grid">
+    <div class="ranking-block">
+      <div class="rb-title">
+        <i data-feather="map-pin" width="12"></i>
+        <span>Top Pasar</span>
+      </div>
+      <ul id="marketRankingList" class="ranking-list"></ul>
+    </div>
+    <div class="ranking-block">
+      <div class="rb-title">
+        <i data-feather="fish" width="12"></i>
+        <span>Top Jenis Ikan</span>
+      </div>
+      <ul id="fishRankingList" class="ranking-list"></ul>
+    </div>
+   <div class="ranking-block">
+      <div class="rb-title">
+        <i data-feather="thumbs-up" width="12"></i>
+        <span>Rekomendasi Pasar</span>
+      </div>
+      <div id="marketRecommendations" class="rec-wrap"></div>
+    </div>
+    <div class="ranking-block">
+      <div class="rb-title">
+        <i data-feather="star" width="12"></i>
+        <span>Rekomendasi Ikan</span>
+      </div>
+      <div id="fishRecommendations" class="rec-wrap"></div>
+    </div>
+  </div>
+  <div class="ranking-foot small muted">
+    Perhitungan mengikuti rentang dashboard (Hari Ini / 7 / 30 / Semua) & toggle "Data Saya".
+  </div>
+</div>
+  <div style="opacity:0">sk</div>
+  
+  
         <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(360px,1fr));">
           <div class="panel bento">
             <div class="panel-header">
@@ -3119,6 +3431,7 @@ body.font-large { --font-base: 17px; }
               <canvas id="chartComparison"></canvas>
             </div>
           </div>
+     
 
           <div class="panel bento">
             <div class="panel-header">
@@ -4674,8 +4987,131 @@ window.App = (()=>{
     setText('#indWarnTrend',  formatTrend(calcTrend(warnCur,warnPrev)));
     setText('#indBadTrend',   formatTrend(calcTrend(badCur,badPrev)));
     setText('#indHazardTrend',formatTrend(calcTrend(hazCur,hazPrev)));
+        buildRankings();
   }
+  
+      /* ===== RANKING & REKOMENDASI (IMPROVED) ===== */
+  function buildRankings(){
+    const marketListEl = document.getElementById('marketRankingList');
+    const fishListEl   = document.getElementById('fishRankingList');
+    const marketRecEl  = document.getElementById('marketRecommendations');
+    const fishRecEl    = document.getElementById('fishRecommendations');
+    if(!marketListEl || !fishListEl) return;
 
+    // Mode: "current" (sesuai rentang) atau "all" (abaikan rentang) – toggle tombol di header
+    const btnAll = document.getElementById('rankingModeAll');
+    const btnActive = document.getElementById('rankingModeActive');
+    const activeMode = (btnActive && btnActive.classList.contains('active')) ? 'current':'all';
+
+    const base = state.myDataOnly
+      ? state.fishData.filter(r=> r.userId===state.currentUser?.uid)
+      : state.fishData.slice();
+
+    let dataSource = base;
+    if(activeMode==='current'){
+      const { current } = getPeriod(state.dashRange, base);
+      dataSource = current;
+    }
+
+    if(!dataSource.length){
+      marketListEl.innerHTML = '<li><div class="rank-pos">-</div><div class="rank-main">Tidak ada data</div></li>';
+      fishListEl.innerHTML = '<li><div class="rank-pos">-</div><div class="rank-main">Tidak ada data</div></li>';
+      marketRecEl.innerHTML = '<div class="rec-empty">Tidak ada rekomendasi.</div>';
+      fishRecEl.innerHTML = '<div class="rec-empty">Tidak ada rekomendasi.</div>';
+      feather.replace();
+      return;
+    }
+
+    // Agregasi Pasar
+    const marketMap = {};
+    dataSource.forEach(r=>{
+      if(!marketMap[r.market]) marketMap[r.market] = { scores:[], hazards:0 };
+      marketMap[r.market].scores.push(r.organoleptic);
+      if((r.hazards||[]).length) marketMap[r.market].hazards++;
+    });
+    const markets = Object.keys(marketMap).map(m=>{
+      const avg = average(marketMap[m].scores);
+      return {
+        name:m,
+        avg,
+        count: marketMap[m].scores.length,
+        hazards: marketMap[m].hazards
+      };
+    }).sort((a,b)=> b.avg - a.avg);
+
+    // Agregasi Ikan
+    const fishMap = {};
+    dataSource.forEach(r=>{
+      if(!fishMap[r.fishType]) fishMap[r.fishType] = { scores:[], hazards:0 };
+      fishMap[r.fishType].scores.push(r.organoleptic);
+      if((r.hazards||[]).length) fishMap[r.fishType].hazards++;
+    });
+    const fishes = Object.keys(fishMap).map(f=>{
+      const avg = average(fishMap[f].scores);
+      return {
+        name:f,
+        avg,
+        count: fishMap[f].scores.length,
+        hazards: fishMap[f].hazards
+      };
+    }).sort((a,b)=> b.avg - a.avg);
+
+    function rankPosClass(i){
+      if(i===0) return 'gold';
+      if(i===1) return 'silver';
+      if(i===2) return 'bronze';
+      return '';
+    }
+    function scoreBadgeClass(avg){
+      if(avg>=7) return '';
+      if(avg>=4) return 'mid';
+      return 'bad';
+    }
+
+    marketListEl.innerHTML = markets.slice(0,5).map((m,i)=> `
+      <li>
+        <div class="rank-pos ${rankPosClass(i)}">${i+1}</div>
+        <div>
+          <div class="rank-main">${sanitize(m.name)}</div>
+          <div class="rank-meta">AVG ${m.avg.toFixed(2)} • ${m.count} data • ${m.hazards} indikasi</div>
+        </div>
+        <div class="rank-score-badge ${scoreBadgeClass(m.avg)}">${m.avg.toFixed(1)}</div>
+      </li>
+    `).join('');
+
+    fishListEl.innerHTML = fishes.slice(0,5).map((f,i)=> `
+      <li>
+        <div class="rank-pos ${rankPosClass(i)}">${i+1}</div>
+        <div>
+          <div class="rank-main">${sanitize(f.name)}</div>
+          <div class="rank-meta">AVG ${f.avg.toFixed(2)} • ${f.count} data • ${f.hazards} indikasi</div>
+        </div>
+        <div class="rank-score-badge ${scoreBadgeClass(f.avg)}">${f.avg.toFixed(1)}</div>
+      </li>
+    `).join('');
+
+    // Rekomendasi Pasar
+    const unggulan = markets.filter(m=> m.avg>=7);
+    const perluPerhatian = markets.filter(m=> m.avg<5);
+    marketRecEl.innerHTML = `
+      ${unggulan.length
+        ? unggulan.map(u=> `<span class="rec-chip good" title="Pasar unggulan (≥7)"><i data-feather="thumbs-up" width="11"></i>${sanitize(u.name)} (${u.avg.toFixed(1)})</span>`).join('')
+        : '<div class="rec-empty">Tidak ada pasar unggulan (≥7)</div>'
+      }
+      ${perluPerhatian.length
+        ? '<div style="flex-basis:100%;height:0;"></div>'+ perluPerhatian.map(u=> `<span class="rec-chip low" title="Perlu perhatian (&lt;5)"><i data-feather="alert-triangle" width="11"></i>${sanitize(u.name)} (${u.avg.toFixed(1)})</span>`).join('')
+        : ''
+      }
+    `;
+
+    // Rekomendasi Ikan (AVG ≥7)
+    const ikanUnggulan = fishes.filter(f=> f.avg>=7);
+    fishRecEl.innerHTML = ikanUnggulan.length
+      ? ikanUnggulan.map(f=> `<span class="rec-chip good"><i data-feather="star" width="11"></i>${sanitize(f.name)} (${f.avg.toFixed(1)})</span>`).join('')
+      : '<div class="rec-empty">Tidak ada ikan unggulan (≥7)</div>';
+
+    feather.replace();
+  }
   /* ------------------ CHARTS ------------------ */
   function rebuildCharts(){
     clearTimeout(state.chartBuildTimer);
@@ -6285,7 +6721,35 @@ window.App = (()=>{
       updateDashboard();
       toast(state.myDataOnly? (state.lang==='en'?'My Data':'Data Saya') : (state.lang==='en'?'All Data':'Semua Data'),'info');
     });
+        
   }
+    
+    (function bindRankingPanel(){
+  const mAll = document.getElementById('rankingModeAll');
+  const mAct = document.getElementById('rankingModeActive');
+  if(mAll && mAct){
+    // Set DEFAULT ke "Semua"
+    mAll.classList.add('active');
+    mAct.classList.remove('active');
+
+    [mAll, mAct].forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        mAll.classList.remove('active');
+        mAct.classList.remove('active');
+        btn.classList.add('active');
+        buildRankings();
+      });
+    });
+  }
+
+  document.getElementById('rankingRefreshBtn')?.addEventListener('click', ()=>{
+    buildRankings();
+    App.toast('Ranking diperbarui','success');
+  });
+
+  // Bangun pertama kali sesuai default
+  buildRankings();
+})();
 
   /* ------------------ EXPORT BUTTONS ------------------ */
   function bindExports(){
@@ -6739,31 +7203,76 @@ window.App = (()=>{
   }
 
   function renderNotificationsList(){
-    const list = $('#notifList');
-    const empty = $('#notifEmpty');
-    if(!list) return;
-    if(!state.notifications.list.length){
-      empty?.classList.remove('hidden');
-      list.innerHTML='';
-      return;
-    }
-    empty?.classList.add('hidden');
-    list.innerHTML = state.notifications.list.map(n=>{
-      const unread = !(n.readBy||[]).includes(state.currentUser.uid);
-      return `
-        <div class="notif-item ${unread?'unread':''}" data-open-notif="${n.id}">
-          <div style="font-weight:700;">${sanitize(n.title||'-')}</div>
-          <div style="font-size:.52rem;line-height:1.3;">${sanitize(n.message||'')}</div>
-          <div class="notif-time">${n.createdAt? formatDateTime(n.createdAt):''}</div>
-          <div class="notif-sender" style="font-size:.45rem;opacity:.7;">${sanitize(n.senderName||'')}</div>
-        </div>
-      `;
-    }).join('');
-    feather.replace();
-    $all('[data-open-notif]').forEach(el=>{
-      el.onclick = ()=> markNotifRead(el.getAttribute('data-open-notif'));
+  const list = $('#notifList');
+  const empty = $('#notifEmpty');
+  if(!list) return;
+  if(!state.notifications.list.length){
+    empty?.classList.remove('hidden');
+    list.innerHTML='';
+    return;
+  }
+  empty?.classList.add('hidden');
+
+  const isAdmin = state.userProfile?.role === 'Admin';
+
+  list.innerHTML = state.notifications.list.map(n=>{
+    const unread = !(n.readBy||[]).includes(state.currentUser.uid);
+    return `
+      <div class="notif-item ${unread?'unread':''}" data-open-notif="${n.id}">
+        <div style="font-weight:700;margin-right:1.2rem;">${sanitize(n.title||'-')}</div>
+        <div style="font-size:.52rem;line-height:1.3;">${sanitize(n.message||'')}</div>
+        <div class="notif-time">${n.createdAt? formatDateTime(n.createdAt):''}</div>
+        <div class="notif-sender" style="font-size:.45rem;opacity:.7;">${sanitize(n.senderName||'')}</div>
+        ${isAdmin ? `
+          <button class="del-notif-btn" data-del-notif="${n.id}" title="Hapus" style="width:auto;padding:0 .45rem;gap:.25rem;">
+  <i data-feather="trash-2" width="11"></i><span style="font-size:.48rem;font-weight:600;">Hapus</span>
+</button>` : ''
+        }
+      </div>
+    `;
+  }).join('');
+  feather.replace();
+
+  // Klik untuk menandai baca
+  $all('[data-open-notif]').forEach(el=>{
+    el.onclick = (e)=>{
+      // Jika klik tombol delete jangan mark read
+      if(e.target.closest('[data-del-notif]')) return;
+      markNotifRead(el.getAttribute('data-open-notif'));
+    };
+  });
+
+  // Binding delete (Admin)
+  if(isAdmin){
+    $all('[data-del-notif]').forEach(btn=>{
+      btn.onclick = (e)=>{
+        e.stopPropagation();
+        const id = btn.getAttribute('data-del-notif');
+        deleteNotification(id);
+      };
     });
   }
+}
+
+async function deleteNotification(id){
+  if(state.userProfile?.role !== 'Admin') {
+    return toast('Hanya Admin','warn');
+  }
+  Modal.open({
+    title: state.lang==='en'?'Delete Notification':'Hapus Notifikasi',
+    message: state.lang==='en'?'Are you sure to delete this notification?':'Hapus notifikasi ini?',
+    icon:'trash-2',
+    confirmText: state.lang==='en'?'Delete':'Hapus',
+    onConfirm: async ()=>{
+      try{
+        await db.collection('notifications').doc(id).delete();
+        toast(state.lang==='en'?'Deleted':'Dihapus','success');
+      }catch(err){
+        toast('Gagal hapus','danger');
+      }
+    }
+  });
+}
 
   async function markNotifRead(id){
     const notif = state.notifications.list.find(n=> n.id===id);
