@@ -3015,7 +3015,14 @@ html.font-large  { --font-base: 18px; }  /* bisa 19 atau 20 kalau ingin lebih be
 body.layout-list .content {
   gap: 1rem;
 }
-
+.color-palette {
+  max-height: 180px;
+  overflow:auto;
+  padding-right:4px;
+}
+.color-palette::-webkit-scrollbar {
+  width:6px;
+}
 /* Semua grid utama jadi satu kolom */
 body.layout-list .grid,
 body.layout-list .cards-analytics,
@@ -3938,6 +3945,12 @@ body.layout-list .fab {
                   <label data-i18n="accent_color">Warna Aksen</label>
                   <div class="color-palette" id="accentPalette"></div>
                 </div>
+                <div style="margin-top:.45rem;font-size:.55rem;display:flex;align-items:center;gap:.5rem;">
+  <input type="color" id="customAccentPicker" value="#2f6dff" style="width:42px;height:34px;border:1px solid hsl(var(--panel-border)/0.6);border-radius:10px;cursor:pointer;padding:0;">
+  <button class="outline small" id="applyCustomAccent">
+    <i data-feather="droplet" width="12"></i>Pakai Custom
+  </button>
+</div>
                 <div>
                   <label data-i18n="layout_style">Gaya Layout</label>
                   <select id="layoutStyle">
@@ -4848,11 +4861,32 @@ window.App = (()=>{
 
   /* ------------------ ACCENT PALETTE ------------------ */
   function buildAccentPalette(){
-    const palette = [
-      '210 100% 50%','260 83% 60%','340 82% 52%','14 90% 57%',
-      '122 39% 49%','190 90% 45%','45 100% 51%','0 84% 56%',
-      '280 95% 55%','200 80% 55%','150 65% 45%','25 95% 55%'
-    ];
+const palette = [
+  // Existing
+  '210 100% 50%','260 83% 60%','340 82% 52%','14 90% 57%',
+  '122 39% 49%','190 90% 45%','45 100% 51%','0 84% 56%',
+  '280 95% 55%','200 80% 55%','150 65% 45%','25 95% 55%',
+  '300 85% 55%','20 85% 55%','80 70% 45%','100 60% 42%',
+  '160 55% 42%','180 70% 45%','220 70% 55%','240 65% 55%',
+  '265 70% 58%','330 75% 55%','355 80% 55%','35 90% 55%',
+  '60 90% 50%','90 50% 45%','0 0% 40%','0 0% 55%',
+
+  // Tambahan (spectrum lebih rapat; hue kelipatan 15 derajat)
+  '15 85% 55%','30 85% 55%','45 85% 55%','60 85% 55%',
+  '75 70% 50%','90 65% 50%','105 60% 48%','120 60% 46%',
+  '135 55% 44%','150 55% 46%','165 55% 46%','180 65% 48%',
+  '195 70% 50%','210 80% 54%','225 70% 52%','240 65% 55%',
+  '255 70% 56%','270 75% 58%','285 75% 56%','300 75% 55%',
+  '315 70% 54%','330 70% 54%','345 75% 54%','360 80% 55%',
+
+  // Variasi “muted” (luminosity lebih tinggi / saturasi lebih rendah)
+  '200 25% 55%','210 30% 60%','220 28% 62%','230 30% 58%',
+  '250 25% 55%','260 30% 60%','280 25% 58%',
+
+  // Variasi “deep” (lebih gelap untuk dark mode kontras)
+  '210 90% 40%','260 80% 40%','330 70% 40%','14 85% 40%',
+  '45 90% 40%','150 55% 38%','190 85% 38%','240 70% 38%'
+];
     const wrap = $('#accentPalette');
     if(!wrap) return;
     wrap.innerHTML = palette.map(c=> `
@@ -4869,6 +4903,51 @@ window.App = (()=>{
       });
     });
   }
+
+(function initCustomAccent(){
+  const picker = document.getElementById('customAccentPicker');
+  const btn = document.getElementById('applyCustomAccent');
+  if(!picker || !btn) return;
+
+  function hexToHsl(hex){
+    hex = hex.replace('#','');
+    if(hex.length===3){
+      hex = hex.split('').map(c=> c+c).join('');
+    }
+    const r = parseInt(hex.substring(0,2),16)/255;
+    const g = parseInt(hex.substring(2,4),16)/255;
+    const b = parseInt(hex.substring(4,6),16)/255;
+    const max = Math.max(r,g,b), min = Math.min(r,g,b);
+    let h,s,l = (max+min)/2;
+    if(max===min){
+      h=s=0;
+    } else {
+      const d = max-min;
+      s = l>0.5 ? d/(2-max-min) : d/(max+min);
+      switch(max){
+        case r: h = (g-b)/d + (g<b?6:0); break;
+        case g: h = (b-r)/d + 2; break;
+        case b: h = (r-g)/d + 4; break;
+      }
+      h/=6;
+    }
+    h = Math.round(h*360);
+    s = Math.round(s*100);
+    l = Math.round(l*50 + l*50/2); // atau Math.round(l*100)
+    // Gunakan format HSL konsisten (h s% l%)
+    return `${h} ${s}% ${Math.round(l)}%`;
+  }
+
+  btn.addEventListener('click', ()=>{
+    const hsl = hexToHsl(picker.value);
+    App.state.accent = hsl;
+    document.documentElement.style.setProperty('--accent', hsl);
+    localStorage.setItem('accent', hsl);
+    buildAccentPalette();      // agar highlight active bergerak
+    App.rebuildCharts();       // sinkron warna chart
+    App.toast('Aksen custom diterapkan','success');
+  });
+})();
 
   /* ------------------ HAZARD CHIPS ------------------ */
   function renderHazardChips(){
