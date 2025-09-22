@@ -1721,6 +1721,95 @@ body.font-large { --font-base: 17px; }
   gap:.4rem;
   margin-top:.45rem;
 }
+/* ---- Organoleptic Tool Styles ---- */
+.org-criteria-grid {
+  display:grid;
+  gap:1rem;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  margin-top:.5rem;
+}
+.org-criterion {
+  background:linear-gradient(150deg,hsl(var(--accent)/0.18),hsl(var(--accent)/0.10));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.75rem .85rem .85rem;
+  border-radius:22px;
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  position:relative;
+  overflow:hidden;
+  font-size:.58rem;
+}
+.org-criterion h4 {
+  margin:0;
+  font-size:.56rem;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  font-weight:700;
+  color:hsl(var(--text-dim));
+  display:flex;
+  gap:.4rem;
+  align-items:center;
+}
+.org-options {
+  display:flex;
+  flex-direction:column;
+  gap:.4rem;
+  max-height:240px;
+  overflow:auto;
+  padding-right:.35rem;
+}
+.org-option {
+  background:hsl(var(--accent)/0.15);
+  border:1px solid hsl(var(--panel-border)/0.5);
+  padding:.45rem .5rem .5rem;
+  border-radius:14px;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  gap:.25rem;
+  transition:background .4s, transform .45s var(--ease-spring), box-shadow .45s;
+  position:relative;
+  font-size:.53rem;
+  line-height:1.3;
+}
+.org-option:hover {
+  background:hsl(var(--accent)/0.25);
+  transform:translateY(-3px);
+  box-shadow:0 6px 16px -8px hsl(var(--accent)/0.55);
+}
+.org-option.active {
+  background:var(--gradient-accent);
+  color:#fff;
+  box-shadow:0 10px 28px -12px hsl(var(--accent)/0.65);
+}
+.org-option .score-badge {
+  position:absolute;
+  top:.4rem;
+  right:.45rem;
+  background:hsl(var(--accent)/0.85);
+  color:#fff;
+  font-size:.48rem;
+  padding:.2rem .45rem;
+  border-radius:10px;
+  font-weight:700;
+  letter-spacing:.5px;
+  box-shadow:0 4px 10px -5px hsl(var(--accent)/0.55);
+}
+.org-result-box {
+  background:linear-gradient(150deg,hsl(var(--accent)/0.18),hsl(var(--accent)/0.08));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.9rem 1rem 1.1rem;
+  border-radius:24px;
+  margin-top:.35rem;
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+}
+@media (max-width:640px){
+  .org-criteria-grid { grid-template-columns:1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -1926,6 +2015,10 @@ body.font-large { --font-base: 17px; }
         <i data-feather="edit-3" width="18"></i>
         <span data-i18n="input_form">Input Data</span>
       </button>
+      <button data-view="organoleptic-tool">
+  <i data-feather="sliders" width="18"></i>
+  <span>Tool Organoleptik</span>
+</button>
       <button data-view="reports">
         <i data-feather="bar-chart-2" width="18"></i>
         <span data-i18n="reports">Laporan</span>
@@ -1985,6 +2078,7 @@ body.font-large { --font-base: 17px; }
         <button class="ghost" id="btnToggleTheme" title="Mode Gelap/Terang">
           <i data-feather="moon" width="16"></i>
         </button>
+        
         <div style="position:relative;">
           <div class="avatar" id="avatarBtn">
             <span id="avatarInitial">U</span>
@@ -2217,6 +2311,9 @@ body.font-large { --font-base: 17px; }
       <section id="view-form" class="hidden fade-in">
         <div class="panel">
           <div class="panel-header">
+          	<button class="ghost small" id="btnOpenOrgTool">
+  <i data-feather="sliders" width="13"></i> Tool Skor
+</button>
             <h3><i data-feather="edit-3" width="14"></i><span data-i18n="input_new_data">Input Data Mutu Baru</span></h3>
             <div style="display:flex;gap:.4rem;">
               <button class="ghost small" id="btnResetForm"><i data-feather="refresh-cw" width="13"></i> Reset</button>
@@ -2649,6 +2746,73 @@ body.font-large { --font-base: 17px; }
           </div>
         </div>
       </section>
+
+<section id="view-organoleptic-tool" class="hidden fade-in">
+  <div class="panel">
+    <div class="panel-header">
+      <h3>
+        <i data-feather="sliders" width="14"></i>
+        <span>Tool Perhitungan Organoleptik</span>
+      </h3>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+        <select id="orgStandardSelect" style="max-width:160px;">
+          <option value="sni2013">SNI 2013</option>
+          <option value="sni2021">SNI 2021</option>
+        </select>
+        <button class="ghost small" id="btnResetOrgTool">
+          <i data-feather="refresh-cw" width="13"></i> Reset
+        </button>
+        <button class="ghost small" id="btnBackToForm">
+          <i data-feather="corner-up-left" width="13"></i> Kembali Form
+        </button>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:-.35rem;">
+      Pilih standar (SNI 2013 / SNI 2021), kemudian pilih deskripsi kondisi tiap parameter. Skor total dihitung otomatis (rata-rata / atau ambil skor terendah—dapat diubah sesuai kebijakan). 
+      Klik "Terapkan ke Form Input" untuk mengisi otomatis field Organoleptik (skor) dan beberapa deskripsi (Bau, Tekstur, Warna) berdasarkan pilihan.
+    </p>
+
+    <div class="divider"></div>
+
+    <div id="orgCriteriaContainer" class="org-criteria-grid"></div>
+
+    <div class="divider"></div>
+
+    <div class="org-result-box">
+      <div style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;">
+        <div>
+          <div class="meta">Metode Agregasi</div>
+          <select id="orgAggregateMethod" style="min-width:160px;">
+            <option value="average">Rata-rata (Mean)</option>
+            <option value="min">Skor Terendah (Conservative)</option>
+            <option value="median">Median</option>
+          </select>
+        </div>
+        <div>
+          <div class="meta">Skor Akhir</div>
+          <div id="orgFinalScore" class="inline-stat">-</div>
+        </div>
+        <div>
+          <div class="meta">Status</div>
+          <div id="orgFinalStatus" class="inline-stat">-</div>
+        </div>
+      </div>
+      <div style="margin-top:.65rem;display:flex;gap:.55rem;flex-wrap:wrap;">
+        <button id="btnApplyOrgScore">
+          <i data-feather="check" width="14"></i> Terapkan ke Form Input
+        </button>
+        <button class="outline" id="btnCopyOrgSummary">
+          <i data-feather="clipboard" width="14"></i> Salin Ringkasan
+        </button>
+      </div>
+      <div id="orgSummary" class="small muted" style="margin-top:.55rem;white-space:pre-wrap;"></div>
+      <div class="small" style="margin-top:.75rem;">
+        <strong>Catatan:</strong> Deskripsi standar disederhanakan untuk contoh. Silakan sesuaikan dengan dokumen resmi SNI.
+      </div>
+    </div>
+  </div>
+</section>
 
       <!-- ABOUT -->
       <section id="view-about" class="hidden fade-in">
@@ -5312,11 +5476,261 @@ window.App = (()=> {
     bindDemoAccounts();
     bindPaginationControls();
     bindMisc();
+    initOrganolepticTool();
     feather.replace();
     window.addEventListener('load', ()=>{
       setTimeout(()=> $('#loadingOverlay')?.style && ($('#loadingOverlay').style.display='none'), 1200);
     });
   }
+/* ===== Organoleptic Tool Data & Functions (SNI 2013 & 2021) ===== */
+const organolepticStandards = {
+  sni2013: {
+    label: 'SNI 2013',
+    ref: 'SNI 2729:2013 (Contoh / Ringkasan)',
+    criteria: {
+      "Mata": [
+        {score:9, desc:"Cembung, kornea jernih, pupil hitam mengkilat"},
+        {score:7, desc:"Sedikit kurang cembung, kornea agak keruh"},
+        {score:5, desc:"Datar, kornea keruh keputihan"},
+        {score:3, desc:"Sedikit cekung, pupil pudar"},
+        {score:1, desc:"Cekung, kornea keruh tebal, pupil abu-abu"}
+      ],
+      "Insang": [
+        {score:9, desc:"Merah cerah, segar, lendir bening, bau segar laut"},
+        {score:7, desc:"Merah ke arah merah muda, lendir agak meningkat"},
+        {score:5, desc:"Merah pucat / kecoklatan, lendir keruh"},
+        {score:3, desc:"Coklat pucat, lendir kental, bau agak asam"},
+        {score:1, desc:"Coklat keabu-abuan, lendir tebal, bau busuk"}
+      ],
+      "Bau": [
+        {score:9, desc:"Segar spesifik ikan, tidak asing"},
+        {score:7, desc:"Segar menurun sedikit, masih alami"},
+        {score:5, desc:"Sedikit amis tajam / netral"},
+        {score:3, desc:"Amis kuat / agak asam"},
+        {score:1, desc:"Busuk, asam menyengat, tidak layak"}
+      ],
+      "Daging / Tekstur": [
+        {score:9, desc:"Elastis padat, kembali cepat saat ditekan"},
+        {score:7, desc:"Cukup elastis, sedikit lambat kembali"},
+        {score:5, desc:"Kurang elastis, agak lunak"},
+        {score:3, desc:"Lunak, bekas tekan menetap lama"},
+        {score:1, desc:"Sangat lembek, tidak kembali"}
+      ],
+      "Kulit / Warna": [
+        {score:9, desc:"Cerlang, mengkilat, lendir jernih tipis"},
+        {score:7, desc:"Agak kurang cerah, lendir meningkat sedikit"},
+        {score:5, desc:"Agak kusam, lendir keruh"},
+        {score:3, desc:"Kusam, lendir keruh tebal"},
+        {score:1, desc:"Sangat kusam, lendir tebal kental"}
+      ]
+    }
+  },
+  sni2021: {
+    label: 'SNI 2021',
+    ref: 'SNI Revisi 2021 (Contoh / Ringkasan)',
+    criteria: {
+      "Mata": [
+        {score:9, desc:"Cembung penuh, bening, refleksi baik"},
+        {score:8, desc:"Cembung, sedikit redup"},
+        {score:6, desc:"Mulai datar, kornea agak keruh"},
+        {score:4, desc:"Datar/cekung ringan, keruh"},
+        {score:2, desc:"Cekung jelas, keruh pekat"},
+        {score:1, desc:"Cekung parah, hancur / buram"}
+      ],
+      "Insang": [
+        {score:9, desc:"Merah terang, lembab segar, bau laut"},
+        {score:8, desc:"Merah agak muda, bau normal"},
+        {score:6, desc:"Merah pucat, lendir mulai keruh"},
+        {score:4, desc:"Coklat kemerahan, lendir keruh kental"},
+        {score:2, desc:"Coklat keabu-abuan, bau kurang sedap"},
+        {score:1, desc:"Abu / coklat kusam, bau busuk"}
+      ],
+      "Aroma Umum": [
+        {score:9, desc:"Segar spesifik, alami"},
+        {score:8, desc:"Segar normal menurun sedikit"},
+        {score:6, desc:"Netral / amis ringan"},
+        {score:4, desc:"Amis kuat / agak asam"},
+        {score:2, desc:"Asam tajam / hampir busuk"},
+        {score:1, desc:"Busuk jelas"}
+      ],
+      "Tekstur": [
+        {score:9, desc:"Padat elastis optimum"},
+        {score:8, desc:"Padat, sedikit menurun"},
+        {score:6, desc:"Agak lunak"},
+        {score:4, desc:"Lunak, bekas tekan lambat hilang"},
+        {score:2, desc:"Lunak sekali"},
+        {score:1, desc:"Hancur / lembek"}
+      ],
+      "Kulit / Permukaan": [
+        {score:9, desc:"Cerlang, lendir jernih tipis"},
+        {score:8, desc:"Agak kurang cerah"},
+        {score:6, desc:"Kusam ringan, lendir meningkat"},
+        {score:4, desc:"Kusam, lendir keruh"},
+        {score:2, desc:"Sangat kusam, lendir tebal"},
+        {score:1, desc:"Kering / berlendir rusak"}
+      ],
+      "Perut / Abdomen": [
+        {score:9, desc:"Utuh rapat normal"},
+        {score:8, desc:"Utuh, sedikit lembut"},
+        {score:6, desc:"Sedikit buncit / lepas ringan"},
+        {score:4, desc:"Agak pecah / lunak"},
+        {score:2, desc:"Pecah sebagian"},
+        {score:1, desc:"Pecah rusak parah"}
+      ]
+    }
+  }
+};
+
+const organolepticToolState = {
+  standard: 'sni2013',
+  selections: {}, // {criterion: score}
+};
+
+function buildOrganolepticCriteria(){
+  const wrap = document.getElementById('orgCriteriaContainer');
+  if(!wrap) return;
+  const std = organolepticStandards[organolepticToolState.standard];
+  const crits = std.criteria;
+  wrap.innerHTML = Object.keys(crits).map(crit=>{
+    const opts = crits[crit].map(o=>{
+      const active = organolepticToolState.selections[crit] === o.score;
+      return `
+        <div class="org-option ${active?'active':''}" data-org-opt="${crit}__${o.score}">
+          <div class="score-badge">${o.score}</div>
+          <div style="font-weight:600;">${o.desc.split('.')[0]}</div>
+          <div style="opacity:.85;">${o.desc}</div>
+        </div>
+      `;
+    }).join('');
+    return `
+      <div class="org-criterion">
+        <h4><i data-feather="bookmark" width="11"></i>${crit}</h4>
+        <div class="org-options">${opts}</div>
+      </div>
+    `;
+  }).join('') || '<div class="empty-state">Tidak ada kriteria.</div>';
+  feather.replace();
+  document.querySelectorAll('[data-org-opt]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const [crit, score] = el.getAttribute('data-org-opt').split('__');
+      organolepticToolState.selections[crit] = parseInt(score,10);
+      buildOrganolepticCriteria();
+      computeOrganolepticResult();
+    });
+  });
+  computeOrganolepticResult();
+}
+
+function computeOrganolepticResult(){
+  const scores = Object.values(organolepticToolState.selections);
+  let final = '-';
+  const method = document.getElementById('orgAggregateMethod')?.value || 'average';
+  if(scores.length){
+    if(method==='average'){
+      final = (scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(2);
+    } else if(method==='min'){
+      final = Math.min(...scores).toFixed(2);
+    } else if(method==='median'){
+      const sorted=[...scores].sort((a,b)=>a-b);
+      const mid = Math.floor(sorted.length/2);
+      final = (sorted.length%2? sorted[mid] : (sorted[mid-1]+sorted[mid])/2).toFixed(2);
+    }
+  }
+  const boxScore = document.getElementById('orgFinalScore');
+  const boxStatus= document.getElementById('orgFinalStatus');
+  if(boxScore) boxScore.textContent = final;
+  let status='-';
+  if(final!=='-'){
+    const f = parseFloat(final);
+    if(f>=7) status='Baik';
+    else if(f>=4) status='Sedang';
+    else status='Buruk';
+  }
+  if(boxStatus) boxStatus.textContent = status;
+  buildSummary();
+}
+
+function buildSummary(){
+  const std = organolepticStandards[organolepticToolState.standard];
+  const summaryEl = document.getElementById('orgSummary');
+  if(!summaryEl) return;
+  const lines = [`Standar: ${std.label}`,`Ref: ${std.ref}`,'Pilihan:'];
+  Object.keys(organolepticToolState.selections).forEach(k=>{
+    lines.push(`- ${k}: ${organolepticToolState.selections[k]}`);
+  });
+  lines.push(`Skor Akhir: ${document.getElementById('orgFinalScore')?.textContent || '-'}`);
+  lines.push(`Status: ${document.getElementById('orgFinalStatus')?.textContent || '-'}`);
+  summaryEl.textContent = lines.join('\n');
+}
+
+function resetOrganolepticTool(){
+  organolepticToolState.selections = {};
+  buildOrganolepticCriteria();
+}
+
+function applyOrganolepticToForm(){
+  const finalScore = document.getElementById('orgFinalScore')?.textContent;
+  if(!finalScore || finalScore==='-'){
+    App.toast('Belum ada skor untuk diterapkan','warn');
+    return;
+  }
+  // Isi skor organoleptik
+  const organolepticInput = document.getElementById('organoleptic');
+  if(organolepticInput){
+    organolepticInput.value = Math.round(parseFloat(finalScore));
+  }
+  // Ambil beberapa deskripsi representatif (heuristik)
+  // Bau -> kriteria bernama Bau atau Aroma Umum
+  const std = organolepticStandards[organolepticToolState.standard];
+  const pick = (nameList)=> {
+    for(const n of nameList){
+      if(organolepticToolState.selections[n]){
+        const arr = std.criteria[n];
+        const sc = organolepticToolState.selections[n];
+        const opt = arr.find(o=>o.score===sc);
+        return opt? opt.desc : '';
+      }
+    }
+    return '';
+  };
+  const smellDesc = pick(['Bau','Aroma Umum']);
+  const textureDesc = pick(['Daging / Tekstur','Tekstur']);
+  const colorDesc = pick(['Kulit / Warna','Kulit / Permukaan']);
+  if(smellDesc && document.getElementById('smell')) document.getElementById('smell').value = smellDesc.split('.')[0];
+  if(textureDesc && document.getElementById('texture')) document.getElementById('texture').value = textureDesc.split('.')[0];
+  if(colorDesc && document.getElementById('colorField')) document.getElementById('colorField').value = colorDesc.split('.')[0];
+  App.toast('Skor & deskripsi diterapkan ke Form','success');
+  App.showView('form');
+  setTimeout(()=> window.scrollTo({top:0,behavior:'smooth'}),150);
+}
+
+function initOrganolepticTool(){
+  const stdSelect = document.getElementById('orgStandardSelect');
+  if(stdSelect){
+    stdSelect.addEventListener('change', e=>{
+      organolepticToolState.standard = e.target.value;
+      resetOrganolepticTool();
+    });
+  }
+  document.getElementById('btnResetOrgTool')?.addEventListener('click', ()=>{
+    resetOrganolepticTool();
+    App.toast('Tool direset','info');
+  });
+  document.getElementById('btnApplyOrgScore')?.addEventListener('click', applyOrganolepticToForm);
+  document.getElementById('btnCopyOrgSummary')?.addEventListener('click', ()=>{
+    const txt = document.getElementById('orgSummary')?.textContent || '';
+    if(!txt) return App.toast('Ringkasan kosong','warn');
+    navigator.clipboard.writeText(txt).then(()=> App.toast('Ringkasan disalin','success'))
+      .catch(()=> App.toast('Gagal menyalin','danger'));
+  });
+  document.getElementById('orgAggregateMethod')?.addEventListener('change', computeOrganolepticResult);
+  document.getElementById('btnBackToForm')?.addEventListener('click', ()=> App.showView('form'));
+  document.getElementById('btnOpenOrgTool')?.addEventListener('click', ()=>{
+    App.showView('organoleptic-tool');
+  });
+  // Build awal
+  buildOrganolepticCriteria();
+}
 
   init();
   return PublicAPI;
