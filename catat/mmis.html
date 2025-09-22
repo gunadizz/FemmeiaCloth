@@ -7072,7 +7072,19 @@ window.App = (()=>{
 })();
 
 </script>
+     <script>
+(function() {
+  var ua = navigator.userAgent || navigator.vendor || window.opera;
+  var isIOS = /iPad|iPhone|iPod/.test(ua);
+  if (isIOS) {
+    document.body.classList.add('ios-notch-fix');
+    /* Force repaint untuk beberapa kasus Safari yang tidak apply env() pada load awal */
+    setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 120);
+  }
+})();
+     </script>
 </body>
 </html>
 
           
+
