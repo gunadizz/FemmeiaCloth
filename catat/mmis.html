@@ -86,6 +86,8 @@
 }
 
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { font-size: var(--font-base); }
+
 html, body { height:100%; }
 body {
   margin:0;
@@ -94,7 +96,7 @@ body {
   color: hsl(var(--text-color));
   line-height:1.45;
   -webkit-font-smoothing: antialiased;
-  font-size: var(--font-base);
+  
   transition: background .6s ease, font-size .4s, color .4s; /* UX+ */
   accent-color: hsl(var(--accent));
 }
@@ -1930,6 +1932,9 @@ footer.app {
 body.font-small { --font-base: 14px; }
 body.font-medium { --font-base: 15px; }
 body.font-large { --font-base: 17px; }
+html.font-small  { --font-base: 14px; }
+html.font-medium { --font-base: 15px; }  /* atau 16px kalau mau lebih terlihat */
+html.font-large  { --font-base: 18px; }  /* bisa 19 atau 20 kalau ingin lebih besar */
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width:1080px) {
@@ -2991,6 +2996,147 @@ body.font-large { --font-base: 17px; }
   0% { background-position:0% 0; }
   100% { background-position:200% 0; }
 }
+<!-- (Tambahkan di dalam <style> setelah blok CSS ".fab { ... }") -->
+
+/* Tombol Pengaturan Kiri Bawah */
+.fab.fab-settings {
+	opacity:0;
+  left: 1.1rem !important;
+  right: auto !important;
+  bottom: 1.35rem;
+  background: linear-gradient(135deg,hsl(var(--accent)/0.45), hsl(var(--accent)/0.70));
+}
+@media (max-width:640px){
+  .fab.fab-settings {
+    bottom: 6rem; /* naik sedikit agar tidak bertumpuk dengan FAB kanan */
+  }
+}
+/* ============ LAYOUT LIST MODE (tampilan kompak vertikal) ============ */
+body.layout-list .content {
+  gap: 1rem;
+}
+
+/* Semua grid utama jadi satu kolom */
+body.layout-list .grid,
+body.layout-list .cards-analytics,
+body.layout-list .indicators {
+  display: grid;
+  grid-template-columns: 1fr !important;
+}
+
+/* Indicators jadi list sempit */
+body.layout-list .indicators {
+  gap: .55rem;
+}
+body.layout-list .indicators .indicator {
+  flex-direction: row;
+  align-items: center;
+  min-height: 0;
+  padding: .6rem .75rem;
+}
+body.layout-list .indicators .indicator h4 {
+  width: 140px;
+  font-size: .52rem;
+  letter-spacing: .5px;
+}
+body.layout-list .indicators .indicator .val {
+  font-size: 1.1rem;
+}
+body.layout-list .indicators .indicator .trend {
+  margin-left: auto;
+}
+
+/* Panel bento tidak perlu tinggi minimal */
+body.layout-list .panel.bento {
+  min-height: auto;
+}
+
+/* Panel: sedikit lebih kompak */
+body.layout-list .panel {
+  padding: .85rem .9rem 1rem;
+  border-radius: 24px;
+}
+
+/* Header panel: rapatkan */
+body.layout-list .panel-header {
+  margin: -.2rem -.9rem .5rem;
+  padding: .55rem .9rem .5rem;
+}
+
+/* Ranking grid satu kolom */
+body.layout-list #rankingPanel .ranking-grid {
+  grid-template-columns: 1fr !important;
+  gap: .75rem;
+}
+
+/* Chart container lebih pendek */
+body.layout-list .chart-container {
+  height: 200px;
+}
+
+/* Quality indicator list item dirapatkan */
+body.layout-list .quality-item {
+  font-size: .5rem;
+  padding: .45rem .55rem .5rem;
+}
+
+/* Sosial layout jadi vertikal penuh */
+body.layout-list .social-container {
+  grid-template-columns: 1fr !important;
+}
+
+/* Form grid jadi daftar vertikal */
+body.layout-list .form-grid {
+  grid-template-columns: 1fr !important;
+}
+
+/* Tabel: biarkan apa adanya tapi kurangi border radius wrapper */
+body.layout-list .table-wrapper {
+  border-radius: 18px;
+}
+
+/* Ranking list item kompak */
+body.layout-list .ranking-list li {
+  padding: .45rem .5rem .5rem;
+}
+
+/* Organoleptik criteria grid jadi list */
+body.layout-list .org-criteria-grid {
+  grid-template-columns: 1fr !important;
+}
+
+/* Material categories satu kolom */
+body.layout-list #view-materials .grid {
+  grid-template-columns: 1fr !important;
+}
+
+/* Preference grid satu kolom */
+body.layout-list .preference-grid {
+  grid-template-columns: 1fr !important;
+}
+
+/* Panel footer / pagination dirapatkan */
+body.layout-list .table-footer {
+  padding: .5rem .65rem;
+  gap: .55rem;
+}
+
+/* Kurangi animasi scale di list agar terasa lebih simpel */
+body.layout-list .panel:hover,
+body.layout-list .indicator:hover,
+body.layout-list .social-post:hover {
+  transform: translateY(-4px);
+}
+
+/* FAB tidak berubah tapi bisa dikecilkan kalau mau (opsional) */
+/*
+body.layout-list .fab {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  font-size: .68rem;
+}
+*/
 </style>
 </head>
 <body>
@@ -4275,9 +4421,14 @@ service cloud.firestore {
 </div>
 
 <!-- Floating Action Button -->
-<button id="fabInputData" class="fab" title="Input Data">
+<button id="fabInputData" class="fab hidden" title="Input Data">
   <i data-feather="plus" width="22"></i>
 </button>
+
+<button id="fabSettings" class="fab fab-settings hidden" title="Pengaturan" aria-label="Buka Pengaturan">
+  <i data-feather="settings" width="22"></i>
+</button>
+
 <script>
 (function applyIOSViewportScale() {
   // Deteksi iOS & iPadOS (termasuk iPadOS yang melaporkan MacIntel + touch)
@@ -4680,15 +4831,20 @@ window.App = (()=>{
   }
 
   function applyFontSize(size){
-    let px = 15;
-    if(size==='small') px = 14;
-    else if(size==='large') px = 17;
-    document.documentElement.style.setProperty('--font-base', px+'px');
-    localStorage.setItem('fontSize', size);
-    state.fontSize = size;
-    const select = $('#fontSizeSelect');
-    if(select) select.value = size;
-  }
+  const root = document.documentElement;
+  root.classList.remove('font-small','font-medium','font-large');
+
+  let px = 15;
+  if(size === 'small'){ px = 14; root.classList.add('font-small'); }
+  else if(size === 'large'){ px = 18; root.classList.add('font-large'); }
+  else { root.classList.add('font-medium'); }
+
+  root.style.setProperty('--font-base', px + 'px');
+  localStorage.setItem('fontSize', size);
+
+  const select = document.getElementById('fontSizeSelect');
+  if(select) select.value = size;
+}
 
   /* ------------------ ACCENT PALETTE ------------------ */
   function buildAccentPalette(){
@@ -6264,16 +6420,23 @@ window.App = (()=>{
   }
 
   function toggleViewAuth(showAuth){
-    const authView = $('#authView');
-    const appLayout = $('#appLayout');
-    if(showAuth){
-      authView?.classList.remove('hidden');
-      appLayout?.classList.add('hidden');
-    } else {
-      authView?.classList.add('hidden');
-      appLayout?.classList.remove('hidden');
-    }
+  const authView = $('#authView');
+  const appLayout = $('#appLayout');
+  const fabInput = $('#fabInputData');
+  const fabSettings = $('#fabSettings');
+
+  if(showAuth){
+    authView?.classList.remove('hidden');
+    appLayout?.classList.add('hidden');
+    fabInput?.classList.add('hidden');
+    fabSettings?.classList.add('hidden');
+  } else {
+    authView?.classList.add('hidden');
+    appLayout?.classList.remove('hidden');
+    fabInput?.classList.remove('hidden');
+    fabSettings?.classList.remove('hidden');
   }
+}
 
   function initLoggedIn(){
     toggleViewAuth(false);
@@ -6561,6 +6724,20 @@ window.App = (()=>{
       toast('Bahasa diubah','success');
     });
 
+// === Inisialisasi font family ===
+  const savedFont = localStorage.getItem('fontFamily') || 'Quicksand';
+  document.documentElement.style.setProperty('--font-sans', `'${savedFont}', system-ui, sans-serif`);
+  const fontSel = document.getElementById('fontFamilySelect');
+  if (fontSel) {
+    fontSel.value = savedFont;
+    fontSel.addEventListener('change', e => {
+      const f = e.target.value || 'Quicksand';
+      document.documentElement.style.setProperty('--font-sans', `'${f}', system-ui, sans-serif`);
+      localStorage.setItem('fontFamily', f);
+      App.toast('Font: ' + f, 'info', 1800);
+    });
+  }
+  
     $('#prefLight')?.addEventListener('click', ()=>{
       document.documentElement.setAttribute('data-theme','light');
       localStorage.setItem('theme','light');
@@ -7614,6 +7791,19 @@ async function deleteNotification(id){
       setTimeout(()=> $('#loadingOverlay')?.style && ($('#loadingOverlay').style.display='none'), 1200);
     });
   }
+
+
+document.getElementById('fabSettings')?.addEventListener('click', ()=>{
+  if(window.App && typeof App.showView === 'function'){
+    App.showView('settings');
+    document.querySelector('.content')?.scrollTo({top:0,behavior:'smooth'});
+    App.toast('Pengaturan', 'info', 1400);
+  } else {
+    // fallback bila App belum siap
+    location.hash = '#settings';
+    
+  }
+});
 
   /* ------------------ PUBLIC API ------------------ */
   const PublicAPI = {
