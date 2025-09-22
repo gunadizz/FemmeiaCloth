@@ -3297,6 +3297,98 @@ body.perf-lite .badge-dot {
 body.perf-lite {
   background: hsl(var(--bg)) !important;
 }
+/* Achievement badges */
+.achievement-badge {
+  display:inline-flex;
+  align-items:center;
+  gap:.3rem;
+  background:linear-gradient(135deg,hsl(var(--accent)/0.55),hsl(var(--accent)/0.35));
+  color:#fff;
+  padding:.35rem .65rem;
+  font-size:.5rem;
+  font-weight:700;
+  letter-spacing:.45px;
+  border-radius:14px;
+  box-shadow:0 4px 12px -6px hsl(var(--accent)/0.55);
+  position:relative;
+  overflow:hidden;
+}
+.achievement-badge.new {
+  animation: pulseNew 1.6s ease-in-out 0s 2;
+}
+@keyframes pulseNew {
+  0%,100% { transform:scale(1); box-shadow:0 4px 12px -6px hsl(var(--accent)/0.55); }
+  50% { transform:scale(1.07); box-shadow:0 6px 18px -8px hsl(var(--accent)/0.7); }
+}
+
+/* ==== Presence (Online / Offline) Indicator ==== */
+.presence-indicator {
+  display:inline-flex;
+  align-items:center;
+  gap:.40rem;
+  font-size:.55rem;
+  padding:.38rem .65rem;
+  background:hsl(var(--accent)/0.18);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:14px;
+  font-weight:700;
+  letter-spacing:.45px;
+  position:relative;
+  line-height:1;
+  cursor:default;
+  user-select:none;
+  transition:background .35s, border-color .35s;
+}
+.presence-indicator:hover {
+  background:hsl(var(--accent)/0.28);
+}
+.presence-indicator .dot {
+  width:10px; height:10px;
+  border-radius:50%;
+  background:#10b981;                 /* default (online) */
+  position:relative;
+  box-shadow:0 0 0 0 rgba(16,185,129,.7);
+  animation:pulsePresence 1.4s ease-in-out infinite;
+}
+@keyframes pulsePresence {
+  0%   { box-shadow:0 0 0 0 currentColor; transform:scale(1); }
+  60%  { box-shadow:0 0 0 8px rgba(0,0,0,0); transform:scale(.85); }
+  100% { box-shadow:0 0 0 0 rgba(0,0,0,0); transform:scale(1); }
+}
+body.offline .presence-indicator {
+  background:rgba(239,68,68,.18);
+  border-color:rgba(239,68,68,.55);
+}
+body.offline .presence-indicator .dot {
+  background:#ef4444;
+  animation:pulsePresenceOffline 1.4s ease-in-out infinite;
+  box-shadow:0 0 0 0 rgba(239,68,68,.65);
+}
+@keyframes pulsePresenceOffline {
+  0%   { box-shadow:0 0 0 0 rgba(239,68,68,.8); transform:scale(1); }
+  60%  { box-shadow:0 0 0 8px rgba(239,68,68,0); transform:scale(.78); }
+  100% { box-shadow:0 0 0 0 rgba(239,68,68,0); transform:scale(1); }
+}
+.presence-indicator .label {
+  font-weight:500;
+  letter-spacing:.5px;color: white;
+  text-transform:uppercase;
+}
+body.offline .presence-indicator .label {
+  color:#ef4444;
+}
+body.offline .presence-indicator .dot::after {
+  /* garis retak kecil opsional */
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:
+    radial-gradient(circle at 65% 35%, rgba(255,255,255,.45), transparent 60%);
+  mix-blend-mode:overlay;
+  opacity:.5;
+}
+
 </style>
 </head>
 <body>
@@ -3567,6 +3659,11 @@ body.perf-lite {
         </div>
       </div>
       <div class="group-inline">
+      	<!-- SISIPKAN INI: -->
+  <div id="appPresence" class="presence-indicator" title="Status Koneksi">
+    <span class="dot"></span>
+    <span class="label">Online</span>
+  </div>
         <button style="margin-right:-10px" class="ghost" id="btnNotifications" title="Notifikasi">
           <i data-feather="bell" width="16"></i>
           <span id="notifBadge" class="badge-dot hidden">0</span>
@@ -4349,6 +4446,16 @@ body.perf-lite {
                 <div style="display:flex;flex-wrap:wrap;gap:.5rem;" id="profileStatsBadges"></div>
                 <button class="outline small" id="btnRefreshStats"><i data-feather="bar-chart-2" width="13"></i> <span data-i18n="refresh_stats">Perbarui Statistik</span></button>
               </div>
+              
+              <!-- Achievements / Pencapaian -->
+<div id="profileAchievements" class="fade-scale" style="margin-top:.9rem;display:flex;flex-direction:column;gap:.55rem;">
+  <div style="font-size:.58rem;font-weight:800;letter-spacing:.55px;text-transform:uppercase;color:hsl(var(--text-dim));">
+    Pencapaian (Achievements)
+  </div>
+  <div id="profileAchievementsStats" class="small muted"></div>
+  <div id="profileAchievementsList" style="display:flex;flex-wrap:wrap;gap:.45rem;"></div>
+</div>
+
             </div>
           </div>
         </div>
@@ -4756,6 +4863,45 @@ window.App = (()=>{
   const defaultFishTypes = ["Ikan Kembung","Ikan Bandeng","Ikan Nila","Tuna Kecil"];
   const defaultMarkets   = ["Pasar Terong","Pasar Pa’baeng-baeng","Pasar Maricaya","Pasar Panakkukang"];
 
+/* ------------------ ACHIEVEMENT RULES ------------------ */
+const achievementRules = [
+  {
+    id:'daily_5',
+    title:'5 Input Sehari',
+    desc:'Mencapai 5 input dalam satu hari',
+    check: ({todayCount}) => todayCount >= 5
+  },
+  {
+    id:'daily_10',
+    title:'10 Input Sehari',
+    desc:'Mencapai 10 input dalam satu hari',
+    check: ({todayCount}) => todayCount >= 10
+  },
+  {
+    id:'total_50',
+    title:'50 Total Input',
+    desc:'Telah menginput 50 data',
+    check: ({total}) => total >= 50
+  },
+  {
+    id:'total_100',
+    title:'100 Total Input',
+    desc:'Telah menginput 100 data',
+    check: ({total}) => total >= 100
+  },
+  {
+    id:'streak_3',
+    title:'Streak 3 Hari',
+    desc:'Input data selama 3 hari berturut-turut',
+    check: ({streak}) => streak >= 3
+  },
+  {
+    id:'streak_7',
+    title:'Streak 7 Hari',
+    desc:'Input data selama 7 hari berturut-turut',
+    check: ({streak}) => streak >= 7
+  }
+];
   /* ------------------ I18N DICTIONARY ------------------ */
   const i18n = {
     id: {
@@ -5950,23 +6096,29 @@ if(perfSel){
   async function loadUserProfile(uid){
     const doc = await db.collection('users').doc(uid).get();
     if(doc.exists){
-      state.userProfile = { id:doc.id, ...doc.data() };
-    } else {
-      state.userProfile = {
-        id: uid,
-        name: state.currentUser.displayName || 'Pengguna',
-        email: state.currentUser.email,
-        role:'Mahasiswa',
-        studentId:'', lecturerId:'', officerId:'',
-        defaultFishType:'', defaultMarket:'',
-        photo:'',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        emailVerified: state.currentUser.emailVerified,
-        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      await db.collection('users').doc(uid).set(state.userProfile);
-    }
+  const data = doc.data();
+  state.userProfile = {
+    id: doc.id,
+    ...data,
+    achievements: data.achievements || {}   // <--- TAMBAHKAN INI
+  };
+} else {
+  state.userProfile = {
+    id: uid,
+    name: state.currentUser.displayName || 'Pengguna',
+    email: state.currentUser.email,
+    role:'Mahasiswa',
+    studentId:'', lecturerId:'', officerId:'',
+    defaultFishType:'', defaultMarket:'',
+    photo:'',
+    achievements: {},                       // <--- TAMBAHKAN INI
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    emailVerified: state.currentUser.emailVerified,
+    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  await db.collection('users').doc(uid).set(state.userProfile);
+}
   }
 
   /* ------------------ SUBSCRIBE METADATA & DATA ------------------ */
@@ -6616,31 +6768,145 @@ if(perfSel){
   }
 
   function updateProfileStats(){
-    if(!state.userProfile) return;
-    const myData = state.fishData.filter(r=> r.userId===state.userProfile.id);
-    const total = myData.length;
-    const avg = total? average(myData.map(r=> r.organoleptic)).toFixed(2):'-';
-    const g = myData.filter(r=> r.organoleptic>=7).length;
-    const m = myData.filter(r=> r.organoleptic>=4 && r.organoleptic<7).length;
-    const b = myData.filter(r=> r.organoleptic<4).length;
-    const hz= myData.filter(r=> (r.hazards||[]).length).length;
-    const badges=[];
-    if(total) badges.push({icon:'check-circle', text:`${total} Input`});
-    if(g) badges.push({icon:'smile', text:`${g} ${state.lang==='en'?'Good':'Baik'}`});
-    if(m) badges.push({icon:'alert-triangle', text:`${m} ${state.lang==='en'?'Medium':'Sedang'}`});
-    if(b) badges.push({icon:'x-octagon', text:`${b} ${state.lang==='en'?'Bad':'Buruk'}`});
-    if(hz) badges.push({icon:'shield-off', text:`${hz} Indikasi`});
-    if(avg!=='-') badges.push({icon:'bar-chart-2', text:`Avg ${avg}`});
-    const wrap = $('#profileStatsBadges');
-    if(wrap){
-      wrap.innerHTML = badges.map(b=> `
-        <span class="badge-soft">
-          <i data-feather="${b.icon}" width="11"></i>${b.text}
-        </span>
-      `).join('') || '<span class="small muted">Belum ada statistik.</span>';
-      feather.replace();
+  if(!state.userProfile) return;
+  const myData = state.fishData.filter(r=> r.userId===state.userProfile.id);
+
+  // Total & kategori mutu
+  const total = myData.length;
+  const avg = total? average(myData.map(r=> r.organoleptic)).toFixed(2):'-';
+  const good = myData.filter(r=> r.organoleptic>=7).length;
+  const medium = myData.filter(r=> r.organoleptic>=4 && r.organoleptic<7).length;
+  const bad = myData.filter(r=> r.organoleptic<4).length;
+  const haz = myData.filter(r=> (r.hazards||[]).length).length;
+
+  // Statistik harian & streak
+  const today = isoDateOnly(new Date());
+  const todayCount = myData.filter(r=> isoDateOnly(r.date)===today).length;
+
+  // Hitung unique date
+  const uniqueDates = Array.from(new Set(myData.map(r=> isoDateOnly(r.date)))).sort(); // ascending
+  // Streak: cek dari hari ini mundur
+  let streak = 0;
+  if(uniqueDates.length){
+    const setDates = new Set(uniqueDates);
+    let cursor = new Date();
+    while(setDates.has(isoDateOnly(cursor))){
+      streak++;
+      cursor.setDate(cursor.getDate()-1);
     }
   }
+
+  // Rata-rata per hari aktif (bukan calendar full)
+  const activeDays = uniqueDates.length || 1;
+  const avgPerActiveDay = total ? (total / activeDays).toFixed(2) : '-';
+
+  // Bangun badges statistik singkat (tetap mempertahankan style lama)
+  const badges=[];
+  if(total) badges.push({icon:'check-circle', text:`${total} Input`});
+  if(todayCount) badges.push({icon:'sunrise', text:`${todayCount} Hari Ini`});
+  if(streak>1) badges.push({icon:'trending-up', text:`Streak ${streak}h`});
+  if(good) badges.push({icon:'smile', text:`${good} Baik`});
+  if(medium) badges.push({icon:'alert-triangle', text:`${medium} Sedang`});
+  if(bad) badges.push({icon:'x-octagon', text:`${bad} Buruk`});
+  if(haz) badges.push({icon:'shield-off', text:`${haz} Indikasi`});
+  if(avg!=='-') badges.push({icon:'bar-chart-2', text:`Avg ${avg}`});
+  if(avgPerActiveDay!=='-') badges.push({icon:'layers', text:`Avg/Hari Aktif ${avgPerActiveDay}`});
+
+  const wrap = $('#profileStatsBadges');
+  if(wrap){
+    wrap.innerHTML = badges.map(b=> `
+      <span class="badge-soft">
+        <i data-feather="${b.icon}" width="11"></i>${b.text}
+      </span>
+    `).join('') || '<span class="small muted">Belum ada statistik.</span>';
+    feather.replace();
+  }
+
+  // Simpan & render achievements
+  computeAndStoreAchievements({
+    total,
+    todayCount,
+    streak
+  });
+}
+
+/* ================== ACHIEVEMENTS (LENCANA) ================== */
+async function computeAndStoreAchievements(metrics){
+  if(!state.userProfile) return;
+  const existing = state.userProfile.achievements || {};
+  const newlyUnlocked = [];
+  const updates = {};
+
+  achievementRules.forEach(rule=>{
+    if(existing[rule.id]) return; // sudah punya
+    if(rule.check(metrics)){
+      newlyUnlocked.push(rule);
+      updates[`achievements.${rule.id}`] = firebase.firestore.FieldValue.serverTimestamp();
+    }
+  });
+
+  if(newlyUnlocked.length){
+    try{
+      await db.collection('users').doc(state.userProfile.id).update(updates);
+      // Merge ke state lokal agar tidak perlu reload
+      newlyUnlocked.forEach(r=>{
+        if(!state.userProfile.achievements) state.userProfile.achievements = {};
+        state.userProfile.achievements[r.id] = new Date(); // sementara (serverTimestamp akan sync di snapshot)
+      });
+      newlyUnlocked.forEach(r=>{
+        App.toast(`Achievement: ${r.title}`,'success',4500);
+      });
+    }catch(err){
+      console.warn('Gagal update achievements',err);
+    }
+  }
+  renderAchievements();
+}
+
+function renderAchievements(){
+  const wrap = $('#profileAchievementsList');
+  const info = $('#profileAchievementsStats');
+  if(!wrap) return;
+  const ach = state.userProfile?.achievements || {};
+  const unlockedIds = Object.keys(ach);
+
+  // Bangun list detail (gabung rules + status)
+  const fullList = achievementRules.map(rule=>{
+    const unlocked = unlockedIds.includes(rule.id);
+    return {
+      ...rule,
+      unlocked,
+      time: ach[rule.id] || null
+    };
+  });
+
+  // Info ringkas
+  if(info){
+    info.textContent = `Unlocked: ${unlockedIds.length} / ${achievementRules.length}`;
+  }
+
+  if(!fullList.length){
+    wrap.innerHTML = '<span class="small muted">Belum ada lencana.</span>';
+    return;
+  }
+
+  wrap.innerHTML = fullList.map(item=>{
+    if(item.unlocked){
+      return `
+        <span class="achievement-badge" title="${item.desc}">
+          <i data-feather="award" width="11"></i>${item.title}
+        </span>
+      `;
+    } else {
+      return `
+        <span class="achievement-badge" style="background:hsl(var(--accent)/0.18);color:hsl(var(--text-color));opacity:.55;" title="${item.desc} (Belum)">
+          <i data-feather="lock" width="11"></i>${item.title}
+        </span>
+      `;
+    }
+  }).join('');
+  feather.replace();
+}
 
   /* ------------------ AUTH LISTENER ------------------ */
   auth.onAuthStateChanged(async user=>{
@@ -8043,6 +8309,7 @@ async function deleteNotification(id){
     bindSocialForm();
     renderHazardChips();
     initOrganolepticTool();
+    initPresenceIndicator();
     feather.replace();
     window.addEventListener('load', ()=>{
       setTimeout(()=> $('#loadingOverlay')?.style && ($('#loadingOverlay').style.display='none'), 1200);
@@ -8061,6 +8328,30 @@ document.getElementById('fabSettings')?.addEventListener('click', ()=>{
     
   }
 });
+
+/* ==== Presence (Online / Offline) ==== */
+function initPresenceIndicator(){
+  const el = document.getElementById('appPresence');
+  if(!el) return;
+  function update(){
+    const online = navigator.onLine;
+    document.body.classList.toggle('offline', !online);
+    const label = el.querySelector('.label');
+    if(label){
+      // Jika ingin dukungan i18n:
+      const isEn = (window.App?.state?.lang || 'id') === 'en';
+      label.textContent = online
+        ? (isEn ? 'On' : 'On')
+        : (isEn ? 'Off' : 'Off');
+    }
+    el.setAttribute('title', online ? 'Koneksi Online' : 'Koneksi Offline / Periksa Internet');
+  }
+  window.addEventListener('online', update);
+  window.addEventListener('offline', update);
+  update();
+}
+
+
 
   /* ------------------ PUBLIC API ------------------ */
   const PublicAPI = {
