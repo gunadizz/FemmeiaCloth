@@ -432,8 +432,10 @@ body.lite-mode #appModal .modal-box { backdrop-filter:none; -webkit-backdrop-fil
   display:flex;
   min-height:100dvh;
   width:100%;
-  overflow:hidden;
+  /* overflow:hidden; */ /* dinonaktifkan agar sticky jalan */
+  overflow:visible;
   position:relative;
+  align-items:flex-start;
 }
 
 .sidebar {
@@ -444,7 +446,11 @@ body.lite-mode #appModal .modal-box { backdrop-filter:none; -webkit-backdrop-fil
   border-right:1px solid hsl(var(--panel-border)/0.5);
   display:flex; flex-direction:column;
   padding:1rem 1rem 1.4rem;
-  position:relative;
+  position:sticky;   /* tadinya relative */
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+  overscroll-behavior:contain;
   transition: transform .55s var(--spring), box-shadow var(--dur-m);
   box-shadow:8px 0 28px -14px rgba(0,0,0,.55);
   z-index:130;
@@ -750,7 +756,7 @@ body.lite-mode #appModal .modal-box { backdrop-filter:none; -webkit-backdrop-fil
 .content {
   padding: 1.15rem clamp(.8rem, 1.4vw, 1.25rem) 2.2rem;
   flex:1;
-  overflow-y:auto;
+  overflow: visible;
   display:flex;
   flex-direction:column;
   gap:1.9rem;
