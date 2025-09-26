@@ -2264,13 +2264,13 @@ html.font-large  { --font-base: 18px; }  /* bisa 19 atau 20 kalau ingin lebih be
   right:1.25rem;
   width:62px;
   height:62px;
-  border-radius:22px;
+  border-radius:32px;
   background:var(--gradient-accent);
   color:#fff;
   display:grid;
   place-items:center;
   font-weight:700;
-  font-size:.75rem;
+  font-size:.70rem;
   box-shadow:0 14px 36px -12px hsl(var(--accent)/0.65), 0 4px 8px -3px hsl(var(--accent)/0.5);
   z-index:300;
   border:1px solid hsl(var(--panel-border)/0.45);
@@ -3161,16 +3161,42 @@ body[class*="perf-"] {
   /* variabel dasar bisa ditimpa per mode */
 }
 
-/* ---------- DEFAULT MODE (ringan) ---------- */
+
+/* ====== OPTIMASI PERFORMANCE MODE: DEFAULT ======
+   Tujuan:
+   - Kurangi blur, gradient, shadow
+   - Hilangkan effect hiasan
+   - Pangkas animasi berat tapi tetap lebih kaya dari lite
+=================================================== */
+body.perf-default {
+  --glass-alpha: 0.85;
+  --dur-m: .22s;
+  --dur-l: .40s;
+}
 body.perf-default .panel,
 body.perf-default .sidebar,
 body.perf-default .topbar,
 body.perf-default .dropdown,
 body.perf-default .container-auth,
 body.perf-default .table-wrapper {
-  backdrop-filter: blur(14px) saturate(1.15) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(1.15) !important;
-  box-shadow: 0 6px 20px -10px rgba(0,0,0,.45);
+  /* Turun dari blur 14 -> 6 */
+  backdrop-filter: blur(6px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(1.1) !important;
+  background: hsl(var(--glass-bg)/0.90) !important;
+  box-shadow: 0 3px 10px -4px rgba(0,0,0,.28) !important;
+}
+
+/* Hilangkan layer pseudo dekoratif di default (masih ada di ultra) */
+body.perf-default .panel::before,
+body.perf-default .indicator::before,
+body.perf-default .logo-circle::after,
+body.perf-default .quality-item::after,
+body.perf-default .org-option::after,
+body.perf-default .hazard-chip::after,
+body.perf-default .toggle-chip::before,
+body.perf-default .nav button::after,
+body.perf-default .ranking-block:hover .rb-title::after {
+  display:none !important;
 }
 
 body.perf-default .indicator,
@@ -3178,15 +3204,72 @@ body.perf-default .social-post,
 body.perf-default .ranking-block,
 body.perf-default .material-category,
 body.perf-default .org-criterion {
-  box-shadow: 0 6px 18px -10px rgba(0,0,0,.45);
+  box-shadow: 0 3px 12px -6px rgba(0,0,0,.30) !important;
 }
 
-body.perf-default {
-  /* Kurangi intensitas animasi via custom var (dipakai beberapa tempat) */
-  --dur-m: .28s;
-  --dur-l: .55s;
-  --glass-alpha: 0.55;
+/* Box shadow tombol diperingan */
+body.perf-default button,
+body.perf-default .toggle,
+body.perf-default .toggle-chip,
+body.perf-default .reaction-btn {
+  box-shadow: 0 2px 6px -3px rgba(0,0,0,.35) !important;
 }
+
+/* Animasi scale & hover disederhanakan */
+body.perf-default .panel:hover,
+body.perf-default .indicator:hover,
+body.perf-default .social-post:hover,
+body.perf-default .ranking-block:hover,
+body.perf-default .org-criterion:hover,
+body.perf-default .material-category:hover {
+  transform: translateY(-4px);
+}
+
+body.perf-default .fab {
+  box-shadow: 0 6px 18px -8px rgba(0,0,0,.45) !important;
+}
+
+/* Kurangi intensitas transition untuk semua child */
+body.perf-default * {
+  transition-duration: .18s !important;
+}
+
+/* Nonaktifkan will-change masal untuk hemat memori compositing */
+body.perf-default .panel,
+body.perf-default .indicator,
+body.perf-default .social-post,
+body.perf-default .ranking-block,
+body.perf-default .org-criterion,
+body.perf-default .quality-item {
+  will-change: auto !important;
+}
+
+/* Chart container tanpa animasi bayangan */
+body.perf-default .chart-container {
+  box-shadow:none !important;
+}
+
+/* Gambar large: kurangi shadow */
+body.perf-default img {
+  box-shadow:0 2px 8px -4px rgba(0,0,0,.35);
+}
+
+/* Toast lebih ringan */
+body.perf-default .toast {
+  box-shadow:0 4px 14px -8px rgba(0,0,0,.45) !important;
+}
+
+/* Hilangkan shimmer / running gradient dekoratif */
+body.perf-default .divider::after {
+  animation:none !important;
+  background:none !important;
+}
+
+/* Kualitas list item: tanpa box-shadow tambahan */
+body.perf-default .quality-item {
+  box-shadow:none !important;
+}
+
 
 /* ---------- LITE MODE (sangat ringan) ---------- */
 body.perf-lite {
@@ -3395,6 +3478,786 @@ body.offline .presence-indicator .dot::after {
   opacity:.5;
 }
 
+/* ========== AI ASSISTANT MODULE STYLES ========== */
+.fab-ai {
+  left:1.25rem;
+  
+  bottom:1.35rem;
+  background:linear-gradient(135deg,hsl(var(--accent)/0.95),hsl(var(--accent)/0.65));
+}
+@media (max-width:680px){
+  .fab-ai { bottom:1.35rem; }
+}
+#aiChatModal {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  z-index:11000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:1rem;
+  animation:modalBg .35s ease;
+}
+#aiChatModal.show { display:flex; }
+.ai-chat-box {
+  width:100%;
+  max-width:560px;
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.94),hsl(var(--glass-bg)/0.72));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:30px;
+  padding:1rem .95rem 1.2rem;
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+  position:relative;
+  animation:modalIn .55s var(--spring);
+  box-shadow:0 20px 50px -16px rgba(0,0,0,.65), 0 0 0 1px hsl(var(--panel-border)/0.4);
+}
+.ai-chat-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.6rem;
+  padding: .25rem .15rem .4rem;
+  border-bottom:1px solid hsl(var(--panel-border)/0.45);
+}
+.ai-chat-history {
+  background:linear-gradient(135deg,hsl(var(--glass-bg)/0.66),hsl(var(--glass-bg)/0.55));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:20px;
+  padding:.7rem .7rem;
+  max-height:380px;
+  overflow:auto;
+  font-size:.6rem;
+  line-height:1.45;
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  scroll-behavior:smooth;
+}
+.ai-chat-history::-webkit-scrollbar { width:8px; }
+.ai-chat-history::-webkit-scrollbar-thumb {
+  background:hsl(var(--accent)/0.45);
+  border-radius:8px;
+  border:2px solid transparent;
+  background-clip:content-box;
+}
+.ai-msg {
+  display:flex;
+  flex-direction:column;
+  max-width:82%;
+  animation:fade .45s ease;
+}
+.ai-msg.user { align-self:flex-end; }
+.ai-bubble {
+  background:hsl(var(--accent)/0.25);
+  color:#fff;
+  padding:.55rem .75rem;
+  border-radius:16px;
+  font-size:.6rem;
+  white-space:pre-wrap;
+  word-break:break-word;
+  box-shadow:0 4px 14px -7px hsl(var(--accent)/0.55);
+}
+.ai-msg.user .ai-bubble {
+  background:linear-gradient(135deg,hsl(var(--accent)/0.95),hsl(var(--accent)/0.7));
+}
+.ai-meta {
+  font-size:.45rem;
+  margin-top:.25rem;
+  opacity:.7;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+}
+.ai-chat-form {
+  display:flex;
+  gap:.55rem;
+  align-items:flex-end;
+  flex-wrap:wrap;
+}
+.ai-chat-form textarea {
+  flex:1;
+  min-height:72px;
+  max-height:220px;
+  resize:vertical;
+  background:hsl(var(--glass-bg)/0.65);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:18px;
+  padding:.6rem .75rem;
+  font-family:var(--font-sans);
+  font-size:.65rem;
+  line-height:1.4;
+  transition:background .3s,border-color .3s,box-shadow .3s;
+}
+.ai-chat-form textarea:focus {
+  border-color:hsl(var(--accent)/0.85);
+  background:hsl(var(--glass-bg)/0.85);
+  box-shadow:0 0 0 3px hsl(var(--accent)/0.35);
+}
+.ai-status-line {
+  font-size:.52rem;
+  display:flex;
+  gap:.5rem;
+  align-items:center;
+  letter-spacing:.4px;
+  color:hsl(var(--accent)/0.85);
+  min-height:16px;
+  flex-wrap:wrap;
+}
+.ai-badge {
+  background:hsl(var(--accent)/0.35);
+  padding:.35rem .55rem;
+  border-radius:12px;
+  font-size:.5rem;
+  font-weight:700;
+  letter-spacing:.45px;
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  color:#fff;
+}
+.ai-fallback-note {
+  font-size:.5rem;
+  color:#f97316;
+  font-weight:600;
+  letter-spacing:.4px;
+  margin-top:.15rem;
+}
+.ai-quick-grid {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+}
+.ai-chip {
+  background:hsl(var(--accent)/0.18);
+  color:hsl(var(--accent)/0.95);
+  padding:.4rem .65rem;
+  font-size:.55rem;
+  font-weight:600;
+  border-radius:14px;
+  cursor:pointer;
+  border:1px solid hsl(var(--panel-border)/0.5);
+  transition:background .25s,transform .25s;
+}
+.ai-chip:hover {
+  background:hsl(var(--accent)/0.30);
+  transform:translateY(-3px);
+  color:#fff;
+}
+.ai-chip:active {
+  transform:translateY(-1px) scale(.95);
+}
+@keyframes fade { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
+@keyframes modalBg { from{opacity:0;} to{opacity:1;} }
+@keyframes modalIn { from{opacity:0;transform:translateY(18px) scale(.94);} to{opacity:1;transform:translateY(0) scale(1);} }
+
+/* Dark theme adaptation */
+[data-theme="dark"] #aiChatModal .ai-chat-box {
+  background:linear-gradient(145deg,hsl(220 15% 14% / .92),hsl(220 15% 12% / .78));
+  border-color:hsl(220 15% 28%);
+}
+[data-theme="dark"] .ai-chat-history {
+  background:hsl(var(--accent)/0.12);
+}
+
+/* WELCOME MODAL */
+#welcomeModal {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  z-index:10020;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:1.4rem;
+  animation: modalBg .35s ease;
+}
+#welcomeModal.show { display:flex; }
+#welcomeModal .modal-box {
+  width:100%;
+  max-width:560px;
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.94),hsl(var(--glass-bg)/0.72));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:32px;
+  padding:1.25rem 1.35rem 1.4rem;
+  display:flex;
+  flex-direction:column;
+  gap:.85rem;
+  position:relative;
+  animation: modalIn .55s var(--spring);
+  box-shadow:0 22px 54px -18px rgba(0,0,0,.65), 0 0 0 1px hsl(var(--panel-border)/0.4);
+}
+[data-theme="dark"] #welcomeModal .modal-box {
+  background:linear-gradient(145deg,hsl(220 15% 14% / .94),hsl(220 15% 12% / .78));
+  border-color:hsl(220 15% 28%);
+}
+/* ==== Welcome Modal: Switch Style ==== */
+.welcome-switch {
+  --ws-w: 44px;
+  --ws-h: 22px;
+  --ws-pad: 3px;
+  display:inline-flex;
+  align-items:center;
+  gap:.65rem;
+  cursor:pointer;
+  font-size:.58rem;
+  font-weight:600;
+  user-select:none;
+}
+
+.welcome-switch input {
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.welcome-switch .ws-track {
+  width:var(--ws-w);
+  height:var(--ws-h);
+  background:hsl(var(--accent)/0.30);
+  border-radius:999px;
+  position:relative;
+  display:inline-block;
+  transition:background .35s var(--spring);
+  box-shadow:0 2px 6px -2px rgba(0,0,0,.35) inset;
+}
+
+.welcome-switch .ws-knob {
+  position:absolute;
+  top:var(--ws-pad);
+  left:var(--ws-pad);
+  width:calc(var(--ws-h) - var(--ws-pad)*2);
+  height:calc(var(--ws-h) - var(--ws-pad)*2);
+  background:linear-gradient(135deg,#fff,#eaeaea);
+  border-radius:50%;
+  transition:.35s var(--spring);
+  box-shadow:0 3px 10px -4px rgba(0,0,0,.45);
+}
+
+.welcome-switch input:checked + .ws-track {
+  background:var(--gradient-accent);
+}
+.welcome-switch input:checked + .ws-track .ws-knob {
+  transform:translateX(calc(var(--ws-w) - var(--ws-h)));
+}
+
+.welcome-switch input:focus-visible + .ws-track {
+  outline:2px solid hsl(var(--accent)/0.85);
+  outline-offset:3px;
+}
+
+.welcome-switch:hover .ws-track {
+  filter:brightness(1.05);
+}
+/* ===== HACCP / CCP MODULE ===== */
+.haccp-master-list {
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  margin-top:.6rem;
+  max-height:320px;
+  overflow:auto;
+  padding-right:.3rem;
+  scrollbar-width:thin;
+  font-size:.55rem;
+}
+.haccp-master-item {
+  background:hsl(var(--accent)/0.14);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:16px;
+  padding:.55rem .65rem .6rem;
+  display:grid;
+  grid-template-columns: 1fr auto;
+  gap:.5rem;
+  position:relative;
+  transition:background .3s, transform .3s, box-shadow .3s;
+}
+.haccp-master-item:hover {
+  background:hsl(var(--accent)/0.22);
+  transform:translateY(-3px);
+  box-shadow:0 4px 12px -6px hsl(var(--accent)/0.55);
+}
+.haccp-master-meta {
+  font-size:.48rem;
+  opacity:.75;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem;
+  margin-top:.25rem;
+}
+.haccp-status-ok {
+  background:linear-gradient(135deg,#059669,#10b981);
+  color:#fff;
+  padding:.25rem .55rem;
+  border-radius:10px;
+  font-size:.48rem;
+  font-weight:700;
+  letter-spacing:.4px;
+}
+.haccp-status-out {
+  background:linear-gradient(135deg,#ef4444,#b91c1c);
+  color:#fff;
+  padding:.25rem .55rem;
+  border-radius:10px;
+  font-size:.48rem;
+  font-weight:700;
+  letter-spacing:.4px;
+}
+.ccp-action-btn {
+  background:hsl(var(--accent)/0.25);
+  border:1px solid hsl(var(--panel-border)/0.5);
+  color:#fff;
+  padding:.3rem .55rem;
+  border-radius:10px;
+  font-size:.5rem;
+  cursor:pointer;
+  display:inline-flex;
+  gap:.35rem;
+  align-items:center;
+  transition:background .3s, transform .3s;
+}
+.ccp-action-btn:hover {
+  background:hsl(var(--accent)/0.38);
+  transform:translateY(-2px);
+}
+.ccp-tag {
+  background:hsl(var(--accent)/0.3);
+  color:#fff;
+  padding:.2rem .45rem;
+  border-radius:8px;
+  font-size:.45rem;
+  font-weight:700;
+  letter-spacing:.4px;
+  display:inline-flex;
+  gap:.25rem;
+  align-items:center;
+}
+/* ==== SENSOR MODULE CSS (Ringan) ==== */
+#sensorList .sensor-item {
+  background:hsl(var(--accent)/0.15);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.45rem .55rem .5rem;
+  border-radius:14px;
+  display:flex;
+  flex-direction:column;
+  gap:.25rem;
+  position:relative;
+  transition:background .25s, transform .25s;
+  font-size:.55rem;
+}
+#sensorList .sensor-item:hover {
+  background:hsl(var(--accent)/0.25);
+  transform:translateY(-3px);
+}
+.sensor-badge {
+  background:hsl(var(--accent)/0.40);
+  color:#fff;
+  font-size:.48rem;
+  padding:.2rem .45rem;
+  border-radius:10px;
+  font-weight:700;
+  letter-spacing:.4px;
+  display:inline-flex;
+  gap:.3rem;
+  align-items:center;
+}
+.sensor-badge.alert {
+  background:linear-gradient(135deg,#ef4444,#b91c1c);
+}
+.sensor-badge.ok {
+  background:linear-gradient(135deg,#10b981,#059669);
+}
+/* ====== SENSOR TEMP INDICATOR IMPROVED ====== */
+.indicator.temp-indicator {
+  transition: background .45s, box-shadow .45s, border-color .45s;
+  position:relative;
+  overflow:visible;
+  padding:.75rem .8rem 1rem;
+}
+
+.indicator.temp-indicator .temp-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.6rem;
+  margin-bottom:.35rem;
+}
+.indicator.temp-indicator .temp-head h4 {
+  display:flex;
+  align-items:center;
+  gap:.35rem;
+  font-size:.52rem;
+  letter-spacing:.65px;
+  margin:0;
+  text-transform:uppercase;
+  font-weight:800;
+  color:hsl(var(--text-dim));
+}
+
+.temp-status-badge {
+  font-size:.48rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  padding:.3rem .55rem;
+  border-radius:10px;
+  background:hsl(var(--accent)/0.30);
+  color:#fff;
+  display:inline-flex;
+  align-items:center;
+  gap:.25rem;
+  box-shadow:0 3px 10px -4px hsl(var(--accent)/0.55);
+  transition:background .35s, transform .35s;
+}
+
+.indicator.temp-indicator .temp-main {
+  display:flex;
+  align-items:baseline;
+  gap:.6rem;
+  margin-bottom:.55rem;
+}
+
+.indicator.temp-indicator .val {
+  font-size:1.65rem;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:.5px;
+  animation:numberPop .6s var(--spring);
+}
+
+.indicator.temp-indicator .trend {
+  font-size:.55rem;
+  font-weight:700;
+  padding:.35rem .55rem;
+  border-radius:10px;
+  background:hsl(var(--accent)/0.30);
+  color:#fff;
+  box-shadow:0 4px 12px -6px hsl(var(--accent)/0.55);
+  align-self:flex-start;
+  margin-top:.25rem;
+  letter-spacing:.45px;
+  animation:fadeSlide .55s var(--spring);
+}
+
+/* Range bar */
+.temp-range-wrap {
+  margin-top:.15rem;
+}
+.temp-range-bar {
+  position:relative;
+  height:12px;
+  background:linear-gradient(90deg,#1d4ed8,#0ea5e9 20%,#10b981 36%,#f59e0b 66%,#ef4444 90%);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 2px 6px -2px rgba(0,0,0,.3);
+}
+.temp-range-fill {
+  position:absolute;
+  top:0;
+  left:0;
+  height:100%;
+  width:0%;
+  background:rgba(255,255,255,.55);
+  mix-blend-mode:overlay;
+  pointer-events:none;
+  transition:width .6s var(--spring);
+}
+.temp-range-marker {
+  position:absolute;
+  top:50%;
+  transform:translate(-50%,-50%);
+  font-size:.42rem;
+  font-weight:700;
+  color:#fff;
+  text-shadow:0 0 2px rgba(0,0,0,.5);
+  user-select:none;
+  pointer-events:none;
+}
+.temp-range-marker.low { left:0%; }
+.temp-range-marker.mid { left:33.33%; }
+.temp-range-marker.high{ left:66.66%; }
+.temp-range-marker.max { left:100%; }
+
+.temp-mini-note {
+  margin-top:.45rem;
+  font-size:.46rem;
+  letter-spacing:.4px;
+  font-weight:600;
+  opacity:.75;
+}
+
+/* Dynamic color states */
+.temp-indicator.temp-cold {
+  background:linear-gradient(145deg,rgba(29,78,216,.28),rgba(29,78,216,.10));
+  border:1px solid rgba(59,130,246,.45);
+}
+.temp-indicator.temp-ideal {
+  background:linear-gradient(145deg,rgba(16,185,129,.30),rgba(16,185,129,.12));
+  border:1px solid rgba(16,185,129,.5);
+}
+.temp-indicator.temp-warn {
+  background:linear-gradient(145deg,rgba(245,158,11,.32),rgba(245,158,11,.12));
+  border:1px solid rgba(245,158,11,.55);
+}
+.temp-indicator.temp-alert {
+  background:linear-gradient(145deg,rgba(239,68,68,.35),rgba(239,68,68,.18));
+  border:1px solid rgba(239,68,68,.55);
+  animation: tempPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes tempPulse {
+  0%,100% { box-shadow:0 0 0 0 rgba(239,68,68,.55); }
+  50% { box-shadow:0 0 0 8px rgba(239,68,68,0); }
+}
+
+.temp-status-badge.cold  { background:linear-gradient(135deg,#1d4ed8,#0ea5e9); }
+.temp-status-badge.ideal { background:linear-gradient(135deg,#059669,#10b981); }
+.temp-status-badge.warn  { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.temp-status-badge.alert { background:linear-gradient(135deg,#ef4444,#b91c1c); }
+
+.temp-status-badge:hover {
+  transform:translateY(-3px);
+}
+[data-theme="dark"] .temp-range-bar {
+  filter:brightness(.92) saturate(1.05);
+}
+/* ===== MICRO-LEARNING MODULE ===== */
+.micro-layout {
+  display:grid;
+  gap:1rem;
+  grid-template-columns:280px 1fr;
+}
+@media(max-width:880px){
+  .micro-layout { grid-template-columns:1fr; }
+  .micro-left { order:2; }
+  .micro-right { order:1; }
+}
+.micro-left {
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+  max-height:640px;
+  overflow:auto;
+  padding-right:.3rem;
+}
+.micro-module-item {
+  background:linear-gradient(135deg,hsl(var(--accent)/0.18),hsl(var(--accent)/0.10));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.65rem .75rem;
+  border-radius:18px;
+  font-size:.58rem;
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+  cursor:pointer;
+  position:relative;
+  transition:background .3s,transform .3s,box-shadow .3s;
+}
+.micro-module-item:hover {
+  background:hsl(var(--accent)/0.28);
+  transform:translateY(-4px);
+  box-shadow:0 6px 16px -8px hsl(var(--accent)/0.55);
+}
+.micro-module-item.active {
+  background:var(--gradient-accent);
+  color:#fff;
+  box-shadow:0 8px 18px -10px hsl(var(--accent)/0.65);
+}
+.micro-module-item .tag {
+  background:hsl(var(--accent)/0.35);
+  color:#fff;
+  padding:.2rem .45rem;
+  border-radius:10px;
+  font-size:.48rem;
+  font-weight:700;
+  letter-spacing:.4px;
+  display:inline-flex;
+  gap:.25rem;
+  align-items:center;
+}
+.micro-badge-pass {
+  background:linear-gradient(135deg,#10b981,#059669);
+  color:#fff;
+}
+.micro-badge-fail {
+  background:linear-gradient(135deg,#ef4444,#b91c1c);
+  color:#fff;
+}
+.micro-right {
+  min-height:400px;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  position:relative;
+}
+.micro-idle {
+  padding:1rem .9rem;
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.66),hsl(var(--glass-bg)/0.50));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:24px;
+}
+.micro-slide-header {
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  background:hsl(var(--accent)/0.18);
+  padding:.7rem .75rem;
+  border-radius:18px;
+  border:1px solid hsl(var(--panel-border)/0.5);
+}
+.micro-slide-title {
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.55px;
+}
+.micro-slide-progress {
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  font-size:.52rem;
+  font-weight:700;
+  letter-spacing:.45px;
+}
+.micro-progress-bar {
+  flex:1;
+  height:8px;
+  background:hsl(var(--accent)/0.25);
+  border-radius:6px;
+  overflow:hidden;
+  position:relative;
+}
+.micro-progress-bar > div {
+  height:100%;
+  width:0%;
+  background:var(--gradient-accent);
+  transition:width .4s var(--spring);
+}
+.micro-slide-body {
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.60),hsl(var(--glass-bg)/0.45));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:1rem .95rem 1.1rem;
+  border-radius:24px;
+  font-size:.62rem;
+  line-height:1.55;
+  min-height:210px;
+  white-space:pre-wrap;
+  position:relative;
+  overflow:auto;
+}
+.micro-slide-nav {
+  display:flex;
+  gap:.6rem;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.micro-quiz-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:.6rem;
+  background:hsl(var(--accent)/0.18);
+  padding:.65rem .75rem;
+  border-radius:18px;
+  border:1px solid hsl(var(--panel-border)/0.5);
+}
+.micro-quiz-status {
+  font-size:.52rem;
+  font-weight:700;
+  letter-spacing:.45px;
+  background:hsl(var(--accent)/0.35);
+  color:#fff;
+  padding:.3rem .55rem;
+  border-radius:12px;
+}
+.micro-quiz-list {
+  display:flex;
+  flex-direction:column;
+  gap:.75rem;
+  margin-top:.7rem;
+}
+.micro-question {
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.60),hsl(var(--glass-bg)/0.45));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.75rem .85rem;
+  border-radius:20px;
+  font-size:.6rem;
+  display:flex;
+  flex-direction:column;
+  gap:.5rem;
+}
+.micro-question h4 {
+  margin:0;
+  font-size:.6rem;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+.micro-options {
+  display:flex;
+  flex-direction:column;
+  gap:.4rem;
+}
+.micro-option {
+  background:hsl(var(--accent)/0.18);
+  border:1px solid hsl(var(--panel-border)/0.5);
+  padding:.45rem .55rem;
+  border-radius:14px;
+  font-size:.57rem;
+  cursor:pointer;
+  transition:background .3s,transform .3s,box-shadow .3s;
+  display:flex;
+  gap:.45rem;
+  align-items:flex-start;
+}
+.micro-option:hover {
+  background:hsl(var(--accent)/0.32);
+  transform:translateY(-3px);
+  box-shadow:0 4px 12px -6px hsl(var(--accent)/0.55);
+}
+.micro-option.active {
+  background:var(--gradient-accent);
+  color:#fff;
+  box-shadow:0 6px 18px -8px hsl(var(--accent)/0.55);
+}
+.micro-option.correct {
+  background:linear-gradient(135deg,#10b981,#059669);
+  color:#fff;
+}
+.micro-option.wrong {
+  background:linear-gradient(135deg,#ef4444,#b91c1c);
+  color:#fff;
+}
+.micro-quiz-actions {
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  flex-wrap:wrap;
+  margin-top:.85rem;
+}
+.micro-quiz-result {
+  margin-top:.85rem;
+  font-size:.58rem;
+  font-weight:600;
+  letter-spacing:.45px;
+  line-height:1.4;
+  white-space:pre-wrap;
+}
+.micro-finish-badge {
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  background:linear-gradient(135deg,#10b981,#059669);
+  color:#fff;
+  padding:.4rem .65rem;
+  border-radius:14px;
+  font-size:.55rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  box-shadow:0 6px 16px -8px rgba(0,0,0,.4);
+}
 </style>
 </head>
 <body>
@@ -3460,6 +4323,142 @@ body.offline .presence-indicator .dot::after {
     <div class="detail-grid" id="detailGrid"></div>
     <div id="detailImageWrapper"></div>
     <div id="detailHazardsWrapper"></div>
+  </div>
+</div>
+
+<!-- AI CHAT MODAL -->
+<div id="aiChatModal" aria-hidden="true">
+  <div class="ai-chat-box">
+    <div class="ai-chat-header">
+      <div style="display:flex;align-items:center;gap:.5rem;">
+        <i data-feather="message-circle" width="18"></i>
+        <span style="font-weight:700;letter-spacing:.6px;font-size:.8rem;">AI Asisten</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.45rem;">
+        <span id="aiModelBadge" class="ai-badge">-</span>
+        <button class="outline small" id="aiCloseModal">
+          <i data-feather="x" width="14"></i>
+        </button>
+      </div>
+    </div>
+    <div id="aiChatHistory" class="ai-chat-history"></div>
+    <form id="aiChatForm" class="ai-chat-form">
+      <textarea id="aiUserInput" placeholder="Tulis pertanyaan mutu ikan..." maxlength="800"></textarea>
+      <div style="display:flex;flex-direction:column;gap:.45rem;">
+        <button type="submit" class="small" id="aiSendBtn">
+          <i data-feather="send" width="13"></i>Kirim
+        </button>
+        <button type="button" class="outline small" id="aiClearBtn">
+          <i data-feather="trash-2" width="13"></i>Bersih
+        </button>
+      </div>
+    </form>
+    <div id="aiStatusLine" class="ai-status-line">
+      <span id="aiStatusText">Siap</span>
+    </div>
+    <div id="aiFallbackNote" class="ai-fallback-note hidden"></div>
+  </div>
+</div>
+
+<!-- WELCOME MODAL -->
+<div id="welcomeModal" aria-hidden="true">
+  <div class="modal-box">
+    <div class="modal-title">
+      <i data-feather="smile" width="18"></i>
+      <span>Selamat Datang di MMIS - Monitoring Mutu Ikan Segar</span>
+    </div>
+<div class="modal-text" style="display:flex;flex-direction:column;gap:.95rem;max-height:62vh;overflow:auto;padding-right:.35rem;">
+  <div style="font-size:.63rem;line-height:1.45;">
+    <strong>Selamat datang, <span id="welcomeUserName">Pengguna</span>! 😊</strong><br>
+    Aplikasi ini membantu Anda <em>mencatat</em>, <em>memantau</em>, dan <em>menganalisis</em> mutu ikan segar di pasar tradisional
+    serta memberi edukasi ringkas terkait keamanan pangan.
+  </div>
+
+  <div style="background:hsl(var(--accent)/0.16);padding:.65rem .75rem;border:1px solid hsl(var(--panel-border)/0.55);border-radius:16px;font-size:.56rem;line-height:1.4;display:flex;gap:.55rem;">
+    <i data-feather="zap" width="14"></i>
+    <div>
+      <strong>Quick Start:</strong><br>
+      <ul style="margin:.25rem 0 0 .9rem;padding:0;list-style:disc;display:flex;flex-direction:column;gap:.25rem;">
+        <li>Buka <strong>Input Data</strong>, isi jenis ikan, pasar, skor organoleptik.</li>
+        <li>Tulis deskripsi bau, tekstur, warna secara objektif.</li>
+        <li>(Opsional) Tambahkan indikasi keamanan hanya bila ada observasi meyakinkan.</li>
+        <li>Unggah foto untuk dukungan visual.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="font-size:.56rem;line-height:1.5;">
+    <strong>Tool Organoleptik > </strong> Gunakan menu <em>“Tool Organoleptik”</em> atau tombol “Tool Skor” di Form untuk memilih deskripsi standar & menghasilkan skor gabungan otomatis (pilih metode: rata-rata / minimum / median), lalu klik “Terapkan”.
+  </div>
+
+  <div style="font-size:.56rem;line-height:1.5;">
+    <strong>HACCP / CCP Checklist > </strong> Gunakan menu <em>“HACCP / CCP"</em> untuk mencatat monitoring titik kendali kritis (CCP).
+  </div>
+  
+  <div style="font-size:.56rem;line-height:1.5;">
+    <strong>Sensor Suhu > </strong> Menampilkan pembacaan suhu terakhir dari database website ini. Perangkat (ESP32/dll) mengirim data secara periodik. Gunakan grafik untuk memantau tren.
+  </div>
+
+  <div style="font-size:.56rem;line-height:1.5;">
+    <strong>Kustomisasi Tampilan > </strong> Di menu <em>Pengaturan</em> Anda dapat mengubah Tema (Terang/Gelap), Warna Aksen, Ukuran & Jenis Font, Layout (Grid/List), Mode Kinerja (Ultra / Default / Lite), Bahasa (ID / EN), serta Auto Refresh Dashboard.
+  </div>
+
+  <div style="font-size:.56rem;line-height:1.5;">
+    <strong>Mode Kinerja > </strong> Jika terasa berat, beralih ke <em>Default</em> atau <em>Lite</em> untuk menonaktifkan blur & animasi berat. Ini bermanfaat di perangkat low-power / koneksi lambat.
+  </div>
+
+  <div style="font-size:.56rem;line-height:1.5;">
+    <strong>Konsistensi Data > </strong> Gunakan nama jenis ikan & pasar konsisten. Ketik nama baru jika belum ada > sistem menambah otomatis ke daftar metadata.
+  </div>
+
+  <div style="font-size:.56rem;line-height:1.5;">
+    <strong>Fitur Penting:</strong>
+    <ul style="margin:.25rem 0 0 .9rem;padding:0;list-style:disc;display:flex;flex-direction:column;gap:.25rem;">
+      <li><em>Export</em> (CSV / Excel / PDF) di tabel & laporan.</li>
+      <li><em>AI Asisten</em>: tanya standar mutu, indikasi bahaya, tips penanganan.</li>
+      <li><em>Notifikasi</em>: cek ikon lonceng untuk broadcast admin / info penting.</li>
+  <li><em>Feed Sosial</em>: diskusi singkat & komentar antar pengguna.</li>
+  <li><em>Micro-Learning</em>: Modul mini (1-2 menit) + kuis cepat.</li>
+      <li><em>Ranking & Rekomendasi</em>: lihat pasar / ikan dengan mutu tinggi atau perlu perhatian.</li>
+    </ul>
+  </div>
+
+ 
+  <div style="font-size:.56rem;line-height:1.5;">
+    <strong>Langkah Lanjut:</strong> Setelah menginput 5–10 data, buka Dashboard & ubah rentang (Hari Ini / 7 / 30 / Semua) untuk melihat tren. Perhatikan pergeseran mutu & jumlah indikasi bahaya.
+  </div>
+
+  <div style="background:hsl(var(--accent)/0.14);padding:.55rem .7rem;border:1px solid hsl(var(--panel-border)/0.5);border-radius:14px;font-size:.55rem;display:flex;gap:.5rem;">
+    <i data-feather="info" width="14"></i>
+    <div>
+      Sesuaikan preferensi tampilan di Pengaturan agar membaca tabel dan form lebih nyaman. Anda dapat menonaktifkan animasi (“Reduce Motion”) dan memakai mode Lite di perangkat lama 🙏
+    </div>
+  </div>
+
+  <div class="welcome-optline">
+  <label class="welcome-switch">
+    <input type="checkbox" id="welcomeDontShow">
+    <span class="ws-track">
+      <span class="ws-knob"></span>
+    </span>
+    <span class="ws-text">Jangan tampilkan lagi</span>
+  </label>
+</div>
+</div>
+
+<div class="modal-actions" style="justify-content:space-between;">
+  <button class="outline small" id="welcomeSettingsBtn">
+    <i data-feather="settings" width="13"></i> Pengaturan
+  </button>
+  <div style="display:flex;gap:.45rem;">
+    <button class="outline small" id="welcomeCloseBtn">
+      <i data-feather="x" width="13"></i> Tutup
+    </button>
+    <button class="small" id="welcomeOkBtn">
+      <i data-feather="check" width="13"></i> Mulai
+    </button>
+  </div>
+</div>
   </div>
 </div>
 
@@ -3609,6 +4608,19 @@ body.offline .presence-indicator .dot::after {
         <i data-feather="bar-chart-2" width="18"></i>
         <span data-i18n="reports">Laporan</span>
       </button>
+      <button data-view="haccp">
+  <i data-feather="clipboard" width="18"></i>
+  <span>HACCP / CCP</span>
+</button>
+
+<button data-view="sensors">
+  <i data-feather="thermometer" width="18"></i>
+  <span>Sensor Suhu</span>
+</button>
+<button data-view="micro-learning">
+  <i data-feather="book" width="18"></i>
+  <span>Micro-Learning</span>
+</button>
       <button data-view="materials">
         <i data-feather="book-open" width="18"></i>
         <span data-i18n="materials">Materi</span>
@@ -3629,6 +4641,11 @@ body.offline .presence-indicator .dot::after {
         <i data-feather="users" width="18"></i>
         <span data-i18n="social">Sosial</span>
       </button>
+      
+<button data-view="ai-assistant">
+  <i data-feather="message-circle" width="18"></i>
+  <span>AI Asisten</span>
+</button>
       <button data-view="about">
         <i data-feather="info" width="18"></i>
         <span>Tentang</span>
@@ -3773,6 +4790,7 @@ body.offline .presence-indicator .dot::after {
           </div>
         </div>
         <div style="opacity:0">sk</div>
+        
         
               <!-- PANEL RANKING & REKOMENDASI (IMPROVED) -->
 <div class="panel bento" id="rankingPanel">
@@ -4112,6 +5130,225 @@ body.offline .presence-indicator .dot::after {
           <div id="reportResult" class="fade-in"></div>
         </div>
       </section>
+
+<section id="view-haccp" class="hidden fade-in">
+  <div class="panel">
+    <div class="panel-header">
+      <h3>
+        <i data-feather="clipboard" width="14"></i>
+        <span>HACCP / CCP Checklist</span>
+      </h3>
+      <div style="display:flex;gap:.45rem;flex-wrap:wrap;">
+        <button class="ghost small" id="haccpRefreshBtn" title="Refresh">
+          <i data-feather="refresh-cw" width="13"></i>
+        </button>
+        <button class="ghost small" id="haccpExportCsv">
+          <i data-feather="download" width="13"></i> CSV
+        </button>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:-.35rem;">
+      Modul ini mencatat monitoring titik kendali kritis (CCP). Tambah/master CCP lebih dulu jika belum ada.
+    </p>
+
+    <!-- MASTER CCP -->
+    <div class="panel compact" style="margin-top:.9rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.55px;display:flex;align-items:center;gap:.4rem;">
+          <i data-feather="settings" width="13"></i> Master CCP
+        </div>
+        <div style="display:flex;gap:.45rem;flex-wrap:wrap;">
+          <button class="outline small" id="ccpAddBtn">
+            <i data-feather="plus" width="12"></i> Tambah CCP
+          </button>
+        </div>
+      </div>
+      <div id="ccpMasterList" class="haccp-master-list"></div>
+    </div>
+
+    <!-- FORM CHECKLIST -->
+    <div class="panel compact" style="margin-top:.9rem;">
+      <div style="font-size:.6rem;font-weight:700;letter-spacing:.55px;display:flex;align-items:center;gap:.4rem;">
+        <i data-feather="edit" width="13"></i> Form Monitoring
+      </div>
+      <form id="ccpCheckForm" style="margin-top:.55rem;">
+        <div class="form-grid">
+          <div>
+            <label>CCP</label>
+            <select id="ccpSelect" required></select>
+          </div>
+          <div>
+            <label>Nilai Terukur</label>
+            <input type="number" step="any" id="ccpObserved" required placeholder="0.0">
+          </div>
+          <div>
+            <label>Tanggal</label>
+            <input type="date" id="ccpDate">
+          </div>
+          <div>
+            <label>Tindakan Koreksi (Jika OUT)</label>
+            <input id="ccpAction" placeholder="Kosongkan jika OK">
+          </div>
+          <div style="grid-column:1/-1;">
+            <label>Catatan (Opsional)</label>
+            <textarea id="ccpNotes" style="height:60px;resize:vertical;"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.7rem;">
+          <button type="submit" class="small">
+            <i data-feather="save" width="13"></i> Simpan Monitoring
+          </button>
+          <button type="button" class="outline small" id="ccpFormReset">
+            <i data-feather="refresh-cw" width="13"></i> Reset
+          </button>
+        </div>
+        <div id="ccpFormAlert" style="margin-top:.55rem;"></div>
+      </form>
+    </div>
+
+    <!-- FILTER LIST -->
+    <div class="panel compact" style="margin-top:.9rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.55px;display:flex;align-items:center;gap:.4rem;">
+          <i data-feather="list" width="13"></i> Riwayat Monitoring
+        </div>
+        <div class="form-inline" style="display:flex;gap:.45rem;flex-wrap:wrap;">
+          <input type="date" id="ccpFilterDateFrom" style="max-width:140px;">
+          <input type="date" id="ccpFilterDateTo" style="max-width:140px;">
+          <select id="ccpFilterSelect" style="max-width:160px;"></select>
+          <button class="outline small" id="ccpFilterApply">
+            <i data-feather="filter" width="12"></i> Filter
+          </button>
+          <button class="outline small" id="ccpFilterClear">
+            <i data-feather="x-circle" width="12"></i>
+          </button>
+        </div>
+      </div>
+      <div class="table-wrapper" style="margin-top:.6rem;">
+        <table id="ccpHistoryTable">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>CCP</th>
+              <th>Param</th>
+              <th>Nilai</th>
+              <th>Limit</th>
+              <th>Status</th>
+              <th>Aksi Koreksi</th>
+              <th>User</th>
+              <th>#</th>
+            </tr>
+          </thead>
+          <tbody id="ccpHistoryBody"></tbody>
+        </table>
+      </div>
+      <div id="ccpHistoryEmpty" class="empty-state hidden">
+        <i data-feather="inbox" width="32"></i>
+        <div>Belum ada monitoring.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ VIEW: SENSORS (REAL-TIME TEMPERATURE) ============ -->
+<section id="view-sensors" class="hidden fade-in">
+  <div class="panel">
+    <div class="panel-header">
+      <h3>
+        <i data-feather="thermometer" width="14"></i>
+        <span>Data Sensor Suhu</span>
+      </h3>
+      <div style="display:flex;gap:.45rem;flex-wrap:wrap;">
+        <button class="ghost small" id="sensorRefreshBtn" title="Refresh Manual">
+          <i data-feather="refresh-cw" width="13"></i>
+        </button>
+        <button class="ghost small" id="sensorToggleLiveBtn" title="Matikan/Hidupkan Live">
+          <i data-feather="activity" width="13"></i>
+        </button>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:-.4rem;">
+      Menampilkan pembacaan suhu terakhir dari database lokal <code>aplikasi ini</code>. 
+      Perangkat (ESP32/dll) mengirim data secara periodik. Gunakan grafik untuk memantau tren.
+    </p>
+
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem;margin-top:.6rem;">
+    	<!-- === DASHBOARD SENSOR AVERAGE TILE (IMPROVED) === -->
+<div class="indicator temp-indicator" id="sensorIndicatorTile">
+  <div class="temp-head">
+    <h4><i data-feather="thermometer" width="12"></i><span>Suhu Rata-rata Ikan</span></h4>
+    <span class="temp-status-badge" id="indTempStatus">-</span>
+  </div>
+  <div class="temp-main">
+    <div class="val" id="indTempAvg">-</div>
+    <div class="trend" id="indTempTrend">--</div>
+  </div>
+  <div class="temp-range-wrap">
+    <div class="temp-range-bar">
+      <div class="temp-range-fill" id="indTempRangeFill"></div>
+      <div class="temp-range-marker low"  title="0°C">0</div>
+      <div class="temp-range-marker mid"  title="4°C">4</div>
+      <div class="temp-range-marker high" title="8°C">8</div>
+      <div class="temp-range-marker max"  title="12°C">12</div>
+    </div>
+  </div>
+  <div class="temp-mini-note" id="indTempNote">Rentang target ideal 2–4°C</div>
+</div>
+      <div class="panel compact" style="min-height:160px;">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:.4rem;">
+          <i data-feather="list" width="13"></i> Log Terbaru (50)
+        </div>
+        <div id="sensorList" style="margin-top:.55rem;display:flex;flex-direction:column;gap:.4rem;max-height:300px;overflow:auto;padding-right:.35rem;font-size:.55rem;"></div>
+        <div id="sensorEmpty" class="small muted" style="margin-top:.6rem;display:none;">Belum ada data sensor.</div>
+      </div>
+      <div class="panel compact" style="min-height:160px;">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:.4rem;">
+          <i data-feather="bar-chart-2" width="13"></i> Grafik Suhu (Jam Terakhir)
+        </div>
+        <div class="chart-container" style="height:230px;margin-top:.6rem;">
+          <canvas id="sensorChart"></canvas>
+        </div>
+        <div id="sensorStats" class="small muted" style="margin-top:.55rem;"></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+
+    <div class="panel compact">
+      <div style="font-size:.6rem;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:.4rem;">
+        <i data-feather="settings" width="13"></i> Simulasi / Tambah Manual
+      </div>
+      <form id="sensorManualForm" style="margin-top:.55rem;display:flex;flex-wrap:wrap;gap:.65rem;align-items:flex-end;">
+        <div style="flex:1;min-width:140px;">
+          <label>Suhu (°C)</label>
+          <input type="number" step="0.1" id="sensorManualValue" placeholder="25.3" required>
+        </div>
+        <div style="flex:1;min-width:140px;">
+          <label>Source / ID</label>
+          <input id="sensorManualSource" placeholder="ESP32-A1">
+        </div>
+        <div style="flex:1;min-width:160px;">
+          <label>Catatan</label>
+          <input id="sensorManualNote" placeholder="chiller depan">
+        </div>
+        <button class="small" type="submit">
+          <i data-feather="plus" width="12"></i> Simpan
+        </button>
+      </form>
+      <div id="sensorManualAlert" style="margin-top:.55rem;"></div>
+    </div>
+
+    <div class="divider"></div>
+    <p class="xsmall muted">
+      Catatan: Integrasi real sensor lakukan pengiriman via script/perangkat ke Firestore. 
+      Panel ini hanya membaca koleksi <code>sensorTemperatures</code> real‑time.
+    </p>
+  </div>
+</section>
 
       <!-- MATERIALS -->
       <section id="view-materials" class="hidden fade-in">
@@ -4631,6 +5868,78 @@ body.offline .presence-indicator .dot::after {
         </div>
       </section>
 
+<section id="view-micro-learning" class="hidden fade-in">
+  <div class="panel">
+    <div class="panel-header">
+      <h3>
+        <i data-feather="book" width="14"></i>
+        <span>Micro-Learning Mutu Ikan</span>
+      </h3>
+      <div style="display:flex;gap:.45rem;flex-wrap:wrap;">
+        <button class="ghost small" id="mlResetProgress">
+          <i data-feather="rotate-ccw" width="13"></i> Reset
+        </button>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:-.35rem;">
+      Modul mini (1–2 menit) + kuis cepat. Selesaikan semua & lulus kuis untuk membuka lencana
+      <strong>"Quality Steward"</strong>.
+    </p>
+
+    <div class="micro-layout">
+      <div class="micro-left">
+        <div class="micro-module-list" id="mlModuleList"></div>
+      </div>
+      <div class="micro-right">
+        <div id="mlStageIdle" class="micro-idle">
+          <div style="font-size:.75rem;font-weight:700;letter-spacing:.6px;margin-bottom:.5rem;">
+            Pilih Modul
+          </div>
+          <p class="small">
+            Klik salah satu modul di sebelah kiri untuk mulai membaca slide, lalu kerjakan kuis.
+          </p>
+        </div>
+        <div id="mlStageSlides" class="hidden">
+          <div class="micro-slide-header">
+            <div class="micro-slide-title" id="mlSlideTitle">Judul Slide</div>
+            <div class="micro-slide-progress">
+              <span id="mlSlideCounter">0/0</span>
+              <div class="micro-progress-bar"><div id="mlSlideBar"></div></div>
+            </div>
+          </div>
+          <div class="micro-slide-body" id="mlSlideBody"></div>
+          <div class="micro-slide-nav">
+            <button class="outline small" id="mlPrevSlide"><i data-feather="chevron-left" width="12"></i>Prev</button>
+            <div style="flex:1;"></div>
+            <button class="outline small" id="mlExitModule"><i data-feather="x" width="12"></i>Tutup</button>
+            <button class="small" id="mlNextSlide">Next<i data-feather="chevron-right" width="12"></i></button>
+          </div>
+        </div>
+        <div id="mlStageQuiz" class="hidden">
+          <div class="micro-quiz-header">
+            <div style="font-weight:700;font-size:.65rem;letter-spacing:.5px;">
+              Kuis Modul <span id="mlQuizModuleTitle"></span>
+            </div>
+            <div class="micro-quiz-status" id="mlQuizStatus"></div>
+          </div>
+          <div id="mlQuizQuestions" class="micro-quiz-list"></div>
+          <div class="micro-quiz-actions">
+            <button class="outline small" id="mlBackToSlides">
+              <i data-feather="arrow-left" width="12"></i> Slides
+            </button>
+            <div style="flex:1;"></div>
+            <button class="small" id="mlSubmitQuiz">
+              <i data-feather="check-circle" width="12"></i> Submit Kuis
+            </button>
+          </div>
+          <div id="mlQuizResult" class="micro-quiz-result"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
       <!-- ABOUT -->
       <section id="view-about" class="hidden fade-in">
         <div class="panel">
@@ -4698,6 +6007,72 @@ service cloud.firestore {
         </div>
       </section>
 
+<!-- VIEW: AI ASSISTANT -->
+<section id="view-ai-assistant" class="hidden fade-in">
+  <div class="panel">
+    <div class="panel-header">
+      <h3>
+        <i data-feather="message-circle" width="14"></i>
+        <span>AI Asisten Perikanan</span>
+      </h3>
+      <div style="display:flex;gap:.45rem;flex-wrap:wrap;">
+        <button class="ghost small" id="aiTestBtn" title="Tes Koneksi">
+          <i data-feather="activity" width="13"></i>
+        </button>
+        <button class="ghost small" id="aiClearHistoryBtn" title="Bersihkan Riwayat">
+          <i data-feather="trash-2" width="13"></i>
+        </button>
+      </div>
+    </div>
+    <p class="small">
+      Gunakan AI untuk membantu tanya jawab mutu ikan segar, organoleptik, keamanan (formalin/boraks), penyimpanan dan praktik higienis.
+      Masukkan API Key Groq untuk stabilitas. Tanpa key tidak bisa jalan.
+    </p>
+    <div class="form-grid" style="margin-top:.6rem;">
+      <div>
+        <label>API Key Groq</label>
+        <input id="aiApiKey" placeholder="gsk_xxxxx..." autocomplete="off">
+      </div>
+      <div>
+        <label>Model</label>
+        <select id="aiModelSelect">
+          <option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option>
+          <option value="llama-3.2-3b-preview">llama-3.2-3b-preview</option>
+          <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
+        </select>
+      </div>
+      <div>
+        <label>Mode Jawaban</label>
+        <select id="aiAnswerMode">
+          <option value="short">Singkat</option>
+          <option value="detail">Detail</option>
+        </select>
+      </div>
+      <div>
+        <label>Prefiks Konteks</label>
+        <input id="aiContextPrefix" value="Anda adalah asisten ahli mutu ikan segar dan keamanan pangan.">
+      </div>
+    </div>
+    <div style="margin-top:.7rem;display:flex;gap:.55rem;flex-wrap:wrap;">
+      <button class="outline small" id="aiSaveSettings">
+        <i data-feather="save" width="13"></i>Simpan
+      </button>
+      <button class="outline small" id="aiLoadDefaults">
+        <i data-feather="refresh-cw" width="13"></i>Reset
+      </button>
+      <button class="outline small" id="aiOpenChatFromPanel">
+        <i data-feather="message-circle" width="13"></i>Buka Chat
+      </button>
+    </div>
+    <div class="divider"></div>
+    <div>
+      <div style="font-size:.6rem;font-weight:700;letter-spacing:.55px;margin-bottom:.35rem;">Contoh Cepat</div>
+      <div class="ai-quick-grid" id="aiQuickExamples"></div>
+    </div>
+    <div id="aiPanelStatus" class="small muted" style="margin-top:.7rem;"></div>
+  </div>
+</section>
+
     </main>
 
     <footer class="app">
@@ -4706,6 +6081,9 @@ service cloud.firestore {
   </div>
 </div>
 
+<button id="fabAI" class="fab fab-ai hidden" title="AI Asisten">
+  <i data-feather="message-circle" width="22"></i>
+</button>
 <!-- Floating Action Button -->
 <button id="fabInputData" class="fab hidden" title="Input Data">
   <i data-feather="plus" width="22"></i>
@@ -4849,6 +6227,10 @@ window.App = (()=>{
       perPage: parseInt(localStorage.getItem('tablePerPage')||'25',10),
       selected: new Set()
     },
+        microLearning: {
+      progress: {},     // { moduleId: { slideIndex, quizPassed } }
+      allPassed: false  // akan true jika semua modul lulus
+    },
     social: {
       posts: [],
       imageData: null,
@@ -4860,6 +6242,12 @@ window.App = (()=>{
       list: [],
       unreadCount: 0,
       lastUpdated: null
+    },
+        sensors: {
+      readings: [],     // array dokumen terbaru
+      unsub: null,
+      live: true,
+      chart: null
     },
     autoRefresh: parseInt(localStorage.getItem('autoRefreshDashboard')||'0',10),
     autoRefreshTimer: null
@@ -4907,7 +6295,14 @@ const achievementRules = [
     desc:'Input data selama 7 hari berturut-turut',
     check: ({streak}) => streak >= 7
   }
+  
 ];
+achievementRules.push({
+  id: 'quality_steward',
+  title: 'Quality Steward',
+  desc: 'Menuntaskan semua modul micro-learning & lulus kuis',
+  check: ({ microLearningCompleted }) => microLearningCompleted === true
+});
   /* ------------------ I18N DICTIONARY ------------------ */
   const i18n = {
     id: {
@@ -6179,6 +7574,221 @@ if(perfSel){
       });
   }
 
+  /* ================== SENSOR SUHU (Firestore) ================== */
+  function subscribeSensors(){
+    // Bersihkan bila sudah ada
+    if(state.sensors.unsub) { state.sensors.unsub(); state.sensors.unsub=null; }
+    state.sensors.unsub = db.collection('sensorTemperatures')
+      .orderBy('createdAt','desc')
+      .limit(50)
+      .onSnapshot(snap=>{
+        state.sensors.readings = snap.docs.map(d=> ({
+          id: d.id,
+          ...d.data(),
+          createdAt: d.data().createdAt ? (d.data().createdAt.toDate ? d.data().createdAt.toDate() : d.data().createdAt) : new Date()
+        }));
+        renderSensorList();
+        updateSensorStatsAndChart();
+        updateSensorIndicatorTile();
+      }, err=>{
+        toast('Gagal ambil sensor: '+err.message,'danger');
+      });
+  }
+
+  function renderSensorList(){
+    const list = $('#sensorList');
+    const empty = $('#sensorEmpty');
+    if(!list) return;
+    const arr = state.sensors.readings;
+    if(!arr.length){
+      list.innerHTML='';
+      empty && (empty.style.display='block');
+      return;
+    }
+    empty && (empty.style.display='none');
+    list.innerHTML = arr.map(r=>{
+      const val = typeof r.value==='number' ? r.value.toFixed(2) : r.value;
+      const status = r.status || (val>30 ? 'ALERT':'OK');
+      return `
+        <div class="sensor-item">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem;">
+            <span style="font-weight:700;">${val} ${r.unit||'°C'}</span>
+            <span class="sensor-badge ${status==='ALERT'?'alert':'ok'}">
+              <i data-feather="thermometer" width="10"></i>${status}
+            </span>
+          </div>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;font-size:.48rem;opacity:.8;">
+            <span>ID: ${sanitize(r.sourceId||'-')}</span>
+            <span>${formatDateTime(r.createdAt)}</span>
+          </div>
+          ${r.note? `<div style="font-size:.48rem;opacity:.75;">${sanitize(r.note)}</div>`:''}
+        </div>
+      `;
+    }).join('');
+    feather.replace();
+  }
+
+  function updateSensorStatsAndChart(){
+    const arr = [...state.sensors.readings].reverse(); // ascending waktu
+    if(!arr.length) {
+      if(state.sensors.chart){
+        state.sensors.chart.data.labels=[];
+        state.sensors.chart.data.datasets[0].data=[];
+        state.sensors.chart.update();
+      }
+      $('#sensorStats') && ($('#sensorStats').textContent='Tidak ada data.');
+      return;
+    }
+    // Filter jam terakhir (1 jam) -> opsional
+    const oneHourAgo = Date.now() - 3600*1000;
+    const lastHour = arr.filter(r=> r.createdAt.getTime() >= oneHourAgo);
+    const base = lastHour.length ? lastHour : arr;
+    const labels = base.map(r=> r.createdAt.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}));
+    const values = base.map(r=> typeof r.value==='number'? r.value : parseFloat(r.value)||0);
+
+    if(!state.sensors.chart){
+      const ctx = $('#sensorChart');
+      if(!ctx) return;
+      state.sensors.chart = new Chart(ctx,{
+        type:'line',
+        data:{
+          labels,
+          datasets:[{
+            label:'Suhu (°C)',
+            data:values,
+            borderColor:`hsl(${state.accent}/0.95)`,
+            backgroundColor:`hsl(${state.accent}/0.25)`,
+            tension:.35,
+            fill:true,
+            pointRadius:3
+          }]
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          plugins:{ legend:{display:false} },
+          scales:{ y:{ beginAtZero:false } }
+        }
+      });
+    } else {
+      state.sensors.chart.data.labels = labels;
+      state.sensors.chart.data.datasets[0].data = values;
+      state.sensors.chart.update();
+    }
+
+    const avg = values.reduce((a,b)=>a+b,0)/values.length;
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    $('#sensorStats') && ($('#sensorStats').textContent =
+      `Data: ${values.length} • Avg: ${avg.toFixed(2)}°C • Min: ${min.toFixed(2)}°C • Max: ${max.toFixed(2)}°C`
+    );
+  }
+
+    function updateSensorIndicatorTile(){
+    const avgEl   = $('#indTempAvg');
+    const trendEl = $('#indTempTrend');
+    const statusEl= $('#indTempStatus');
+    const noteEl  = $('#indTempNote');
+    const fillEl  = $('#indTempRangeFill');
+    const tile    = $('#sensorIndicatorTile');
+
+    if(!avgEl || !tile) return;
+
+    const arr = state.sensors.readings;
+    if(!arr.length){
+      avgEl.textContent='-';
+      trendEl && (trendEl.textContent='--');
+      statusEl && (statusEl.textContent='-');
+      tile.classList.remove('temp-cold','temp-ideal','temp-warn','temp-alert');
+      return;
+    }
+
+    // Hitung jendela 5 menit vs 5 menit sebelumnya (mirip versi lama)
+    const now = Date.now();
+    const win = 5*60*1000;
+    const prevStart = now - 2*win;
+    const prevEnd   = now - win;
+    const curStart  = now - win;
+
+    const cur = arr.filter(r=> r.createdAt.getTime() >= curStart);
+    const prev= arr.filter(r=> r.createdAt.getTime() >= prevStart && r.createdAt.getTime() < prevEnd);
+
+    function numeric(a){ return typeof a==='number'? a : parseFloat(a)||0; }
+    const curVals  = cur.map(r=> numeric(r.value));
+    const prevVals = prev.map(r=> numeric(r.value));
+
+    const curAvg = curVals.length? curVals.reduce((a,b)=>a+b,0)/curVals.length : 0;
+    const prevAvg= prevVals.length? prevVals.reduce((a,b)=>a+b,0)/prevVals.length : 0;
+
+    avgEl.textContent = curVals.length? curAvg.toFixed(2): '-';
+
+    // Trend
+    let trendTxt='--';
+    if(curVals.length && prevVals.length){
+      const diff = curAvg - prevAvg;
+      const pct  = prevAvg!==0? (diff/prevAvg)*100 : 0;
+      const arrow= diff>0.15 ? '▲' : diff<-0.15 ? '▼' : '▬';
+      trendTxt = `${arrow} ${(pct>0?'+':'')+pct.toFixed(1)}%`;
+    }
+    trendEl && (trendEl.textContent = trendTxt);
+
+    // Status range & kelas dinamis
+    // Rentang rekomendasi: 2–4°C (contoh untuk ikan segar)
+    let statusLabel='-';
+    let statusClass='ideal';
+    if(!curVals.length){
+      statusLabel='-';
+      statusClass='';
+    } else if(curAvg < 2){
+      statusLabel='Dingin'; statusClass='cold';
+    } else if(curAvg >=2 && curAvg <=4){
+      statusLabel='Ideal'; statusClass='ideal';
+    } else if(curAvg >4 && curAvg <=8){
+      statusLabel='Waspada'; statusClass='warn';
+    } else {
+      statusLabel='Alert'; statusClass='alert';
+    }
+
+    statusEl && (statusEl.textContent = statusLabel);
+    statusEl && statusEl.classList.remove('cold','ideal','warn','alert');
+    statusEl && statusEl.classList.add(statusClass);
+
+    tile.classList.remove('temp-cold','temp-ideal','temp-warn','temp-alert');
+    if(statusClass) tile.classList.add('temp-'+statusClass);
+
+    // Progress fill (0–12°C baseline; ubah jika perlu)
+    if(fillEl){
+      const maxRef = 12;
+      const perc = Math.max(0, Math.min(100, (curAvg / maxRef)*100));
+      fillEl.style.width = perc + '%';
+    }
+
+    // Note dinamis
+    if(noteEl){
+      if(statusClass==='ideal') noteEl.textContent='Status Ideal (2–4°C)';
+      else if(statusClass==='cold') noteEl.textContent='Terlalu Dingin (<2°C) – periksa over-chilling';
+      else if(statusClass==='warn') noteEl.textContent='Di atas batas ideal (>4°C) – perhatikan penanganan';
+      else if(statusClass==='alert') noteEl.textContent='ALERT! >8°C — risiko mutu menurun cepat';
+      else noteEl.textContent='Rentang target ideal 2–4°C';
+    }
+  }
+
+  async function addManualSensorReading(val, sourceId, note){
+    try{
+      await db.collection('sensorTemperatures').add({
+        value: val,
+        unit: '°C',
+        sourceId: sourceId || 'manual',
+        note: note || '',
+        status: (val>30 ? 'ALERT':'OK'),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      toast('Data sensor disimpan','success');
+    }catch(err){
+      toast('Gagal simpan sensor','danger');
+    }
+  }
+  
   /* ------------------ SOSIAL POSTS / REACTIONS / KOMENTAR ------------------ */
   function subscribeSocial(){
     if(state.metadataUnsub.social) state.metadataUnsub.social();
@@ -6773,11 +8383,11 @@ if(perfSel){
     }
   }
 
-  function updateProfileStats(){
+function updateProfileStats(){
   if(!state.userProfile) return;
   const myData = state.fishData.filter(r=> r.userId===state.userProfile.id);
 
-  // Total & kategori mutu
+  // Statistik dasar
   const total = myData.length;
   const avg = total? average(myData.map(r=> r.organoleptic)).toFixed(2):'-';
   const good = myData.filter(r=> r.organoleptic>=7).length;
@@ -6785,13 +8395,10 @@ if(perfSel){
   const bad = myData.filter(r=> r.organoleptic<4).length;
   const haz = myData.filter(r=> (r.hazards||[]).length).length;
 
-  // Statistik harian & streak
+  // Aktivitas harian & streak
   const today = isoDateOnly(new Date());
   const todayCount = myData.filter(r=> isoDateOnly(r.date)===today).length;
-
-  // Hitung unique date
-  const uniqueDates = Array.from(new Set(myData.map(r=> isoDateOnly(r.date)))).sort(); // ascending
-  // Streak: cek dari hari ini mundur
+  const uniqueDates = Array.from(new Set(myData.map(r=> isoDateOnly(r.date)))).sort();
   let streak = 0;
   if(uniqueDates.length){
     const setDates = new Set(uniqueDates);
@@ -6801,12 +8408,13 @@ if(perfSel){
       cursor.setDate(cursor.getDate()-1);
     }
   }
-
-  // Rata-rata per hari aktif (bukan calendar full)
   const activeDays = uniqueDates.length || 1;
   const avgPerActiveDay = total ? (total / activeDays).toFixed(2) : '-';
 
-  // Bangun badges statistik singkat (tetap mempertahankan style lama)
+  // Micro‑Learning completion
+  const microLearningCompleted = !!state.microLearning?.allPassed;
+
+  // Badge ringkas
   const badges=[];
   if(total) badges.push({icon:'check-circle', text:`${total} Input`});
   if(todayCount) badges.push({icon:'sunrise', text:`${todayCount} Hari Ini`});
@@ -6817,6 +8425,7 @@ if(perfSel){
   if(haz) badges.push({icon:'shield-off', text:`${haz} Indikasi`});
   if(avg!=='-') badges.push({icon:'bar-chart-2', text:`Avg ${avg}`});
   if(avgPerActiveDay!=='-') badges.push({icon:'layers', text:`Avg/Hari Aktif ${avgPerActiveDay}`});
+  if(microLearningCompleted) badges.push({icon:'award', text:'Quality Steward'});
 
   const wrap = $('#profileStatsBadges');
   if(wrap){
@@ -6828,13 +8437,15 @@ if(perfSel){
     feather.replace();
   }
 
-  // Simpan & render achievements
+  // Jalankan evaluasi achievements (tambahkan metrik baru)
   computeAndStoreAchievements({
     total,
     todayCount,
-    streak
+    streak,
+    microLearningCompleted
   });
 }
+
 
 /* ================== ACHIEVEMENTS (LENCANA) ================== */
 async function computeAndStoreAchievements(metrics){
@@ -6958,17 +8569,20 @@ function renderAchievements(){
   const authView = $('#authView');
   const appLayout = $('#appLayout');
   const fabInput = $('#fabInputData');
+  const fabAII = $('#fabAI');
   const fabSettings = $('#fabSettings');
 
   if(showAuth){
     authView?.classList.remove('hidden');
     appLayout?.classList.add('hidden');
     fabInput?.classList.add('hidden');
+    fabAII?.classList.add('hidden');
     fabSettings?.classList.add('hidden');
   } else {
     authView?.classList.add('hidden');
     appLayout?.classList.remove('hidden');
     fabInput?.classList.remove('hidden');
+    fabAII?.classList.remove('hidden');
     fabSettings?.classList.remove('hidden');
   }
 }
@@ -6981,6 +8595,17 @@ function renderAchievements(){
     updateDashboard();
     rebuildCharts();
     initAutoRefresh();
+    bindWelcomeModalEvents();     
+    // === Aktifkan sensor (default live) ===
+    subscribeSensors();
+    bindSensorUI();   
+  showWelcomeModalOnce();    
+  (function setWelcomeName(){
+  const span = document.getElementById('welcomeUserName');
+  if(span && App.state?.userProfile?.name){
+    span.textContent = App.state.userProfile.name.split(' ')[0]; // ambil nama depan
+  }
+})();
   }
 
   /* ------------------ SUBMIT FORM DATA MUTU ------------------ */
@@ -8039,6 +9664,32 @@ async function deleteNotification(id){
     });
   }
 
+  function bindSensorUI(){
+    $('#sensorRefreshBtn')?.addEventListener('click', ()=>{
+      // Re-subscribe (manual)
+      subscribeSensors();
+      toast('Sensor refresh','info');
+    });
+    $('#sensorToggleLiveBtn')?.addEventListener('click', ()=>{
+      state.sensors.live = !state.sensors.live;
+      if(state.sensors.live){
+        subscribeSensors();
+        toast('Live ON','success');
+      } else {
+        if(state.sensors.unsub){ state.sensors.unsub(); state.sensors.unsub=null; }
+        toast('Live OFF','warn');
+      }
+    });
+    $('#sensorManualForm')?.addEventListener('submit', e=>{
+      e.preventDefault();
+      const v = parseFloat($('#sensorManualValue').value);
+      if(isNaN(v)){ showAlert('sensorManualAlert','danger','Nilai tidak valid'); return; }
+      const s = $('#sensorManualSource').value.trim();
+      const n = $('#sensorManualNote').value.trim();
+      addManualSensorReading(v,s,n);
+      e.target.reset();
+    });
+  }
   /* ------------------ ORGANOLPTIK TOOL ------------------ */
   const organolepticStandards = {
     sni2013: {
@@ -8316,6 +9967,7 @@ async function deleteNotification(id){
     renderHazardChips();
     initOrganolepticTool();
     initPresenceIndicator();
+        bindSensorUI(); // agar form manual siap bila user sudah login kemudian ke tab
     feather.replace();
     window.addEventListener('load', ()=>{
       setTimeout(()=> $('#loadingOverlay')?.style && ($('#loadingOverlay').style.display='none'), 1200);
@@ -8358,21 +10010,1123 @@ function initPresenceIndicator(){
 }
 
 
+/* ============================================================
+   AI ASSISTANT MODULE (Groq API) for MMIS
+   Versi: 1.0
+   - Tambahan modular, tidak mengganggu App utama
+   - Menunggu window.App siap
+   - Simpan konfigurasi di localStorage: aiSettings
+   - Fallback FAQ lokal jika error
+   ============================================================ */
+(function(){
+  const LS_KEY = 'aiSettingsMMIS';
+  const DEFAULTS = {
+    apiKey: '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',
+    model: 'llama-3.1-8b-instant',
+    mode: 'short',
+    context: 'Anda adalah asisten ahli mutu ikan segar dan keamanan pangan.',
+  };
+  const EXAMPLES = [
+    'Bagaimana ciri ikan segar organoleptik?',
+    'Apa indikasi ikan mengandung formalin?',
+    'Mengapa tekstur ikan bisa sangat kenyal?',
+    'Cara penyimpanan ikan segar di pasar?',
+    'Perbedaan bau ikan segar vs rusak?',
+    'Langkah mencegah kontaminasi silang?',
+    'Apa parameter mutu utama ikan segar?'
+  ];
+  const LOCAL_FAQ = [
+    {k:/formalin|indikasi.*formalin/i,a:'Indikasi formalin: insang pucat keabu-abuan, bau kimia tajam, tekstur terlalu kenyal. Perlu uji cepat untuk konfirmasi.'},
+    {k:/boraks|borax/i,a:'Indikasi boraks: daging sangat kenyal sulit sobek, warna cerah tidak wajar, perlu uji kit untuk memastikan.'},
+    {k:/ciri.*ikan segar|pilih.*ikan/i,a:'Ciri ikan segar: mata cembung jernih, insang merah cerah, bau laut alami, daging elastis, kulit mengkilap berlendir jernih.'},
+    {k:/penyimpanan|simpan.*ikan/i,a:'Simpan ikan 0–4°C dengan es bersih, tiriskan lelehan, kemas tertutup, bekukan bila >2 hari simpan.'},
+    {k:/organoleptik|skor/i,a:'Organoleptik mencakup: mata, insang, bau, tekstur, lendir/kulit. Skor tinggi = segar.'}
+  ];
+
+  let settings = loadSettings();
+  let history = []; // {role:'user'|'assistant', text, model}
+  let isOpen = false;
+  let busy = false;
+
+  function loadSettings(){
+    try {
+      const s = JSON.parse(localStorage.getItem(LS_KEY)||'{}');
+      return {...DEFAULTS, ...s};
+    } catch { return {...DEFAULTS}; }
+  }
+  function saveSettings(){
+    localStorage.setItem(LS_KEY, JSON.stringify(settings));
+  }
+
+  function waitForApp(cb){
+    if(window.App && typeof window.App.toast === 'function'){
+      cb();
+    } else {
+      setTimeout(()=> waitForApp(cb), 120);
+    }
+  }
+
+  function $(sel){ return document.querySelector(sel); }
+
+  function initUIBindings(){
+    // Panel controls
+    $('#aiSaveSettings')?.addEventListener('click', savePanelSettings);
+    $('#aiLoadDefaults')?.addEventListener('click', ()=> {
+      settings = {...DEFAULTS};
+      fillPanel();
+      saveSettings();
+      toast('Pengaturan AI direset');
+    });
+    $('#aiOpenChatFromPanel')?.addEventListener('click', openModal);
+
+    $('#aiTestBtn')?.addEventListener('click', async ()=>{
+      if(!settings.apiKey) return toast('Isi API key dulu','warn');
+      setPanelStatus('MengujI koneksi...');
+      const ok = await testConnection();
+      setPanelStatus(ok?'Tes OK':'Tes gagal');
+      toast(ok?'Tes berhasil':'Tes gagal','info');
+    });
+
+    $('#aiClearHistoryBtn')?.addEventListener('click', ()=>{
+      history = [];
+      renderHistory();
+      toast('Riwayat chat dibersihkan');
+    });
+
+    // FAB
+    $('#fabAI')?.addEventListener('click', openModal);
+
+    // Modal
+    $('#aiCloseModal')?.addEventListener('click', closeModal);
+    $('#aiClearBtn')?.addEventListener('click', ()=>{
+      history=[];
+      renderHistory();
+      $('#aiFallbackNote')?.classList.add('hidden');
+      statusLine('Riwayat dibersihkan','info');
+    });
+
+    // Chat form
+    $('#aiChatForm')?.addEventListener('submit', e=>{
+      e.preventDefault();
+      if(busy) return;
+      const val = $('#aiUserInput').value.trim();
+      if(!val) return;
+      $('#aiUserInput').value='';
+      pushMessage('user', val);
+      askAI(val);
+    });
+
+    // Quick examples
+    buildExamples();
+    fillPanel();
+    toggleFabVisibility(true);
+  }
+
+  function toggleFabVisibility(show){
+    const fab = $('#fabAI');
+    if(fab){
+      fab.classList.toggle('hidden', !show);
+    }
+  }
+
+  function fillPanel(){
+    $('#aiApiKey') && ($('#aiApiKey').value = settings.apiKey);
+    $('#aiModelSelect') && ($('#aiModelSelect').value = settings.model);
+    $('#aiAnswerMode') && ($('#aiAnswerMode').value = settings.mode);
+    $('#aiContextPrefix') && ($('#aiContextPrefix').value = settings.context);
+  }
+
+  function savePanelSettings(){
+    settings.apiKey = $('#aiApiKey')?.value.trim() || '';
+    settings.model  = $('#aiModelSelect')?.value || DEFAULTS.model;
+    settings.mode   = $('#aiAnswerMode')?.value || 'short';
+    settings.context= $('#aiContextPrefix')?.value.trim() || DEFAULTS.context;
+    saveSettings();
+    $('#aiModelBadge') && ($('#aiModelBadge').textContent = settings.model);
+    toast('Pengaturan AI disimpan','success');
+  }
+
+  function buildExamples(){
+    const wrap = $('#aiQuickExamples');
+    if(!wrap) return;
+    wrap.innerHTML = EXAMPLES.map(q=> `<div class="ai-chip" data-ai-example="${escapeHtml(q)}">${escapeHtml(q)}</div>`).join('');
+    wrap.querySelectorAll('[data-ai-example]').forEach(ch=>{
+      ch.addEventListener('click', ()=>{
+        openModal();
+        const q = ch.getAttribute('data-ai-example');
+        pushMessage('user', q);
+        askAI(q);
+      });
+    });
+  }
+
+  function escapeHtml(s=''){
+    return s.replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  }
+
+  function openModal(){
+    isOpen = true;
+    $('#aiChatModal')?.classList.add('show');
+    $('#aiUserInput')?.focus();
+    $('#aiModelBadge') && ($('#aiModelBadge').textContent = settings.model);
+    renderHistory();
+  }
+
+  function closeModal(){
+    isOpen = false;
+    $('#aiChatModal')?.classList.remove('show');
+  }
+
+  function pushMessage(role,text, model){
+    history.push({role,text,model});
+    // Trim (max 14 messages stored)
+    if(history.length>28) history = history.slice(history.length-28);
+    renderHistory();
+  }
+
+  function renderHistory(){
+    const box = $('#aiChatHistory');
+    if(!box) return;
+    box.innerHTML = history.map(h=>{
+      return `<div class="ai-msg ${h.role==='user'?'user':'ai'}">
+        <div class="ai-bubble">${escapeHtml(h.text)}</div>
+        ${h.model? `<div class="ai-meta">${escapeHtml(h.model)}</div>`:''}
+      </div>`;
+    }).join('') || `<div class="small muted" style="opacity:.7;">Mulai tanya apa saja seputar mutu ikan...</div>`;
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function statusLine(text,type='info'){
+    const el = $('#aiStatusText');
+    if(!el) return;
+    el.textContent = text;
+    el.style.color =
+      type==='error' ? '#dc2626' :
+      type==='warn'  ? '#f59e0b' :
+      type==='ok'    ? '#059669' :
+      'hsl(var(--accent)/0.9)';
+  }
+
+  function toast(msg,type='info',dur=2500){
+    if(window.App && typeof App.toast==='function') App.toast(msg,type,dur);
+    else console.log('[AI TOAST]',msg);
+  }
+
+  function setPanelStatus(txt){
+    const el = $('#aiPanelStatus');
+    if(el) el.textContent = txt;
+  }
+
+  function localFallback(q){
+    for(const f of LOCAL_FAQ){
+      if(f.k.test(q)) return f.a + ' (fallback lokal)';
+    }
+    return 'Maaf, sistem gagal terhubung ke model. Prinsip umum: nilai kesegaran ikan dari mata, insang, bau, tekstur, dan lendir. (fallback lokal).';
+  }
+
+  async function testConnection(){
+    try {
+      const reply = await requestGroq([{role:'user',content:'Halo sebutkan satu ciri ikan segar.'}], true);
+      return !!reply;
+    }catch{ return false; }
+  }
+
+  function buildMessages(userText){
+    const ctx = settings.context;
+    const modeInstr = settings.mode==='detail'
+      ? 'Jawab detail, terstruktur poin penting, tetap relevan.'
+      : 'Jawab singkat & jelas.';
+    // Ambil 3 pasang terakhir
+    const recent = history.slice(-6).map(h=> ({role:h.role==='assistant'?'assistant':'user', content:h.text}));
+    return [
+      {role:'system', content: `${ctx} ${modeInstr}`},
+      ...recent,
+      {role:'user', content:userText}
+    ];
+  }
+
+  async function askAI(question){
+    if(!settings.apiKey){
+      pushMessage('assistant','API Key belum diset. Buka panel AI dan isi dulu.','system');
+      statusLine('API key kosong','warn');
+      return;
+    }
+    busy = true;
+    statusLine('Menghubungi model...','info');
+    const thinkingId = `__thinking_${Date.now()}`;
+    pushMessage('assistant','... mengetik ...');
+    try {
+      const messages = buildMessages(question);
+      const reply = await requestGroq(messages,false);
+      // Ganti bubble terakhir (placeholder)
+      history = history.map((m,i)=> i===history.length-1? {...m, text: reply || '(kosong)', model: settings.model } : m);
+      statusLine('Selesai','ok');
+      $('#aiFallbackNote')?.classList.add('hidden');
+    } catch(err){
+      // Replace placeholder
+      history = history.map((m,i)=> i===history.length-1? {...m, text: localFallback(question), model: 'fallback'} : m);
+      statusLine('Fallback lokal','warn');
+      const note = $('#aiFallbackNote');
+      note && (note.textContent = 'Fallback digunakan: '+ (err.message||'gagal'));
+      note && note.classList.remove('hidden');
+    } finally {
+      busy=false;
+      renderHistory();
+    }
+  }
+
+  async function requestGroq(messages, silent){
+    const controller = new AbortController();
+    const t = setTimeout(()=> controller.abort(), 30000);
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+settings.apiKey
+        },
+        body: JSON.stringify({
+          model: settings.model,
+          messages,
+          max_tokens: settings.mode==='detail'? 650: 350,
+          temperature: 0.6,
+          stream:false
+        }),
+        signal: controller.signal
+      });
+      const json = await res.json();
+      if(!res.ok) throw new Error(json.error?.message || res.statusText);
+      const txt = json.choices?.[0]?.message?.content?.trim();
+      if(!txt) throw new Error('Jawaban kosong');
+      if(!silent) $('#aiModelBadge') && ($('#aiModelBadge').textContent = settings.model);
+      return txt;
+    } catch(err){
+      if(!silent) console.warn('[AI ERROR]',err);
+      throw err;
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  function attachNavHook(){
+    // Jika nav button sudah dimasukkan manual, tombol akan otomatis bekerja karena App.showView membaca data-view
+    // Pastikan ketika view "ai-assistant" ditampilkan, panel terisi
+    const observer = new MutationObserver(()=> {
+      const navBtn = document.querySelector('.nav button[data-view="ai-assistant"]');
+      if(navBtn && !navBtn.dataset.aiBound){
+        navBtn.dataset.aiBound = '1';
+        navBtn.addEventListener('click', ()=>{
+          fillPanel();
+        });
+      }
+    });
+    observer.observe(document.body,{childList:true, subtree:true});
+  }
+
+  // Init sequence
+  waitForApp(()=>{
+    attachNavHook();
+    initUIBindings();
+    // Jika user sudah login (App.state.currentUser) baru tampilkan FAB
+    setTimeout(()=>{
+      if(window.App?.state?.currentUser){
+        toggleFabVisibility(true);
+      }
+    },0);
+  });
+
+})();
+
+/* ========= WELCOME MODAL LOGIC ========= */
+function showWelcomeModalOnce(){
+  try {
+    // Flag lokal (per browser). Jika ingin per user di server, bisa simpan di Firestore user profile.
+    const hidden = localStorage.getItem('hideWelcomeModal') === '1';
+    if(hidden) return;
+    const modal = document.getElementById('welcomeModal');
+    if(!modal) return;
+    // Tampilkan hanya jika user sudah login & berada di dashboard (panggil setelah initLoggedIn).
+    modal.classList.add('show');
+    feather.replace();
+  } catch(e){
+    console.warn('Welcome modal error:', e);
+  }
+}
+
+function hideWelcomeModal(savePreference){
+  const modal = document.getElementById('welcomeModal');
+  if(!modal) return;
+  if(savePreference){
+    localStorage.setItem('hideWelcomeModal','1');
+  }
+  modal.classList.remove('show');
+}
+
+// Binding event untuk tombol modal (dipanggil sekali saat init)
+function bindWelcomeModalEvents(){
+  const c = document.getElementById('welcomeCloseBtn');
+  const ok = document.getElementById('welcomeOkBtn');
+  const setBtn = document.getElementById('welcomeSettingsBtn');
+  const modal = document.getElementById('welcomeModal');
+
+  if(c) c.addEventListener('click', ()=> hideWelcomeModal(
+    document.getElementById('welcomeDontShow')?.checked
+  ));
+  if(ok) ok.addEventListener('click', ()=> hideWelcomeModal(
+    document.getElementById('welcomeDontShow')?.checked
+  ));
+  if(setBtn) setBtn.addEventListener('click', ()=>{
+    hideWelcomeModal(document.getElementById('welcomeDontShow')?.checked);
+    // Buka langsung view settings
+    if(window.App && typeof App.showView==='function'){
+      App.showView('settings');
+      App.toast('Buka Pengaturan','info',1400);
+    }
+  });
+  if(modal){
+    modal.addEventListener('click', e=>{
+      if(e.target===modal){
+        hideWelcomeModal(document.getElementById('welcomeDontShow')?.checked);
+      }
+    });
+  }
+}
+
 
   /* ------------------ PUBLIC API ------------------ */
-  const PublicAPI = {
+    const PublicAPI = {
     state,
     showView,
     applyI18n,
     toast,
-    rebuildCharts
+    rebuildCharts,
+    updateProfileStats   
   };
+
 
   // Jalankan
   init();
   return PublicAPI;
 })();
 
+</script>
+<script>
+/* ========== HACCP / CCP MODULE ========== */
+(function(){
+  if(!window.App || !firebase) {
+    console.warn('HACCP Module: App atau Firebase belum siap.');
+    return;
+  }
+  const db = firebase.firestore();
+  const HACCP = {
+    state: {
+      master: [],
+      checks: [],
+      filter: { from:'', to:'', ccpId:'' }
+    },
+    init(){
+      this.cacheEls();
+      this.bind();
+      this.loadMaster();
+      this.loadChecksRealtime();
+      this.fillFilterSelects();
+      console.log('[HACCP] initialized');
+    },
+    cacheEls(){
+      this.el = {
+        ccpMasterList: document.getElementById('ccpMasterList'),
+        ccpAddBtn: document.getElementById('ccpAddBtn'),
+        ccpSelect: document.getElementById('ccpSelect'),
+        ccpForm: document.getElementById('ccpCheckForm'),
+        ccpObserved: document.getElementById('ccpObserved'),
+        ccpDate: document.getElementById('ccpDate'),
+        ccpAction: document.getElementById('ccpAction'),
+        ccpNotes: document.getElementById('ccpNotes'),
+        ccpFormAlert: document.getElementById('ccpFormAlert'),
+        historyBody: document.getElementById('ccpHistoryBody'),
+        historyEmpty: document.getElementById('ccpHistoryEmpty'),
+        filterFrom: document.getElementById('ccpFilterDateFrom'),
+        filterTo: document.getElementById('ccpFilterDateTo'),
+        filterSelect: document.getElementById('ccpFilterSelect'),
+        filterApply: document.getElementById('ccpFilterApply'),
+        filterClear: document.getElementById('ccpFilterClear'),
+        refreshBtn: document.getElementById('haccpRefreshBtn'),
+        exportCsv: document.getElementById('haccpExportCsv'),
+        formReset: document.getElementById('ccpFormReset')
+      };
+      if(this.el.ccpDate) this.el.ccpDate.value = new Date().toISOString().split('T')[0];
+    },
+    bind(){
+      this.el.ccpAddBtn && (this.el.ccpAddBtn.onclick = ()=> this.promptAddMaster());
+      this.el.ccpForm && (this.el.ccpForm.onsubmit = e=>{
+        e.preventDefault();
+        this.submitCheck();
+      });
+      this.el.formReset && (this.el.formReset.onclick = ()=> this.resetForm());
+      this.el.filterApply && (this.el.filterApply.onclick = ()=> this.renderHistory());
+      this.el.filterClear && (this.el.filterClear.onclick = ()=> {
+        this.state.filter = {from:'',to:'',ccpId:''};
+        this.el.filterFrom.value='';
+        this.el.filterTo.value='';
+        this.el.filterSelect.value='';
+        this.renderHistory();
+      });
+      this.el.refreshBtn && (this.el.refreshBtn.onclick = ()=> {
+        this.loadMaster();
+        this.renderHistory(true);
+        App.toast('HACCP disegarkan','info');
+      });
+      this.el.exportCsv && (this.el.exportCsv.onclick = ()=> this.exportCsv());
+    },
+    fillFilterSelects(){
+      const opts = ['<option value="">Semua CCP</option>', ...this.state.master.map(m=> `<option value="${m.id}">${this.escape(m.name)}</option>`)].join('');
+      if(this.el.ccpSelect) this.el.ccpSelect.innerHTML = '<option value="" disabled selected>Pilih...</option>'+ this.state.master.map(m=> `<option value="${m.id}">${this.escape(m.name)}</option>`).join('');
+      if(this.el.filterSelect) this.el.filterSelect.innerHTML = opts;
+    },
+    escape(s=''){ return s.toString().replace(/[<>"&]/g,c=>({'<':'&lt;','>':'&gt;','"':'&quot;','&':'&amp;'}[c])); },
+    async loadMaster(){
+      const snap = await db.collection('metaCCP').orderBy('name').get();
+      this.state.master = snap.docs.map(d=> ({id:d.id,...d.data()}));
+      this.renderMaster();
+      this.fillFilterSelects();
+    },
+    loadChecksRealtime(){
+      // Real-time (bisa dibatasi misal 500 terakhir)
+      db.collection('ccpChecks').orderBy('createdAt','desc').limit(500)
+        .onSnapshot(snap=>{
+          this.state.checks = snap.docs.map(d=> ({id:d.id,...d.data()}));
+          this.renderHistory();
+        });
+    },
+    renderMaster(){
+      const wrap = this.el.ccpMasterList;
+      if(!wrap) return;
+      if(!this.state.master.length){
+        wrap.innerHTML = '<div class="small muted">Belum ada CCP. Tambahkan.</div>';
+        return;
+      }
+      wrap.innerHTML = this.state.master.map(m=> `
+        <div class="haccp-master-item" data-ccp-id="${m.id}">
+          <div>
+            <div style="font-weight:700;font-size:.58rem;">${this.escape(m.name)}</div>
+            <div class="haccp-master-meta">
+              <span class="ccp-tag">${this.escape(m.parameter||'-')}</span>
+              <span class="ccp-tag">Limit: ${m.limitMin??'-'} – ${m.limitMax??'-'} ${this.escape(m.unit||'')}</span>
+              <span class="ccp-tag">${this.escape(m.frequency||'')}</span>
+            </div>
+            <div style="margin-top:.3rem;font-size:.48rem;opacity:.8;">
+              Koreksi: ${this.escape(m.correctiveTemplate||'-')}
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.35rem;">
+            <button class="ccp-action-btn" data-edit-ccp="${m.id}">
+              <i data-feather="edit-2" width="11"></i>
+            </button>
+            <button class="ccp-action-btn" data-del-ccp="${m.id}" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">
+              <i data-feather="trash" width="11"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+      feather.replace();
+      wrap.querySelectorAll('[data-del-ccp]').forEach(b=>{
+        b.onclick = ()=> this.deleteMaster(b.getAttribute('data-del-ccp'));
+      });
+      wrap.querySelectorAll('[data-edit-ccp]').forEach(b=>{
+        b.onclick = ()=> this.editMasterPrompt(b.getAttribute('data-edit-ccp'));
+      });
+    },
+    promptAddMaster(){
+      if(!App.state.currentUser) return App.toast('Login dulu','warn');
+      const name = prompt('Nama CCP (Contoh: Suhu Penyimpanan Ikan)?');
+      if(!name) return;
+      const parameter = prompt('Parameter (misal: Suhu)') || '';
+      const limitMin = prompt('Limit Minimum (kosongkan jika tidak ada)');
+      const limitMax = prompt('Limit Maksimum (kosongkan jika tidak ada)');
+      const unit     = prompt('Satuan (°C / ppm / dll)') || '';
+      const freq     = prompt('Frekuensi (Harian / Tiap Batch / etc)') || '';
+      const corr     = prompt('Template Tindakan Koreksi') || '';
+      this.addMaster({
+        name: name.trim(),
+        parameter: parameter.trim(),
+        limitMin: limitMin===''? null: parseFloat(limitMin),
+        limitMax: limitMax===''? null: parseFloat(limitMax),
+        unit: unit.trim(),
+        frequency: freq.trim(),
+        correctiveTemplate: corr.trim()
+      });
+    },
+    async addMaster(data){
+      try{
+        await db.collection('metaCCP').add({
+          ...data,
+          createdBy: App.state.currentUser.uid,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        App.toast('CCP ditambahkan','success');
+        this.loadMaster();
+      }catch(err){
+        App.toast('Gagal tambah CCP','danger');
+        console.error(err);
+      }
+    },
+    editMasterPrompt(id){
+      const m = this.state.master.find(x=> x.id===id);
+      if(!m) return;
+      const name = prompt('Nama CCP:', m.name) || m.name;
+      const parameter = prompt('Parameter:', m.parameter||'') || m.parameter;
+      const limitMin = prompt('Limit Min (kosong utk null):', m.limitMin??'');
+      const limitMax = prompt('Limit Max (kosong utk null):', m.limitMax??'');
+      const unit     = prompt('Satuan:', m.unit||'') || m.unit;
+      const freq     = prompt('Frekuensi:', m.frequency||'') || m.frequency;
+      const corr     = prompt('Template Koreksi:', m.correctiveTemplate||'') || m.correctiveTemplate;
+      this.updateMaster(id,{
+        name: name.trim(),
+        parameter: parameter.trim(),
+        limitMin: limitMin===''? null: parseFloat(limitMin),
+        limitMax: limitMax===''? null: parseFloat(limitMax),
+        unit: unit.trim(),
+        frequency: freq.trim(),
+        correctiveTemplate: corr.trim()
+      });
+    },
+    async updateMaster(id,data){
+      try{
+        await db.collection('metaCCP').doc(id).update({
+          ...data,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        App.toast('CCP diperbarui','success');
+        this.loadMaster();
+      }catch(err){
+        App.toast('Gagal update CCP','danger');
+      }
+    },
+    deleteMaster(id){
+      App.state.userProfile?.role!=='Admin' && App.state.userProfile?.role!=='Petugas Pasar'
+        ? App.toast('Tidak berhak hapus (demo)','warn')
+        : App.Modal?.open // jika mau reuse modal global (tidak ada expose). Pakai confirm sederhana:
+      ;
+      if(!confirm('Hapus CCP ini?')) return;
+      db.collection('metaCCP').doc(id).delete()
+        .then(()=> App.toast('CCP dihapus','success'))
+        .catch(()=> App.toast('Gagal hapus','danger'));
+    },
+    resetForm(){
+      if(this.el.ccpObserved) this.el.ccpObserved.value='';
+      if(this.el.ccpAction) this.el.ccpAction.value='';
+      if(this.el.ccpNotes) this.el.ccpNotes.value='';
+    },
+    submitCheck(){
+      if(!App.state.currentUser) return App.toast('Login dulu','warn');
+      const ccpId = this.el.ccpSelect.value;
+      if(!ccpId){ this.formAlert('danger','CCP belum dipilih'); return; }
+      const cc = this.state.master.find(m=> m.id===ccpId);
+      if(!cc){ this.formAlert('danger','Master CCP tidak ditemukan'); return; }
+      const obsVal = parseFloat(this.el.ccpObserved.value);
+      if(isNaN(obsVal)){ this.formAlert('danger','Nilai tidak valid'); return; }
+      const dateStr = this.el.ccpDate.value || new Date().toISOString().split('T')[0];
+      const dOnly = new Date(dateStr+'T00:00:00');
+      let status = 'OK';
+      if((cc.limitMin!==null && obsVal < cc.limitMin) || (cc.limitMax!==null && obsVal > cc.limitMax)){
+        status = 'OUT';
+      }
+      const actionTxt = this.el.ccpAction.value.trim();
+      if(status==='OUT' && !actionTxt){
+        this.formAlert('warn','OUT OF LIMIT. Harus isi tindakan koreksi.');
+        return;
+      }
+      db.collection('ccpChecks').add({
+        ccpId: cc.id,
+        ccpName: cc.name,
+        parameter: cc.parameter,
+        unit: cc.unit || '',
+        limitMin: cc.limitMin,
+        limitMax: cc.limitMax,
+        observedValue: obsVal,
+        status,
+        actionTaken: actionTxt,
+        notes: this.el.ccpNotes.value.trim(),
+        date: dOnly,
+        userId: App.state.currentUser.uid,
+        userName: App.state.userProfile?.name || 'User',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(()=>{
+        this.formAlert('success','Monitoring disimpan');
+        this.resetForm();
+      }).catch(e=>{
+        console.error(e);
+        this.formAlert('danger','Gagal simpan');
+      });
+    },
+    formAlert(type,msg){
+      if(!this.el.ccpFormAlert) return;
+      this.el.ccpFormAlert.innerHTML = `
+        <div class="alert ${type}">
+          <i data-feather="${type==='success'?'check-circle':type==='danger'?'alert-triangle':'info'}" width="13"></i>
+          <span>${msg}</span>
+        </div>`;
+      feather.replace();
+      setTimeout(()=> {
+        this.el.ccpFormAlert.innerHTML='';
+      },3800);
+    },
+    renderHistory(noFilterMsg){
+      const body = this.el.historyBody;
+      const empty = this.el.historyEmpty;
+      if(!body) return;
+      let data = [...this.state.checks];
+      // Filters
+      const from = this.el.filterFrom.value;
+      const to   = this.el.filterTo.value;
+      const ccpId= this.el.filterSelect.value;
+      if(from){
+        const fd = new Date(from+'T00:00:00');
+        data = data.filter(r=> r.date && r.date.toDate && r.date.toDate() >= fd);
+      }
+      if(to){
+        const td = new Date(to+'T23:59:59');
+        data = data.filter(r=> r.date && r.date.toDate && r.date.toDate() <= td);
+      }
+      if(ccpId) data = data.filter(r=> r.ccpId===ccpId);
+
+      if(!data.length){
+        body.innerHTML='';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+      body.innerHTML = data.map(r=>{
+        const limitTxt = `${r.limitMin??'-'} – ${r.limitMax??'-'} ${this.escape(r.unit||'')}`;
+        return `
+          <tr>
+            <td>${r.date? (r.date.toDate? r.date.toDate(): r.date).toLocaleDateString('id-ID'):''}</td>
+            <td>${this.escape(r.ccpName||'')}</td>
+            <td>${this.escape(r.parameter||'')}</td>
+            <td>${r.observedValue}</td>
+            <td>${limitTxt}</td>
+            <td>
+              <span class="${r.status==='OK'?'haccp-status-ok':'haccp-status-out'}">${r.status}</span>
+            </td>
+            <td style="max-width:180px;">${this.escape(r.actionTaken||'-')}</td>
+            <td style="font-size:.5rem;">${this.escape(r.userName||'')}</td>
+            <td>
+              ${ (App.state.userProfile?.role==='Admin' || App.state.userProfile?.role==='Petugas Pasar' || r.userId===App.state.currentUser?.uid)
+                ? `<button class="outline small" data-del-check="${r.id}" title="Hapus"><i data-feather="trash" width="11"></i></button>`:''
+              }
+            </td>
+          </tr>
+        `;
+      }).join('');
+      feather.replace();
+      body.querySelectorAll('[data-del-check]').forEach(btn=>{
+        btn.onclick = ()=> this.deleteCheck(btn.getAttribute('data-del-check'));
+      });
+    },
+    deleteCheck(id){
+      if(!confirm('Hapus monitoring ini?')) return;
+      db.collection('ccpChecks').doc(id).delete()
+        .then(()=> App.toast('Monitoring dihapus','success'))
+        .catch(()=> App.toast('Gagal hapus','danger'));
+    },
+    exportCsv(){
+      if(!this.state.checks.length) return App.toast('Tidak ada data','warn');
+      const lines = [
+        ['Tanggal','CCP','Parameter','Observed','LimitMin','LimitMax','Unit','Status','Action','User']
+      ];
+      this.state.checks.forEach(r=>{
+        const d = r.date? (r.date.toDate? r.date.toDate(): r.date): null;
+        lines.push([
+          d? d.toISOString().split('T')[0]:'-',
+          r.ccpName||'',
+          r.parameter||'',
+          r.observedValue,
+          r.limitMin??'',
+          r.limitMax??'',
+          r.unit||'',
+          r.status,
+          (r.actionTaken||'').replace(/"/g,'""'),
+          r.userName||''
+        ]);
+      });
+      const csv = lines.map(row=> row.map(v=> `"${v}"`).join(',')).join('\n');
+      const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download='haccp_ccp_checks.csv';
+      a.click();
+      setTimeout(()=> URL.revokeObjectURL(a.href),1200);
+      App.toast('CSV HACCP diekspor','success');
+    }
+  };
+
+  // Inisialisasi ketika user sudah login (App.init memanggil modul setelah ready)
+  // Agar aman, tunggu sedikit
+  setTimeout(()=> {
+    HACCP.init();
+    // Tambah ke App agar bisa diakses: App.haccp
+    App.haccp = HACCP;
+  }, 1200);
+})();
+</script>
+<script>
+/* ==========================================================
+   MICRO-LEARNING MODULE
+   Fitur:
+   - Daftar modul singkat
+   - Navigasi slide
+   - Quiz pilihan ganda
+   - Simpan progress (localStorage + update user achievements)
+   - Award lencana "Quality Steward" saat semua quiz lulus
+   ========================================================== */
+(function(){
+  if(!window.App || !firebase) {
+    console.warn('[MicroLearning] App belum siap');
+    return;
+  }
+  const db = firebase.firestore();
+
+  // --------- KONFIGURASI MODUL ----------
+  const modules = [
+    {
+      id:'mod1',
+      title:'Dasar Mutu Ikan Segar',
+      duration:'±2 mnt',
+      slides:[
+        { h:'Tujuan Penilaian', b:'Menilai kesegaran untuk memastikan keamanan konsumsi dan nilai ekonomi optimal.\nParameter organoleptik utama: Mata, Insang, Bau, Tekstur, Lendir/Kulit.' },
+        { h:'Mata & Insang', b:'Mata segar: cembung dan jernih.\nInsang: merah cerah, lendir bening.\nPerubahan cepat: mata menjadi datar/keruh, insang kecoklatan.' },
+        { h:'Bau & Tekstur', b:'Bau segar: laut / amis lembut.\nBau asam tajam = degradasi.\nTekstur segar: elastis kembali cepat saat ditekan.' }
+      ],
+      quiz:{
+        pass:80,
+        questions:[
+          {
+            q:'Ciri mata ikan segar yang benar:',
+            options:['Cekung & keruh','Cembung & jernih','Cekung & jernih'],
+            answer:1
+          },
+          {
+            q:'Bau ikan menurun mutu ditandai:',
+            options:['Amis ringan alami','Netral laut','Asam tajam menyengat'],
+            answer:2
+          },
+          {
+            q:'Tekstur segar saat ditekan:',
+            options:['Tidak kembali','Kembali cepat','Retak'],
+            answer:1
+          }
+        ]
+      }
+    },
+    {
+      id:'mod2',
+      title:'Indikasi Keamanan (Formalin/Boraks)',
+      duration:'±2 mnt',
+      slides:[
+        { h:'Formalin', b:'Indikasi lapangan (tidak konklusif):\nInsang terlalu pucat keabu-abuan, bau kimia menyengat.\nPerlu uji cepat untuk konfirmasi.' },
+        { h:'Boraks', b:'Daging terlalu kenyal elastis tidak wajar & sulit robek.\nLendir cenderung berkurang, warna bisa lebih cerah.\nButuh uji kit untuk validasi.' },
+        { h:'Catatan', b:'Semua indikasi = observasi awal. Gunakan istilah "indikasi" sampai bukti laboratorium ada.' }
+      ],
+      quiz:{
+        pass:80,
+        questions:[
+          {
+            q:'Indikasi formalin yang sering diamati:',
+            options:['Insang merah cerah','Bau kimia tajam','Mata cembung jernih'],
+            answer:1
+          },
+          {
+            q:'Daging sangat kenyal elastis → indikasi:',
+            options:['Boraks','Formalin','Busuk lanjut'],
+            answer:0
+          }
+        ]
+      }
+    },
+    {
+      id:'mod3',
+      title:'Penanganan & Suhu',
+      duration:'±2 mnt',
+      slides:[
+        { h:'Suhu Ideal', b:'Rantai dingin 0–4°C memperlambat pertumbuhan bakteri & oksidasi.\nGunakan es bersih & tiriskan lelehan.' },
+        { h:'Higiene', b:'Gunakan permukaan bersih, cegah kontaminasi silang.\nPisahkan ikan rusak dari ikan segar.' },
+        { h:'Ringkasan', b:'Kontrol suhu + higiene dasar = perpanjang masa kesegaran & kurangi risiko keamanan.' }
+      ],
+      quiz:{
+        pass:80,
+        questions:[
+          {
+            q:'Rentang suhu ideal ikan segar:',
+            options:['10–15°C','5–8°C','0–4°C'],
+            answer:2
+          },
+          {
+            q:'Tujuan pemisahan ikan rusak:',
+            options:['Agar tampak banyak','Cegah kontaminasi silang','Mengurangi es'],
+            answer:1
+          }
+        ]
+      }
+    }
+  ];
+
+  // ------------- STATE LOKAL --------------
+  const ML = {
+    active:null,
+    slideIndex:0,
+    progress: loadProgress(),  // { modId: { slideIndex, quizPassed } }
+  };
+
+  function saveProgress(){
+    localStorage.setItem('mlProgress_v1', JSON.stringify(ML.progress));
+  }
+  function loadProgress(){
+    try { return JSON.parse(localStorage.getItem('mlProgress_v1')||'{}'); }
+    catch { return {}; }
+  }
+
+  // Integrasi ke App.state
+  App.state.microLearning.progress = ML.progress;
+
+  // ------------- RENDER LIST MODUL --------------
+  function renderModuleList(){
+    const wrap = $('#mlModuleList');
+    if(!wrap) return;
+    wrap.innerHTML = modules.map(m=>{
+      const pr = ML.progress[m.id] || {};
+      const passed = pr.quizPassed;
+      return `
+        <div class="micro-module-item ${ML.active===m.id?'active':''}" data-ml-open="${m.id}">
+          <div style="font-weight:700;">${escapeHtml(m.title)}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.3rem;">
+            <span class="tag"><i data-feather="clock" width="11"></i>${m.duration}</span>
+            ${passed? '<span class="tag micro-badge-pass"><i data-feather="check" width="11"></i>Lulus</span>':''}
+          </div>
+        </div>
+      `;
+    }).join('');
+    feather.replace();
+    $all('[data-ml-open]').forEach(el=>{
+      el.onclick = ()=> openModule(el.getAttribute('data-ml-open'));
+    });
+  }
+
+  // ------------- OPEN MODULE --------------
+  function openModule(id){
+    ML.active = id;
+    const pr = ML.progress[id] || { slideIndex:0, quizPassed:false };
+    ML.slideIndex = pr.slideIndex || 0;
+    hideAllStages();
+    $('#mlStageSlides')?.classList.remove('hidden');
+    renderModuleList();
+    renderSlide();
+  }
+
+  function hideAllStages(){
+    $('#mlStageIdle')?.classList.add('hidden');
+    $('#mlStageSlides')?.classList.add('hidden');
+    $('#mlStageQuiz')?.classList.add('hidden');
+  }
+
+  // ------------- RENDER SLIDE --------------
+  function renderSlide(){
+    const mod = modules.find(m=> m.id===ML.active);
+    if(!mod) return;
+    const slide = mod.slides[ML.slideIndex];
+    $('#mlSlideTitle').textContent = slide.h;
+    $('#mlSlideBody').textContent  = slide.b;
+    $('#mlSlideCounter').textContent = (ML.slideIndex+1)+'/'+mod.slides.length;
+    const pct = ((ML.slideIndex+1)/mod.slides.length)*100;
+    $('#mlSlideBar').style.width = pct+'%';
+    feather.replace();
+  }
+
+  // ------------- NAV SLIDE --------------
+  function nextSlide(){
+    const mod = modules.find(m=> m.id===ML.active);
+    if(!mod) return;
+    if(ML.slideIndex < mod.slides.length-1){
+      ML.slideIndex++;
+      storeSlideIndex();
+      renderSlide();
+    } else {
+      // selesai slide -> kuis
+      openQuiz();
+    }
+  }
+  function prevSlide(){
+    if(ML.slideIndex>0){
+      ML.slideIndex--;
+      storeSlideIndex();
+      renderSlide();
+    }
+  }
+  function storeSlideIndex(){
+    ML.progress[ML.active] = ML.progress[ML.active] || {};
+    ML.progress[ML.active].slideIndex = ML.slideIndex;
+    saveProgress();
+    App.state.microLearning.progress = ML.progress;
+  }
+
+  // ------------- QUIZ --------------
+  function openQuiz(){
+    hideAllStages();
+    $('#mlStageQuiz')?.classList.remove('hidden');
+    const mod = modules.find(m=> m.id===ML.active);
+    $('#mlQuizModuleTitle').textContent = mod.title;
+    $('#mlQuizResult').textContent = '';
+    $('#mlQuizStatus').textContent = `Lulus: ≥${mod.quiz.pass}%`;
+    renderQuizQuestions();
+  }
+
+  function renderQuizQuestions(){
+    const mod = modules.find(m=> m.id===ML.active);
+    const wrap = $('#mlQuizQuestions');
+    const pr = ML.progress[ML.active] || {};
+    // reset jawaban sementara
+    pr.quizAnswers = pr.quizAnswers || {};
+    wrap.innerHTML = mod.quiz.questions.map((q,qi)=> `
+      <div class="micro-question" data-q="${qi}">
+        <h4>Q${qi+1}. ${escapeHtml(q.q)}</h4>
+        <div class="micro-options">
+          ${q.options.map((opt,oi)=> `
+            <div class="micro-option ${pr.quizAnswers[qi]===oi?'active':''}" data-opt="${qi}__${oi}">
+              <span style="font-weight:700;">${String.fromCharCode(65+oi)}.</span>
+              <span>${escapeHtml(opt)}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+    feather.replace();
+    $all('[data-opt]').forEach(el=>{
+      el.onclick = ()=>{
+        const [qIdx, oIdx] = el.getAttribute('data-opt').split('__').map(Number);
+        pr.quizAnswers[qIdx] = oIdx;
+        ML.progress[ML.active] = pr;
+        saveProgress();
+        // re-render hanya blok itu
+        renderQuizQuestions();
+      };
+    });
+  }
+
+  function submitQuiz(){
+    const mod = modules.find(m=> m.id===ML.active);
+    const pr = ML.progress[ML.active] || {};
+    const answers = pr.quizAnswers || {};
+    let correct=0;
+    mod.quiz.questions.forEach((q,i)=>{
+      if(answers[i] === q.answer) correct++;
+    });
+    const score = (correct / mod.quiz.questions.length)*100;
+    const pass = score >= mod.quiz.pass;
+    pr.quizPassed = pass;
+    ML.progress[ML.active] = pr;
+    saveProgress();
+    App.state.microLearning.progress = ML.progress;
+
+    // Tandai UI
+    showQuizResult(score, correct, mod.quiz.questions.length, pass);
+    highlightQuizAnswers(mod, answers);
+
+    if(pass){
+      checkAllPassedAndAward();
+    }
+    renderModuleList();
+  }
+
+  function highlightQuizAnswers(mod, answers){
+    // Tambahkan kelas correct/wrong
+    mod.quiz.questions.forEach((q,i)=>{
+      q.options.forEach((_,oi)=>{
+        const el = document.querySelector(`.micro-option[data-opt="${i}__${oi}"]`);
+        if(!el) return;
+        if(oi===q.answer) el.classList.add('correct');
+        else if(answers[i]===oi) el.classList.add('wrong');
+      });
+    });
+  }
+
+  function showQuizResult(score, correct, total, pass){
+    const el = $('#mlQuizResult');
+    el.innerHTML = `
+      Skor: <strong>${score.toFixed(1)}%</strong> (${correct}/${total} benar) • Status: 
+      ${pass
+        ? '<span class="micro-finish-badge"><i data-feather="check" width="12"></i>LULUS</span>'
+        : '<span class="micro-finish-badge" style="background:linear-gradient(135deg,#f59e0b,#d97706);"><i data-feather="alert-triangle" width="12"></i>ULANGI</span>'
+      }
+      ${pass? '\nLanjutkan modul lain untuk mencapai semua kelulusan.':''}
+    `;
+    feather.replace();
+  }
+
+  // ------------- AWARD --------------
+  function checkAllPassedAndAward(){
+    const allPassed = modules.every(m=> (ML.progress[m.id] && ML.progress[m.id].quizPassed));
+    if(!allPassed) return;
+    if(App.state.microLearning.allPassed) return; // sudah
+    App.state.microLearning.allPassed = true;
+
+    // Update achievements langsung (jika belum ada)
+    if(!(App.state.userProfile?.achievements && App.state.userProfile.achievements['quality_steward'])){
+      db.collection('users').doc(App.state.userProfile.id).update({
+        'achievements.quality_steward': firebase.firestore.FieldValue.serverTimestamp()
+      }).then(()=>{
+        App.toast('Lencana "Quality Steward" diraih!','success');
+        // Paksa refresh tampilan profil dan stats
+        if(App.updateProfileStats) App.updateProfileStats();
+      }).catch(()=> App.toast('Gagal update lencana','danger'));
+    }
+  }
+
+  // ------------- RESET PROGRESS --------------
+  function resetProgress(){
+    if(!confirm('Reset semua progres micro-learning?')) return;
+    ML.progress = {};
+    saveProgress();
+    App.state.microLearning.progress = ML.progress;
+    App.state.microLearning.allPassed = false;
+    App.toast('Progress direset','info');
+    hideAllStages();
+    $('#mlStageIdle')?.classList.remove('hidden');
+    renderModuleList();
+    if(App.updateProfileStats) App.updateProfileStats();
+  }
+
+  // ------------- HELPERS --------------
+  const $  = sel=> document.querySelector(sel);
+  const $all = sel=> Array.from(document.querySelectorAll(sel));
+  function escapeHtml(s=''){ return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+  // ------------- EVENT BIND --------------
+  function bindEvents(){
+    $('#mlNextSlide')?.addEventListener('click', nextSlide);
+    $('#mlPrevSlide')?.addEventListener('click', prevSlide);
+    $('#mlExitModule')?.addEventListener('click', ()=>{
+      hideAllStages();
+      $('#mlStageIdle')?.classList.remove('hidden');
+      ML.active=null;
+      renderModuleList();
+    });
+    $('#mlSubmitQuiz')?.addEventListener('click', submitQuiz);
+    $('#mlBackToSlides')?.addEventListener('click', ()=>{
+      hideAllStages();
+      $('#mlStageSlides')?.classList.remove('hidden');
+    });
+    $('#mlResetProgress')?.addEventListener('click', resetProgress);
+  }
+
+  // ------------- INIT --------------
+  function init(){
+    renderModuleList();
+    bindEvents();
+  }
+
+  // Tunda sedikit agar view sudah ada di DOM
+  setTimeout(init, 600);
+})();
 </script>
 </body>
 </html>
