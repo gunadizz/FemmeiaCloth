@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Sistem Pencatatan & Monitoring Mutu Ikan Segar - Makassar</title>
-<meta name="description" content="Aplikasi pencatatan dan monitoring mutu ikan segar di pasar tradisional Kota Makassar (Single File App)">
+<meta name="description" content="Aplikasi pencatatan dan monitoring mutu ikan segar di pasar tradisional Kota Makassar">
 <link rel="icon" href="data:,">
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-<!-- External Libraries (CDN) -->
+<!-- External Libraries - Perpustakaan Eksternal (CDN) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -19,10 +19,7 @@
 
 <style>
 /* ===========================================================
-   MMIS APP UI STYLES (Enhanced UX Animations Edition)
-  
-   orchestrated entrances, subtle motion layering, feedback states.
-   
+   MMIS APP UI & UX STYLES
    =========================================================== */
 
 :root {
@@ -4614,7 +4611,7 @@ body.offline .presence-indicator .dot::after {
     </div>
     <div style="margin-top:.9rem;display:flex;gap:.6rem;flex-wrap:wrap;">
       <button class="outline small" type="button" id="quickDemoAdmin"><i data-feather="user-check" width="14"></i> Demo Admin</button>
-      <button class="outline small" type="button" id="quickDemoUser"><i data-feather="user" width="14"></i> Demo Mahasiswa</button>
+      <button class="outline small" type="button" id="quickDemoUser"><i data-feather="user" width="14"></i> Akun Tamu/Guest</button>
     </div>
     <div class="switch-auth" style="margin-top:1.05rem;">
       <span class="small">© <span id="year"></span> MMIS - Kota Makassar</span>
@@ -4792,7 +4789,7 @@ body.offline .presence-indicator .dot::after {
         </button>
       </div>
       <div style="text-align:center;margin-top:.35rem;">
-        <span class="muted" style="font-size:.5rem;">v1.7.0 Single File • Skripsi</span>
+        <span class="muted" style="font-size:.5rem;">v1.0 Single File • Skripsi</span>
       </div>
     </div>
   </aside>
@@ -7768,7 +7765,7 @@ if(perfSel){
         updateSensorStatsAndChart();
         updateSensorIndicatorTile();
       }, err=>{
-        toast('Gagal ambil sensor: '+err.message,'danger');
+        toast('Gagal ambil sensor suhu karena telah Log Out: '+err.message,'danger');
       });
   }
 
@@ -9047,7 +9044,7 @@ function renderAchievements(){
       toast('Tema: '+(cur==='dark'?'Gelap':'Terang'),'info',1800);
     });
     (function initTheme(){
-      const saved = localStorage.getItem('theme') || 'light';
+      const saved = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', saved);
     })();
     $('#btnLang')?.addEventListener('click', ()=>{
@@ -11301,7 +11298,6 @@ function bindWelcomeModalEvents(){
     bindEvents();
   }
 
-  // Tunda sedikit agar view sudah ada di DOM
   setTimeout(init, 600);
 })();
 </script>
