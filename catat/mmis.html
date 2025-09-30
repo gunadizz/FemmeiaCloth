@@ -20,9 +20,9 @@
 <style>
 /* ===========================================================
    MMIS APP UI STYLES (Enhanced UX Animations Edition)
-   Fokus Perubahan: Interaksi (hover/active/focus), micro-animations,
+  
    orchestrated entrances, subtle motion layering, feedback states.
-   Struktur UI, ukuran, dan layout dipertahankan (NO UI CHANGE).
+   
    =========================================================== */
 
 :root {
@@ -34,7 +34,7 @@
   --transition-fast: 0.18s cubic-bezier(.4,.0,.2,1);           /* UX+ */
   --transition-slow: 0.45s cubic-bezier(.4,.0,.2,1);           /* UX+ */
   --spring: cubic-bezier(.34,1.56,.64,1);                      /* UX+ */
-  --elastic: cubic-bezier(.63,-0.35,.36,1.4);                  /* UX+ */
+  --elastic: cubic-bezier(.63,-0.35,.36,1.4);                  
   --sidebar-width: 250px;
   --danger: #ef4444;
   --warn: #f59e0b;
@@ -4257,6 +4257,12 @@ body.offline .presence-indicator .dot::after {
   font-weight:700;
   letter-spacing:.5px;
   box-shadow:0 6px 16px -8px rgba(0,0,0,.4);
+}
+@media (max-width: 820px){
+  body.font-large .presence-indicator,
+  html.font-large .presence-indicator {
+    display:none !important;
+  }
 }
 </style>
 </head>
@@ -10021,7 +10027,7 @@ function initPresenceIndicator(){
 (function(){
   const LS_KEY = 'aiSettingsMMIS';
   const DEFAULTS = {
-    apiKey: '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',
+    apiKey: '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',
     model: 'llama-3.1-8b-instant',
     mode: 'short',
     context: 'Anda adalah asisten ahli mutu ikan segar dan keamanan pangan.',
