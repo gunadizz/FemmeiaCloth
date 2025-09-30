@@ -6128,7 +6128,7 @@ service cloud.firestore {
 
   // Override / set nilai yang diinginkan
   map['width'] = 'device-width';
-  map['initial-scale'] = '0.8';
+  map['initial-scale'] = '1.0';
 
   // (Opsional) tetap pertahankan viewport-fit agar aman di notch
   if (!('viewport-fit' in map)) {
@@ -8782,7 +8782,7 @@ function renderAchievements(){
           canvas.height = img.height * scale;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img,0,0,canvas.width,canvas.height);
-          resolve(canvas.toDataURL('image/jpeg',1.0));
+          resolve(canvas.toDataURL('image/jpeg',0.8));
         };
         img.onerror = reject;
         img.src = e.target.result;
