@@ -2999,7 +2999,7 @@ html.font-large  { --font-base: 18px; }  /* bisa 19 atau 20 kalau ingin lebih be
   0% { background-position:0% 0; }
   100% { background-position:200% 0; }
 }
-<!-- (Tambahkan di dalam <style> setelah blok CSS ".fab { ... }") -->
+
 
 /* Tombol Pengaturan Kiri Bawah */
 .fab.fab-settings {
@@ -4784,7 +4784,7 @@ body.offline .presence-indicator .dot::after {
   background:linear-gradient(145deg,hsl(var(--glass-bg)/0.68),hsl(var(--glass-bg)/0.50));
 }
 .fm-icon {
-  width:34px;height:34px;
+  width:32px;height:32px;
   display:grid;place-items:center;
   background:hsl(var(--accent)/0.28);
   border-radius:10px;
@@ -4803,6 +4803,492 @@ body.offline .presence-indicator .dot::after {
   gap:.35rem;
 }
 .fm-text { opacity:.85; }
+/* ====== WEATHER PANEL STYLES ====== */
+.weather-panel {
+  position:relative;
+  overflow:hidden;
+  min-height:220px;
+  display:flex;
+  flex-direction:column;
+  gap:.85rem;
+}
+
+.weather-panel::before,
+.weather-panel::after {
+  content:"";
+  position:absolute;
+  width:320px;
+  height:320px;
+  background:radial-gradient(circle at 35% 35%,hsl(var(--accent)/0.35),transparent 70%);
+  top:-140px;
+  right:-140px;
+  filter:blur(40px);
+  opacity:.35;
+  pointer-events:none;
+  animation: weatherGlow 9s ease-in-out infinite;
+}
+.weather-panel::after {
+  left:-140px;
+  top:auto;
+  bottom:-160px;
+  animation-delay:-4s;
+  background:radial-gradient(circle at 40% 40%,hsl(var(--accent)/0.25),transparent 72%);
+}
+
+@keyframes weatherGlow {
+  0%,100% { transform:scale(1); opacity:.35; }
+  50% { transform:scale(1.1); opacity:.55; }
+}
+
+.weather-loading {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:140px;
+}
+.weather-skel {
+  display:flex;
+  gap:1rem;
+  align-items:center;
+  animation: fadeScale .6s var(--spring);
+}
+.weather-skel-icon {
+  width:68px;
+  height:68px;
+  border-radius:22px;
+  background:linear-gradient(135deg,hsl(var(--accent)/0.25),hsl(var(--accent)/0.12));
+  animation:pulseLoad 1.5s ease-in-out infinite;
+}
+.weather-skel-lines {
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+}
+.weather-skel-lines .line {
+  width:140px;
+  height:12px;
+  border-radius:8px;
+  background:linear-gradient(90deg,hsl(var(--accent)/0.25),hsl(var(--accent)/0.15),hsl(var(--accent)/0.25));
+  background-size:200% 100%;
+  animation:pulseLoad 1.6s linear infinite;
+}
+.weather-skel-lines .line.short { width:90px; }
+
+@keyframes pulseLoad {
+  0% { background-position:0 0; opacity:.7; }
+  50% { background-position:100% 0; opacity:1; }
+  100% { background-position:200% 0; opacity:.7; }
+}
+
+.weather-main {
+  display:flex;
+  gap:1.2rem;
+  flex-wrap:wrap;
+  align-items:center;
+  animation: fadeScale .55s var(--spring);
+}
+.weather-icon-box {
+  width:92px;
+  height:92px;
+  border-radius:28px;
+  background:linear-gradient(145deg,hsl(var(--accent)/0.28),hsl(var(--accent)/0.16));
+  display:grid;
+  place-items:center;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 10px 26px -12px hsl(var(--accent)/0.55);
+  animation: popIn .6s var(--spring);
+}
+.weather-icon-box svg {
+  width:48px;
+  height:48px;
+  stroke-width:1.6px;
+  color:#fff;
+}
+
+.weather-brief {
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+  min-width:180px;
+}
+.weather-temp-line {
+  font-size:1.6rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  line-height:1;
+  display:flex;
+  gap:.6rem;
+  align-items:baseline;
+}
+.weather-temp-line span.minmax {
+  font-size:.7rem;
+  font-weight:600;
+  background:hsl(var(--accent)/0.25);
+  padding:.35rem .55rem;
+  border-radius:12px;
+  letter-spacing:.4px;
+  color:#fff;
+  display:inline-flex;
+  gap:.35rem;
+  animation: fadeSlide .55s var(--spring);
+}
+.weather-location {
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.55px;
+  text-transform:uppercase;
+  color:hsl(var(--text-dim));
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+}
+.weather-desc {
+  font-size:.63rem;
+  font-weight:600;
+  letter-spacing:.4px;
+  display:flex;
+  gap:.4rem;
+  flex-wrap:wrap;
+}
+
+.weather-extra {
+  display:grid;
+  gap:.55rem;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  margin-top:.4rem;
+  animation: fadeScale .6s var(--spring);
+}
+.weather-extra-item {
+  background:linear-gradient(145deg,hsl(var(--accent)/0.20),hsl(var(--accent)/0.10));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  padding:.6rem .7rem .7rem;
+  border-radius:16px;
+  display:flex;
+  flex-direction:column;
+  gap:.25rem;
+  font-size:.52rem;
+  font-weight:600;
+  letter-spacing:.4px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .45s var(--spring), box-shadow .45s, background .45s;
+}
+.weather-extra-item:hover {
+  transform:translateY(-6px);
+  box-shadow:0 10px 26px -12px rgba(0,0,0,.55);
+  background:linear-gradient(145deg,hsl(var(--accent)/0.28),hsl(var(--accent)/0.14));
+}
+.weather-extra-item .val {
+  font-size:.9rem;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+
+.weather-forecast {
+  display:flex;
+  gap:.55rem;
+  flex-wrap:wrap;
+  margin-top:.65rem;
+  animation: fadeScale .6s var(--spring);
+}
+.weather-day {
+  flex:1 1 110px;
+  background:linear-gradient(145deg,hsl(var(--accent)/0.22),hsl(var(--accent)/0.12));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:16px;
+  padding:.55rem .6rem .65rem;
+  display:flex;
+  flex-direction:column;
+  gap:.4rem;
+  font-size:.52rem;
+  position:relative;
+  overflow:hidden;
+  font-weight:600;
+  letter-spacing:.35px;
+  transition:transform .4s var(--spring), box-shadow .4s;
+}
+.weather-day:hover {
+  transform:translateY(-5px);
+  box-shadow:0 8px 20px -10px rgba(0,0,0,.55);
+}
+.weather-day .wd-icon {
+  width:34px;
+  height:34px;
+  border-radius:11px;
+  background:hsl(var(--accent)/0.30);
+  display:grid;
+  place-items:center;
+  color:#fff;
+  box-shadow:0 6px 16px -8px hsl(var(--accent)/0.55);
+}
+.weather-day .wd-temp {
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.4px;
+  display:flex;
+  gap:.35rem;
+}
+.weather-footer {
+  font-size:.5rem;
+  letter-spacing:.45px;
+  margin-top:.25rem;
+  animation: fadeSlide .55s var(--spring);
+}
+
+.weather-error {
+  text-align:center;
+  font-size:.6rem;
+  font-weight:600;
+  letter-spacing:.4px;
+  padding:1.2rem .6rem;
+  background:hsl(var(--accent)/0.15);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:16px;
+  animation: fadeScale .5s var(--spring);
+}
+/* Jarak horizontal antar blok metric dan forecast */
+#weatherPanel .weather-extra + .weather-forecast {
+  margin-left: 1.4rem;   /* atur angka sesuai selera */
+}
+
+/* Saat layar kecil: hilangkan jarak agar kolom turun rapi */
+@media (max-width: 820px){
+  #weatherPanel .weather-extra + .weather-forecast {
+    margin-left: 0.5rem;
+    margin-top: .8rem;
+  }
+}
+/* Theme adaptation (optional) */
+[data-theme="light"] .weather-extra-item,
+[data-theme="light"] .weather-day {
+  background:linear-gradient(145deg,hsl(var(--accent)/0.18),hsl(var(--accent)/0.10));
+}
+/* ==== DASHBOARD CALENDAR PANEL ==== */
+.calendar-panel {
+  display:flex;
+  flex-direction:column;
+  gap:.85rem;
+  position:relative;
+  overflow:hidden;
+}
+.calendar-grid-header {
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:.25rem;
+  font-size:.48rem;
+  font-weight:700;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+  opacity:.75;
+  padding:0 .25rem;
+}
+.calendar-days {
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:.4rem .35rem;
+  min-height:160px;
+  padding:.15rem .25rem .3rem;
+  animation: fadeScale .55s var(--spring);
+}
+.calendar-day {
+  position:relative;
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.55),hsl(var(--glass-bg)/0.40));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:16px;
+  padding:.45rem .45rem .55rem;
+  display:flex;
+  flex-direction:column;
+  gap:.25rem;
+  font-size:.52rem;
+  cursor:pointer;
+  min-height:60px;
+  outline:none;
+  transition:
+    background var(--dur-m),
+    transform var(--dur-m),
+    box-shadow var(--dur-m),
+    border-color var(--dur-m),
+    filter var(--dur-m);
+  overflow:hidden;
+}
+.calendar-day.blank {
+  background:transparent;
+  border:1px dashed hsl(var(--panel-border)/0.25);
+  cursor:default;
+  pointer-events:none;
+  min-height:60px;
+}
+.calendar-day:hover:not(.blank) {
+  transform:translateY(-5px);
+  box-shadow:0 8px 22px -10px rgba(0,0,0,.5);
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.65),hsl(var(--glass-bg)/0.50));
+}
+.calendar-day.selected {
+  background:var(--gradient-accent);
+  color:#fff;
+  box-shadow:0 10px 28px -12px hsl(var(--accent)/0.6);
+  border-color:hsl(var(--accent)/0.5);
+  transform:translateY(-4px);
+}
+.calendar-day .cal-date {
+  font-weight:800;
+  font-size:.65rem;
+  line-height:1;
+  letter-spacing:.4px;
+  display:flex;
+  align-items:center;
+  gap:.25rem;
+}
+.calendar-day .cal-badges {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.2rem;
+  line-height:1;
+}
+.calendar-day .cal-badge {
+  background:hsl(var(--accent)/0.25);
+  color:#fff;
+  font-size:.40rem;
+  padding:.18rem .35rem;
+  border-radius:8px;
+  font-weight:700;
+  letter-spacing:.3px;
+  box-shadow:0 2px 6px -2px hsl(var(--accent)/0.45);
+}
+.calendar-day.good { border-color:rgba(16,185,129,.6); }
+.calendar-day.mid  { border-color:rgba(245,158,11,.6); }
+.calendar-day.bad  { border-color:rgba(239,68,68,.65); }
+.calendar-day.good:not(.selected){ background:linear-gradient(145deg,rgba(16,185,129,.25),rgba(16,185,129,.12)); }
+.calendar-day.mid:not(.selected){ background:linear-gradient(145deg,rgba(245,158,11,.28),rgba(245,158,11,.12)); }
+.calendar-day.bad:not(.selected){ background:linear-gradient(145deg,rgba(239,68,68,.30),rgba(239,68,68,.15)); }
+
+.calendar-day.good.selected { background:linear-gradient(145deg,#059669,#10b981); }
+.calendar-day.mid.selected  { background:linear-gradient(145deg,#d97706,#f59e0b); }
+.calendar-day.bad.selected  { background:linear-gradient(145deg,#b91c1c,#ef4444); }
+
+.calendar-legend {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem .8rem;
+  font-size:.48rem;
+  font-weight:600;
+  letter-spacing:.4px;
+  opacity:.85;
+}
+.calendar-legend span {
+  display:inline-flex;
+  gap:.35rem;
+  align-items:center;
+  background:hsl(var(--accent)/0.18);
+  padding:.3rem .55rem;
+  border-radius:12px;
+  border:1px solid hsl(var(--panel-border)/0.45);
+}
+.legend-box {
+  width:12px;
+  height:12px;
+  border-radius:4px;
+  background:#555;
+  box-shadow:0 2px 6px -2px rgba(0,0,0,.45);
+}
+.lg-good { background:linear-gradient(135deg,#059669,#10b981); }
+.lg-mid  { background:linear-gradient(135deg,#d97706,#f59e0b); }
+.lg-bad  { background:linear-gradient(135deg,#b91c1c,#ef4444); }
+.lg-none { background:linear-gradient(135deg,#475569,#64748b); }
+
+.calendar-summary {
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.55),hsl(var(--glass-bg)/0.40));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:22px;
+  padding:.75rem .85rem;
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  position:relative;
+  overflow:hidden;
+  font-size:.55rem;
+  animation: fadeScale .55s var(--spring);
+}
+.cal-summary-title {
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  font-size:.58rem;
+  font-weight:800;
+  letter-spacing:.55px;
+  text-transform:uppercase;
+  color:hsl(var(--text-dim));
+}
+.cal-summary-body {
+  display:grid;
+  gap:.4rem;
+  font-size:.52rem;
+  line-height:1.4;
+}
+.cal-summary-body .cs-row {
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  background:hsl(var(--accent)/0.15);
+  padding:.4rem .55rem;
+  border-radius:12px;
+  border:1px solid hsl(var(--panel-border)/0.45);
+  font-weight:600;
+  letter-spacing:.4px;
+}
+.cal-summary-body .cs-row.good { background:linear-gradient(135deg,rgba(16,185,129,.28),rgba(16,185,129,.12)); }
+.cal-summary-body .cs-row.mid  { background:linear-gradient(135deg,rgba(245,158,11,.28),rgba(245,158,11,.12)); }
+.cal-summary-body .cs-row.bad  { background:linear-gradient(135deg,rgba(239,68,68,.30),rgba(239,68,68,.15)); }
+
+.cal-summary-actions {
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-top:.4rem;
+}
+.calendar-day.today::after {
+  content:"•";
+  position:absolute;
+  right:6px;
+  top:6px;
+  font-size:.7rem;
+  color:hsl(var(--accent));
+  text-shadow:0 0 4px hsl(var(--accent)/0.8);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+.calendar-day[data-has-hazard="1"]::before {
+  content:"!";
+  position:absolute;
+  left:6px;
+  top:6px;
+  font-size:.55rem;
+  font-weight:800;
+  color:#ef4444;
+  text-shadow:0 0 4px rgba(239,68,68,.7);
+}
+.calendar-day[data-count="0"]{
+  filter:grayscale(.35);
+  opacity:.85;
+}
+.calendar-day .avg-label {
+  font-size:.42rem;
+  font-weight:700;
+  letter-spacing:.3px;
+  background:hsl(var(--accent)/0.30);
+  color:#fff;
+  padding:.18rem .35rem;
+  border-radius:8px;
+  box-shadow:0 2px 6px -2px hsl(var(--accent)/0.45);
+  max-width:100%;
+  line-height:1;
+}
+@media (max-width:760px){
+  .calendar-days { gap:.3rem .25rem; }
+  .calendar-day { min-height:54px; padding:.4rem .4rem .5rem; }
+  .calendar-day .cal-date { font-size:.6rem; }
+}
 </style>
 </head>
 <body>
@@ -5515,6 +6001,94 @@ body.offline .presence-indicator .dot::after {
             <div id="qualityIndicatorList"></div>
           </div>
         </div>
+       <div style="opacity:0">sk</div> 
+       
+       <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(360px,1fr));">
+        <!-- PANEL CUACA (Letakkan di dalam <section id="view-dashboard"> misalnya setelah Ranking Panel) -->
+<div class="panel bento weather-panel" id="weatherPanel">
+  <div class="panel-header">
+    <h3>
+      <i data-feather="cloud" width="14"></i>
+      <span>Cuaca Lokasi</span>
+    </h3>
+    <div style="display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;">
+      <button class="ghost small" id="weatherRefreshBtn" title="Segarkan">
+        <i data-feather="refresh-cw" width="13"></i>
+      </button>
+      <button class="ghost small" id="weatherChangeCityBtn" title="Ubah Kota">
+        <i data-feather="map-pin" width="13"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="weatherContent" class="weather-loading">
+    <div class="weather-skel">
+      <div class="weather-skel-icon"></div>
+      <div class="weather-skel-lines">
+        <div class="line"></div>
+        <div class="line short"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="weather-footer small muted" id="weatherFooterNote">
+    Sumber: Open‑Meteo • <span id="weatherUpdatedAt">Memuat...</span>
+  </div>
+</div>
+
+<!-- PANEL KALENDER (Letakkan setelah #weatherPanel di dalam #view-dashboard) -->
+<div class="panel bento calendar-panel" id="calendarPanel">
+  <div class="panel-header">
+    <h3>
+      <i data-feather="calendar" width="14"></i>
+      <span>Kalender Mutu Harian</span>
+    </h3>
+    <div style="display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;">
+      <button class="ghost small" id="calPrevMonth" title="Bulan Sebelumnya">
+        <i data-feather="chevron-left" width="13"></i>
+      </button>
+      <div id="calMonthLabel" style="font-size:.62rem;font-weight:700;letter-spacing:.55px;min-width:118px;text-align:center;"></div>
+      <button class="ghost small" id="calNextMonth" title="Bulan Berikutnya">
+        <i data-feather="chevron-right" width="13"></i>
+      </button>
+      <button class="ghost small" id="calTodayBtn" title="Ke Bulan Sekarang">
+        <i data-feather="target" width="13"></i>
+      </button>
+      <button class="ghost small" id="calRefreshBtn" title="Segarkan Kalender">
+        <i data-feather="refresh-cw" width="13"></i>
+      </button>
+    </div>
+  </div>
+  <div class="calendar-grid-header">
+    <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+  </div>
+  <div id="calendarDays" class="calendar-days"></div>
+  <div class="calendar-legend">
+    <span><span class="legend-box lg-good"></span>Avg ≥ 7</span>
+    <span><span class="legend-box lg-mid"></span>4 – 6.99</span>
+    <span><span class="legend-box lg-bad"></span>&lt; 4</span>
+    <span><span class="legend-box lg-none"></span>Tanpa Data</span>
+  </div>
+  <div id="calendarSummary" class="calendar-summary">
+    <div class="cal-summary-title">
+      <i data-feather="bar-chart-2" width="13"></i>
+      <span>Ringkasan Hari</span>
+    </div>
+    <div id="calendarSummaryBody" class="cal-summary-body muted">
+      Klik salah satu tanggal untuk melihat ringkasan data mutu.
+    </div>
+    <div id="calendarSummaryActions" class="cal-summary-actions hidden">
+      <button class="outline small" id="calApplyFilterBtn">
+        <i data-feather="filter" width="12"></i> Terapkan ke Filter Data
+      </button>
+      <button class="outline small" id="calClearSelectionBtn">
+        <i data-feather="x-circle" width="12"></i> Bersihkan
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
       </section>
 
       <!-- DATA TABLE -->
@@ -12189,6 +12763,528 @@ function bindWelcomeModalEvents(){
   }
 
   setTimeout(init, 600);
+})();
+
+/* ===============================================================
+   WEATHER MODULE (Dashboard)
+   Fitur:
+   - Geolocation → Open‑Meteo (tanpa API key)
+   - Fallback ke kota default (Makassar)
+   - Caching localStorage (ttl 10 menit)
+   - Optional switch ke OpenWeather (isi API key)
+   - Forecast 3 hari + current
+   - Graceful error handling
+   =============================================================== */
+
+(function(){
+  const LS_KEY = 'mmisWeatherCacheV1';
+  const TTL_MS = 10 * 60 * 1000; // 10 menit
+  const DEFAULT_CITY = 'Makassar';
+  const DEFAULT_COORD = { lat: -5.147665, lon: 119.432732 }; // Koordinat Makassar
+  const USE_OPENWEATHER = false; // ubah true jika ingin pakai OpenWeather
+  const OPENWEATHER_API_KEY = '58794df3043d84c2f35e70ecc61b8a52';
+  const OPENWEATHER_UNITS = 'metric';
+
+  // Peta kode cuaca open-meteo → ikon & label sederhana
+  const weatherCodeMap = {
+    0:  { icon:'sun', text:'Cerah' },
+    1:  { icon:'sun', text:'Cerah' },
+    2:  { icon:'cloud', text:'Berawan Tipis' },
+    3:  { icon:'cloud', text:'Berawan' },
+    45: { icon:'cloud', text:'Berkabut' },
+    48: { icon:'cloud', text:'Kabut' },
+    51: { icon:'cloud-drizzle', text:'Gerimis' },
+    53: { icon:'cloud-drizzle', text:'Gerimis Sedang' },
+    55: { icon:'cloud-drizzle', text:'Gerimis Lebat' },
+    61: { icon:'cloud-rain', text:'Hujan Ringan' },
+    63: { icon:'cloud-rain', text:'Hujan Sedang' },
+    65: { icon:'cloud-rain', text:'Hujan Lebat' },
+    71: { icon:'cloud-snow', text:'Salju (jarang)' },
+    80: { icon:'cloud-rain', text:'Hujan Lokal' },
+    81: { icon:'cloud-rain', text:'Hujan' },
+    82: { icon:'cloud-rain', text:'Hujan Lebat' },
+    95: { icon:'cloud-lightning', text:'Badai' }
+  };
+
+  function $(s){ return document.querySelector(s); }
+  function fmt(n){ return typeof n==='number'? n.toFixed(1): n; }
+  function loadCache(){
+    try {
+      const raw = JSON.parse(localStorage.getItem(LS_KEY)||'{}');
+      if(!raw.timestamp) return null;
+      if(Date.now() - raw.timestamp > TTL_MS) return null;
+      return raw;
+    }catch{return null;}
+  }
+  function saveCache(data){
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify({...data, timestamp: Date.now()}));
+    }catch{}
+  }
+
+  function showLoading(){
+    const c = $('#weatherContent');
+    if(!c) return;
+    c.innerHTML = `
+      <div class="weather-skel">
+        <div class="weather-skel-icon"></div>
+        <div class="weather-skel-lines">
+          <div class="line"></div>
+          <div class="line short"></div>
+        </div>
+      </div>
+    `;
+  }
+  function showError(msg){
+    const c = $('#weatherContent');
+    if(!c) return;
+    c.innerHTML = `<div class="weather-error">${msg}</div>`;
+  }
+
+  async function fetchWeather(lat, lon){
+    if(USE_OPENWEATHER && OPENWEATHER_API_KEY && OPENWEATHER_API_KEY!=='ISI_KEY_JIKA_MAU'){
+      return fetchOpenWeather(lat, lon);
+    }
+    return fetchOpenMeteo(lat, lon);
+  }
+
+  async function fetchOpenMeteo(lat, lon){
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,apparent_temperature,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('Gagal ambil data cuaca');
+    const json = await res.json();
+    return transformOpenMeteo(json);
+  }
+
+  function transformOpenMeteo(json){
+    const cur = json.current;
+    const daily = (json.daily && json.daily.time||[]).map((t,i)=> ({
+      date: t,
+      code: json.daily.weather_code[i],
+      tmax: json.daily.temperature_2m_max[i],
+      tmin: json.daily.temperature_2m_min[i]
+    })).slice(0,3);
+
+    return {
+      source:'open-meteo',
+      location: { name: localStorage.getItem('weatherCityName') || DEFAULT_CITY },
+      current: {
+        temp: cur.temperature_2m,
+        feels: cur.apparent_temperature,
+        humidity: cur.relative_humidity_2m,
+        wind: cur.wind_speed_10m,
+        code: cur.weather_code
+      },
+      daily
+    };
+  }
+
+  async function fetchOpenWeather(lat, lon){
+    const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}&units=${OPENWEATHER_UNITS}&lang=id`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('Gagal OpenWeather');
+    const json = await res.json();
+    return transformOpenWeather(json);
+  }
+
+  function transformOpenWeather(json){
+    const cur = json.current;
+    const daily = (json.daily||[]).slice(0,3).map(d=> ({
+      date: new Date(d.dt*1000).toISOString().split('T')[0],
+      code: d.weather?.[0]?.id || 800,
+      tmax: d.temp.max,
+      tmin: d.temp.min
+    }));
+    return {
+      source:'openweather',
+      location:{ name: localStorage.getItem('weatherCityName') || DEFAULT_CITY },
+      current:{
+        temp: cur.temp,
+        feels: cur.feels_like,
+        humidity: cur.humidity,
+        wind: cur.wind_speed,
+        code: mapOpenWeatherToGeneric(cur.weather?.[0]?.id)
+      },
+      daily
+    };
+  }
+
+  function mapOpenWeatherToGeneric(id){
+    // sederhanakan id ke open-meteo style
+    if(id>=200 && id<300) return 95;
+    if(id>=300 && id<600) return 61;
+    if(id>=600 && id<700) return 71;
+    if(id===800) return 0;
+    if(id===801) return 2;
+    if(id>801) return 3;
+    return 3;
+  }
+
+  function renderWeather(data){
+    const c = $('#weatherContent');
+    if(!c) return;
+    const codeInfo = weatherCodeMap[data.current.code] || {icon:'cloud',text:'-'}; 
+    const updated = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+
+    $('#weatherUpdatedAt') && ($('#weatherUpdatedAt').textContent = 'Update ' + updated);
+
+    c.innerHTML = `
+      <div class="weather-main">
+        <div class="weather-icon-box">
+          <i data-feather="${codeInfo.icon}" width="48"></i>
+        </div>
+        <div class="weather-brief">
+          <div class="weather-location">
+            <i data-feather="map-pin" width="12"></i>
+            <span>${escapeHtml(data.location.name||'-')}</span>
+          </div>
+          <div class="weather-temp-line">
+            <span>${fmt(data.current.temp)}°C</span>
+            <span class="minmax">${fmt(data.daily[0]?.tmin)}° / ${fmt(data.daily[0]?.tmax)}°</span>
+          </div>
+          <div class="weather-desc">
+            <span>${codeInfo.text}</span>
+            <span>Feels: ${fmt(data.current.feels)}°C</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="weather-extra">
+        <div class="weather-extra-item">
+          <span>Humidity</span>
+          <div class="val">${data.current.humidity}%</div>
+        </div>
+        <div class="weather-extra-item">
+          <span>Angin</span>
+          <div class="val">${fmt(data.current.wind)} m/s</div>
+        </div>
+        <div class="weather-extra-item">
+          <span>Kode</span>
+          <div class="val">${data.current.code}</div>
+        </div>
+        <div class="weather-extra-item">
+          <span>Sumber</span>
+          <div class="val">${data.source==='openweather'?'OpenWeather':'Open‑Meteo'}</div>
+        </div>
+      </div>
+
+      <div class="weather-forecast">
+        ${data.daily.map((d,i)=> renderForecastDay(d,i===0)).join('')}
+      </div>
+    `;
+    feather.replace();
+  }
+
+  function renderForecastDay(d,isToday){
+    const info = weatherCodeMap[d.code] || {icon:'cloud',text:'-'};
+    const dayLabel = isToday? 'Hari ini' : formatDayLabel(d.date);
+    return `
+      <div class="weather-day">
+        <div style="display:flex;align-items:center;gap:.45rem;">
+          <div class="wd-icon"><i data-feather="${info.icon}" width="16"></i></div>
+          <div>${dayLabel}</div>
+        </div>
+        <div class="wd-temp">
+          <span>${fmt(d.tmin)}°</span><span>${fmt(d.tmax)}°</span>
+        </div>
+        <div style="font-size:.48rem;opacity:.75;">${info.text}</div>
+      </div>
+    `;
+  }
+
+  function formatDayLabel(dateStr){
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('id-ID',{weekday:'short'});
+  }
+
+  function escapeHtml(s=''){ return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+  function requestGeolocation(){
+    return new Promise(resolve=>{
+      if(!navigator.geolocation){
+        return resolve(null);
+      }
+      navigator.geolocation.getCurrentPosition(
+        pos=> resolve({lat:pos.coords.latitude, lon:pos.coords.longitude}),
+        ()=> resolve(null),
+        {timeout:6000}
+      );
+    });
+  }
+
+  async function initWeather(force=false){
+    showLoading();
+    let cache = !force && loadCache();
+    if(cache){
+      renderWeather(cache.data);
+      return;
+    }
+    let coord = await requestGeolocation();
+    if(!coord){
+      // fallback pakai kota default
+      coord = DEFAULT_COORD;
+      localStorage.setItem('weatherCityName', DEFAULT_CITY);
+    } else {
+      // coba reverse geocode ringan (opsional) → skip untuk efisiensi
+      localStorage.setItem('weatherCityName', DEFAULT_CITY);
+    }
+    try {
+      const data = await fetchWeather(coord.lat, coord.lon);
+      saveCache({ data });
+      renderWeather(data);
+    } catch(err){
+      console.warn('[Weather] error', err);
+      showError('Gagal memuat cuaca. Coba ulang.');
+    }
+  }
+
+  function changeCityDialog(){
+    const city = prompt('Masukkan nama kota (hanya label tampilan, data tetap dari koordinat default):', localStorage.getItem('weatherCityName') || DEFAULT_CITY);
+    if(city){
+      localStorage.setItem('weatherCityName', city.trim());
+      // Pakai cache bila ada → hanya rerender label
+      const cache = loadCache();
+      if(cache){
+        cache.data.location.name = city.trim();
+        saveCache(cache);
+        renderWeather(cache.data);
+      }
+    }
+  }
+
+  function bindEvents(){
+    $('#weatherRefreshBtn')?.addEventListener('click', ()=> initWeather(true));
+    $('#weatherChangeCityBtn')?.addEventListener('click', changeCityDialog);
+  }
+
+  function waitApp(){
+    if(window.App){
+      bindEvents();
+      initWeather(false);
+    } else {
+      setTimeout(waitApp, 300);
+    }
+  }
+  waitApp();
+})();
+// ==== DASHBOARD CALENDAR MODULE ====
+// Tempelkan setelah seluruh script utama (paling akhir sebelum </body>)
+(function(){
+  if(!window.App){ console.warn('[Calendar] App belum siap'); return; }
+
+  const cal = {
+    year: (new Date()).getFullYear(),
+    month: (new Date()).getMonth(), // 0-11
+    selected: null, // 'YYYY-MM-DD'
+    cache: {},
+    inited: false
+  };
+
+  function $(s){ return document.querySelector(s); }
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function isoDate(d){ const dt=new Date(d); dt.setHours(0,0,0,0); return dt.toISOString().split('T')[0]; }
+
+  function collectData(){
+    // Kumpulkan data fish per tanggal sekali setiap render
+    const map = {};
+    (App.state.fishData||[]).forEach(r=>{
+      if(!r.date) return;
+      const key = isoDate(r.date);
+      map[key] = map[key] || [];
+      map[key].push(r);
+    });
+    cal.cache = map;
+  }
+
+  function computeDayInfo(key){
+    const arr = cal.cache[key] || [];
+    if(!arr.length) return {count:0, avg:0, good:0, mid:0, bad:0, hazard:0};
+    let good=0, mid=0, bad=0, hazard=0, sum=0;
+    arr.forEach(r=>{
+      sum += r.organoleptic||0;
+      if(r.organoleptic>=7) good++;
+      else if(r.organoleptic>=4) mid++;
+      else bad++;
+      if((r.hazards||[]).length) hazard++;
+    });
+    return {
+      count: arr.length,
+      avg: sum/arr.length,
+      good, mid, bad, hazard
+    };
+  }
+
+  function monthLabel(y,m){
+    const idMonths = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    return idMonths[m]+' '+y;
+  }
+
+  function renderCalendar(){
+    const daysWrap = $('#calendarDays');
+    const label = $('#calMonthLabel');
+    if(!daysWrap || !label) return;
+    collectData();
+
+    label.textContent = monthLabel(cal.year, cal.month);
+
+    const first = new Date(cal.year, cal.month, 1);
+    const last  = new Date(cal.year, cal.month+1, 0);
+    const firstDayIndex = (first.getDay()); // 0 Minggu
+    const totalDays = last.getDate();
+
+    // Build cells
+    let html='';
+    // Leading blanks
+    for(let i=0;i<firstDayIndex;i++){
+      html += `<div class="calendar-day blank"></div>`;
+    }
+
+    for(let d=1; d<=totalDays; d++){
+      const key = `${cal.year}-${pad(cal.month+1)}-${pad(d)}`;
+      const info = computeDayInfo(key);
+      const hasData = info.count>0;
+      const avg = info.avg;
+      let cls = '';
+      if(hasData){
+        if(avg>=7) cls='good';
+        else if(avg>=4) cls='mid';
+        else cls='bad';
+      }
+      const isToday = key===isoDate(new Date());
+      const isSel = key===cal.selected;
+      const hazardFlag = info.hazard>0 ? '1':'0';
+
+      html += `
+        <div class="calendar-day ${cls} ${isSel?'selected':''} ${isToday?'today':''}"
+             data-date="${key}"
+             data-count="${info.count}"
+             data-has-hazard="${hazardFlag}"
+             title="${key} • Data: ${info.count}${hasData? ' • Avg: '+avg.toFixed(2):''}${info.hazard? ' • Indikasi: '+info.hazard:''}">
+          <div class="cal-date">${d}</div>
+          <div class="cal-badges">
+            ${hasData? `<span class="avg-label">${avg.toFixed(1)}</span>`:''}
+            ${info.count? `<span class="cal-badge">${info.count}</span>`:''}
+          </div>
+        </div>
+      `;
+    }
+
+    daysWrap.innerHTML = html;
+    feather.replace();
+    bindDayClicks();
+    renderSummary(); // update summary if masih selected
+  }
+
+  function bindDayClicks(){
+    document.querySelectorAll('.calendar-day[data-date]').forEach(day=>{
+      day.addEventListener('click', ()=>{
+        const key = day.getAttribute('data-date');
+        if(cal.selected===key){
+          // toggle (jika ingin hapus pilihan)
+          cal.selected = null;
+        } else {
+          cal.selected = key;
+        }
+        renderCalendar();
+      });
+    });
+  }
+
+  function renderSummary(){
+    const body = $('#calendarSummaryBody');
+    const actions = $('#calendarSummaryActions');
+    if(!body) return;
+    if(!cal.selected){
+      body.innerHTML = 'Klik salah satu tanggal untuk melihat ringkasan data mutu.';
+      actions?.classList.add('hidden');
+      return;
+    }
+    const info = computeDayInfo(cal.selected);
+    if(!info.count){
+      body.innerHTML = `
+        <div class="muted">Tidak ada data pada tanggal <strong>${cal.selected}</strong>.</div>
+      `;
+      actions?.classList.remove('hidden');
+      return;
+    }
+    body.innerHTML = `
+      <div style="font-size:.55rem;font-weight:700;letter-spacing:.5px;">Tanggal: ${cal.selected}</div>
+      <div class="cs-row good"><span>Total Data</span><span>${info.count}</span></div>
+      <div class="cs-row"><span>Rata-rata</span><span>${info.avg.toFixed(2)}</span></div>
+      <div class="cs-row good"><span>Mutu Baik (≥7)</span><span>${info.good}</span></div>
+      <div class="cs-row mid"><span>Mutu Sedang (4–6.99)</span><span>${info.mid}</span></div>
+      <div class="cs-row bad"><span>Mutu Buruk (&lt;4)</span><span>${info.bad}</span></div>
+      <div class="cs-row ${info.hazard? 'bad':''}"><span>Indikasi Bahaya</span><span>${info.hazard}</span></div>
+    `;
+    actions?.classList.remove('hidden');
+  }
+
+  function applyFilterToData(){
+    if(!cal.selected){
+      App.toast('Belum pilih tanggal','warn');
+      return;
+    }
+    const filterDate = document.getElementById('filterDate');
+    if(filterDate){
+      filterDate.value = cal.selected;
+      // Trigger event input agar listener existing jalan
+      filterDate.dispatchEvent(new Event('input',{bubbles:true}));
+      App.toast('Filter tanggal diterapkan: '+cal.selected,'success');
+      App.showView('data');
+    }
+  }
+
+  function clearSelection(){
+    cal.selected = null;
+    renderCalendar();
+  }
+
+  function prevMonth(){
+    cal.month--;
+    if(cal.month<0){ cal.month=11; cal.year--; }
+    renderCalendar();
+  }
+  function nextMonth(){
+    cal.month++;
+    if(cal.month>11){ cal.month=0; cal.year++; }
+    renderCalendar();
+  }
+  function goToday(){
+    const now = new Date();
+    cal.year = now.getFullYear();
+    cal.month = now.getMonth();
+    renderCalendar();
+  }
+
+  function bindHeader(){
+    $('#calPrevMonth')?.addEventListener('click', prevMonth);
+    $('#calNextMonth')?.addEventListener('click', nextMonth);
+    $('#calTodayBtn')?.addEventListener('click', goToday);
+    $('#calRefreshBtn')?.addEventListener('click', ()=> {
+      renderCalendar();
+      App.toast('Kalender diperbarui','info');
+    });
+    $('#calApplyFilterBtn')?.addEventListener('click', applyFilterToData);
+    $('#calClearSelectionBtn')?.addEventListener('click', clearSelection);
+  }
+
+  // Auto detect data changes (polling ringan)
+  let lastLen = 0;
+  function observeData(){
+    const cur = (App.state.fishData||[]).length;
+    if(cur!==lastLen){
+      lastLen = cur;
+      if(!cal.inited){
+        cal.inited=true;
+        bindHeader();
+      }
+      renderCalendar();
+    }
+    requestAnimationFrame(observeData);
+  }
+
+  // Mulai
+  observeData();
 })();
 </script>
 </body>
