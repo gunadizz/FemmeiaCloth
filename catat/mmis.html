@@ -4372,7 +4372,437 @@ body.offline .presence-indicator .dot::after {
   margin-top: .5rem;
 }
 
+.ai-msg .btn-mini-inline {
+  background:hsl(var(--accent)/0.35);
+  border:none;
+  padding:.25rem .45rem;
+  font-size:.48rem;
+}
+.ai-msg .btn-mini-inline:hover {
+  background:hsl(var(--accent)/0.55);
+}
+/* ===== Developer Profile Improved ===== */
+.dev-card {
+  --dev-bg: linear-gradient(145deg,hsl(var(--glass-bg)/0.85),hsl(var(--glass-bg)/0.55));
+  display:flex;
+  gap:2rem;
+  flex-wrap:wrap;
+  padding:1.6rem 1.7rem 1.8rem;
+  background:var(--dev-bg);
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:32px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 16px 42px -18px rgba(0,0,0,.55), 0 0 0 1px hsl(var(--panel-border)/0.35), inset 0 0 0 1px hsl(var(--accent)/0.07);
+  animation: fadeScale .7s var(--spring);
+  isolation:isolate;
+}
+.dev-card:before, .dev-card:after {
+  content:"";
+  position:absolute;
+  width:380px;
+  height:380px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,hsl(var(--accent)/0.35),transparent 65%);
+  top:-120px;
+  right:-140px;
+  filter:blur(40px);
+  opacity:.35;
+  animation: devFloat 9s ease-in-out infinite;
+  pointer-events:none;
+}
+.dev-card:after {
+  top:auto;
+  bottom:-160px;
+  left:-120px;
+  background:radial-gradient(circle at 40% 40%,hsl(var(--accent)/0.30),transparent 68%);
+  animation-delay: -4s;
+}
+@keyframes devFloat {
+  0%,100% { transform:translateY(0) scale(1); opacity:.35; }
+  50% { transform:translateY(35px) scale(1.05); opacity:.55; }
+}
 
+.dev-card-left {
+  flex:0 0 210px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1.1rem;
+  position:relative;
+}
+
+.dev-photo-frame {
+  position:relative;
+  width:160px;
+  height:160px;
+  border-radius:40px;
+  background:linear-gradient(135deg,hsl(var(--accent)/0.6),hsl(var(--accent)/0.35));
+  padding:4px;
+  box-shadow:0 14px 34px -14px hsl(var(--accent)/0.65), 0 0 0 1px hsl(var(--accent)/0.45);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  animation: popIn .85s var(--spring);
+}
+.dev-photo-frame::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 25% 25%,rgba(255,255,255,.35),transparent 55%),
+    linear-gradient(140deg,rgba(255,255,255,.18),transparent 70%);
+  mix-blend-mode:overlay;
+  pointer-events:none;
+}
+.dev-photo-new {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:32px;
+  filter:contrast(1.05) saturate(1.05);
+  transition: transform .6s var(--spring), filter .5s;
+}
+.dev-photo-frame:hover .dev-photo-new {
+  transform:scale(1.07) rotate(2deg);
+  filter:contrast(1.12) saturate(1.12);
+}
+
+.dev-glow {
+  position:absolute;
+  inset:-2px;
+  border-radius:inherit;
+  background:conic-gradient(from 0deg, hsl(var(--accent)/0.2), transparent 120deg, hsl(var(--accent)/0.25), transparent 240deg);
+  mix-blend-mode:overlay;
+  animation: rotateGlow 8s linear infinite;
+  opacity:.6;
+  pointer-events:none;
+}
+@keyframes rotateGlow {
+  to { transform:rotate(360deg); }
+}
+
+.dev-mini-badges {
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  width:100%;
+  align-items:stretch;
+}
+.dev-mini-badge {
+  font-size:.55rem;
+  letter-spacing:.5px;
+  background:hsl(var(--accent)/0.25);
+  padding:.45rem .6rem;
+  border-radius:14px;
+  font-weight:700;
+  color:#fff;
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  box-shadow:0 6px 16px -8px hsl(var(--accent)/0.65);
+  position:relative;
+  overflow:hidden;
+}
+.dev-mini-badge.alt {
+  background:linear-gradient(135deg,hsl(var(--accent)/0.55),hsl(var(--accent)/0.35));
+}
+.dev-mini-badge svg { stroke-width:2.2px; }
+
+.dev-card-main {
+  flex:1;
+  min-width:280px;
+  display:flex;
+  flex-direction:column;
+  gap:1.4rem;
+  position:relative;
+  z-index:2;
+}
+
+.dev-header { display:flex; flex-direction:column; gap:.45rem; }
+.dev-name {
+  margin:0;
+  font-size:1.35rem;
+  letter-spacing:.5px;
+  font-weight:800;
+  line-height:1.15;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.55rem;
+  align-items:center;
+}
+.gradient-text {
+  background:linear-gradient(90deg,hsl(var(--accent)/0.95),hsl(var(--accent)/0.55));
+  -webkit-background-clip:text;
+  color:transparent;
+  text-shadow:0 2px 8px hsl(var(--accent)/0.35);
+}
+.dev-id {
+  font-size:.75rem;
+  font-weight:600;
+  opacity:.75;
+  letter-spacing:.6px;
+  padding:.2rem .55rem;
+  border:1px solid hsl(var(--accent)/0.45);
+  border-radius:12px;
+  background:hsl(var(--accent)/0.18);
+}
+
+.dev-role-line {
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.55px;
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  background:hsl(var(--accent)/0.18);
+  padding:.4rem .65rem;
+  border-radius:14px;
+  width:fit-content;
+  box-shadow:0 4px 12px -6px hsl(var(--accent)/0.4);
+}
+.dev-role-line svg { stroke-width:2.1px; }
+.dev-faculty {
+  font-size:.58rem;
+  letter-spacing:.4px;
+  opacity:.8;
+  font-weight:600;
+}
+
+.dev-desc-new {
+  font-size:.68rem;
+  line-height:1.55;
+  margin:0;
+  background:hsl(var(--accent)/0.10);
+  border:1px solid hsl(var(--panel-border)/0.45);
+  padding:.8rem .9rem;
+  border-radius:20px;
+  position:relative;
+  overflow:hidden;
+}
+.dev-desc-new:before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(120deg,rgba(255,255,255,.12),transparent 70%),
+    radial-gradient(circle at 85% 20%,hsl(var(--accent)/0.20),transparent 60%);
+  mix-blend-mode:overlay;
+  opacity:.55;
+  pointer-events:none;
+}
+
+.dev-section {
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+}
+.dev-section-title {
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  font-size:.62rem;
+  letter-spacing:.55px;
+  font-weight:800;
+  text-transform:uppercase;
+  color:hsl(var(--accent)/0.95);
+  background:hsl(var(--accent)/0.18);
+  padding:.5rem .75rem;
+  border-radius:14px;
+  width:fit-content;
+  box-shadow:0 4px 14px -6px hsl(var(--accent)/0.5);
+  position:relative;
+  overflow:hidden;
+}
+.dev-section-title:after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(110deg,rgba(255,255,255,.25),transparent 70%);
+  opacity:0;
+  transition:opacity .55s;
+}
+.dev-section-title:hover:after { opacity:.7; }
+.dev-section-title svg { stroke-width:2.2px; }
+
+.dev-tags {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+}
+.dev-tag {
+  font-size:.52rem;
+  font-weight:700;
+  letter-spacing:.45px;
+  background:hsl(var(--accent)/0.22);
+  color:#fff;
+  padding:.38rem .6rem;
+  border-radius:12px;
+  display:inline-flex;
+  gap:.35rem;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+  border:1px solid hsl(var(--accent)/0.35);
+  transition:background .35s, transform .35s;
+}
+.dev-tag:hover {
+  background:hsl(var(--accent)/0.35);
+  transform:translateY(-4px) scale(1.04);
+}
+.dev-tag svg { stroke-width:2.1px; }
+
+.dev-focus-list {
+  margin:0;
+  padding-left:1.05rem;
+  font-size:.6rem;
+  line-height:1.55;
+  display:flex;
+  flex-direction:column;
+  gap:.3rem;
+}
+.dev-focus-list li {
+  position:relative;
+  animation: fadeSlide .6s var(--spring);
+}
+
+.dev-links {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.55rem;
+}
+.dev-link {
+  text-decoration:none;
+  font-size:.58rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  background:hsl(var(--accent)/0.22);
+  padding:.5rem .75rem;
+  border-radius:14px;
+  color:#fff;
+  position:relative;
+  border:1px solid hsl(var(--accent)/0.4);
+  transition: background .4s var(--spring), transform .45s var(--spring), box-shadow .45s;
+  overflow:hidden;
+}
+.dev-link:hover {
+  background:linear-gradient(135deg,hsl(var(--accent)/0.95),hsl(var(--accent)/0.55));
+  transform:translateY(-6px) scale(1.05);
+  box-shadow:0 10px 28px -10px hsl(var(--accent)/0.65);
+}
+.dev-link:active {
+  transform:translateY(-2px) scale(.96);
+}
+.dev-link-icon {
+  width:26px;
+  height:26px;
+  display:grid;
+  place-items:center;
+  background:hsl(var(--accent)/0.28);
+  border-radius:9px;
+  font-size:.6rem;
+  font-weight:800;
+  box-shadow:0 4px 12px -6px hsl(var(--accent)/0.55);
+}
+.dev-link svg { stroke-width:2.2px; }
+
+.dev-footer-meta {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.55rem;
+  font-size:.5rem;
+  font-weight:600;
+  letter-spacing:.55px;
+  opacity:.75;
+  padding-top:.4rem;
+  border-top:1px solid hsl(var(--panel-border)/0.35);
+  margin-top:.2rem;
+}
+.dot-sep {
+  width:5px;
+  height:5px;
+  background:hsl(var(--accent)/0.65);
+  border-radius:50%;
+  align-self:center;
+}
+
+@media (max-width:780px){
+  .dev-card {
+    padding:1.35rem 1.1rem 1.5rem;
+    gap:1.4rem;
+  }
+  .dev-card-left {
+    flex:0 0 100%;
+    flex-direction:row;
+    justify-content:flex-start;
+    gap:1.2rem;
+  }
+  .dev-mini-badges {
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+  }
+  .dev-photo-frame {
+    width:130px;
+    height:130px;
+    border-radius:34px;
+  }
+  .dev-name { font-size:1.15rem; }
+  .dev-desc-new { font-size:.66rem; }
+  .dev-focus-list { font-size:.58rem; }
+}
+
+@media (max-width:500px){
+  .dev-card { border-radius:26px; }
+  .dev-photo-frame { width:118px; height:118px; }
+  .dev-tag { font-size:.5rem; }
+  .dev-link { font-size:.52rem; padding:.45rem .65rem; }
+  .dev-section-title { font-size:.58rem; }
+}
+/* Mini feature cards (About) */
+.feature-mini {
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.55),hsl(var(--glass-bg)/0.40));
+  border:1px solid hsl(var(--panel-border)/0.55);
+  border-radius:18px;
+  padding:.65rem .7rem .75rem;
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+  position:relative;
+  font-size:.54rem;
+  line-height:1.3;
+  transition:transform .45s var(--spring), box-shadow .45s, background .45s;
+  overflow:hidden;
+}
+.feature-mini:hover {
+  transform:translateY(-6px);
+  box-shadow:0 10px 26px -12px rgba(0,0,0,.55);
+  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.68),hsl(var(--glass-bg)/0.50));
+}
+.fm-icon {
+  width:34px;height:34px;
+  display:grid;place-items:center;
+  background:hsl(var(--accent)/0.28);
+  border-radius:10px;
+ padding:7px;
+  color:#fff;
+  box-shadow:0 6px 16px -8px hsl(var(--accent)/0.55);
+  font-size:.6rem;
+}
+.fm-icon svg { stroke-width:2.1px; }
+.fm-title {
+  font-weight:700;
+  font-size:.58rem;
+  letter-spacing:.45px;
+  display:flex;
+  align-items:center;
+  gap:.35rem;
+}
+.fm-text { opacity:.85; }
 </style>
 </head>
 <body>
@@ -4451,6 +4881,9 @@ body.offline .presence-indicator .dot::after {
       </div>
       <div style="display:flex;align-items:center;gap:.45rem;">
         <span id="aiModelBadge" class="ai-badge">-</span>
+        <button class="outline small" id="aiCopyLastBtn" title="Salin jawaban terakhir">
+  <i data-feather="copy" width="13"></i>
+</button>
         <button class="outline small" id="aiCloseModal">
           <i data-feather="x" width="14"></i>
         </button>
@@ -4467,6 +4900,19 @@ body.offline .presence-indicator .dot::after {
           <i data-feather="trash-2" width="13"></i>Bersih
         </button>
       </div>
+      <!-- Tambahan elemen untuk analisis gambar -->
+<div style="display:flex;flex-direction:column;gap:.4rem;flex:1 1 100%;">
+  <input type="file" id="aiImageInput" accept="image/*" style="font-size:.55rem;">
+  <div id="aiImagePreview" class="small muted" style="font-size:.5rem;"></div>
+  <div style="display:flex;gap:.45rem;flex-wrap:wrap;">
+    <button type="button" class="outline small" id="aiAnalyzeBtn">
+      <i data-feather="image" width="13"></i>Analisis Gambar
+    </button>
+    <label style="display:inline-flex;align-items:center;gap:.35rem;font-size:.5rem;">
+      <input type="checkbox" id="aiIncludeImage" checked style="width:14px;height:14px;"> Sertakan gambar bila ada
+    </label>
+  </div>
+</div>
     </form>
     <div id="aiStatusLine" class="ai-status-line">
       <span id="aiStatusText">Siap</span>
@@ -4475,105 +4921,144 @@ body.offline .presence-indicator .dot::after {
   </div>
 </div>
 
-<!-- WELCOME MODAL -->
+<!-- WELCOME MODAL (UPDATED CONTENT) -->
 <div id="welcomeModal" aria-hidden="true">
   <div class="modal-box">
     <div class="modal-title">
       <i data-feather="smile" width="18"></i>
-      <span>Selamat Datang di MMIS - Monitoring Mutu Ikan Segar</span>
+      <span>Selamat Datang di MMIS (Monitoring Mutu Ikan Segar)</span>
     </div>
-<div class="modal-text" style="display:flex;flex-direction:column;gap:.95rem;max-height:62vh;overflow:auto;padding-right:.35rem;">
-  <div style="font-size:.63rem;line-height:1.45;">
-    <strong>Selamat datang, <span id="welcomeUserName">Pengguna</span>! 😊</strong><br>
-    Aplikasi ini membantu Anda <em>mencatat</em>, <em>memantau</em>, dan <em>menganalisis</em> mutu ikan segar di pasar tradisional
-    serta memberi edukasi ringkas terkait keamanan pangan.
-  </div>
 
-  <div style="background:hsl(var(--accent)/0.16);padding:.65rem .75rem;border:1px solid hsl(var(--panel-border)/0.55);border-radius:16px;font-size:.56rem;line-height:1.4;display:flex;gap:.55rem;">
-    <i data-feather="zap" width="14"></i>
-    <div>
-      <strong>Quick Start:</strong><br>
-      <ul style="margin:.25rem 0 0 .9rem;padding:0;list-style:disc;display:flex;flex-direction:column;gap:.25rem;">
-        <li>Buka <strong>Input Data</strong>, isi jenis ikan, pasar, skor organoleptik.</li>
-        <li>Tulis deskripsi bau, tekstur, warna secara objektif.</li>
-        <li>(Opsional) Tambahkan indikasi keamanan hanya bila ada observasi meyakinkan.</li>
-        <li>Unggah foto untuk dukungan visual.</li>
-      </ul>
+    <div class="modal-text" style="display:flex;flex-direction:column;gap:1rem;max-height:62vh;overflow:auto;padding-right:.4rem;font-size:.56rem;line-height:1.5;">
+      
+      <div style="font-size:.63rem;line-height:1.5;">
+        <strong>Halo, <span id="welcomeUserName">Pengguna</span>! 👋</strong><br>
+        Aplikasi ini membantu Anda <strong>mencatat</strong>, <strong>memonitor</strong>, <strong>menganalisis</strong>, dan <strong>mengedukasi</strong> terkait mutu ikan segar di pasar tradisional secara terstruktur & modern.
+      </div>
+
+      <div style="background:hsl(var(--accent)/0.18);padding:.65rem .75rem;border:1px solid hsl(var(--panel-border)/0.55);border-radius:16px;display:flex;gap:.55rem;">
+        <i data-feather="zap" width="14"></i>
+        <div>
+          <strong>Langkah Cepat (Quick Start)</strong>
+          <ul style="margin:.35rem 0 0 .95rem;padding:0;list-style:disc;display:flex;flex-direction:column;gap:.25rem;">
+            <li>Buka menu <em>Input Data</em> → isi Jenis Ikan, Pasar, Skor Organoleptik.</li>
+            <li>Tulis deskripsi singkat: bau, tekstur, warna.</li>
+            <li>Tambahkan indikasi keamanan hanya jika ada observasi kuat (misal bau kimia).</li>
+            <li>Upload foto (opsional) untuk dokumentasi visual.</li>
+            <li>Gunakan <strong>Tool Organoleptik</strong> untuk bantu penilaian terstruktur.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <strong>Fitur Utama Aplikasi:</strong>
+        <ul style="margin:.35rem 0 0 .95rem;padding:0;list-style:disc;display:flex;flex-direction:column;gap:.28rem;">
+          <li><strong>Dashboard Dinamis</strong> (rentang: Hari Ini / 7 / 30 / Semua) + Ranking & Rekomendasi otomatis.</li>
+          <li><strong>Input Data</strong> dengan preferensi default + gambar terkompres otomatis.</li>
+          <li><strong>Tool Organoleptik</strong> (SNI 2013 / Revisi) + metode agregasi (Average / Min / Median).</li>
+          <li><strong>AI Asisten Gemini</strong>: Tanya mutu, kesegaran, indikasi, handling, analisis gambar.</li>
+          <li><strong>Micro-Learning</strong> + kuis & pencapaian <em>Quality Steward</em>.</li>
+          <li><strong>HACCP / CCP</strong> (Master + Monitoring + Status OUT/OK).</li>
+          <li><strong>Sensor Suhu</strong> (log real-time + grafik + status rentang).</li>
+          <li><strong>Feed Sosial + Komentar + Reaksi</strong> & profil pengguna.</li>
+          <li><strong>Notifikasi Broadcast</strong> (Admin → role / semua pengguna).</li>
+          <li><strong>Export</strong> (CSV / Excel / PDF) + Laporan rentang terfilter.</li>
+          <li><strong>Achievements</strong> (streak, kuantitas input, lencana pembelajaran).</li>
+          <li><strong>Mode Kinerja</strong> (Ultra / Default / Lite) + Aksen + Font + Layout List/Grid.</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Tool Organoleptik →</strong> Pilih standar, klik deskripsi tiap parameter, sistem hitung skor & status. Terapkan langsung ke Form Input.
+      </div>
+
+      <div>
+        <strong>AI Asisten →</strong> Isi API Key Gemini (opsional jika sudah preset). Bisa:
+        <ul style="margin:.3rem 0 0 .95rem;list-style:disc;display:flex;flex-direction:column;gap:.22rem;">
+          <li>Menjelaskan indikator kesegaran</li>
+          <li>Memberi tips penyimpanan suhu</li>
+          <li>Menganalisis gambar (mata, insang, warna, tekstur)</li>
+          <li>Merumuskan ringkasan mutu lapangan</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Sensor Suhu →</strong> Pantau tren suhu & status (Cold / Ideal / Waspada / Alert). Tambahkan simulasi manual untuk uji alur.
+      </div>
+
+      <div>
+        <strong>HACCP / CCP →</strong> Tambahkan Master CCP (parameter, limit). Catat monitoring → sistem tandai OUT jika melampaui batas & butuh tindakan koreksi.
+      </div>
+
+      <div>
+        <strong>Ranking & Rekomendasi →</strong> Menganalisis rata-rata mutu per pasar & per jenis ikan. Menandai unggulan (≥7) & butuh perhatian (&lt;5).
+      </div>
+
+      <div style="background:hsl(var(--accent)/0.16);padding:.6rem .75rem;border:1px solid hsl(var(--panel-border)/0.55);border-radius:16px;display:flex;gap:.55rem;">
+        <i data-feather="sliders" width="14"></i>
+        <div>
+          <strong>Optimasi Tampilan:</strong>
+          <ul style="margin:.3rem 0 0 .95rem;padding:0;list-style:disc;display:flex;flex-direction:column;gap:.22rem;">
+            <li><em>Mode Kinerja</em>: Ultra (penuh efek), Default (ringan), Lite (tanpa blur/animasi)</li>
+            <li><em>Layout</em>: Grid atau List kompak</li>
+            <li><em>Warna Aksen & Font Family</em></li>
+            <li><em>Reduce Motion & High Contrast</em></li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <strong>Pencapaian & Statistik:</strong> Sistem otomatis menghitung total input, rasio mutu, streak harian, dan memicu lencana (achievements).
+      </div>
+
+      <div>
+        <strong>Rekomendasi Praktik Lapangan:</strong><br>
+        Catat segera setelah observasi, hindari penilaian subjektif ekstrem, simpan bukti foto konsisten, gunakan bahasa deskriptif (misal: “insang merah muda agak kusam”).
+      </div>
+
+      <div>
+        <strong>Keamanan & Indikasi:</strong> Gunakan istilah “indikasi” bila belum ada uji konfirmasi (formalin / boraks / pewarna). Hindari klaim pasti tanpa bukti alat.
+      </div>
+
+      <div style="background:hsl(var(--accent)/0.14);padding:.6rem .7rem;border:1px solid hsl(var(--panel-border)/0.5);border-radius:14px;display:flex;gap:.55rem;">
+        <i data-feather="info" width="14"></i>
+        <div>
+          <strong>Catatan Teknis:</strong><br>
+          - Gambar dikompresi otomatis.<br>
+          - Simpanan preferensi lokal (localStorage).<br>
+          - Data Firestore: users, fishQuality, socialPosts, notifications, sensorTemperatures, ccpChecks, meta*.<br>
+          - AI fallback lokal jika API gagal.
+        </div>
+      </div>
+
+      <div style="font-size:.54rem;opacity:.75;">
+        <strong>Disclaimer:</strong> Data keamanan bersifat indikatif (observasi) – bukan hasil uji laboratorium resmi. Gunakan hasil akhir dengan pertimbangan profesional.
+      </div>
+
+      <div class="welcome-optline" style="margin-top:.2rem;">
+        <label class="welcome-switch">
+          <input type="checkbox" id="welcomeDontShow">
+          <span class="ws-track">
+            <span class="ws-knob"></span>
+          </span>
+          <span class="ws-text">Jangan tampilkan lagi</span>
+        </label>
+      </div>
     </div>
-  </div>
 
-  <div style="font-size:.56rem;line-height:1.5;">
-    <strong>Tool Organoleptik > </strong> Gunakan menu <em>“Tool Organoleptik”</em> atau tombol “Tool Skor” di Form untuk memilih deskripsi standar & menghasilkan skor gabungan otomatis (pilih metode: rata-rata / minimum / median), lalu klik “Terapkan”.
-  </div>
-
-  <div style="font-size:.56rem;line-height:1.5;">
-    <strong>HACCP / CCP Checklist > </strong> Gunakan menu <em>“HACCP / CCP"</em> untuk mencatat monitoring titik kendali kritis (CCP).
-  </div>
-  
-  <div style="font-size:.56rem;line-height:1.5;">
-    <strong>Sensor Suhu > </strong> Menampilkan pembacaan suhu terakhir dari database website ini. Perangkat (ESP32/dll) mengirim data secara periodik. Gunakan grafik untuk memantau tren.
-  </div>
-
-  <div style="font-size:.56rem;line-height:1.5;">
-    <strong>Kustomisasi Tampilan > </strong> Di menu <em>Pengaturan</em> Anda dapat mengubah Tema (Terang/Gelap), Warna Aksen, Ukuran & Jenis Font, Layout (Grid/List), Mode Kinerja (Ultra / Default / Lite), Bahasa (ID / EN), serta Auto Refresh Dashboard.
-  </div>
-
-  <div style="font-size:.56rem;line-height:1.5;">
-    <strong>Mode Kinerja > </strong> Jika terasa berat, beralih ke <em>Default</em> atau <em>Lite</em> untuk menonaktifkan blur & animasi berat. Ini bermanfaat di perangkat low-power / koneksi lambat.
-  </div>
-
-  <div style="font-size:.56rem;line-height:1.5;">
-    <strong>Konsistensi Data > </strong> Gunakan nama jenis ikan & pasar konsisten. Ketik nama baru jika belum ada > sistem menambah otomatis ke daftar metadata.
-  </div>
-
-  <div style="font-size:.56rem;line-height:1.5;">
-    <strong>Fitur Penting:</strong>
-    <ul style="margin:.25rem 0 0 .9rem;padding:0;list-style:disc;display:flex;flex-direction:column;gap:.25rem;">
-      <li><em>Export</em> (CSV / Excel / PDF) di tabel & laporan.</li>
-      <li><em>AI Asisten</em>: tanya standar mutu, indikasi bahaya, tips penanganan.</li>
-      <li><em>Notifikasi</em>: cek ikon lonceng untuk broadcast admin / info penting.</li>
-  <li><em>Feed Sosial</em>: diskusi singkat & komentar antar pengguna.</li>
-  <li><em>Micro-Learning</em>: Modul mini (1-2 menit) + kuis cepat.</li>
-      <li><em>Ranking & Rekomendasi</em>: lihat pasar / ikan dengan mutu tinggi atau perlu perhatian.</li>
-    </ul>
-  </div>
-
- 
-  <div style="font-size:.56rem;line-height:1.5;">
-    <strong>Langkah Lanjut:</strong> Setelah menginput 5–10 data, buka Dashboard & ubah rentang (Hari Ini / 7 / 30 / Semua) untuk melihat tren. Perhatikan pergeseran mutu & jumlah indikasi bahaya.
-  </div>
-
-  <div style="background:hsl(var(--accent)/0.14);padding:.55rem .7rem;border:1px solid hsl(var(--panel-border)/0.5);border-radius:14px;font-size:.55rem;display:flex;gap:.5rem;">
-    <i data-feather="info" width="14"></i>
-    <div>
-      Sesuaikan preferensi tampilan di Pengaturan agar membaca tabel dan form lebih nyaman. Anda dapat menonaktifkan animasi (“Reduce Motion”) dan memakai mode Lite di perangkat lama 🙏
+    <div class="modal-actions" style="justify-content:space-between;">
+      <button class="outline small" id="welcomeSettingsBtn">
+        <i data-feather="settings" width="13"></i> Pengaturan
+      </button>
+      <div style="display:flex;gap:.45rem;">
+        <button class="outline small" id="welcomeCloseBtn">
+          <i data-feather="x" width="13"></i> Tutup
+        </button>
+        <button class="small" id="welcomeOkBtn">
+          <i data-feather="check" width="13"></i> Mulai
+        </button>
+      </div>
     </div>
-  </div>
-
-  <div class="welcome-optline">
-  <label class="welcome-switch">
-    <input type="checkbox" id="welcomeDontShow">
-    <span class="ws-track">
-      <span class="ws-knob"></span>
-    </span>
-    <span class="ws-text">Jangan tampilkan lagi</span>
-  </label>
-</div>
-</div>
-
-<div class="modal-actions" style="justify-content:space-between;">
-  <button class="outline small" id="welcomeSettingsBtn">
-    <i data-feather="settings" width="13"></i> Pengaturan
-  </button>
-  <div style="display:flex;gap:.45rem;">
-    <button class="outline small" id="welcomeCloseBtn">
-      <i data-feather="x" width="13"></i> Tutup
-    </button>
-    <button class="small" id="welcomeOkBtn">
-      <i data-feather="check" width="13"></i> Mulai
-    </button>
-  </div>
-</div>
   </div>
 </div>
 
@@ -6071,113 +6556,389 @@ body.offline .presence-indicator .dot::after {
 
       <!-- ABOUT -->
       <section id="view-about" class="hidden fade-in">
-        <div class="panel">
-          <div class="panel-header">
-            <h3><i data-feather="info" width="14"></i><span>Tentang Aplikasi</span></h3>
+      	<!-- ABOUT: TENTANG APLIKASI (UPDATED) -->
+<div class="panel">
+  <div class="panel-header">
+    <h3>
+      <!-- info icon (inline SVG) -->
+      <span style="display:inline-flex;align-items:center;gap:.45rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="8"></line>
+          <line x1="11" y1="12" x2="13" y2="12"></line>
+          <line x1="12" y1="12" x2="12" y2="16"></line>
+        </svg>
+        <span>Tentang Aplikasi</span>
+      </span>
+    </h3>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:1rem;font-size:.62rem;line-height:1.55;">
+
+    <div>
+      <strong>MMIS (Monitoring Mutu Ikan Segar)</strong> adalah aplikasi web satu‑berkas (single file application) yang dirancang untuk
+      mendukung pencatatan, analisis, edukasi, dan pemantauan mutu ikan segar di pasar tradisional Kota Makassar secara real-time dan terstruktur.
+    </div>
+
+    <div style="background:hsl(var(--accent)/0.16);padding:.7rem .8rem;border:1px solid hsl(var(--panel-border)/0.55);border-radius:18px;display:flex;gap:.6rem;">
+      <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <div style="flex:1;">
+        <strong>Tujuan Utama:</strong>
+        <ul style="margin:.35rem 0 0 1rem;padding:0;list-style:disc;display:flex;flex-direction:column;gap:.25rem;">
+          <li>Mengurangi pencatatan manual & meningkatkan konsistensi data organoleptik.</li>
+          <li>Menyediakan analitik mutu (tren, distribusi, ranking, rekomendasi).</li>
+          <li>Memberi kanal edukasi (micro-learning + AI asisten + tool organoleptik).</li>
+          <li>Memfasilitasi komunikasi internal (feed sosial & notifikasi).</li>
+          <li>Menyisipkan dasar monitoring keamanan & titik kendali kritis (HACCP / CCP).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <strong>Fitur Inti:</strong>
+      <div class="grid" style="margin-top:.45rem;display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+        <div class="feature-mini">
+          <div class="fm-icon">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M3 13h8V3H3zM13 21h8V8h-8z"></path>
+              <path d="M3 21h8v-4H3zM13 8h8V3h-8z"></path>
+            </svg>
           </div>
-          <p class="small">
-            Aplikasi single-file ini dikembangkan untuk skripsi:
-            <strong>"Pengembangan Sistem Informasi Berbasis Website untuk Pencatatan dan Monitoring Mutu Ikan Segar di Pasar Tradisional Kota Makassar"</strong>.
-          </p>
-            <p class="small">
-    <strong>MMIS (Monitoring Mutu Ikan Segar)</strong> adalah sistem informasi
-    yang dirancang untuk membantu monitoring mutu ikan segar di pasar tradisional Kota Makassar.
-    Aplikasi ini bertujuan mempermudah proses pengawasan kualitas ikan, pencatatan data,
-    hingga penyusunan laporan secara digital dan terstruktur.
-  </p>
-          <p class="small">
-            Fitur: Auth Firebase, Role-based Access, CRUD Data Mutu, Dashboard, Export, Chart.js, i18n, Dark/Light Mode, Glassmorphism,
-            Preferensi Default, Input Dinamis, Upload Gambar, Statistik, Toast, Aksen & Font, Keamanan Pangan, Detail Modal,
-            Feed Sosial + Reaksi + Komentar + Modal Profil, Pagination & Seleksi Tabel, FAB Input Cepat, Tool Organoleptik.
-          </p>
-          
-
-
-          <details style="margin-top:1rem;">
-            <summary style="cursor:pointer;font-size:.6rem;font-weight:800;letter-spacing:.5px;">Contoh Firestore Security Rules (Konseptual)</summary>
-<pre class="small" style="white-space:pre-wrap;background:hsl(var(--accent)/0.18);padding:.7rem .85rem;border-radius:14px;line-height:1.35;">
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    function isSignedIn() { return request.auth != null; }
-    function userRole() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
-    }
-    match /users/{uid} {
-      allow read: if isSignedIn();
-      allow create: if request.auth.uid == uid;
-      allow update: if request.auth.uid == uid || userRole() == 'Admin';
-      allow delete: if userRole() == 'Admin';
-    }
-    match /fishQuality/{docId} {
-      allow read: if isSignedIn();
-      allow create: if isSignedIn();
-      allow update: if isSignedIn() && (
-        userRole() in ['Admin','Petugas Pasar'] ||
-        resource.data.userId == request.auth.uid
-      );
-      allow delete: if isSignedIn() && (
-        userRole() == 'Admin' ||
-        (userRole() == 'Petugas Pasar' && resource.data.userId == request.auth.uid)
-      );
-    }
-    match /socialPosts/{p} {
-      allow read: if isSignedIn();
-      allow create: if isSignedIn();
-      allow update,delete: if isSignedIn() && (
-        request.auth.uid == resource.data.userId || userRole() == 'Admin'
-      );
-    }
-    match /socialPosts/{p}/comments/{c} {
-      allow read: if isSignedIn();
-      allow create: if isSignedIn();
-      allow delete: if isSignedIn() && (
-        request.auth.uid == resource.data.userId || userRole() == 'Admin'
-      );
-    }
-  }
-}
-</pre>
-          </details>
+          <div class="fm-title">Dashboard Dinamis</div>
+          <div class="fm-text">Rentang waktu, tren, distribusi, ranking & rekomendasi otomatis.</div>
         </div>
+        <div class="feature-mini">
+          <div class="fm-icon">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M12 20l9-16H3z"></path>
+            </svg>
+          </div>
+          <div class="fm-title">Tool Organoleptik</div>
+          <div class="fm-text">SNI 2013 / revisi; agregasi skor (mean, median, min) & auto aplikasi ke form.</div>
+        </div>
+        <div class="feature-mini">
+          <div class="fm-icon">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 6v6l4 2"></path>
+            </svg>
+          </div>
+          <div class="fm-title">AI Asisten</div>
+          <div class="fm-text">Tanya mutu, praktik suhu, indikasi bahaya, analisis gambar (mata/insang/warna).</div>
+        </div>
+        <div class="feature-mini">
+          <div class="fm-icon">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <rect x="3" y="4" width="7" height="7"></rect>
+              <rect x="14" y="4" width="7" height="7"></rect>
+              <rect x="14" y="13" width="7" height="7"></rect>
+              <rect x="3" y="13" width="7" height="7"></rect>
+            </svg>
+          </div>
+          <div class="fm-title">Micro-Learning</div>
+          <div class="fm-text">Modul mini + kuis + pencapaian (achievements) “Quality Steward”.</div>
+        </div>
+        <div class="feature-mini">
+          <div class="fm-icon">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M12 9v4l3 3"></path>
+              <circle cx="12" cy="12" r="10"></circle>
+            </svg>
+          </div>
+          <div class="fm-title">Sensor Suhu</div>
+          <div class="fm-text">Live log + status rentang (Cold / Ideal / Waspada / Alert) + simulasi input.</div>
+        </div>
+        <div class="feature-mini">
+          <div class="fm-icon">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M4 4h16v6H4z"></path>
+              <path d="M4 14h16v6H4z"></path>
+              <path d="M9 4v16"></path>
+            </svg>
+          </div>
+          <div class="fm-title">HACCP / CCP</div>
+          <div class="fm-text">Master CCP, monitoring, status OUT otomatis & tindakan koreksi.</div>
+        </div>
+        <div class="feature-mini">
+          <div class="fm-icon">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path>
+              <path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path>
+            </svg>
+          </div>
+          <div class="fm-title">Export & Laporan</div>
+          <div class="fm-text">CSV / Excel / PDF + report rentang terfilter dengan tabel & ringkasan.</div>
+        </div>
+        <div class="feature-mini">
+          <div class="fm-icon">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <polyline points="16 11 18 13 22 9"></polyline>
+            </svg>
+          </div>
+          <div class="fm-title">Sosial & Notifikasi</div>
+          <div class="fm-text">Feed diskusi, komentar, reaksi, profil pengguna & broadcast admin.</div>
+        </div>
+        <div class="feature-mini">
+          <div class="fm-icon">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"></path>
+            </svg>
+          </div>
+          <div class="fm-title">Kustomisasi UI</div>
+          <div class="fm-text">Mode kinerja, aksen warna, font, layout grid/list, reduce motion, kontras tinggi.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <strong>Arsitektur Singkat:</strong>
+      <ul style="margin:.35rem 0 0 1rem;list-style:disc;display:flex;flex-direction:column;gap:.25rem;">
+        <li><em>Frontend</em>: Single HTML + embedded CSS + modular JS (improvisasi state global).</li>
+        <li><em>Realtime & Auth</em>: Firebase Authentication + Firestore snapshot listener.</li>
+        <li><em>Media</em>: Gambar disimpan sebagai base64 (dapat diarahkan ke Storage untuk scaling).</li>
+        <li><em>AI</em>: Gemini API (text & vision) + fallback lokal (pattern-based).</li>
+        <li><em>State Local</em>: localStorage (preferensi tema, aksen, progress quiz, achievements partial).</li>
+      </ul>
+    </div>
+
+    <div>
+      <strong>Koleksi Firestore Digunakan:</strong>
+      <div style="display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.4rem;">
+        <span class="dev-tag">users</span>
+        <span class="dev-tag">fishQuality</span>
+        <span class="dev-tag">metaFishTypes</span>
+        <span class="dev-tag">metaMarkets</span>
+        <span class="dev-tag">socialPosts</span>
+        <span class="dev-tag">notifications</span>
+        <span class="dev-tag">sensorTemperatures</span>
+        <span class="dev-tag">ccpChecks</span>
+        <span class="dev-tag">metaCCP</span>
+        <span class="dev-tag">microLearning (in‑memory config)</span>
+      </div>
+    </div>
+
+    <div>
+      <strong>Alur Kerja (Workflow) Singkat:</strong>
+      <ol style="margin:.45rem 0 0 1.1rem;display:flex;flex-direction:column;gap:.35rem;">
+        <li><em>Input Data</em> → validasi → simpan dokumen <code>fishQuality</code>.</li>
+        <li>Dashboard mendengar snapshot → hitung agregasi & ranking → render indikator.</li>
+        <li>Tool Organoleptik → hasil skor → injeksi ke form (one‑click apply).</li>
+        <li>Export / Laporan → bentuk dataset + render tabel + (opsional) draw chart to canvas → PDF.</li>
+        <li>AI Chat → rakit payload (text + inline_data gambar) → panggil endpoint Gemini → parse candidates.</li>
+        <li>Micro-Learning / Quiz → simpan progress ke localStorage → pencapaian → update achievements Firestore.</li>
+        <li>CCP Monitoring → banding nilai observed vs limit → status OK / OUT → log tindak koreksi.</li>
+        <li>Sensor Suhu → listener realtime → kalkulasi tren & status warna indikator.</li>
+      </ol>
+    </div>
+
+    <div>
+      <strong>Keamanan & Batasan:</strong>
+      <ul style="margin:.35rem 0 0 1rem;list-style:disc;display:flex;flex-direction:column;gap:.25rem;">
+        <li>Contoh rules Firestore disediakan (panel about) – perlu dikeras-kan di deployment nyata.</li>
+        <li>Deteksi formalin/boraks: hanya “indikasi” observasi visual, bukan kepastian ilmiah.</li>
+        <li>Base64 image memperbesar dokumen: migrasi ke Storage disarankan jika volume tinggi.</li>
+        <li>AI jawaban bukan pengganti uji mutu laboratorium.</li>
+      </ul>
+    </div>
+
+    <div>
+      <strong>Roadmap (Pengembangan Lanjutan):</strong>
+      <ul style="margin:.35rem 0 0 1rem;list-style:disc;display:flex;flex-direction:column;gap:.25rem;">
+        <li>Integrasi Firebase Storage untuk media + CDN caching.</li>
+        <li>Penambahan role granular (Supervisor / Auditor).</li>
+        <li>Model analisis gambar berbasis fine-tuned (segmentasi insang / tingkat kecerahan kornea).</li>
+        <li>Mode offline (IndexedDB) & sink otomatis.</li>
+        <li>Panel analitik lanjutan (box plot per pasar, heatmap waktu).</li>
+      </ul>
+    </div>
+
+    <div style="background:hsl(var(--accent)/0.14);padding:.65rem .75rem;border:1px solid hsl(var(--panel-border)/0.5);border-radius:16px;display:flex;gap:.55rem;">
+      <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+        <path d="M12 9v4"></path><path d="M12 17h.01"></path><circle cx="12" cy="12" r="10"></circle>
+      </svg>
+      <div>
+        <strong>Disclaimer:</strong> Aplikasi ini bersifat edukatif & pendukung monitoring.
+        Keputusan keamanan akhir harus mengacu pada regulasi resmi & uji laboratorium terstandar.
+      </div>
+    </div>
+
+  </div>
+</div>
+        
        <div style="margin-top:-10px;opacity:0">sk</div> 
        <div class="panel">
           <div class="panel-header">
             <h3><i data-feather="info" width="14"></i><span>Tentang Developer</span></h3>
           </div>
              
-  <div class="developer-profile">
-    <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/catat/Pas%20Foto%20ltr%20biru.jpg" alt="Foto Developer" class="dev-photo">
-
-    <div class="dev-details">
-      <h4>Gunadi Renta (L061221027)</h4>
-      <p class="dev-role">Mahasiswa Teknologi Hasil Perikanan<br>
-         Fakultas Ilmu Kelautan dan Perikanan - Universitas Hasanuddin</p>
-
-      <p class="dev-desc">
-        Saya mengembangkan aplikasi ini sebagai bagian dari proyek akademik untuk 
-        mendukung pengawasan mutu ikan segar di pasar tradisional. 
-        Fokus saya ada pada pengembangan antarmuka pengguna (UI/UX) 
-        dan integrasi sistem database berbasis web.
-      </p>
-
-      <div class="dev-skills">
-        <span>HTML</span>
-        <span>CSS</span>
-        <span>JavaScript</span>
-        <span>Firebase</span>
-        <span>UI/UX</span>
-      </div>
-
-      <div class="dev-contacts">
-        <a href="mailto:gunadirenta@gmail.com">✉️ Email</a>
-        <a href="https://github.com/gunadizz" target="_blank">💻 GitHub</a>
-        <a href="https://linkedin.com/in/" target="_blank">🔗 LinkedIn</a>
-      </div>
-
-      <p class="dev-year">Makassar, 2025</p>
+  <!-- Developer Profile (UI Improved) -->
+<div class="dev-card">
+  <div class="dev-card-left">
+    <div class="dev-photo-frame">
+      <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/catat/Pas%20Foto%20ltr%20biru.jpg" alt="Foto Developer" class="dev-photo-new">
+      <div class="dev-glow"></div>
+    </div>
+    <div class="dev-mini-badges">
+      <span class="dev-mini-badge">
+        <!-- trophy -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 4v2a4 4 0 0 0 8 0V4"></path>
+          <path d="M12 14v7"></path>
+          <path d="M8 21h8"></path>
+          <path d="M5 4h14"></path>
+          <path d="M18 4h1a2 2 0 0 1 0 4h-1"></path>
+          <path d="M6 4H5a2 2 0 0 0 0 4h1"></path>
+        </svg>
+        Skripsi
+      </span>
+      <span class="dev-mini-badge alt">
+        <!-- code -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 18l6-6-6-6"></path>
+          <path d="M8 6l-6 6 6 6"></path>
+        </svg>
+        Single File
+      </span>
     </div>
   </div>
+
+  <div class="dev-card-main">
+    <div class="dev-header">
+      <h4 class="dev-name">
+        <span class="gradient-text">Gunadi Renta</span>
+        <span class="dev-id">(L061221027)</span>
+      </h4>
+      <div class="dev-role-line">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+        </svg>
+        Mahasiswa Teknologi Hasil Perikanan
+      </div>
+      <div class="dev-faculty">
+        Fakultas Ilmu Kelautan & Perikanan – Universitas Hasanuddin
+      </div>
+    </div>
+
+    <p class="dev-desc-new">
+      Saya mengembangkan aplikasi ini sebagai bagian dari proyek akademik untuk mendukung
+      pengawasan mutu ikan segar di pasar tradisional. Fokus utama ada pada desain antarmuka (UI/UX),
+      manajemen data mutu, edukasi mini (micro-learning), dan integrasi fitur analisis AI.
+    </p>
+
+    <div class="dev-section">
+      <div class="dev-section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M4 4h7v7H4z"></path><path d="M13 4h7v7h-7z"></path>
+          <path d="M4 13h7v7H4z"></path><path d="M17 17l4 4"></path>
+          <path d="M15 15l2 2"></path>
+        </svg>
+        Keahlian
+      </div>
+      <div class="dev-tags">
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M4 4h16v16H4z"></path>
+          </svg> HTML
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M4 4h16v16H4z"></path>
+          </svg> CSS
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M8 7l8 10M16 7l-8 10"></path>
+          </svg> JavaScript
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M3 3h18v6H3z"></path>
+            <path d="M3 13h18v8H3z"></path>
+          </svg> Firebase
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07 7.07l-1.42-1.42M8.35 8.35L6.93 6.93m0 10.14l1.42-1.42m8.72-8.72l1.42-1.42"/>
+          </svg> UI/UX
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M12 3l7 4v6c0 5-7 8-7 8s-7-3-7-8V7z"></path>
+          </svg> Data Design
+        </span>
+      </div>
+    </div>
+
+    <div class="dev-section">
+      <div class="dev-section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        Fokus Fitur
+      </div>
+      <ul class="dev-focus-list">
+        <li>Optimasi single-file (struktur modular internal).</li>
+        <li>Modul AI (analisis mutu ikan berbasis teks & gambar).</li>
+        <li>Tool Organoleptik & Micro-Learning integratif.</li>
+        <li>Notifikasi, sosial, dan sensor suhu real-time.</li>
+      </ul>
+    </div>
+
+    <div class="dev-section">
+      <div class="dev-section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <polyline points="16 11 18 13 22 9"></polyline>
+        </svg>
+        Kontak
+      </div>
+      <div class="dev-links">
+        <a href="mailto:gunadirenta@gmail.com" class="dev-link" target="_blank" rel="noopener">
+          <span class="dev-link-icon">
+            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M4 4h16v16H4z"></path>
+              <path d="M4 4l8 8 8-8"></path>
+            </svg>
+          </span>
+          Email
+        </a>
+        <a href="https://github.com/gunadizz" class="dev-link" target="_blank" rel="noopener">
+          <span class="dev-link-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+          </span>
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/" class="dev-link" target="_blank" rel="noopener">
+          <span class="dev-link-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2c-1.1 0-2 .9-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+              <rect x="2" y="9" width="4" height="12"></rect>
+              <circle cx="4" cy="4" r="2"></circle>
+            </svg>
+          </span>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+
+    <div class="dev-footer-meta">
+      <span>Makassar, 2025</span>
+      <span class="dot-sep"></span>
+      <span>Versi 1.0</span>
+      <span class="dot-sep"></span>
+      <span>MMIS Project</span>
+    </div>
+  </div>
+</div>
           </div>
       </section>
 
@@ -6204,16 +6965,17 @@ service cloud.firestore {
     </p>
     <div class="form-grid" style="margin-top:.6rem;">
       <div>
-        <label>API Key Groq</label>
+        <label>API Key Gemini</label>
         <input id="aiApiKey" placeholder="gsk_xxxxx..." autocomplete="off">
       </div>
       <div>
         <label>Model</label>
         <select id="aiModelSelect">
-          <option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option>
-          <option value="llama-3.2-3b-preview">llama-3.2-3b-preview</option>
-          <option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option>
-        </select>
+  <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+  <option value="gemini-1.5-flash-latest">gemini-1.5-flash-latest</option>
+  <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+  <option value="gemini-2.5-pro">gemini-2.5-pro</option>
+</select>
       </div>
       <div>
         <label>Mode Jawaban</label>
@@ -10184,140 +10946,94 @@ function initPresenceIndicator(){
 }
 
 
+
 /* ============================================================
-   AI ASSISTANT MODULE (Groq API) for MMIS
-   Versi: 1.0
-   - Tambahan modular, tidak mengganggu App utama
-   - Menunggu window.App siap
-   - Simpan konfigurasi di localStorage: aiSettings
-   - Fallback FAQ lokal jika error
+   AI ASSISTANT MODULE (Gemini Vision + Text) for MMIS
+   Versi: 2.0 (Migrasi dari Groq)
+   Fitur:
+   - Chat teks (multi-turn ringkas) + mode detail
+   - Analisis gambar (mutu / kesegaran / indikasi organoleptik dasar)
+   - Opsi sertakan gambar bersama pertanyaan
+   - Tombol "Analisis Gambar" langsung (jika user hanya unggah & klik)
+   - Tombol salin jawaban terakhir
+   - Tombol salin per bubble (assistant)
+   - Simpan settings ke localStorage
+   - Fallback jawaban lokal sederhana jika gagal
+   Catatan:
+   - Gunakan API Key Gemini (Google AI Studio) => https://aistudio.google.com
+   - Endpoint REST: POST https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key=API_KEY
    ============================================================ */
+
 (function(){
-  const LS_KEY = 'aiSettingsMMIS';
+  const LS_KEY = 'aiGeminiSettingsMMIS';
+  const HISTORY_KEY = 'aiGeminiHistoryMMIS';
   const DEFAULTS = {
-    apiKey: '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',
-    model: 'llama-3.1-8b-instant',
-    mode: 'short',
-    context: 'Anda adalah asisten ahli mutu ikan segar dan keamanan pangan.',
+    apiKey: 'AIzaSyD60PIrIH6El6XIRGXYUjfXyjRIZFVTsFU',
+    model: 'gemini-2.5-flash',
+    mode: 'short', // 'short' | 'detail'
+    context: 'Anda adalah asisten ahli mutu ikan segar dan keamanan pangan. Gunakan bahasa Indonesia yang jelas. lokasi Makassar'
   };
   const EXAMPLES = [
-    'Bagaimana ciri ikan segar organoleptik?',
-    'Apa indikasi ikan mengandung formalin?',
-    'Mengapa tekstur ikan bisa sangat kenyal?',
-    'Cara penyimpanan ikan segar di pasar?',
-    'Perbedaan bau ikan segar vs rusak?',
-    'Langkah mencegah kontaminasi silang?',
-    'Apa parameter mutu utama ikan segar?'
+    'Apa parameter utama penilaian kesegaran ikan?',
+    'Bagaimana membedakan bau ikan segar dan yang mulai rusak?',
+    'Bagaimana efek suhu di atas 8°C terhadap mutu ikan?',
+    'Rekomendasi penanganan ikan di pasar?',
+    'Indikasi organoleptik ikan tidak layak konsumsi?',
+    'Analisis kesegaran ikan dari gambar yang saya upload'
   ];
   const LOCAL_FAQ = [
-    {k:/formalin|indikasi.*formalin/i,a:'Indikasi formalin: insang pucat keabu-abuan, bau kimia tajam, tekstur terlalu kenyal. Perlu uji cepat untuk konfirmasi.'},
-    {k:/boraks|borax/i,a:'Indikasi boraks: daging sangat kenyal sulit sobek, warna cerah tidak wajar, perlu uji kit untuk memastikan.'},
-    {k:/ciri.*ikan segar|pilih.*ikan/i,a:'Ciri ikan segar: mata cembung jernih, insang merah cerah, bau laut alami, daging elastis, kulit mengkilap berlendir jernih.'},
-    {k:/penyimpanan|simpan.*ikan/i,a:'Simpan ikan 0–4°C dengan es bersih, tiriskan lelehan, kemas tertutup, bekukan bila >2 hari simpan.'},
-    {k:/organoleptik|skor/i,a:'Organoleptik mencakup: mata, insang, bau, tekstur, lendir/kulit. Skor tinggi = segar.'}
+    {k:/formalin|indikasi.*formalin/i,a:'Indikasi formalin (observasi awal): insang pucat keabu-abuan, tekstur agak kaku/kenyal tidak normal, bau kimia tajam. Perlu konfirmasi uji cepat.'},
+    {k:/boraks|borax/i,a:'Indikasi boraks: daging terlalu elastis/kenyal “springy” sulit sobek, lendir tipis tidak wajar. Perlu test kit untuk pastikan.'},
+    {k:/ciri.*ikan segar|kesegaran/i,a:'Ciri segar: mata cembung jernih, insang merah cerah, bau laut ringan, tekstur elastis kembali cepat, kulit mengkilap + lendir jernih.'},
+    {k:/suhu|penyimpanan/i,a:'Suhu ideal ikan segar 0–4°C. Di atas 8°C laju pembusukan & bakteri meningkat tajam. Gunakan es bersih & tiriskan lelehan.'},
+    {k:/organoleptik|skor/i,a:'Organoleptik umum: mata, insang, bau, tekstur, lendir / permukaan kulit. Skor menurun seiring perubahan visual & aroma.'}
   ];
 
+  /***************** STATE *****************/
   let settings = loadSettings();
-  let history = []; // {role:'user'|'assistant', text, model}
-  let isOpen = false;
+  let history = loadHistory(); // {role:'user'|'assistant', text, model, hasImage}
   let busy = false;
+  let imageData = null;       // base64 (data URL)
+  let imageMime = null;       // MIME type ("image/jpeg" etc)
+
+  /***************** HELPERS *****************/
+  function $(s){ return document.querySelector(s); }
+  function $all(s){ return Array.from(document.querySelectorAll(s)); }
+  function escapeHtml(str=''){ return str.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+  function toast(msg,type='info',dur=2500){ window.App?.toast ? App.toast(msg,type,dur) : console.log('[AI]',type,msg); }
 
   function loadSettings(){
-    try {
-      const s = JSON.parse(localStorage.getItem(LS_KEY)||'{}');
-      return {...DEFAULTS, ...s};
-    } catch { return {...DEFAULTS}; }
+    try { return {...DEFAULTS, ...(JSON.parse(localStorage.getItem(LS_KEY)||'{}'))}; }
+    catch { return {...DEFAULTS}; }
   }
-  function saveSettings(){
-    localStorage.setItem(LS_KEY, JSON.stringify(settings));
+  function saveSettings(){ localStorage.setItem(LS_KEY, JSON.stringify(settings)); }
+  function loadHistory(){
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]'); }
+    catch { return []; }
   }
-
-  function waitForApp(cb){
-    if(window.App && typeof window.App.toast === 'function'){
-      cb();
-    } else {
-      setTimeout(()=> waitForApp(cb), 120);
-    }
+  function saveHistory(){
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-40)));
   }
 
-  function $(sel){ return document.querySelector(sel); }
+  function setStatus(text,type='info'){
+    const el = $('#aiStatusText');
+    if(!el) return;
+    el.textContent = text;
+    el.style.color =
+      type==='error' ? '#dc2626' :
+      type==='warn'  ? '#f59e0b' :
+      type==='ok'    ? '#059669' :
+      'hsl(var(--accent)/0.85)';
+  }
 
-  function initUIBindings(){
-    // Panel controls
-    $('#aiSaveSettings')?.addEventListener('click', savePanelSettings);
-    $('#aiLoadDefaults')?.addEventListener('click', ()=> {
-      settings = {...DEFAULTS};
-      fillPanel();
-      saveSettings();
-      toast('Pengaturan AI direset');
-    });
-    $('#aiOpenChatFromPanel')?.addEventListener('click', openModal);
-
-    $('#aiTestBtn')?.addEventListener('click', async ()=>{
-      if(!settings.apiKey) return toast('Isi API key dulu','warn');
-      setPanelStatus('MengujI koneksi...');
-      const ok = await testConnection();
-      setPanelStatus(ok?'Tes OK':'Tes gagal');
-      toast(ok?'Tes berhasil':'Tes gagal','info');
-    });
-
-    $('#aiClearHistoryBtn')?.addEventListener('click', ()=>{
-      history = [];
-      renderHistory();
-      toast('Riwayat chat dibersihkan');
-    });
-
-    // FAB
-    $('#fabAI')?.addEventListener('click', openModal);
-
-    // Modal
-    $('#aiCloseModal')?.addEventListener('click', closeModal);
-    $('#aiClearBtn')?.addEventListener('click', ()=>{
-      history=[];
-      renderHistory();
-      $('#aiFallbackNote')?.classList.add('hidden');
-      statusLine('Riwayat dibersihkan','info');
-    });
-
-    // Chat form
-    $('#aiChatForm')?.addEventListener('submit', e=>{
-      e.preventDefault();
-      if(busy) return;
-      const val = $('#aiUserInput').value.trim();
-      if(!val) return;
-      $('#aiUserInput').value='';
-      pushMessage('user', val);
-      askAI(val);
-    });
-
-    // Quick examples
+  /***************** UI INIT *****************/
+  function init(){
     buildExamples();
     fillPanel();
-    toggleFabVisibility(true);
-  }
-
-  function toggleFabVisibility(show){
-    const fab = $('#fabAI');
-    if(fab){
-      fab.classList.toggle('hidden', !show);
-    }
-  }
-
-  function fillPanel(){
-    $('#aiApiKey') && ($('#aiApiKey').value = settings.apiKey);
-    $('#aiModelSelect') && ($('#aiModelSelect').value = settings.model);
-    $('#aiAnswerMode') && ($('#aiAnswerMode').value = settings.mode);
-    $('#aiContextPrefix') && ($('#aiContextPrefix').value = settings.context);
-  }
-
-  function savePanelSettings(){
-    settings.apiKey = $('#aiApiKey')?.value.trim() || '';
-    settings.model  = $('#aiModelSelect')?.value || DEFAULTS.model;
-    settings.mode   = $('#aiAnswerMode')?.value || 'short';
-    settings.context= $('#aiContextPrefix')?.value.trim() || DEFAULTS.context;
-    saveSettings();
+    bindEvents();
+    renderHistory();
+    // Tampilkan model di badge
     $('#aiModelBadge') && ($('#aiModelBadge').textContent = settings.model);
-    toast('Pengaturan AI disimpan','success');
   }
 
   function buildExamples(){
@@ -10328,188 +11044,362 @@ function initPresenceIndicator(){
       ch.addEventListener('click', ()=>{
         openModal();
         const q = ch.getAttribute('data-ai-example');
-        pushMessage('user', q);
-        askAI(q);
+        pushMessage('user',q);
+        askGemini(q,false);
       });
     });
   }
 
-  function escapeHtml(s=''){
-    return s.replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function fillPanel(){
+    $('#aiApiKey') && ($('#aiApiKey').value = settings.apiKey);
+    $('#aiModelSelect') && ($('#aiModelSelect').value = settings.model);
+    $('#aiAnswerMode') && ($('#aiAnswerMode').value = settings.mode);
+    $('#aiContextPrefix') && ($('#aiContextPrefix').value = settings.context);
   }
 
-  function openModal(){
-    isOpen = true;
-    $('#aiChatModal')?.classList.add('show');
-    $('#aiUserInput')?.focus();
-    $('#aiModelBadge') && ($('#aiModelBadge').textContent = settings.model);
-    renderHistory();
+  
+// ==== PATCH UNTUK MODUL GEMINI (tambahkan di dalam IIFE modul AI Gemini) ====
+// Cari fungsi bindEvents() di modul Anda lalu ganti / tambahkan bagian ini.
+
+function bindEvents(){
+  // Buka modal
+  $('#fabAI')?.addEventListener('click', openModal);
+  $('#aiOpenChatFromPanel')?.addEventListener('click', openModal);
+  $('#aiCloseModal')?.addEventListener('click', closeModal);
+
+  // Tombol bersihkan di modal
+  $('#aiClearBtn')?.addEventListener('click', clearChat);
+
+  // (PATCH) Tombol hapus riwayat di panel AI
+  $('#aiClearHistoryBtn')?.addEventListener('click', () => {
+    clearChat();
+    toast('Riwayat AI dibersihkan','success');
+  });
+
+  // (PATCH) Tombol tes koneksi AI
+  $('#aiTestBtn')?.addEventListener('click', testAIConnection);
+
+  // Tombol salin jawaban terakhir
+  $('#aiCopyLastBtn')?.addEventListener('click', copyLastAnswer);
+
+  // Simpan pengaturan
+  $('#aiSaveSettings')?.addEventListener('click', ()=>{
+    settings.apiKey = $('#aiApiKey').value.trim();
+    settings.model  = $('#aiModelSelect').value;
+    settings.mode   = $('#aiAnswerMode').value;
+    settings.context= $('#aiContextPrefix').value.trim() || DEFAULTS.context;
+    saveSettings();
+    $('#aiModelBadge').textContent = settings.model;
+    toast('Pengaturan AI disimpan','success');
+  });
+
+  $('#aiLoadDefaults')?.addEventListener('click', ()=>{
+    settings = {...DEFAULTS};
+    saveSettings();
+    fillPanel();
+    toast('Reset ke default','info');
+  });
+
+  // Form chat
+  $('#aiChatForm')?.addEventListener('submit', e=>{
+    e.preventDefault();
+    if(busy) return;
+    const txt = $('#aiUserInput').value.trim();
+    if(!txt) return;
+    const includeImg = $('#aiIncludeImage')?.checked;
+    $('#aiUserInput').value='';
+    pushMessage('user', txt, null, includeImg && !!imageData);
+    askGemini(txt, includeImg && !!imageData);
+  });
+
+  // Gambar
+  $('#aiImageInput')?.addEventListener('change', handleImageSelect);
+  $('#aiAnalyzeBtn')?.addEventListener('click', ()=>{
+    if(busy) return;
+    if(!imageData){
+      toast('Belum ada gambar','warn');
+      return;
+    }
+    const prompt = 'Analisis kesegaran / mutu ikan pada gambar ini. Jelaskan indikator mata, insang, tekstur/pemukaan (jika terlihat), warna, dan kemungkinan tingkat kesegaran.';
+    pushMessage('user','(Analisis gambar)', null, true);
+    askGemini(prompt,true);
+  });
+
+  // Delegasi copy per bubble
+  $('#aiChatHistory')?.addEventListener('click', e=>{
+    const btn = e.target.closest('[data-copy-msg]');
+    if(btn){
+      const idx = parseInt(btn.getAttribute('data-copy-msg'),10);
+      if(!isNaN(idx) && history[idx]) {
+        navigator.clipboard.writeText(history[idx].text)
+          .then(()=> toast('Disalin','success'))
+          .catch(()=> toast('Gagal salin','danger'));
+      }
+    }
+  });
+}
+
+// ==== PATCH: Fungsi tes koneksi Gemini ====
+async function testAIConnection(){
+  if(busy) return;
+  if(!settings.apiKey){
+    toast('Isi API Key dulu','warn');
+    setStatus('API key kosong','warn');
+    return;
+  }
+  setStatus('MengujI koneksi...');
+  try {
+    const testPrompt = 'Balas satu kata: OK';
+    const payload = buildGeminiPayload(testPrompt,false);
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(settings.model)}:generateContent?key=${encodeURIComponent(settings.apiKey)}`;
+    const res = await fetch(url,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if(!res.ok) throw new Error(json.error?.message || res.statusText);
+    const out = extractGeminiText(json) || '';
+    if(out.toUpperCase().includes('OK')){
+      toast('Tes koneksi sukses','success');
+      setStatus('Tes OK','ok');
+    } else {
+      toast('Respons tidak terduga','warn');
+      setStatus('Tes respon anomali','warn');
+    }
+  } catch(err){
+    console.error(err);
+    toast('Tes gagal: '+err.message,'danger');
+    setStatus('Tes gagal','error');
+  }
+}
+// ==== END PATCH ====
+
+  function handleImageSelect(e){
+    const file = e.target.files[0];
+    if(!file){
+      imageData=null; imageMime=null;
+      $('#aiImagePreview').textContent='';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      imageData = ev.target.result; // data URL
+      imageMime = file.type || 'image/jpeg';
+      $('#aiImagePreview').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:.25rem;">
+          <img src="${imageData}" style="max-width:140px;border:1px solid hsl(var(--panel-border)/0.5);border-radius:10px;">
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+            <span style="font-size:.48rem;">${Math.round(file.size/1024)} KB</span>
+            <button type="button" class="btn-mini-inline" id="aiRemoveImage"><i data-feather="x" width="10"></i>Hapus</button>
+          </div>
+        </div>
+      `;
+      feather.replace();
+      $('#aiRemoveImage')?.addEventListener('click', ()=>{
+        imageData=null; imageMime=null;
+        $('#aiImageInput').value='';
+        $('#aiImagePreview').textContent='';
+      });
+    };
+    reader.readAsDataURL(file);
   }
 
-  function closeModal(){
-    isOpen = false;
-    $('#aiChatModal')?.classList.remove('show');
-  }
-
-  function pushMessage(role,text, model){
-    history.push({role,text,model});
-    // Trim (max 14 messages stored)
-    if(history.length>28) history = history.slice(history.length-28);
+  /***************** CHAT HISTORY *****************/
+  function pushMessage(role,text, model=null, hasImage=false){
+    history.push({role,text,model,hasImage});
+    if(history.length>50) history = history.slice(-50);
+    saveHistory();
     renderHistory();
   }
 
   function renderHistory(){
-    const box = $('#aiChatHistory');
-    if(!box) return;
-    box.innerHTML = history.map(h=>{
-      return `<div class="ai-msg ${h.role==='user'?'user':'ai'}">
-        <div class="ai-bubble">${escapeHtml(h.text)}</div>
-        ${h.model? `<div class="ai-meta">${escapeHtml(h.model)}</div>`:''}
-      </div>`;
-    }).join('') || `<div class="small muted" style="opacity:.7;">Mulai tanya apa saja seputar mutu ikan...</div>`;
-    box.scrollTop = box.scrollHeight;
-  }
-
-  function statusLine(text,type='info'){
-    const el = $('#aiStatusText');
-    if(!el) return;
-    el.textContent = text;
-    el.style.color =
-      type==='error' ? '#dc2626' :
-      type==='warn'  ? '#f59e0b' :
-      type==='ok'    ? '#059669' :
-      'hsl(var(--accent)/0.9)';
-  }
-
-  function toast(msg,type='info',dur=2500){
-    if(window.App && typeof App.toast==='function') App.toast(msg,type,dur);
-    else console.log('[AI TOAST]',msg);
-  }
-
-  function setPanelStatus(txt){
-    const el = $('#aiPanelStatus');
-    if(el) el.textContent = txt;
-  }
-
-  function localFallback(q){
-    for(const f of LOCAL_FAQ){
-      if(f.k.test(q)) return f.a + ' (fallback lokal)';
-    }
-    return 'Maaf, sistem gagal terhubung ke model. Prinsip umum: nilai kesegaran ikan dari mata, insang, bau, tekstur, dan lendir. (fallback lokal).';
-  }
-
-  async function testConnection(){
-    try {
-      const reply = await requestGroq([{role:'user',content:'Halo sebutkan satu ciri ikan segar.'}], true);
-      return !!reply;
-    }catch{ return false; }
-  }
-
-  function buildMessages(userText){
-    const ctx = settings.context;
-    const modeInstr = settings.mode==='detail'
-      ? 'Jawab detail, terstruktur poin penting, tetap relevan.'
-      : 'Jawab singkat & jelas.';
-    // Ambil 3 pasang terakhir
-    const recent = history.slice(-6).map(h=> ({role:h.role==='assistant'?'assistant':'user', content:h.text}));
-    return [
-      {role:'system', content: `${ctx} ${modeInstr}`},
-      ...recent,
-      {role:'user', content:userText}
-    ];
-  }
-
-  async function askAI(question){
-    if(!settings.apiKey){
-      pushMessage('assistant','API Key belum diset. Buka panel AI dan isi dulu.','system');
-      statusLine('API key kosong','warn');
+    const wrap = $('#aiChatHistory');
+    if(!wrap) return;
+    if(!history.length){
+      wrap.innerHTML = `<div class="small muted" style="opacity:.7;">Belum ada percakapan. Mulai bertanya...</div>`;
       return;
     }
-    busy = true;
-    statusLine('Menghubungi model...','info');
-    const thinkingId = `__thinking_${Date.now()}`;
-    pushMessage('assistant','... mengetik ...');
+    wrap.innerHTML = history.map((m,i)=>{
+      const isAssistant = m.role==='assistant';
+      const copyBtn = isAssistant
+        ? `<button type="button" class="btn-mini-inline" data-copy-msg="${i}" title="Salin">
+             <i data-feather="copy" width="10"></i>
+           </button>`
+        : '';
+      const imgNote = m.hasImage
+        ? `<div style="margin-top:.3rem;font-size:.48rem;opacity:.75;">[Gambar disertakan]</div>`:'';
+      return `
+        <div class="ai-msg ${m.role==='user'?'user':'ai'}">
+          <div class="ai-bubble">${escapeHtml(m.text)}</div>
+          <div class="ai-meta" style="display:flex;align-items:center;gap:.4rem;">
+            <span>${escapeHtml(m.model|| (m.role==='user'?'User':'AI'))}</span>
+            ${copyBtn}
+          </div>
+          ${imgNote}
+        </div>
+      `;
+    }).join('');
+    feather.replace();
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function clearChat(){
+    history=[];
+    saveHistory();
+    renderHistory();
+    setStatus('Riwayat dibersihkan','ok');
+  }
+
+  function copyLastAnswer(){
+    for(let i=history.length-1;i>=0;i--){
+      if(history[i].role==='assistant'){
+        navigator.clipboard.writeText(history[i].text)
+          .then(()=> toast('Jawaban terakhir disalin','success'))
+          .catch(()=> toast('Gagal menyalin','danger'));
+        return;
+      }
+    }
+    toast('Belum ada jawaban asisten','warn');
+  }
+
+  /***************** GEMINI REQUEST *****************/
+  async function askGemini(userPrompt, withImage){
+    if(!settings.apiKey){
+      pushMessage('assistant','API Key Gemini belum diisi. Set terlebih dahulu di panel.', 'system');
+      setStatus('API key kosong','warn');
+      return;
+    }
+    busy=true;
+    setStatus('Meminta respons...','info');
+    pushMessage('assistant','(memproses ...)', null);
+
     try {
-      const messages = buildMessages(question);
-      const reply = await requestGroq(messages,false);
-      // Ganti bubble terakhir (placeholder)
-      history = history.map((m,i)=> i===history.length-1? {...m, text: reply || '(kosong)', model: settings.model } : m);
-      statusLine('Selesai','ok');
-      $('#aiFallbackNote')?.classList.add('hidden');
+      const payload = buildGeminiPayload(userPrompt, withImage);
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(settings.model)}:generateContent?key=${encodeURIComponent(settings.apiKey)}`;
+      const res = await fetch(url,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if(!res.ok){
+        throw new Error(json.error?.message || res.statusText);
+      }
+      const text = extractGeminiText(json) || '(Kosong)';
+      replaceLastAssistant(text, settings.model);
+      setStatus('Selesai','ok');
     } catch(err){
-      // Replace placeholder
-      history = history.map((m,i)=> i===history.length-1? {...m, text: localFallback(question), model: 'fallback'} : m);
-      statusLine('Fallback lokal','warn');
-      const note = $('#aiFallbackNote');
-      note && (note.textContent = 'Fallback digunakan: '+ (err.message||'gagal'));
-      note && note.classList.remove('hidden');
+      console.warn('[Gemini Error]',err);
+      const fallback = localFallback(userPrompt);
+      replaceLastAssistant(fallback+' (fallback lokal)', 'fallback');
+      setStatus('Fallback lokal','warn');
     } finally {
       busy=false;
       renderHistory();
     }
   }
 
-  async function requestGroq(messages, silent){
-    const controller = new AbortController();
-    const t = setTimeout(()=> controller.abort(), 30000);
-    try {
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'Authorization':'Bearer '+settings.apiKey
-        },
-        body: JSON.stringify({
-          model: settings.model,
-          messages,
-          max_tokens: settings.mode==='detail'? 650: 350,
-          temperature: 0.6,
-          stream:false
-        }),
-        signal: controller.signal
+  function buildGeminiPayload(prompt, withImage){
+    // Mode ringkas vs detail
+    const modeInstr = settings.mode==='detail'
+      ? 'Jawab detail, terstruktur dalam poin, ringkas tapi mencakup indikator mutu.'
+      : 'Jawab singkat dan jelas dalam 1-4 kalimat.';
+    const parts = [
+      { text: settings.context + '\n' + modeInstr + '\n\nPertanyaan: ' + prompt }
+    ];
+    if(withImage && imageData){
+      const base64raw = imageData.split(',')[1]; // hapus prefix data:
+      parts.push({
+        inline_data:{
+          mime_type: imageMime || 'image/jpeg',
+          data: base64raw
+        }
       });
-      const json = await res.json();
-      if(!res.ok) throw new Error(json.error?.message || res.statusText);
-      const txt = json.choices?.[0]?.message?.content?.trim();
-      if(!txt) throw new Error('Jawaban kosong');
-      if(!silent) $('#aiModelBadge') && ($('#aiModelBadge').textContent = settings.model);
-      return txt;
-    } catch(err){
-      if(!silent) console.warn('[AI ERROR]',err);
-      throw err;
-    } finally {
-      clearTimeout(t);
+    }
+
+    // (Opsional) Anda bisa menambahkan konteks multi-turn (tunability):
+    // Di sini kita simpan hanya 4 pasang terakhir agar payload tidak panjang
+    const recentDialog = buildRecentDialog();
+
+    return {
+      contents: [
+        ...recentDialog,
+        { role:'user', parts }
+      ]
+    };
+  }
+
+  function buildRecentDialog(){
+    // Ambil pasangan user/assistant terakhir (kecuali placeholder)
+    const pairs = [];
+    let temp = [];
+    for(let i=Math.max(0, history.length-12); i<history.length; i++){
+      const h = history[i];
+      if(h.role==='user'){
+        temp = [{ role:'user', parts:[{text: h.text}] }];
+      } else if(h.role==='assistant' && temp.length){
+        temp.push({ role:'model', parts:[{text: h.text}] });
+        pairs.push(...temp);
+        temp=[];
+      }
+    }
+    return pairs.slice(-6); // batasi
+  }
+
+  function extractGeminiText(json){
+    // Struktur: json.candidates[0].content.parts[0].text
+    const cand = json.candidates && json.candidates[0];
+    if(!cand || !cand.content || !cand.content.parts) return '';
+    return cand.content.parts.map(p=> p.text || '').join('\n').trim();
+  }
+
+  function replaceLastAssistant(newText, model){
+    for(let i=history.length-1;i>=0;i--){
+      if(history[i].role==='assistant'){
+        history[i].text = newText;
+        history[i].model = model;
+        saveHistory();
+        return;
+      }
     }
   }
 
-  function attachNavHook(){
-    // Jika nav button sudah dimasukkan manual, tombol akan otomatis bekerja karena App.showView membaca data-view
-    // Pastikan ketika view "ai-assistant" ditampilkan, panel terisi
-    const observer = new MutationObserver(()=> {
-      const navBtn = document.querySelector('.nav button[data-view="ai-assistant"]');
-      if(navBtn && !navBtn.dataset.aiBound){
-        navBtn.dataset.aiBound = '1';
-        navBtn.addEventListener('click', ()=>{
-          fillPanel();
-        });
-      }
-    });
-    observer.observe(document.body,{childList:true, subtree:true});
+  function localFallback(q){
+    for(const f of LOCAL_FAQ){
+      if(f.k.test(q)) return f.a;
+    }
+    return 'Maaf, saya tidak dapat memproses permintaan sekarang. Gunakan penilaian organoleptik: mata (kejernihan & bentuk), insang (warna & lendir), bau (amis laut atau asam), tekstur (elastis), kulit/lendir. Simpan suhu 0–4°C.';
   }
 
-  // Init sequence
-  waitForApp(()=>{
-    attachNavHook();
-    initUIBindings();
-    // Jika user sudah login (App.state.currentUser) baru tampilkan FAB
-    setTimeout(()=>{
-      if(window.App?.state?.currentUser){
-        toggleFabVisibility(true);
-      }
-    },0);
+  /***************** MODAL CONTROL *****************/
+  function openModal(){
+    $('#aiChatModal')?.classList.add('show');
+    $('#aiUserInput')?.focus();
+    $('#aiModelBadge') && ($('#aiModelBadge').textContent = settings.model);
+  }
+  function closeModal(){
+    $('#aiChatModal')?.classList.remove('show');
+  }
+
+  // Tutup modal jika klik area luar
+  document.addEventListener('click', e=>{
+    const modal = $('#aiChatModal');
+    if(!modal) return;
+    if(e.target===modal) closeModal();
   });
 
+  // Inisialisasi setelah App siap
+  function waitApp(){
+    if(window.App){
+      init();
+    } else {
+      setTimeout(waitApp,120);
+    }
+  }
+  waitApp();
 })();
+
 
 /* ========= WELCOME MODAL LOGIC ========= */
 function showWelcomeModalOnce(){
