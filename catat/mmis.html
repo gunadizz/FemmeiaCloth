@@ -38,7 +38,7 @@
   --ok: #10b981;
   --info: #3b82f6;
   --font-sans: 'Quicksand', system-ui, sans-serif;
-  --font-base: 15px;
+  --font-base: 18px;
   --panel-gap: 1.35rem;
   --layout-max: 1480px;
   --panel-padding: 1.15rem 1.15rem 1.3rem;
@@ -3165,25 +3165,56 @@ body[class*="perf-"] {
    - Hilangkan effect hiasan
    - Pangkas animasi berat tapi tetap lebih kaya dari lite
 =================================================== */
+
+/* === PERFORMANCE MODE: DEFAULT (Ringan maksimal tanpa hilang total struktur) === */
 body.perf-default {
-  --glass-alpha: 0.85;
-  --dur-m: .22s;
-  --dur-l: .40s;
+  --glass-alpha: 0.96;
 }
+
+/* Hilangkan animasi & kurangi transisi berat */
+body.perf-default * {
+  
+}
+
+/* Hilangkan blur & saturasi berat */
 body.perf-default .panel,
 body.perf-default .sidebar,
 body.perf-default .topbar,
 body.perf-default .dropdown,
 body.perf-default .container-auth,
-body.perf-default .table-wrapper {
-  /* Turun dari blur 14 -> 6 */
-  backdrop-filter: blur(6px) saturate(1.1) !important;
-  -webkit-backdrop-filter: blur(6px) saturate(1.1) !important;
-  background: hsl(var(--glass-bg)/0.90) !important;
-  box-shadow: 0 3px 10px -4px rgba(0,0,0,.28) !important;
+body.perf-default .table-wrapper,
+body.perf-default .social-post,
+body.perf-default .ranking-block,
+body.perf-default .indicator,
+body.perf-default .material-category,
+body.perf-default .org-criterion,
+body.perf-default .weather-panel,
+body.perf-default .calendar-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: hsl(var(--glass-bg)/0.98) !important;
+  box-shadow: 0 1px 4px -2px rgba(0,0,0,.25) !important;
+  border:1px solid hsl(var(--panel-border)/0.55) !important;
 }
 
-/* Hilangkan layer pseudo dekoratif di default (masih ada di ultra) */
+/* Matikan transform hover besar */
+body.perf-default .panel:hover,
+body.perf-default .indicator:hover,
+body.perf-default .social-post:hover,
+body.perf-default .ranking-block:hover,
+body.perf-default .material-category:hover,
+body.perf-default .org-criterion:hover,
+body.perf-default .quality-item:hover,
+body.perf-default .org-option:hover,
+body.perf-default .hazard-chip:hover,
+body.perf-default .reaction-btn:hover,
+body.perf-default .toggle-chip:hover,
+body.perf-default .toggle:hover {
+  transform:none !important;
+  box-shadow:0 2px 6px -3px rgba(0,0,0,.3) !important;
+}
+
+/* Hilangkan layer dekoratif / pseudo efek glow */
 body.perf-default .panel::before,
 body.perf-default .indicator::before,
 body.perf-default .logo-circle::after,
@@ -3192,46 +3223,30 @@ body.perf-default .org-option::after,
 body.perf-default .hazard-chip::after,
 body.perf-default .toggle-chip::before,
 body.perf-default .nav button::after,
-body.perf-default .ranking-block:hover .rb-title::after {
+body.perf-default .ranking-block:hover .rb-title::after,
+body.perf-default .weather-panel::before,
+body.perf-default .weather-panel::after {
   display:none !important;
 }
 
-body.perf-default .indicator,
-body.perf-default .social-post,
-body.perf-default .ranking-block,
-body.perf-default .material-category,
-body.perf-default .org-criterion {
-  box-shadow: 0 3px 12px -6px rgba(0,0,0,.30) !important;
-}
-
-/* Box shadow tombol diperingan */
+/* Tombol lebih sederhana */
 body.perf-default button,
 body.perf-default .toggle,
 body.perf-default .toggle-chip,
 body.perf-default .reaction-btn {
-  box-shadow: 0 2px 6px -3px rgba(0,0,0,.35) !important;
+  box-shadow:0 1px 4px -2px rgba(0,0,0,.3) !important;
+  filter:none !important;
+  background: hsl(var(--accent)/0.20) !important;
 }
 
-/* Animasi scale & hover disederhanakan */
-body.perf-default .panel:hover,
-body.perf-default .indicator:hover,
-body.perf-default .social-post:hover,
-body.perf-default .ranking-block:hover,
-body.perf-default .org-criterion:hover,
-body.perf-default .material-category:hover {
-  transform: translateY(-4px);
-}
-
+/* Hilangkan shadow besar avatar & FAB */
 body.perf-default .fab {
-  box-shadow: 0 6px 18px -8px rgba(0,0,0,.45) !important;
+  box-shadow:0 3px 10px -4px rgba(0,0,0,.35) !important;
+  transform:none !important;
 }
+body.perf-default .fab:hover { transform:none !important; }
 
-/* Kurangi intensitas transition untuk semua child */
-body.perf-default * {
-  transition-duration: .18s !important;
-}
-
-/* Nonaktifkan will-change masal untuk hemat memori compositing */
+/* Remove will-change untuk hemat memori */
 body.perf-default .panel,
 body.perf-default .indicator,
 body.perf-default .social-post,
@@ -3241,31 +3256,16 @@ body.perf-default .quality-item {
   will-change: auto !important;
 }
 
-/* Chart container tanpa animasi bayangan */
-body.perf-default .chart-container {
-  box-shadow:none !important;
-}
-
-/* Gambar large: kurangi shadow */
-body.perf-default img {
-  box-shadow:0 2px 8px -4px rgba(0,0,0,.35);
-}
-
-/* Toast lebih ringan */
+/* Sederhanakan toast */
 body.perf-default .toast {
-  box-shadow:0 4px 14px -8px rgba(0,0,0,.45) !important;
+  box-shadow:0 4px 14px -8px rgba(0,0,0,.35) !important;
+  background: linear-gradient(135deg,hsl(var(--toast-tone)/0.85),hsl(var(--toast-tone)/0.65)) !important;
 }
 
-/* Hilangkan shimmer / running gradient dekoratif */
-body.perf-default .divider::after {
-  animation:none !important;
-  background:none !important;
-}
+/* Divider anim mati */
+body.perf-default .divider::after { display:none !important; }
 
-/* Kualitas list item: tanpa box-shadow tambahan */
-body.perf-default .quality-item {
-  box-shadow:none !important;
-}
+/* Scrollbar tidak berubah (aman) */
 
 
 /* ---------- LITE MODE (sangat ringan) ---------- */
@@ -5064,231 +5064,7 @@ body.offline .presence-indicator .dot::after {
 [data-theme="light"] .weather-day {
   background:linear-gradient(145deg,hsl(var(--accent)/0.18),hsl(var(--accent)/0.10));
 }
-/* ==== DASHBOARD CALENDAR PANEL ==== */
-.calendar-panel {
-  display:flex;
-  flex-direction:column;
-  gap:.85rem;
-  position:relative;
-  overflow:hidden;
-}
-.calendar-grid-header {
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:.25rem;
-  font-size:.48rem;
-  font-weight:700;
-  letter-spacing:.4px;
-  text-transform:uppercase;
-  opacity:.75;
-  padding:0 .25rem;
-}
-.calendar-days {
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:.4rem .35rem;
-  min-height:160px;
-  padding:.15rem .25rem .3rem;
-  animation: fadeScale .55s var(--spring);
-}
-.calendar-day {
-  position:relative;
-  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.55),hsl(var(--glass-bg)/0.40));
-  border:1px solid hsl(var(--panel-border)/0.55);
-  border-radius:16px;
-  padding:.45rem .45rem .55rem;
-  display:flex;
-  flex-direction:column;
-  gap:.25rem;
-  font-size:.52rem;
-  cursor:pointer;
-  min-height:60px;
-  outline:none;
-  transition:
-    background var(--dur-m),
-    transform var(--dur-m),
-    box-shadow var(--dur-m),
-    border-color var(--dur-m),
-    filter var(--dur-m);
-  overflow:hidden;
-}
-.calendar-day.blank {
-  background:transparent;
-  border:1px dashed hsl(var(--panel-border)/0.25);
-  cursor:default;
-  pointer-events:none;
-  min-height:60px;
-}
-.calendar-day:hover:not(.blank) {
-  transform:translateY(-5px);
-  box-shadow:0 8px 22px -10px rgba(0,0,0,.5);
-  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.65),hsl(var(--glass-bg)/0.50));
-}
-.calendar-day.selected {
-  background:var(--gradient-accent);
-  color:#fff;
-  box-shadow:0 10px 28px -12px hsl(var(--accent)/0.6);
-  border-color:hsl(var(--accent)/0.5);
-  transform:translateY(-4px);
-}
-.calendar-day .cal-date {
-  font-weight:800;
-  font-size:.65rem;
-  line-height:1;
-  letter-spacing:.4px;
-  display:flex;
-  align-items:center;
-  gap:.25rem;
-}
-.calendar-day .cal-badges {
-  display:flex;
-  flex-wrap:wrap;
-  gap:.2rem;
-  line-height:1;
-}
-.calendar-day .cal-badge {
-  background:hsl(var(--accent)/0.25);
-  color:#fff;
-  font-size:.40rem;
-  padding:.18rem .35rem;
-  border-radius:8px;
-  font-weight:700;
-  letter-spacing:.3px;
-  box-shadow:0 2px 6px -2px hsl(var(--accent)/0.45);
-}
-.calendar-day.good { border-color:rgba(16,185,129,.6); }
-.calendar-day.mid  { border-color:rgba(245,158,11,.6); }
-.calendar-day.bad  { border-color:rgba(239,68,68,.65); }
-.calendar-day.good:not(.selected){ background:linear-gradient(145deg,rgba(16,185,129,.25),rgba(16,185,129,.12)); }
-.calendar-day.mid:not(.selected){ background:linear-gradient(145deg,rgba(245,158,11,.28),rgba(245,158,11,.12)); }
-.calendar-day.bad:not(.selected){ background:linear-gradient(145deg,rgba(239,68,68,.30),rgba(239,68,68,.15)); }
 
-.calendar-day.good.selected { background:linear-gradient(145deg,#059669,#10b981); }
-.calendar-day.mid.selected  { background:linear-gradient(145deg,#d97706,#f59e0b); }
-.calendar-day.bad.selected  { background:linear-gradient(145deg,#b91c1c,#ef4444); }
-
-.calendar-legend {
-  display:flex;
-  flex-wrap:wrap;
-  gap:.5rem .8rem;
-  font-size:.48rem;
-  font-weight:600;
-  letter-spacing:.4px;
-  opacity:.85;
-}
-.calendar-legend span {
-  display:inline-flex;
-  gap:.35rem;
-  align-items:center;
-  background:hsl(var(--accent)/0.18);
-  padding:.3rem .55rem;
-  border-radius:12px;
-  border:1px solid hsl(var(--panel-border)/0.45);
-}
-.legend-box {
-  width:12px;
-  height:12px;
-  border-radius:4px;
-  background:#555;
-  box-shadow:0 2px 6px -2px rgba(0,0,0,.45);
-}
-.lg-good { background:linear-gradient(135deg,#059669,#10b981); }
-.lg-mid  { background:linear-gradient(135deg,#d97706,#f59e0b); }
-.lg-bad  { background:linear-gradient(135deg,#b91c1c,#ef4444); }
-.lg-none { background:linear-gradient(135deg,#475569,#64748b); }
-
-.calendar-summary {
-  background:linear-gradient(145deg,hsl(var(--glass-bg)/0.55),hsl(var(--glass-bg)/0.40));
-  border:1px solid hsl(var(--panel-border)/0.55);
-  border-radius:22px;
-  padding:.75rem .85rem;
-  display:flex;
-  flex-direction:column;
-  gap:.55rem;
-  position:relative;
-  overflow:hidden;
-  font-size:.55rem;
-  animation: fadeScale .55s var(--spring);
-}
-.cal-summary-title {
-  display:flex;
-  align-items:center;
-  gap:.45rem;
-  font-size:.58rem;
-  font-weight:800;
-  letter-spacing:.55px;
-  text-transform:uppercase;
-  color:hsl(var(--text-dim));
-}
-.cal-summary-body {
-  display:grid;
-  gap:.4rem;
-  font-size:.52rem;
-  line-height:1.4;
-}
-.cal-summary-body .cs-row {
-  display:flex;
-  justify-content:space-between;
-  gap:1rem;
-  background:hsl(var(--accent)/0.15);
-  padding:.4rem .55rem;
-  border-radius:12px;
-  border:1px solid hsl(var(--panel-border)/0.45);
-  font-weight:600;
-  letter-spacing:.4px;
-}
-.cal-summary-body .cs-row.good { background:linear-gradient(135deg,rgba(16,185,129,.28),rgba(16,185,129,.12)); }
-.cal-summary-body .cs-row.mid  { background:linear-gradient(135deg,rgba(245,158,11,.28),rgba(245,158,11,.12)); }
-.cal-summary-body .cs-row.bad  { background:linear-gradient(135deg,rgba(239,68,68,.30),rgba(239,68,68,.15)); }
-
-.cal-summary-actions {
-  display:flex;
-  gap:.45rem;
-  flex-wrap:wrap;
-  align-items:center;
-  margin-top:.4rem;
-}
-.calendar-day.today::after {
-  content:"•";
-  position:absolute;
-  right:6px;
-  top:6px;
-  font-size:.7rem;
-  color:hsl(var(--accent));
-  text-shadow:0 0 4px hsl(var(--accent)/0.8);
-  animation: pulse 2.2s ease-in-out infinite;
-}
-.calendar-day[data-has-hazard="1"]::before {
-  content:"!";
-  position:absolute;
-  left:6px;
-  top:6px;
-  font-size:.55rem;
-  font-weight:800;
-  color:#ef4444;
-  text-shadow:0 0 4px rgba(239,68,68,.7);
-}
-.calendar-day[data-count="0"]{
-  filter:grayscale(.35);
-  opacity:.85;
-}
-.calendar-day .avg-label {
-  font-size:.42rem;
-  font-weight:700;
-  letter-spacing:.3px;
-  background:hsl(var(--accent)/0.30);
-  color:#fff;
-  padding:.18rem .35rem;
-  border-radius:8px;
-  box-shadow:0 2px 6px -2px hsl(var(--accent)/0.45);
-  max-width:100%;
-  line-height:1;
-}
-@media (max-width:760px){
-  .calendar-days { gap:.3rem .25rem; }
-  .calendar-day { min-height:54px; padding:.4rem .4rem .5rem; }
-  .calendar-day .cal-date { font-size:.6rem; }
-}
 </style>
 </head>
 <body>
@@ -6036,57 +5812,7 @@ body.offline .presence-indicator .dot::after {
   </div>
 </div>
 
-<!-- PANEL KALENDER (Letakkan setelah #weatherPanel di dalam #view-dashboard) -->
-<div class="panel bento calendar-panel" id="calendarPanel">
-  <div class="panel-header">
-    <h3>
-      <i data-feather="calendar" width="14"></i>
-      <span>Kalender Mutu Harian</span>
-    </h3>
-    <div style="display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;">
-      <button class="ghost small" id="calPrevMonth" title="Bulan Sebelumnya">
-        <i data-feather="chevron-left" width="13"></i>
-      </button>
-      <div id="calMonthLabel" style="font-size:.62rem;font-weight:700;letter-spacing:.55px;min-width:118px;text-align:center;"></div>
-      <button class="ghost small" id="calNextMonth" title="Bulan Berikutnya">
-        <i data-feather="chevron-right" width="13"></i>
-      </button>
-      <button class="ghost small" id="calTodayBtn" title="Ke Bulan Sekarang">
-        <i data-feather="target" width="13"></i>
-      </button>
-      <button class="ghost small" id="calRefreshBtn" title="Segarkan Kalender">
-        <i data-feather="refresh-cw" width="13"></i>
-      </button>
-    </div>
-  </div>
-  <div class="calendar-grid-header">
-    <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
-  </div>
-  <div id="calendarDays" class="calendar-days"></div>
-  <div class="calendar-legend">
-    <span><span class="legend-box lg-good"></span>Avg ≥ 7</span>
-    <span><span class="legend-box lg-mid"></span>4 – 6.99</span>
-    <span><span class="legend-box lg-bad"></span>&lt; 4</span>
-    <span><span class="legend-box lg-none"></span>Tanpa Data</span>
-  </div>
-  <div id="calendarSummary" class="calendar-summary">
-    <div class="cal-summary-title">
-      <i data-feather="bar-chart-2" width="13"></i>
-      <span>Ringkasan Hari</span>
-    </div>
-    <div id="calendarSummaryBody" class="cal-summary-body muted">
-      Klik salah satu tanggal untuk melihat ringkasan data mutu.
-    </div>
-    <div id="calendarSummaryActions" class="cal-summary-actions hidden">
-      <button class="outline small" id="calApplyFilterBtn">
-        <i data-feather="filter" width="12"></i> Terapkan ke Filter Data
-      </button>
-      <button class="outline small" id="calClearSelectionBtn">
-        <i data-feather="x-circle" width="12"></i> Bersihkan
-      </button>
-    </div>
-  </div>
-</div>
+
 </div>
 
       </section>
@@ -7130,7 +6856,169 @@ body.offline .presence-indicator .dot::after {
 
       <!-- ABOUT -->
       <section id="view-about" class="hidden fade-in">
-      	<!-- ABOUT: TENTANG APLIKASI (UPDATED) -->
+      	       
+       <div class="panel">
+          <div class="panel-header">
+            <h3><i data-feather="info" width="14"></i><span>Tentang Developer</span></h3>
+          </div>
+             
+  <!-- Developer Profile (UI Improved) -->
+<div class="dev-card">
+  <div class="dev-card-left">
+    <div class="dev-photo-frame">
+      <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/catat/Pas%20Foto%20ltr%20biru.jpg" alt="Foto Developer" class="dev-photo-new">
+      <div class="dev-glow"></div>
+    </div>
+    <div class="dev-mini-badges">
+      <span class="dev-mini-badge">
+        <!-- trophy -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 4v2a4 4 0 0 0 8 0V4"></path>
+          <path d="M12 14v7"></path>
+          <path d="M8 21h8"></path>
+          <path d="M5 4h14"></path>
+          <path d="M18 4h1a2 2 0 0 1 0 4h-1"></path>
+          <path d="M6 4H5a2 2 0 0 0 0 4h1"></path>
+        </svg>
+        Skripsi
+      </span>
+      <span class="dev-mini-badge alt">
+        <!-- code -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 18l6-6-6-6"></path>
+          <path d="M8 6l-6 6 6 6"></path>
+        </svg>
+        Single File
+      </span>
+    </div>
+  </div>
+
+  <div class="dev-card-main">
+    <div class="dev-header">
+      <h4 class="dev-name">
+        <span class="gradient-text">Gunadi Renta</span>
+        <span class="dev-id">(L061221027)</span>
+      </h4>
+      <div class="dev-role-line">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+        </svg>
+        Mahasiswa Teknologi Hasil Perikanan
+      </div>
+      <div class="dev-faculty">
+        Fakultas Ilmu Kelautan & Perikanan – Universitas Hasanuddin
+      </div>
+    </div>
+
+    <p class="dev-desc-new">
+      Saya mengembangkan aplikasi ini sebagai bagian dari proyek akademik untuk mendukung
+      pengawasan mutu ikan segar di pasar tradisional. Fokus utama ada pada desain antarmuka (UI/UX),
+      manajemen data mutu, edukasi mini (micro-learning), dan integrasi fitur analisis AI.
+    </p>
+
+    <div class="dev-section">
+      <div class="dev-section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M4 4h7v7H4z"></path><path d="M13 4h7v7h-7z"></path>
+          <path d="M4 13h7v7H4z"></path><path d="M17 17l4 4"></path>
+          <path d="M15 15l2 2"></path>
+        </svg>
+        Kompetensi
+      </div>
+      <div class="dev-tags">
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M4 4h16v16H4z"></path>
+          </svg> HTML
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M4 4h16v16H4z"></path>
+          </svg> CSS
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M8 7l8 10M16 7l-8 10"></path>
+          </svg> JavaScript
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M3 3h18v6H3z"></path>
+            <path d="M3 13h18v8H3z"></path>
+          </svg> Firebase
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07 7.07l-1.42-1.42M8.35 8.35L6.93 6.93m0 10.14l1.42-1.42m8.72-8.72l1.42-1.42"/>
+          </svg> UI/UX
+        </span>
+        <span class="dev-tag">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M12 3l7 4v6c0 5-7 8-7 8s-7-3-7-8V7z"></path>
+          </svg> Data Design
+        </span>
+      </div>
+    </div>
+
+    <div class="dev-section">
+      <div class="dev-section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        Fokus Fitur
+      </div>
+      <ul class="dev-focus-list">
+        <li>Optimasi single-file (struktur modular internal).</li>
+        <li>Modul AI (analisis mutu ikan berbasis teks & gambar).</li>
+        <li>Tool Organoleptik & Micro-Learning integratif.</li>
+        <li>Notifikasi, sosial, dan sensor suhu real-time.</li>
+      </ul>
+    </div>
+
+    <div class="dev-section">
+      <div class="dev-section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <polyline points="16 11 18 13 22 9"></polyline>
+        </svg>
+        Kontak
+      </div>
+      <div class="dev-links">
+        <a href="mailto:gunadirenta@gmail.com" class="dev-link" target="_blank" rel="noopener">
+          <span class="dev-link-icon">
+            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M4 4h16v16H4z"></path>
+              <path d="M4 4l8 8 8-8"></path>
+            </svg>
+          </span>
+          Email
+        </a>
+        <a href="https://github.com/gunadizz" class="dev-link" target="_blank" rel="noopener">
+          <span class="dev-link-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+          </span>
+          GitHub
+        </a>
+        
+      </div>
+    </div>
+
+    <div class="dev-footer-meta">
+      <span>Makassar, 2025</span>
+      <span class="dot-sep"></span>
+      <span>Versi 1.0</span>
+      <span class="dot-sep"></span>
+      <span>MMIS Project</span>
+    </div>
+  </div>
+</div>
+          </div>
+          <div style="margin-top:-10px;opacity:0">sk</div> 
 <div class="panel">
   <div class="panel-header">
     <h3>
@@ -7343,177 +7231,7 @@ body.offline .presence-indicator .dot::after {
   </div>
 </div>
         
-       <div style="margin-top:-10px;opacity:0">sk</div> 
-       <div class="panel">
-          <div class="panel-header">
-            <h3><i data-feather="info" width="14"></i><span>Tentang Developer</span></h3>
-          </div>
-             
-  <!-- Developer Profile (UI Improved) -->
-<div class="dev-card">
-  <div class="dev-card-left">
-    <div class="dev-photo-frame">
-      <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/catat/Pas%20Foto%20ltr%20biru.jpg" alt="Foto Developer" class="dev-photo-new">
-      <div class="dev-glow"></div>
-    </div>
-    <div class="dev-mini-badges">
-      <span class="dev-mini-badge">
-        <!-- trophy -->
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M8 4v2a4 4 0 0 0 8 0V4"></path>
-          <path d="M12 14v7"></path>
-          <path d="M8 21h8"></path>
-          <path d="M5 4h14"></path>
-          <path d="M18 4h1a2 2 0 0 1 0 4h-1"></path>
-          <path d="M6 4H5a2 2 0 0 0 0 4h1"></path>
-        </svg>
-        Skripsi
-      </span>
-      <span class="dev-mini-badge alt">
-        <!-- code -->
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M16 18l6-6-6-6"></path>
-          <path d="M8 6l-6 6 6 6"></path>
-        </svg>
-        Single File
-      </span>
-    </div>
-  </div>
 
-  <div class="dev-card-main">
-    <div class="dev-header">
-      <h4 class="dev-name">
-        <span class="gradient-text">Gunadi Renta</span>
-        <span class="dev-id">(L061221027)</span>
-      </h4>
-      <div class="dev-role-line">
-        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
-          <circle cx="12" cy="7" r="4"></circle>
-          <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
-        </svg>
-        Mahasiswa Teknologi Hasil Perikanan
-      </div>
-      <div class="dev-faculty">
-        Fakultas Ilmu Kelautan & Perikanan – Universitas Hasanuddin
-      </div>
-    </div>
-
-    <p class="dev-desc-new">
-      Saya mengembangkan aplikasi ini sebagai bagian dari proyek akademik untuk mendukung
-      pengawasan mutu ikan segar di pasar tradisional. Fokus utama ada pada desain antarmuka (UI/UX),
-      manajemen data mutu, edukasi mini (micro-learning), dan integrasi fitur analisis AI.
-    </p>
-
-    <div class="dev-section">
-      <div class="dev-section-title">
-        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
-          <path d="M4 4h7v7H4z"></path><path d="M13 4h7v7h-7z"></path>
-          <path d="M4 13h7v7H4z"></path><path d="M17 17l4 4"></path>
-          <path d="M15 15l2 2"></path>
-        </svg>
-        Keahlian
-      </div>
-      <div class="dev-tags">
-        <span class="dev-tag">
-          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
-            <path d="M4 4h16v16H4z"></path>
-          </svg> HTML
-        </span>
-        <span class="dev-tag">
-          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
-            <path d="M4 4h16v16H4z"></path>
-          </svg> CSS
-        </span>
-        <span class="dev-tag">
-          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
-            <path d="M8 7l8 10M16 7l-8 10"></path>
-          </svg> JavaScript
-        </span>
-        <span class="dev-tag">
-          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
-            <path d="M3 3h18v6H3z"></path>
-            <path d="M3 13h18v8H3z"></path>
-          </svg> Firebase
-        </span>
-        <span class="dev-tag">
-          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.07 7.07l-1.42-1.42M8.35 8.35L6.93 6.93m0 10.14l1.42-1.42m8.72-8.72l1.42-1.42"/>
-          </svg> UI/UX
-        </span>
-        <span class="dev-tag">
-          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none">
-            <path d="M12 3l7 4v6c0 5-7 8-7 8s-7-3-7-8V7z"></path>
-          </svg> Data Design
-        </span>
-      </div>
-    </div>
-
-    <div class="dev-section">
-      <div class="dev-section-title">
-        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-        </svg>
-        Fokus Fitur
-      </div>
-      <ul class="dev-focus-list">
-        <li>Optimasi single-file (struktur modular internal).</li>
-        <li>Modul AI (analisis mutu ikan berbasis teks & gambar).</li>
-        <li>Tool Organoleptik & Micro-Learning integratif.</li>
-        <li>Notifikasi, sosial, dan sensor suhu real-time.</li>
-      </ul>
-    </div>
-
-    <div class="dev-section">
-      <div class="dev-section-title">
-        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <polyline points="16 11 18 13 22 9"></polyline>
-        </svg>
-        Kontak
-      </div>
-      <div class="dev-links">
-        <a href="mailto:gunadirenta@gmail.com" class="dev-link" target="_blank" rel="noopener">
-          <span class="dev-link-icon">
-            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none">
-              <path d="M4 4h16v16H4z"></path>
-              <path d="M4 4l8 8 8-8"></path>
-            </svg>
-          </span>
-          Email
-        </a>
-        <a href="https://github.com/gunadizz" class="dev-link" target="_blank" rel="noopener">
-          <span class="dev-link-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
-              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-            </svg>
-          </span>
-          GitHub
-        </a>
-        <a href="https://linkedin.com/in/" class="dev-link" target="_blank" rel="noopener">
-          <span class="dev-link-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2c-1.1 0-2 .9-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-              <rect x="2" y="9" width="4" height="12"></rect>
-              <circle cx="4" cy="4" r="2"></circle>
-            </svg>
-          </span>
-          LinkedIn
-        </a>
-      </div>
-    </div>
-
-    <div class="dev-footer-meta">
-      <span>Makassar, 2025</span>
-      <span class="dot-sep"></span>
-      <span>Versi 1.0</span>
-      <span class="dot-sep"></span>
-      <span>MMIS Project</span>
-    </div>
-  </div>
-</div>
-          </div>
       </section>
 
 <!-- VIEW: AI ASSISTANT -->
@@ -7560,7 +7278,7 @@ body.offline .presence-indicator .dot::after {
       </div>
       <div>
         <label>Prefiks Konteks</label>
-        <input id="aiContextPrefix" value="Anda adalah asisten ahli mutu ikan segar dan keamanan pangan.">
+        <input id="aiContextPrefix" value="Anda adalah asisten ahli mutu ikan segar dan keamanan pangan." readonly>
       </div>
     </div>
     <div style="margin-top:.7rem;display:flex;gap:.55rem;flex-wrap:wrap;">
@@ -11544,8 +11262,59 @@ function initPresenceIndicator(){
   const DEFAULTS = {
     apiKey: 'AIzaSyD60PIrIH6El6XIRGXYUjfXyjRIZFVTsFU',
     model: 'gemini-2.5-flash',
-    mode: 'short', // 'short' | 'detail'
-    context: 'Anda adalah asisten ahli mutu ikan segar dan keamanan pangan. Gunakan bahasa Indonesia yang jelas. lokasi Makassar'
+    mode: 'detail', // 'short' | 'detail'
+    context: `Anda adalah asisten AI ahli mutu ikan segar dan keamanan pangan di Aplikasi MMIS (Monitoring Mutu Ikan Segar), dikembangkan oleh Gunadi Renta, Mahasiswa Prodi Teknologi Hasil Perikanan, Fakultas FIKP, Universitas Hasanuddin (Angkatan 2022). MMIS Versi 1.0 adalah proyek skripsi untuk mendukung monitoring mutu ikan di pasar tradisional Kota Makassar (sebutkan pasar yang ada di Makassar jika perlu).
+
+Tujuan Anda:
+- Menjawab pertanyaan tentang kesegaran ikan, organoleptik, keamanan pangan (formalin/boraks/pewarna), penanganan/penyimpanan, dan fitur aplikasi. sertakan link referensi jika perlu terutama saat user bertanya (seperti apa itu ikan) maka sertakan/gunakan referensi yang anda gunakan seperti jurnal, buku dan lainnya (jangan lupa sertakan link nya kalau ada).
+- Gunakan bahasa Indonesia Gen Z yang santai tapi informatif dan kalau bisa campur bahasa Makassar. Emoji dipakai secukupnya (jangan spam).
+- JANGAN gunakan format bold di respons/jawaban anda, Apapun alasannya. jika sangat penting gukanan huruf/kata kapital saja.
+- Jika pertanyaan di luar konteks (misal politik, hiburan), tolak dengan sopan: "Maaf, saya fokus pada mutu ikan segar. Ada yang bisa saya bantu soal kesegaran ikan atau fitur MMIS?"
+
+Standar & Parameter:
+- Rujukan: SNI 2729:2013 dan SNI 2021 (organoleptik ikan segar).
+- Parameter: Mata (cembung/datar/cekung), Insang (warna/lendir), Bau (segar/asam/busuk), Tekstur (elastis/lunak), Kulit/Lendir (cerah/kusam).
+- Skor: 1–9 (≥7 = baik, 4–6 = sedang, <4 = buruk).
+- Suhu ideal: 0–4°C (gunakan es bersih, hindari kontaminasi).
+
+Indikasi Keamanan (Observasi Awal):
+- Formalin: Insang pucat abu-abu, tekstur kaku, bau kimia tajam → perlu uji cepat.
+- Boraks: Daging sangat kenyal (sulit robek), lendir tipis, warna terlalu cerah → perlu test kit.
+- Pewarna Tekstil (Rhodamin B): Warna daging/kulit tidak alami (merah/kuning mencolok) → cuci air panas, warna luntur.
+- Catatan: Semua indikasi bersifat observasi dan memerlukan konfirmasi laboratorium sebelum kesimpulan final.
+
+Saat Analisis Gambar:
+1. Jelaskan observasi (mata, insang, tekstur, warna terlihat).
+2. Berikan Skor Organoleptik (gunakan SNI 2013 atau 2021, sebutkan standar yang dipakai).
+3. Rekomendasi: Layak konsumsi / Waspada / Tidak layak + alasan.
+4. Tanyakan user: "Mau skor pakai SNI yang lain? (2013/2021/atau lainnya)" jika belum jelas preferensinya.
+
+Fitur Aplikasi MMIS:
+- Tool Organoleptik (SNI 2013/2021, agregasi mean/median/min).
+- Dashboard dinamis (tren, ranking, rekomendasi pasar/ikan).
+- Sensor Suhu real-time (monitoring rantai dingin).
+- HACCP/CCP Checklist (titik kendali kritis).
+- Micro-Learning + Kuis (modul edukasi + lencana "Quality Steward").
+- Export (CSV/Excel/PDF), Laporan terfilter.
+- Feed Sosial (diskusi + reaksi + komentar).
+- Notifikasi broadcast (admin ke role/semua user).
+- Mode kinerja (Ultra/Default/Lite), aksen warna, font, layout.
+- memiliki Baris coding 13.000 lebih
+
+Praktik Terbaik:
+- Catat data segera setelah observasi.
+- Gunakan bahasa deskriptif objektif (misal: "insang merah muda kusam" bukan "jelek").
+- Simpan foto untuk dokumentasi (aplikasi auto-kompres).
+- Laporkan temuan keamanan ke otoritas jika indikasi kuat berulang.
+
+Developer & Kontak:
+- Nama: Gunadi Renta
+- NIM: (L061221027)
+- Email: gunadirenta@gmail.com | GitHub: gunadizz | WhatsApp: 085341899229
+- Institusi: Prodi Teknologi Hasil Perikanan. Fakultas Ilmu Kelautan & Perikanan, Universitas Hasanuddin.
+- Versi Aplikasi: MMIS 1.0 (2025).
+
+Jika ada yang kurang jelas, tanya user untuk klarifikasi. Prioritaskan akurasi dan keselamatan pangan! 🐟✨`
   };
   const EXAMPLES = [
     'Apa parameter utama penilaian kesegaran ikan?',
@@ -13067,225 +12836,7 @@ function bindWelcomeModalEvents(){
   }
   waitApp();
 })();
-// ==== DASHBOARD CALENDAR MODULE ====
-// Tempelkan setelah seluruh script utama (paling akhir sebelum </body>)
-(function(){
-  if(!window.App){ console.warn('[Calendar] App belum siap'); return; }
 
-  const cal = {
-    year: (new Date()).getFullYear(),
-    month: (new Date()).getMonth(), // 0-11
-    selected: null, // 'YYYY-MM-DD'
-    cache: {},
-    inited: false
-  };
-
-  function $(s){ return document.querySelector(s); }
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function isoDate(d){ const dt=new Date(d); dt.setHours(0,0,0,0); return dt.toISOString().split('T')[0]; }
-
-  function collectData(){
-    // Kumpulkan data fish per tanggal sekali setiap render
-    const map = {};
-    (App.state.fishData||[]).forEach(r=>{
-      if(!r.date) return;
-      const key = isoDate(r.date);
-      map[key] = map[key] || [];
-      map[key].push(r);
-    });
-    cal.cache = map;
-  }
-
-  function computeDayInfo(key){
-    const arr = cal.cache[key] || [];
-    if(!arr.length) return {count:0, avg:0, good:0, mid:0, bad:0, hazard:0};
-    let good=0, mid=0, bad=0, hazard=0, sum=0;
-    arr.forEach(r=>{
-      sum += r.organoleptic||0;
-      if(r.organoleptic>=7) good++;
-      else if(r.organoleptic>=4) mid++;
-      else bad++;
-      if((r.hazards||[]).length) hazard++;
-    });
-    return {
-      count: arr.length,
-      avg: sum/arr.length,
-      good, mid, bad, hazard
-    };
-  }
-
-  function monthLabel(y,m){
-    const idMonths = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-    return idMonths[m]+' '+y;
-  }
-
-  function renderCalendar(){
-    const daysWrap = $('#calendarDays');
-    const label = $('#calMonthLabel');
-    if(!daysWrap || !label) return;
-    collectData();
-
-    label.textContent = monthLabel(cal.year, cal.month);
-
-    const first = new Date(cal.year, cal.month, 1);
-    const last  = new Date(cal.year, cal.month+1, 0);
-    const firstDayIndex = (first.getDay()); // 0 Minggu
-    const totalDays = last.getDate();
-
-    // Build cells
-    let html='';
-    // Leading blanks
-    for(let i=0;i<firstDayIndex;i++){
-      html += `<div class="calendar-day blank"></div>`;
-    }
-
-    for(let d=1; d<=totalDays; d++){
-      const key = `${cal.year}-${pad(cal.month+1)}-${pad(d)}`;
-      const info = computeDayInfo(key);
-      const hasData = info.count>0;
-      const avg = info.avg;
-      let cls = '';
-      if(hasData){
-        if(avg>=7) cls='good';
-        else if(avg>=4) cls='mid';
-        else cls='bad';
-      }
-      const isToday = key===isoDate(new Date());
-      const isSel = key===cal.selected;
-      const hazardFlag = info.hazard>0 ? '1':'0';
-
-      html += `
-        <div class="calendar-day ${cls} ${isSel?'selected':''} ${isToday?'today':''}"
-             data-date="${key}"
-             data-count="${info.count}"
-             data-has-hazard="${hazardFlag}"
-             title="${key} • Data: ${info.count}${hasData? ' • Avg: '+avg.toFixed(2):''}${info.hazard? ' • Indikasi: '+info.hazard:''}">
-          <div class="cal-date">${d}</div>
-          <div class="cal-badges">
-            ${hasData? `<span class="avg-label">${avg.toFixed(1)}</span>`:''}
-            ${info.count? `<span class="cal-badge">${info.count}</span>`:''}
-          </div>
-        </div>
-      `;
-    }
-
-    daysWrap.innerHTML = html;
-    feather.replace();
-    bindDayClicks();
-    renderSummary(); // update summary if masih selected
-  }
-
-  function bindDayClicks(){
-    document.querySelectorAll('.calendar-day[data-date]').forEach(day=>{
-      day.addEventListener('click', ()=>{
-        const key = day.getAttribute('data-date');
-        if(cal.selected===key){
-          // toggle (jika ingin hapus pilihan)
-          cal.selected = null;
-        } else {
-          cal.selected = key;
-        }
-        renderCalendar();
-      });
-    });
-  }
-
-  function renderSummary(){
-    const body = $('#calendarSummaryBody');
-    const actions = $('#calendarSummaryActions');
-    if(!body) return;
-    if(!cal.selected){
-      body.innerHTML = 'Klik salah satu tanggal untuk melihat ringkasan data mutu.';
-      actions?.classList.add('hidden');
-      return;
-    }
-    const info = computeDayInfo(cal.selected);
-    if(!info.count){
-      body.innerHTML = `
-        <div class="muted">Tidak ada data pada tanggal <strong>${cal.selected}</strong>.</div>
-      `;
-      actions?.classList.remove('hidden');
-      return;
-    }
-    body.innerHTML = `
-      <div style="font-size:.55rem;font-weight:700;letter-spacing:.5px;">Tanggal: ${cal.selected}</div>
-      <div class="cs-row good"><span>Total Data</span><span>${info.count}</span></div>
-      <div class="cs-row"><span>Rata-rata</span><span>${info.avg.toFixed(2)}</span></div>
-      <div class="cs-row good"><span>Mutu Baik (≥7)</span><span>${info.good}</span></div>
-      <div class="cs-row mid"><span>Mutu Sedang (4–6.99)</span><span>${info.mid}</span></div>
-      <div class="cs-row bad"><span>Mutu Buruk (&lt;4)</span><span>${info.bad}</span></div>
-      <div class="cs-row ${info.hazard? 'bad':''}"><span>Indikasi Bahaya</span><span>${info.hazard}</span></div>
-    `;
-    actions?.classList.remove('hidden');
-  }
-
-  function applyFilterToData(){
-    if(!cal.selected){
-      App.toast('Belum pilih tanggal','warn');
-      return;
-    }
-    const filterDate = document.getElementById('filterDate');
-    if(filterDate){
-      filterDate.value = cal.selected;
-      // Trigger event input agar listener existing jalan
-      filterDate.dispatchEvent(new Event('input',{bubbles:true}));
-      App.toast('Filter tanggal diterapkan: '+cal.selected,'success');
-      App.showView('data');
-    }
-  }
-
-  function clearSelection(){
-    cal.selected = null;
-    renderCalendar();
-  }
-
-  function prevMonth(){
-    cal.month--;
-    if(cal.month<0){ cal.month=11; cal.year--; }
-    renderCalendar();
-  }
-  function nextMonth(){
-    cal.month++;
-    if(cal.month>11){ cal.month=0; cal.year++; }
-    renderCalendar();
-  }
-  function goToday(){
-    const now = new Date();
-    cal.year = now.getFullYear();
-    cal.month = now.getMonth();
-    renderCalendar();
-  }
-
-  function bindHeader(){
-    $('#calPrevMonth')?.addEventListener('click', prevMonth);
-    $('#calNextMonth')?.addEventListener('click', nextMonth);
-    $('#calTodayBtn')?.addEventListener('click', goToday);
-    $('#calRefreshBtn')?.addEventListener('click', ()=> {
-      renderCalendar();
-      App.toast('Kalender diperbarui','info');
-    });
-    $('#calApplyFilterBtn')?.addEventListener('click', applyFilterToData);
-    $('#calClearSelectionBtn')?.addEventListener('click', clearSelection);
-  }
-
-  // Auto detect data changes (polling ringan)
-  let lastLen = 0;
-  function observeData(){
-    const cur = (App.state.fishData||[]).length;
-    if(cur!==lastLen){
-      lastLen = cur;
-      if(!cal.inited){
-        cal.inited=true;
-        bindHeader();
-      }
-      renderCalendar();
-    }
-    requestAnimationFrame(observeData);
-  }
-
-  // Mulai
-  observeData();
-})();
 </script>
 </body>
 </html>
