@@ -16,7 +16,8 @@
 <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
+<!-- TEMPATKAN: Di <head>, setelah jsPDF (sekitar baris 13) -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.31/dist/jspdf.plugin.autotable.min.js"></script>
 <style>
 /* ===========================================================
    MMIS APP UI & UX STYLES
@@ -5099,6 +5100,43 @@ body.offline .presence-indicator .dot::after {
   border:1px solid hsl(var(--panel-border)/0.55);
   margin:.55rem 0;
 }
+
+
+
+@media print {
+  body { background: white !important; }
+  .sidebar, .topbar, .fab, button, .panel-header button { display: none !important; }
+  .panel { 
+    page-break-inside: avoid; 
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    margin-bottom: 20px;
+  }
+  .table-wrapper {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+  table {
+    font-size: 8pt !important;
+    min-width: auto !important;
+    width: 100% !important;
+  }
+  thead { 
+    display: table-header-group;
+    background: #4472C4 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  th, td {
+    padding: 4px 6px !important;
+    border: 1px solid #ccc !important;
+  }
+  .chart-container canvas {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -7297,10 +7335,14 @@ body.offline .presence-indicator .dot::after {
       <div>
         <label>Model</label>
         <select id="aiModelSelect">
-  <option value="gemini-1.5-flash">gemini-1.5-flash</option>
-  <option value="gemini-1.5-flash-latest">gemini-1.5-flash-latest</option>
-  <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-  <option value="gemini-2.5-pro">gemini-2.5-pro</option>
+  <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite</option>
+    <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+  <option value="gemini-2.5-flash">gemini-2.5-flash (Recommended)</option> 
+  <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite</option>
+  <option value="gemini-2.5-pro">gemini-2.5-pro</option> 
+  <option value="gemini-robotics-er-1.5-preview">gemini-robotics-er-1.5-preview</option>
+  <option value="learnlm-2.0-flash-experimental">learnlm-2.0-flash-experimental</option>
+  
 </select>
       </div>
       <div>
@@ -9929,8 +9971,12 @@ function renderAchievements(){
 
   /* ------------------ EXPORT FUNCTIONS ------------------ */
   function toCSV(rows){
-    return rows.map(r=> r.map(v=> `"${(v??'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
-  }
+  return rows.map(r=> r.map(v=> {
+    const val = (v??'').toString().replace(/"/g,'""');
+    // Escape newline untuk CSV
+    return `"${val.replace(/\n/g,' | ')}"`;
+  }).join(',')).join('\n');
+}
   function download(filename, content, type='text/plain'){
     const blob = new Blob([content],{type});
     const a = document.createElement('a');
@@ -9944,75 +9990,209 @@ function renderAchievements(){
     download(filename,toCSV(rows),'text/csv;charset=utf-8;');
     toast('CSV diekspor','success');
   }
-  function exportExcel(records){
-    const rows = generateTableData(records);
-    const html = '<table>'+ rows.map(r=> '<tr>'+ r.map(c=> `<td>${c}</td>`).join('') + '</tr>').join('') +'</table>';
-    const blob = new Blob([`\ufeff${html}`],{type:'application/vnd.ms-excel'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download='mutu_ikan.xls';
-    a.click();
-    setTimeout(()=> URL.revokeObjectURL(a.href), 1200);
-    toast('Excel diekspor','success');
-  }
-  async function exportPDF(records, includeCharts=true){
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('p','pt','a4');
-    const margin=40;
-    let y=margin;
-    doc.setFontSize(14);
-    doc.text('Laporan Mutu Ikan Segar', margin,y); y+=20;
-    doc.setFontSize(9);
-    doc.text(`Tanggal Generate: ${formatDate(new Date())}`, margin,y); y+=12;
-    doc.text(`Total Data: ${records.length}`, margin,y); y+=14;
-    const good = records.filter(r=> r.organoleptic>=7).length;
-    const medium = records.filter(r=> r.organoleptic>=4 && r.organoleptic<7).length;
-    const bad = records.filter(r=> r.organoleptic<4).length;
-    const hazardCount = records.filter(r=> (r.hazards||[]).length).length;
-    doc.text(`Mutu Baik: ${good} | Sedang: ${medium} | Buruk: ${bad} | Indikasi Bahaya: ${hazardCount}`, margin, y); y+=16;
+  // TEMPATKAN: Cari fungsi exportExcel di sekitar baris 1910-1930
+// GANTI dengan kode ini:
 
-    if(includeCharts && state.charts.comparison){
-      const charts = [
-        { canvas: $('#chartComparison'), title:'Perbandingan Mutu Pasar' },
-        { canvas: $('#chartTrend'), title:'Tren Skor' },
-        { canvas: $('#chartPie'), title:'Proporsi Jenis Ikan' }
-      ];
-      for(const ch of charts){
-        try{
-          const img = ch.canvas.toDataURL('image/png',1.0);
-          doc.setFontSize(10);
-          doc.text(ch.title, margin,y); y+=8;
-          doc.addImage(img,'PNG',margin,y,520,190,null,'FAST');
-          y+=200;
-          if(y>760){ doc.addPage(); y=margin; }
-        }catch{}
+function exportExcel(records){
+  const rows = generateTableData(records);
+  
+  // Header dengan styling
+  const htmlTable = `
+    <html xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:x="urn:schemas-microsoft-com:office:excel"
+          xmlns="http://www.w3.org/TR/REC-html40">
+    <head>
+      <meta charset="utf-8">
+      <style>
+        table { border-collapse: collapse; font-family: Arial, sans-serif; font-size: 10pt; }
+        th { background-color: #4472C4; color: white; font-weight: bold; 
+             padding: 8px; border: 1px solid #ddd; text-align: left; white-space: nowrap; }
+        td { padding: 6px 8px; border: 1px solid #ddd; vertical-align: top; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+      </style>
+    </head>
+    <body>
+      <table>
+        <thead>
+          <tr>${rows[0].map(h=> `<th>${h}</th>`).join('')}</tr>
+        </thead>
+        <tbody>
+          ${rows.slice(1).map(row=> 
+            `<tr>${row.map(cell=> {
+              // Batasi panjang cell agar tidak overflow
+              const cellText = String(cell).substring(0, 500);
+              return `<td>${cellText.replace(/\n/g, '<br>')}</td>`;
+            }).join('')}</tr>`
+          ).join('')}
+        </tbody>
+      </table>
+    </body>
+    </html>
+  `;
+  
+  const blob = new Blob([`\ufeff${htmlTable}`],{type:'application/vnd.ms-excel'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download='mutu_ikan_'+Date.now()+'.xls';
+  a.click();
+  setTimeout(()=> URL.revokeObjectURL(a.href), 1200);
+  toast('Excel diekspor','success');
+}
+  // TEMPATKAN: Cari async function exportPDF di sekitar baris 1940-2050
+// GANTI SELURUH fungsi exportPDF dengan ini:
+
+async function exportPDF(records, includeCharts=true){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('landscape','pt','a4'); // LANDSCAPE untuk tabel lebar
+  
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 40;
+  let y = margin;
+  
+  // === HEADER ===
+  doc.setFontSize(16);
+  doc.setFont(undefined,'bold');
+  doc.text('Laporan Mutu Ikan Segar - MMIS', margin, y);
+  y += 25;
+  
+  doc.setFontSize(9);
+  doc.setFont(undefined,'normal');
+  doc.text(`Generate: ${formatDate(new Date())}`, margin, y);
+  y += 15;
+  doc.text(`Total Data: ${records.length}`, margin, y);
+  y += 12;
+  
+  const good = records.filter(r=> r.organoleptic>=7).length;
+  const medium = records.filter(r=> r.organoleptic>=4 && r.organoleptic<7).length;
+  const bad = records.filter(r=> r.organoleptic<4).length;
+  const hazardCount = records.filter(r=> (r.hazards||[]).length).length;
+  
+  doc.text(`Baik: ${good} | Sedang: ${medium} | Buruk: ${bad} | Indikasi: ${hazardCount}`, margin, y);
+  y += 20;
+  
+  // === CHARTS (jika diminta) ===
+  if(includeCharts && state.charts.comparison){
+    const charts = [
+      { canvas: $('#chartComparison'), title:'Perbandingan Pasar', h:140 },
+      { canvas: $('#chartTrend'), title:'Tren Skor', h:140 }
+    ];
+    
+    for(const ch of charts){
+      if(y + ch.h + 40 > pageHeight - margin){
+        doc.addPage();
+        y = margin;
+      }
+      try{
+        const img = ch.canvas.toDataURL('image/png',0.8);
+        doc.setFontSize(10);
+        doc.setFont(undefined,'bold');
+        doc.text(ch.title, margin, y);
+        y += 10;
+        
+        const imgWidth = pageWidth - (margin*2);
+        doc.addImage(img,'PNG', margin, y, imgWidth, ch.h, null,'FAST');
+        y += ch.h + 15;
+      }catch(e){
+        console.warn('Chart error', e);
       }
     }
-    const rows = generateTableData(records);
-    if(y>700){ doc.addPage(); y=margin; }
-    doc.setFontSize(12); doc.text('Tabel Data', margin,y); y+=10;
-    doc.setFontSize(7);
-    const colWidths=[55,60,60,45,60,60,50,55,65,45,50,60,40,30];
-    doc.setFont(undefined,'bold');
-    let x=margin;
-    rows[0].forEach((h,i)=> {
-      doc.text(String(h).substring(0,16), x, y);
-      x+= colWidths[i]||40;
-    });
-    doc.setFont(undefined,'normal');
-    y+=10;
-    for(let i=1;i<rows.length;i++){
-      x=margin;
-      if(y>790){ doc.addPage(); y=margin; }
-      rows[i].forEach((cell,ci)=>{
-        doc.text(String(cell).substring(0,16), x,y);
-        x+= colWidths[ci]||40;
-      });
-      y+=10;
-    }
-    doc.save('laporan_mutu.pdf');
-    toast('PDF diekspor','success');
   }
+  
+  // === TABEL DATA (dengan autoTable untuk handling otomatis) ===
+  if(y > pageHeight - 200){
+    doc.addPage();
+    y = margin;
+  }
+  
+  doc.setFontSize(12);
+  doc.setFont(undefined,'bold');
+  doc.text('Tabel Data Mutu', margin, y);
+  y += 15;
+  
+  const rows = generateTableData(records);
+  const headers = rows[0];
+  const body = rows.slice(1).map(row=> 
+    row.map(cell=> String(cell).substring(0, 100)) // Batasi 100 char per cell
+  );
+  
+  // Gunakan autoTable (pastikan library sudah ada atau embed manual)
+  // Jika tidak ada autoTable, gunakan metode manual di bawah
+  
+  if(typeof doc.autoTable === 'function'){
+    // JIKA SUDAH ADA PLUGIN autoTable
+    doc.autoTable({
+      startY: y,
+      head: [headers],
+      body: body,
+      theme: 'grid',
+      styles: { 
+        fontSize: 7, 
+        cellPadding: 3,
+        overflow: 'linebreak',
+        cellWidth: 'wrap'
+      },
+      headStyles: { 
+        fillColor: [68, 114, 196], 
+        textColor: 255,
+        fontStyle: 'bold'
+      },
+      columnStyles: {
+        0: {cellWidth: 35},  // No
+        1: {cellWidth: 55},  // Tanggal
+        2: {cellWidth: 60},  // Jenis Ikan
+        3: {cellWidth: 60},  // Pasar
+        4: {cellWidth: 35},  // Org
+        5: {cellWidth: 50},  // Bau
+        6: {cellWidth: 50},  // Tekstur
+        7: {cellWidth: 50},  // Warna
+        8: {cellWidth: 45},  // Keamanan
+        9: {cellWidth: 60},  // Hazard
+        10: {cellWidth: 30}, // Image
+        11: {cellWidth: 40}, // Status
+        12: {cellWidth: 50}, // User
+        13: {cellWidth: 50}  // UID (dipotong)
+      },
+      margin: { left: margin, right: margin }
+    });
+  } else {
+    // METODE MANUAL (jika tidak ada autoTable)
+    doc.setFontSize(7);
+    doc.setFont(undefined,'bold');
+    
+    // Kolom dengan lebar tetap (total harus < pageWidth - 2*margin)
+    const colWidths = [30,50,55,55,30,45,45,45,40,55,28,38,45,45]; // Total ~606
+    
+    // Header
+    let x = margin;
+    headers.forEach((h,i)=> {
+      doc.text(String(h).substring(0,15), x, y);
+      x += colWidths[i] || 40;
+    });
+    
+    doc.setFont(undefined,'normal');
+    y += 12;
+    
+    // Body
+    for(let i=0; i<body.length; i++){
+      if(y > pageHeight - 40){
+        doc.addPage();
+        y = margin + 10;
+      }
+      
+      x = margin;
+      body[i].forEach((cell,ci)=> {
+        const text = String(cell).substring(0, 18); // Batasi
+        doc.text(text, x, y);
+        x += colWidths[ci] || 40;
+      });
+      y += 10;
+    }
+  }
+  
+  doc.save('laporan_mutu_'+ Date.now() +'.pdf');
+  toast('PDF diekspor','success');
+}
 
   function exportSelectedCSV(){
     const ids = Array.from(state.table.selected);
@@ -11600,7 +11780,7 @@ async function testAIConnection(){
     }
   } catch(err){
     console.error(err);
-    toast('Tes gagal: '+err.message,'danger');
+    toast('Tes gagal (pesan ke AI telah limit, silahkan coba lagi nanti): '+err.message,'danger');
     setStatus('Tes gagal','error');
   }
 }
@@ -11736,35 +11916,88 @@ async function testAIConnection(){
     }
   }
 
-  function buildGeminiPayload(prompt, withImage){
-    // Mode ringkas vs detail
-    const modeInstr = settings.mode==='detail'
-      ? 'Jawab detail, terstruktur dalam poin, ringkas tapi mencakup indikator mutu.'
-      : 'Jawab singkat dan jelas dalam 1-4 kalimat.';
-    const parts = [
-      { text: settings.context + '\n' + modeInstr + '\n\nPertanyaan: ' + prompt }
-    ];
-    if(withImage && imageData){
-      const base64raw = imageData.split(',')[1]; // hapus prefix data:
-      parts.push({
-        inline_data:{
-          mime_type: imageMime || 'image/jpeg',
-          data: base64raw
-        }
-      });
-    }
 
-    // (Opsional) Anda bisa menambahkan konteks multi-turn (tunability):
-    // Di sini kita simpan hanya 4 pasang terakhir agar payload tidak panjang
-    const recentDialog = buildRecentDialog();
-
-    return {
-      contents: [
-        ...recentDialog,
-        { role:'user', parts }
-      ]
-    };
+function roleContext(roleRaw){
+  const role = (roleRaw||'').toLowerCase();
+  if(role.includes('mahasiswa')){
+    return `FOKUS PERAN: Mahasiswa. Gunakan gaya edukatif. 
+- Jelaskan konsep organoleptik (mata, insang, bau, tekstur, kulit/lendir).
+- Beri analogi sederhana.
+- Tambahkan tips belajar & praktik lapangan.
+- Ajak user mengkonfirmasi pemahaman.`;
   }
+  if(role.includes('petugas')){
+    return `FOKUS PERAN: Petugas Pasar. 
+- Utamakan tindakan cepat & langkah korektif.
+- Sertakan poin HACCP relevan (batas kritis, tindakan koreksi).
+- Tegaskan sanitasi, suhu rantai dingin, penanganan es & kebersihan sarana.`;
+  }
+  if(role.includes('dosen')){
+    return `FOKUS PERAN: Dosen/Pembimbing. 
+- Beri analisis statistik ringkas (tren, variasi, nilai rata-rata/mode/median jika relevan).
+- Sorot akurasi data, metode sampling, reliabilitas penilaian organoleptik.
+- Usulkan potensi penelitian lanjutan atau perbaikan desain studi.`;
+  }
+  if(role.includes('admin')){
+    return `FOKUS PERAN: Admin Sistem. 
+- Beri ringkasan performa data & potensi risiko.
+- Sorot kepatuhan, konsistensi input, kebutuhan pelatihan tambahan.
+- Sertakan rekomendasi sistemik (validasi, audit berkala).`;
+  }
+  return `FOKUS PERAN: Pengguna Umum. 
+- Jawab ringkas, struktural, tetap jelas dan praktis.`;
+}
+
+// 2. Fungsi pembungkus konteks final
+function buildDynamicContext(baseContext){
+  const role = window.App?.state?.userProfile?.role || 'Pengguna';
+  const roleInstruksi = roleContext(role);
+  return `${baseContext}
+Jawab sebagai ahli perikanan untuk peran: ${role}.
+${roleInstruksi}
+Pastikan jawaban konsisten dengan peran tersebut.`;
+}
+
+// 3. GANTI fungsi buildGeminiPayload lama dengan yang baru ini
+function buildGeminiPayload(prompt, withImage){
+  const role = window.App?.state?.userProfile?.role || 'Pengguna';
+  const modeInstr = settings.mode==='detail'
+    ? 'Jawab detail, terstruktur (heading & poin penting) namun ringkas tanpa bertele-tele.'
+    : 'Jawab singkat (1-4 kalimat) dan langsung ke inti.';
+  
+  // KONTEKS DINAMIS: base context + personalisasi role
+  const dynamicContext = buildDynamicContext(settings.context);
+
+  const parts = [
+    {
+      text:
+        dynamicContext + 
+        `\n\nMODE: ${settings.mode.toUpperCase()}\n${modeInstr}\n\nPertanyaan Pengguna:\n${prompt}`
+    }
+  ];
+
+  if(withImage && imageData){
+    const base64raw = imageData.split(',')[1];
+    parts.push({
+      inline_data:{
+        mime_type: imageMime || 'image/jpeg',
+        data: base64raw
+      }
+    });
+  }
+
+  // Sisipkan riwayat (multi-turn pendek) – tetap sama
+  const recentDialog = buildRecentDialog();
+
+  return {
+    contents: [
+      ...recentDialog,
+      { role:'user', parts }
+    ]
+  };
+}
+
+
 
   function buildRecentDialog(){
     // Ambil pasangan user/assistant terakhir (kecuali placeholder)
@@ -11816,18 +12049,17 @@ function openModal(){
 
   // Tambahan: welcome otomatis hanya sekali (saat histori kosong)
   if (!history.length) {
-    const welcomeMsg = 
-`Halo! 👋
-Saya AI Asisten Mutu Ikan di MMIS.
-Kamu bisa tanya hal-hal seperti:
-• Cara menilai kesegaran (mata, insang, bau, tekstur)
-• Indikasi formalin / boraks (observasi)
-• Suhu penyimpanan ideal
-• Rekomendasi penanganan di pasar
-• Analisis gambar (upload foto ikan & klik Analisis)
-
-Mau mulai dari apa? 😊`;
-
+    const userRoleWelcome = window.App?.state?.userProfile?.role || 'Pengguna';
+const welcomeMsg =
+`Halo ${userRoleWelcome}! 👋
+Saya AI Asisten Mutu Ikan di MMIS (dipersonalisasi untuk peran Anda).
+Silakan tanya:
+• Penilaian kesegaran (organoleptik)
+• Indikasi keamanan (formalin/boraks)
+• Suhu & penanganan
+• Analisis data mutu (khusus Dosen/Admin)
+• Tindakan koreksi (petugas pasar)
+Ketik pertanyaanmu sekarang.`;
     pushMessage('assistant', welcomeMsg, settings.model);
     renderHistory();
   }
