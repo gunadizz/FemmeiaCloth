@@ -3,17 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <title>Form Pemesanan - FemmeiaCloth</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> 
-  <!-- Prevent zoom on mobile for inputs -->
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
-  
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    /* --- VARIABLES (Sesuai index.html) --- */
     :root {
       --background: #f8fafc;
       --text: #1f2937;
@@ -33,259 +28,116 @@
       --blur: 12px;
     }
 
-    /* --- BASE SETUP --- */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; -webkit-tap-highlight-color: transparent; }
-    
+
     body {
       background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
       color: var(--text);
       min-height: 100vh;
-      /* Adjusted Padding */
-      padding-top: 60px; /* Sedikit dilebihkan dari tinggi top-bar */
-      padding-bottom: 120px; /* Space for Sticky Footer */
+      padding-top: 60px;
+      padding-bottom: 140px;
       display: flex;
       flex-direction: column;
       align-items: center;
       overflow-x: hidden;
     }
 
-    /* --- BACKGROUND ANIMATION --- */
     .scattered-shapes { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; }
     .shape { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.6; animation: float 10s infinite alternate; }
     .shape-1 { width: 300px; height: 300px; background: #e0e7ff; top: -50px; left: -100px; }
     .shape-2 { width: 200px; height: 200px; background: #fce7f3; bottom: 10%; right: -50px; animation-duration: 15s; }
     @keyframes float { from { transform: translate(0,0); } to { transform: translate(20px, 40px); } }
 
-    /* --- TOP BAR --- */
-    .top-bar {
-      position: fixed; top: 0; left: 0; width: 100%; height: 40px;
-      background: var(--accent-dark); color: #fff;
-      display: flex; align-items: center; z-index: 1000;
-      font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
+    .top-bar { position: fixed; top: 0; left: 0; width: 100%; height: 40px; background: var(--accent-dark); color: #fff; display: flex; align-items: center; z-index: 1000; font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+    .top-bar.hidden-bar { transform: translateY(-100%); }
     .marquee { display: inline-block; padding-left: 100%; animation: marquee 20s linear infinite; }
     @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    /* --- LAYOUT CONTAINER --- */
-    .container {
-      width: 94%; max-width: 550px; margin: 0 auto;
-      display: flex; flex-direction: column; 
-      gap: 1.5rem; /* DIUBAH: Menambah jarak antar card agar tidak terlalu rapat */
-      z-index: 1;
-    }
+    .container { width: 94%; max-width: 550px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; z-index: 1; }
 
-    /* --- CARDS & GLASSMORPHISM --- */
-    .card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--blur));
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem; /* DIUBAH: Menambah padding dalam card agar lebih lega */
-      box-shadow: var(--shadow);
-      transition: transform 0.2s;
-      margin-bottom: 0; /* Margin dihandle oleh gap container */
-    }
-    .card-header {
-      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; /* DIUBAH: Jarak header ke konten */
-      padding-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06);
-      font-weight: 700; color: var(--accent-dark); font-size: 1.1rem;
-    }
+    .card { background: var(--glass-bg); backdrop-filter: blur(var(--blur)); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow); transition: transform 0.2s; }
+    .card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); font-weight: 700; color: var(--accent-dark); font-size: 1.1rem; }
     .card-header i { color: var(--accent-mid); width: 20px; height: 20px; }
 
-    /* --- FORM ELEMENTS --- */
     label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--accent-mid); }
-    
-    .input-group { margin-bottom: 1.25rem; position: relative; } /* DIUBAH: Jarak antar input */
-    .input-group:last-child { margin-bottom: 0; }
-    
-    input, select, textarea {
-      width: 100%; padding: 0.8rem 1rem;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.8);
-      font-size: 0.95rem; color: var(--text);
-      transition: all 0.2s; outline: none; appearance: none;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--accent-dark); background: #fff;
-      box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
-    }
-    /* Custom Select Arrow */
-    .select-wrapper { position: relative; }
-    .select-wrapper::after {
-      content: ''; position: absolute; right: 15px; top: 40%;
-      border: 5px solid transparent; border-top-color: var(--text-muted); pointer-events: none;
-    }
 
-    /* Error States */
-    .input-error { 
-      border-color: var(--error) !important; 
-      background: #fff5f5 !important; 
-      animation: shake 0.3s;
-    }
+    .input-group { margin-bottom: 1.25rem; position: relative; }
+    .input-group:last-child { margin-bottom: 0; }
+
+    input, select, textarea { width: 100%; padding: 0.8rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border); background: rgba(255, 255, 255, 0.8); font-size: 0.95rem; color: var(--text); transition: all 0.2s; outline: none; appearance: none; }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent-dark); background: #fff; box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1); }
+    input:disabled, select:disabled { background: #e5e7eb; color: var(--text-muted); cursor: not-allowed; }
+
+    .select-wrapper { position: relative; }
+    .select-wrapper::after { content: ''; position: absolute; right: 15px; top: 40%; border: 5px solid transparent; border-top-color: var(--text-muted); pointer-events: none; }
+
+    .input-error { border-color: var(--error) !important; background: #fff5f5 !important; animation: shake 0.3s; }
     @keyframes shake { 0%,100% {transform:translateX(0);} 25% {transform:translateX(-4px);} 75% {transform:translateX(4px);} }
 
-    /* --- TOAST NOTIFICATION --- */
-    .toast-container {
-      position: fixed;
-      top: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2000;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 90%;
-      max-width: 400px;
-      pointer-events: none;
-    }
-    .toast {
-      background: #333;
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    }
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .toast-container { position: fixed; top: 50px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px; pointer-events: none; }
+    .toast { background: #333; color: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 500; opacity: 0; transform: translateY(-20px); transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+    .toast.show { opacity: 1; transform: translateY(0); }
     .toast.error { background: var(--error); }
     .toast i { width: 18px; height: 18px; }
 
-
-    /* --- QUANTITY STEPPER (New) --- */
-    .qty-container {
-      display: flex; align-items: center; gap: 0.5rem;
-    }
-    .qty-btn {
-      width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border);
-      background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; color: var(--accent-dark); transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
+    .qty-container { display: flex; align-items: center; gap: 0.5rem; }
+    .qty-btn { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border); background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--accent-dark); transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .qty-btn:active { transform: scale(0.92); background: #f1f5f9; }
-    .qty-input {
-      width: 50px; text-align: center; font-weight: 700; font-size: 1.1rem; margin: 0; padding: 0.8rem 0;
-    }
+    .qty-input { width: 50px; text-align: center; font-weight: 700; font-size: 1.1rem; margin: 0; padding: 0.8rem 0; }
 
-    /* --- COLOR PICKER (New & Improved) --- */
-    .color-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
-      gap: 8px; margin-top: 0.5rem;
-    }
-    .color-option {
-      width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
-      border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      position: relative; transition: transform 0.2s;
-    }
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 8px; margin-top: 0.5rem; }
+    .color-option { width: 38px; height: 38px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15); position: relative; transition: transform 0.2s; }
     .color-option:active { transform: scale(0.9); }
-    .color-option.selected {
-      transform: scale(1.15); border-color: #fff;
-      box-shadow: 0 0 0 2px var(--accent-dark), 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .color-option.selected::after {
-      content: '✔'; color: #fff; font-size: 12px; position: absolute;
-      top: 50%; left: 50%; transform: translate(-50%, -50%); text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    }
-    .selected-color-label {
-      margin-top: 8px; font-size: 0.9rem; font-weight: 600; color: var(--accent-dark);
-      background: rgba(255,255,255,0.6); padding: 4px 10px; border-radius: 8px; display: inline-block;
-    }
+    .color-option.selected { transform: scale(1.15); border-color: #fff; box-shadow: 0 0 0 2px var(--accent-dark), 0 4px 12px rgba(0,0,0,0.2); }
+    .color-option.selected::after { content: '✔'; color: #fff; font-size: 12px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+    .selected-color-label { margin-top: 8px; font-size: 0.9rem; font-weight: 600; color: var(--accent-dark); background: rgba(255,255,255,0.6); padding: 4px 10px; border-radius: 8px; display: inline-block; }
 
-    /* --- STICKY FOOTER (FAB Style) --- */
-    .sticky-footer {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      width: 94%; max-width: 550px;
-      background: rgba(31, 41, 55, 0.95); /* Dark theme */
-      backdrop-filter: blur(10px);
-      color: #fff;
-      border-radius: 16px;
-      padding: 12px 20px;
-      display: flex; justify-content: space-between; align-items: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      z-index: 900;
-      animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
+    .sticky-footer { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 94%; max-width: 550px; background: rgba(31, 41, 55, 0.95); backdrop-filter: blur(10px); color: #fff; border-radius: 16px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 900; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .total-wrapper { display: flex; flex-direction: column; }
     .total-label { font-size: 0.75rem; opacity: 0.8; }
     .total-price { font-size: 1.2rem; font-weight: 700; }
     .promo-applied { color: #4ade80; font-size: 0.75rem; font-weight: 600; display: none; }
-    
-    .btn-checkout {
-      background: #fff; color: var(--accent-dark);
-      border: none; padding: 10px 24px; border-radius: 12px;
-      font-weight: 700; font-size: 1rem; cursor: pointer;
-      display: flex; align-items: center; gap: 8px;
-      transition: transform 0.2s;
-    }
+    .ship-breakdown { font-size: 0.8rem; opacity: 0.8; }
+
+    .btn-checkout { background: #fff; color: var(--accent-dark); border: none; padding: 10px 24px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.2s; }
     .btn-checkout:hover { transform: scale(1.05); }
     .btn-checkout:active { transform: scale(0.95); opacity: 0.9; }
 
-    /* --- MODAL --- */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-      z-index: 2000; display: none; align-items: center; justify-content: center;
-    }
-    .modal-box {
-      background: #fff; width: 90%; max-width: 400px; border-radius: 20px;
-      padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000; display: none; align-items: center; justify-content: center; }
+    .modal-box { background: #fff; width: 90%; max-width: 400px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .modal-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
     .summary-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
     .summary-item strong { color: var(--text-muted); }
     .summary-total { margin-top: 15px; padding-top: 10px; border-top: 2px dashed #eee; font-weight: 700; font-size: 1.1rem; display: flex; justify-content: space-between; }
-    
-    .btn-wa {
-      background: #25D366; color: #fff; width: 100%; padding: 14px;
-      border: none; border-radius: 12px; font-weight: 700; font-size: 1rem;
-      margin-top: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-back {
-      background: transparent; color: var(--text-muted); width: 100%; padding: 10px;
-      border: none; margin-top: 5px; font-weight: 600; cursor: pointer;
-    }
 
-    /* Animations */
+    .btn-wa { background: #25D366; color: #fff; width: 100%; padding: 14px; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; margin-top: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-back { background: transparent; color: var(--text-muted); width: 100%; padding: 10px; border: none; margin-top: 5px; font-weight: 600; cursor: pointer; }
+
     @keyframes slideUp { from { transform: translate(-50%, 100px); } to { transform: translate(-50%, 0); } }
     @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-    /* Helpers */
     .hidden { display: none !important; }
     .reset-link { text-align: center; margin-top: 10px; }
     .reset-link a { color: var(--text-muted); font-size: 0.85rem; text-decoration: underline; cursor: pointer; }
+
+    .badge { display: inline-flex; align-items: center; gap: 6px; background: #eef2ff; color: #4338ca; padding: 8px 10px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; }
   </style>
 </head>
 <body>
-
-  <!-- Background Animated Shapes -->
   <div class="scattered-shapes">
     <div class="shape shape-1"></div>
     <div class="shape shape-2"></div>
   </div>
 
-  <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- Top Marquee -->
-  <div class="top-bar">
+  <div class="top-bar" id="promoTopBar">
     <div class="marquee">
        PROMO SPESIAL: Gunakan kode <b>FEMMEIA10</b> untuk DISKON 10% Pembelian Pertama! • Free Ongkir Makassar • Pengiriman Cepat
     </div>
   </div>
 
-  <div class="container">
-    
-    <!-- Header Card -->
+  <div class="container" id="mainContainer">
     <div class="card" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem;">
       <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-dark);" alt="Logo">
       <div style="flex:1;">
@@ -296,31 +148,23 @@
     </div>
 
     <form id="orderForm" novalidate style="display: flex; flex-direction: column; gap: 1.5rem;">
-      
+
       <!-- IDENTITAS -->
       <div class="card">
         <div class="card-header"><i data-lucide="user"></i> Identitas Pembeli</div>
-        
         <div class="input-group">
           <label>Nama Lengkap</label>
           <input type="text" name="nama" id="nama" placeholder="Contoh: Iftitah" required data-label="Nama Lengkap">
         </div>
-
         <div class="input-group">
           <label>Nomor WhatsApp</label>
           <input type="tel" name="wa" id="wa" placeholder="0812xxxx" inputmode="numeric" required data-label="Nomor WhatsApp">
-        </div>
-
-        <div class="input-group">
-          <label>Alamat Lengkap</label>
-          <textarea name="alamat" id="alamat" rows="3" placeholder="Jalan, No. Rumah, RT/RW, Kecamatan, Kota" required data-label="Alamat Lengkap"></textarea>
         </div>
       </div>
 
       <!-- PRODUK -->
       <div class="card">
         <div class="card-header"><i data-lucide="shopping-bag"></i> Detail Produk</div>
-        
         <div class="input-group">
           <label>Jenis Produk</label>
           <div class="select-wrapper">
@@ -332,14 +176,12 @@
             </select>
           </div>
         </div>
-
         <div class="input-group" id="colorGroup">
           <label>Warna: <span id="warnaLabel" style="font-weight:400; color:var(--text);">Belum dipilih</span></label>
           <div id="colorGrid" class="color-grid"></div>
           <input type="hidden" name="warna" id="warnaInput" data-label="Warna Produk">
-          <div id="msgSelectProduct" style="font-size:0.85rem; color:var(--text-muted; font-style:italic; margin-top:5px;">Silakan pilih produk terlebih dahulu.</div>
+          <div id="msgSelectProduct" style="font-size:0.85rem; color:var(--text-muted); font-style:italic; margin-top:5px;">Silakan pilih produk terlebih dahulu.</div>
         </div>
-
         <div class="input-group">
           <label>Jumlah</label>
           <div class="qty-container">
@@ -348,7 +190,6 @@
             <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
           </div>
         </div>
-
         <div class="input-group">
           <label>Tambahan Paper Bag</label>
           <div class="select-wrapper">
@@ -360,24 +201,77 @@
         </div>
       </div>
 
-      <!-- PENGIRIMAN & BAYAR -->
+      <!-- ALAMAT & PENGIRIMAN -->
       <div class="card">
-        <div class="card-header"><i data-lucide="truck"></i> Pengiriman & Pembayaran</div>
-        
+        <div class="card-header"><i data-lucide="map-pin"></i> Alamat & Pengiriman</div>
         <div class="input-group">
-          <label>Metode Pengiriman</label>
+          <label>Provinsi</label>
           <div class="select-wrapper">
-            <select name="pengiriman" id="pengiriman" required data-label="Metode Pengiriman">
-              <option value="">-- Pilih --</option>
-              <option value="SPX ID">SPX ID</option>
-              <option value="J&T">J&T</option>
-              <option value="Gosend">Gosend (Makassar)</option>
-              <option value="Antar Langsung">Antar Langsung (Khusus Tamalanrea)</option>
-              <option value="Ambil Langsung">Ambil Langsung (Ke Lokasi)</option>
+            <select id="provinsi" data-label="Provinsi" required disabled>
+              <option value="">Memuat provinsi...</option>
             </select>
           </div>
         </div>
+        <div class="input-group">
+          <label>Kabupaten/Kota</label>
+          <div class="select-wrapper">
+            <select id="kabupaten" data-label="Kabupaten/Kota" required disabled>
+              <option value="">Pilih provinsi dulu</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Kecamatan</label>
+          <div class="select-wrapper">
+            <select id="kecamatan" data-label="Kecamatan" required disabled>
+              <option value="">Pilih kabupaten/kota dulu</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Kelurahan/Desa</label>
+          <div class="select-wrapper">
+            <select id="kelurahan" data-label="Kelurahan/Desa" required disabled>
+              <option value="">Pilih kecamatan dulu</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Detail Jalan, No, RT/RW</label>
+          <input type="text" id="detailAlamat" placeholder="Contoh: Jl. Perintis Kemerdekaan No. 10, RT 03 / RW 05" data-label="Detail Alamat" required>
+        </div>
+        <div class="input-group">
+          <label>Kurir / Pengiriman</label>
+          <div class="select-wrapper">
+            <select id="kurir" data-label="Kurir" required>
+              <option value="">-- Pilih Kurir --</option>
+              <option value="Gosend">Gosend (Khusus Kota Makassar)</option>
+              <option value="J&T REG">J&T REG</option>
+              <option value="JNE REG">JNE REG</option>
+              <option value="SiCepat REG">SiCepat REG</option>
+              <option value="AnterAja REG">AnterAja REG</option>
+              <option value="SPX REG">SPX REG</option>
+              <option value="POS Kilat">POS Kilat Khusus</option>
+              <option value="Ambil di Toko">Ambil Langsung</option>
+              <option value="Antar Langsung">Antar Langsung (Khusus area Tamalanrea)</option>
+            </select>
+          </div>
+          <div id="kurirNote" style="font-size:0.85rem; color:var(--text-muted); margin-top:6px;">Pilih kurir setelah alamat lengkap.</div>
+        </div>
+        <div class="input-group">
+          <label>Estimasi Ongkir</label>
+          <div class="badge" id="ongkirBadge">
+            <span id="ongkirText">Rp0</span>
+            <span id="ongkirEta" style="color:#16a34a;">ETA -</span>
+          </div>
+          <div class="ship-breakdown" id="ongkirBreakdown" style="margin-top:6px;">Lengkapi alamat & kurir untuk melihat ongkir.</div>
+          <div class="ship-breakdown" id="weightInfo" style="margin-top:6px;">Berat dikenakan: 0 kg</div>
+        </div>
+      </div>
 
+      <!-- BAYAR & CATATAN -->
+      <div class="card">
+        <div class="card-header"><i data-lucide="credit-card"></i> Pembayaran & Catatan</div>
         <div class="input-group">
           <label>Metode Pembayaran</label>
           <div class="select-wrapper">
@@ -390,73 +284,104 @@
             </select>
           </div>
         </div>
-
         <div class="input-group">
           <label>Kode Promo (Opsional)</label>
           <input type="text" name="promo" id="promo" placeholder="Punya kode promo?" style="text-transform:uppercase;">
           <div id="promoStatus" style="font-size:0.8rem; margin-top:4px;"></div>
         </div>
-
         <div class="input-group">
           <label>Catatan Tambahan</label>
           <textarea name="catatan" id="catatan" rows="2" placeholder="Pesan khusus untuk penjual..."></textarea>
         </div>
-
-        <div class="reset-link">
-          <a onclick="resetForm()">Reset Formulir</a>
-        </div>
+        <div class="reset-link"><a onclick="resetForm()">Reset Formulir</a></div>
       </div>
-      
+
     </form>
   </div>
 
-  <!-- STICKY FOOTER (Total & Checkout) -->
   <div class="sticky-footer">
     <div class="total-wrapper">
       <span class="total-label">Total Pembayaran <span id="promoBadge" class="promo-applied">(Diskon 10%)</span></span>
       <span class="total-price" id="footerTotal">Rp0</span>
+      <span class="ship-breakdown" id="footerShip">Termasuk ongkir: Rp0</span>
     </div>
-    <button type="button" class="btn-checkout" onclick="validateAndOrder()">
-      Pesan <i data-lucide="arrow-right" style="width:18px;"></i>
-    </button>
+    <button type="button" class="btn-checkout" onclick="validateAndOrder()">Pesan <i data-lucide="arrow-right" style="width:18px;"></i></button>
   </div>
 
-  <!-- MODAL KONFIRMASI -->
   <div class="modal-overlay" id="confirmModal">
     <div class="modal-box">
       <div class="modal-title">Konfirmasi Pesanan</div>
       <div id="summaryContent"></div>
-      
-      <button class="btn-wa" id="btnSendWa">
-        <i data-lucide="message-circle"></i> Lanjut ke WhatsApp
-      </button>
+      <button class="btn-wa" id="btnSendWa"><i data-lucide="message-circle"></i> Lanjut ke WhatsApp</button>
       <button class="btn-back" onclick="closeModal()">Periksa Lagi</button>
     </div>
   </div>
 
   <script>
-    // Initialize Icons
     lucide.createIcons();
 
-    // --- DATA ---
+    // --- DATA PRODUK, WARNA, BERAT/VOLUME (disesuaikan hijab/inner) ---
     const PRODUCT_DATA = {
-      "Paris Jadul - 35000": [
-        "Hitam", "Stone", "Abu Ash", "Soft Latte", "Cream", "Vanilla", 
-        "Biskuit", "Dusty Rose", "Dark Blue", "Dark Choco", "Burgundy", "Maroon"
-      ],
-      "Pashmina Kaos - 55000": ["Hitam", "Dark Grey", "Khaky Putty", "Navy"],
-      "Premium Inner - 25000": ["BW", "Oat", "Hitam", "Silver", "Dark Grey", "Khaky"]
+      "Paris Jadul - 35000": ["Hitam","Stone","Abu Ash","Soft Latte","Cream","Vanilla","Biskuit","Dusty Rose","Dark Blue","Dark Choco","Burgundy","Maroon"],
+      "Pashmina Kaos - 55000": ["Hitam","Dark Grey","Khaky Putty","Navy"],
+      "Premium Inner - 25000": ["BW","Oat","Hitam","Silver","Dark Grey","Khaky"]
     };
-
     const COLOR_HEX = {
-      "Hitam": "#191919", "Stone": "#b8b6b1", "Abu Ash": "#a7a6a6", "Soft Latte": "#e5ceb8",
-      "Cream": "#fff6cf", "Vanilla": "#fbe7a2", "Biskuit": "#e2c39a", "Dusty Rose": "#e4aeb1",
-      "Dark Blue": "#222e50", "Dark Choco": "#513c29", "Burgundy": "#7d2636", "Maroon": "#781f29",
-      "Dark Grey": "#44474b", "Silver": "#c0c0c0", "Khaky": "#bdb76b", "Oat": "#e5d1b8",
-      "BW": "#f8f8f8", "Khaky Putty": "#cabfa0", "Navy": "#2a3759"
+      "Hitam":"#191919","Stone":"#b8b6b1","Abu Ash":"#a7a6a6","Soft Latte":"#e5ceb8","Cream":"#fff6cf","Vanilla":"#fbe7a2",
+      "Biskuit":"#e2c39a","Dusty Rose":"#e4aeb1","Dark Blue":"#222e50","Dark Choco":"#513c29","Burgundy":"#7d2636","Maroon":"#781f29",
+      "Dark Grey":"#44474b","Silver":"#c0c0c0","Khaky":"#bdb76b","Oat":"#e5d1b8","BW":"#f8f8f8","Khaky Putty":"#cabfa0","Navy":"#2a3759"
+    };
+    // Berat & dimensi realistis untuk hijab/inner (gram, cm)
+    const PRODUCT_META = {
+      "Paris Jadul - 35000": { weightGram: 110, dim: [26,26,1.5] },
+      "Pashmina Kaos - 55000": { weightGram: 170, dim: [30,25,2] },
+      "Premium Inner - 25000": { weightGram: 60,  dim: [20,15,1.5] }
     };
 
-    // --- ELEMENTS ---
+    // Tambahan berat kemasan (umum hijab)
+    const PACKAGING_WEIGHT_GRAM = 25;   // plastik + label
+    const PAPERBAG_WEIGHT_GRAM = 35;    // jika pilih paper bag
+    const MIN_INSTANT_KG = 0.5;         // minimum charge same-day/instant (0.5 kg)
+    const MIN_REG_KG = 1;               // minimum charge reguler (dibulatkan ke 1 kg)
+    const INSTANT_EXTRA_PER_KG = 3000;  // tambahan per kg (atau per 0.5kg dibulat) untuk layanan instant jika di atas 1 kg
+
+    // TOKO
+    const STORE_CITY_BASE = "Makassar";
+    const STORE_CITY_ALT = "Kota Makassar";
+    const STORE_PROVINCE = "Sulawesi Selatan";
+    const STORE_DISTRICT = "Tamalanrea";
+    const STORE_DETAIL = "Tamalanrea Jaya/Admin Akan Menginfokan";
+
+    // API Wilayah (Ibnux)
+    const API_ROOT = "https://ibnux.github.io/data-indonesia";
+
+    // Zona
+    const PROVINCE_ZONE = {
+      "DKI Jakarta":"java","Jawa Barat":"java","Jawa Tengah":"java","Jawa Timur":"java","DI Yogyakarta":"java","Banten":"java",
+      "Bali":"bali_nusa","Nusa Tenggara Barat":"bali_nusa","Nusa Tenggara Timur":"bali_nusa",
+      "Sumatera Utara":"sumatra","Sumatera Barat":"sumatra","Riau":"sumatra","Kepulauan Riau":"sumatra","Jambi":"sumatra","Bengkulu":"sumatra","Sumatera Selatan":"sumatra","Kepulauan Bangka Belitung":"sumatra","Lampung":"sumatra",
+      "Kalimantan Barat":"kalimantan","Kalimantan Tengah":"kalimantan","Kalimantan Selatan":"kalimantan","Kalimantan Timur":"kalimantan","Kalimantan Utara":"kalimantan",
+      "Sulawesi Utara":"sulawesi","Sulawesi Tengah":"sulawesi","Sulawesi Selatan":"sulawesi","Sulawesi Tenggara":"sulawesi","Gorontalo":"sulawesi","Sulawesi Barat":"sulawesi",
+      "Maluku":"maluku_papua","Maluku Utara":"maluku_papua","Papua":"maluku_papua","Papua Barat":"maluku_papua","Papua Barat Daya":"maluku_papua","Papua Tengah":"maluku_papua","Papua Pegunungan":"maluku_papua","Papua Selatan":"maluku_papua"
+    };
+
+    // Tarif Ongkir manual — DISKON UNTUK MAKASSAR & SULSEL (lebih rendah)
+    // base: per 1 kg pertama, addPerKg: tiap kg berikutnya
+    const SHIP_RATES = {
+      "Gosend":    { sameCity: 8000, cityOuter: 9000, eta: "3-6 jam", minFare: 6000 },
+      "J&T REG":   { sameCity: 7000, sameProvince: 11000, java: 15000, sumatra: 17000, kalimantan: 18000, sulawesi: 12000, bali_nusa: 17000, maluku_papua: 28000, addPerKg: 3500, eta: "1-5 hari" },
+      "JNE REG":   { sameCity: 8000, sameProvince: 12000, java: 16000, sumatra: 18000, kalimantan: 19000, sulawesi: 12500, bali_nusa: 18000, maluku_papua: 29000, addPerKg: 3800, eta: "1-5 hari" },
+      "SiCepat REG":{ sameCity: 7000, sameProvince: 11000, java: 15000, sumatra: 17000, kalimantan: 18500, sulawesi: 11500, bali_nusa: 17000, maluku_papua: 28000, addPerKg: 3400, eta: "1-4 hari" },
+      "AnterAja REG":{ sameCity: 7500, sameProvince: 11500, java: 15500, sumatra: 17500, kalimantan: 19000, sulawesi: 11800, bali_nusa: 17500, maluku_papua: 28500, addPerKg: 3400, eta: "1-4 hari" },
+      "SPX REG":   { sameCity: 7000, sameProvince: 10500, java: 14500, sumatra: 16500, kalimantan: 18000, sulawesi: 11000, bali_nusa: 16500, maluku_papua: 27500, addPerKg: 3200, eta: "1-4 hari" },
+      "POS Kilat": { sameCity: 7500, sameProvince: 11500, java: 16000, sumatra: 18000, kalimantan: 19500, sulawesi: 12000, bali_nusa: 18000, maluku_papua: 29500, addPerKg: 3800, eta: "2-6 hari" },
+      "Ambil di Toko": { fixed: 0, eta: "Bisa hari ini" },
+      "Antar Langsung": { sameDistrict: 10000, nearCity: 11000, outerCity: 12000, eta: "Hari ini", minFare: 4000 }
+    };
+    // Surcharge lokasi remote (lebih ringan)
+    const REMOTE_SURCHARGE = { maluku_papua: 3000, kalimantan: 1500, sumatra: 800, bali_nusa: 800 };
+
+    // ELEMENTS
     const form = document.getElementById('orderForm');
     const elProduk = document.getElementById('produk');
     const elColorGrid = document.getElementById('colorGrid');
@@ -467,89 +392,104 @@
     const elPromo = document.getElementById('promo');
     const elTotalFooter = document.getElementById('footerTotal');
     const elPromoBadge = document.getElementById('promoBadge');
+    const elFooterShip = document.getElementById('footerShip');
     const modal = document.getElementById('confirmModal');
-    
-    // --- STATE ---
+
+    const elProv = document.getElementById('provinsi');
+    const elKab = document.getElementById('kabupaten');
+    const elKec = document.getElementById('kecamatan');
+    const elKel = document.getElementById('kelurahan');
+    const elDetail = document.getElementById('detailAlamat');
+    const elKurir = document.getElementById('kurir');
+    const elOngkirText = document.getElementById('ongkirText');
+    const elOngkirEta = document.getElementById('ongkirEta');
+    const elOngkirBreakdown = document.getElementById('ongkirBreakdown');
+    const elWeightInfo = document.getElementById('weightInfo');
+    const elPromoTopBar = document.getElementById('promoTopBar');
+
+    // STATE
     let totalPrice = 0;
     let discountActive = false;
     const PROMO_CODE = "FEMMEIA10";
+    const PROMO_USED_KEY = "femmeia_promo_used";
+    let shippingCost = 0;
+    let shippingEta = "-";
+    let billableKg = 0;
+    let weightInfoState = { actualKg: 0, volumetricKg: 0, billableInstantKg: 0, billableRegularKg: 0 };
+    let locationNames = { provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "" };
+    let locationIds = { provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "" };
 
-    // --- EVENT LISTENERS ---
-    
-    // 1. Load Data from LocalStorage on Startup
     window.addEventListener('DOMContentLoaded', () => {
+      checkPromoStatus();
+      initLocationSelectors();
       loadFormData();
-      lucide.createIcons(); // Re-init icons
+      lucide.createIcons();
+      calcShipping();
+      calculateTotal();
     });
 
-    // 2. Auto Save on Input
     form.addEventListener('input', (e) => {
-      // Remove error styling if user starts typing/selecting
-      if(e.target.classList.contains('input-error')) {
-        e.target.classList.remove('input-error');
+      if(e.target.classList.contains('input-error')) e.target.classList.remove('input-error');
+      if(['jumlah','paperbag','promo','detailAlamat'].includes(e.target.id)) {
+        calcShipping();
+        calculateTotal();
       }
-      calculateTotal();
       saveFormData();
     });
 
-    // 3. Product Change -> Update Colors
-    elProduk.addEventListener('change', () => {
-      renderColors();
-      calculateTotal();
-      saveFormData();
-      elProduk.classList.remove('input-error'); // Remove error style
-    });
+    elProduk.addEventListener('change', () => { renderColors(); calcShipping(); calculateTotal(); saveFormData(); elProduk.classList.remove('input-error'); });
+    elKurir.addEventListener('change', () => { calcShipping(); calculateTotal(); saveFormData(); });
+    [elProv, elKab, elKec, elKel].forEach(sel => sel.addEventListener('change', () => { calcShipping(); calculateTotal(); saveFormData(); }));
 
-    // --- FUNCTIONS ---
+    // PROMO
+    function checkPromoStatus() {
+      const isPromoUsed = localStorage.getItem(PROMO_USED_KEY) === 'true';
+      if (isPromoUsed) {
+        elPromoTopBar.classList.add('hidden-bar');
+        document.body.style.paddingTop = "20px";
+        elPromo.value = '';
+        elPromo.disabled = true;
+        elPromo.placeholder = "Promo Diskon Pembelian Pertama Telah Dipakai";
+        const promoStatus = document.getElementById('promoStatus');
+        promoStatus.innerHTML = '<span style="color:var(--text-muted); font-style:italic;">Anda sudah menggunakan promo ini sebelumnya.</span>';
+      }
+    }
+    function markPromoAsUsed() { if (discountActive) localStorage.setItem(PROMO_USED_KEY, 'true'); }
 
-    // Toast Logic
+    // TOAST
     function showToast(message, type = 'error') {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
-      
       const icon = type === 'error' ? 'alert-circle' : 'check-circle';
       toast.innerHTML = `<i data-lucide="${icon}"></i> <span>${message}</span>`;
-      
       container.appendChild(toast);
       lucide.createIcons();
-
-      // Trigger animation
-      requestAnimationFrame(() => {
-        toast.classList.add('show');
-      });
-
-      // Remove after 3s
-      setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      requestAnimationFrame(() => toast.classList.add('show'));
+      setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
     }
 
-    // Quantity Stepper Logic
+    // QTY
     function updateQty(change) {
       let val = parseInt(elJumlah.value) || 1;
       val += change;
       if (val < 1) val = 1;
       if (val > 50) val = 50;
       elJumlah.value = val;
+      calcShipping();
       calculateTotal();
       saveFormData();
     }
 
-    // Render Colors based on Product
+    // COLORS
     function renderColors() {
       const selectedProduct = elProduk.value;
       elColorGrid.innerHTML = '';
       elWarnaInput.value = '';
       elWarnaLabel.innerText = 'Belum dipilih';
       document.getElementById('msgSelectProduct').style.display = selectedProduct ? 'none' : 'block';
-
       if (!selectedProduct) return;
-
-      const colors = PRODUCT_DATA[selectedProduct] || [];
-      
-      colors.forEach(color => {
+      (PRODUCT_DATA[selectedProduct] || []).forEach(color => {
         const hex = COLOR_HEX[color] || '#e5e7eb';
         const div = document.createElement('div');
         div.className = 'color-option';
@@ -559,40 +499,255 @@
         elColorGrid.appendChild(div);
       });
     }
-
-    // Handle Color Selection
     function selectColor(element, colorName) {
-      // Remove active class from all
       document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
-      // Add to clicked
       element.classList.add('selected');
-      // Update Inputs
       elWarnaInput.value = colorName;
       elWarnaLabel.innerHTML = `<span class="selected-color-label">${colorName}</span>`;
       saveFormData();
     }
 
-    // Calculate Total Price
+    // LOKASI (Ibnux)
+    async function initLocationSelectors() {
+      setSelectLoading(elProv, "Memuat provinsi...");
+      try {
+        const data = await fetch(`${API_ROOT}/provinsi.json`).then(r => r.json());
+        populateOptions(elProv, data, "Pilih provinsi", "nama");
+        elProv.disabled = false;
+        if(locationIds.provinsi) elProv.value = locationIds.provinsi;
+        if(elProv.value) await handleProvinceChange(false);
+      } catch (err) { showToast("Gagal memuat daftar provinsi"); }
+    }
+    function populateOptions(selectEl, data, placeholder, labelKey = "name") {
+      selectEl.innerHTML = `<option value="">-- ${placeholder} --</option>`;
+      data.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.id;
+        opt.textContent = item[labelKey];
+        selectEl.appendChild(opt);
+      });
+    }
+    function setSelectLoading(selectEl, text) { selectEl.innerHTML = `<option value="">${text}</option>`; selectEl.disabled = true; }
+    elProv.addEventListener('change', () => handleProvinceChange(true));
+    elKab.addEventListener('change', () => handleKabChange(true));
+    elKec.addEventListener('change', () => handleKecChange(true));
+
+    async function handleProvinceChange(clearLower = true) {
+      locationIds.provinsi = elProv.value;
+      locationNames.provinsi = elProv.options[elProv.selectedIndex]?.text || "";
+      if (clearLower) { clearSelect(elKab, "Pilih provinsi dulu"); clearSelect(elKec, "Pilih kabupaten/kota dulu"); clearSelect(elKel, "Pilih kecamatan dulu"); }
+      if (!elProv.value) return;
+      setSelectLoading(elKab, "Memuat kabupaten/kota...");
+      try {
+        const data = await fetch(`${API_ROOT}/kabupaten/${elProv.value}.json`).then(r => r.json());
+        populateOptions(elKab, data, "Pilih kabupaten/kota", "nama");
+        elKab.disabled = false;
+        if(locationIds.kabupaten) { elKab.value = locationIds.kabupaten; await handleKabChange(false); }
+      } catch (e) { showToast("Gagal memuat kabupaten/kota"); }
+    }
+
+    async function handleKabChange(clearLower = true) {
+      locationIds.kabupaten = elKab.value;
+      locationNames.kabupaten = elKab.options[elKab.selectedIndex]?.text || "";
+      if (clearLower) { clearSelect(elKec, "Pilih kabupaten/kota dulu"); clearSelect(elKel, "Pilih kecamatan dulu"); }
+      if (!elKab.value) return;
+      setSelectLoading(elKec, "Memuat kecamatan...");
+      try {
+        const data = await fetch(`${API_ROOT}/kecamatan/${elKab.value}.json`).then(r => r.json());
+        populateOptions(elKec, data, "Pilih kecamatan", "nama");
+        elKec.disabled = false;
+        if(locationIds.kecamatan) { elKec.value = locationIds.kecamatan; await handleKecChange(false); }
+      } catch (e) { showToast("Gagal memuat kecamatan"); }
+    }
+
+    async function handleKecChange(clearLower = true) {
+      locationIds.kecamatan = elKec.value;
+      locationNames.kecamatan = elKec.options[elKec.selectedIndex]?.text || "";
+      if (clearLower) clearSelect(elKel, "Pilih kecamatan dulu");
+      if (!elKec.value) return;
+      setSelectLoading(elKel, "Memuat kelurahan...");
+      try {
+        const data = await fetch(`${API_ROOT}/kelurahan/${elKec.value}.json`).then(r => r.json());
+        populateOptions(elKel, data, "Pilih kelurahan/desa", "nama");
+        elKel.disabled = false;
+        if(locationIds.kelurahan) elKel.value = locationIds.kelurahan;
+      } catch (e) { showToast("Gagal memuat kelurahan/desa"); }
+    }
+    function clearSelect(el, placeholder) { el.innerHTML = `<option value="">${placeholder}</option>`; el.disabled = true; el.classList.remove('input-error'); }
+
+    // Normalisasi nama
+    function normalizeName(str = "") {
+      return str.toLowerCase()
+        .replace(/kabupaten|kab\.?|kota admin\.?|kota|kotamadya|adm\.?/gi, "")
+        .replace(/-/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+    function isSameCityNormalized(kabName) {
+      const base = normalizeName(STORE_CITY_BASE);
+      const baseAlt = normalizeName(STORE_CITY_ALT);
+      const target = normalizeName(kabName);
+      return target === base || target === baseAlt || target.includes(base) || target.includes(baseAlt);
+    }
+
+    // Berat & volumetrik detail (lebih akurat)
+    function getWeightBreakdown() {
+      const productVal = elProduk.value;
+      if(!productVal) return { qty: 0, actualKg: 0, volumetricKg: 0, billableBaseKg: 0, billableInstantKg: 0, billableRegularKg: 0 };
+      const meta = PRODUCT_META[productVal] || { weightGram: 140, dim:[25,25,2] };
+      const qty = Math.min(50, Math.max(1, parseInt(elJumlah.value) || 1));
+      const paperbag = elPaperbag.value === 'Ya';
+      const packagingGram = PACKAGING_WEIGHT_GRAM + (paperbag ? PAPERBAG_WEIGHT_GRAM : 0);
+
+      const actualGram = (meta.weightGram * qty) + packagingGram;
+      const actualKg = actualGram / 1000;
+
+      const [p,l,t] = meta.dim;
+      const volPerItem = (p*l*t) / 6000; // rumus volumetrik (cm)
+      const volumetricKg = volPerItem * qty;
+
+      const billableBase = Math.max(actualKg, volumetricKg);
+      // Pembulatan: reguler ke atas 1 kg, instant/sameday ke 0.1 kg dengan minimum 0.5 kg
+      const billableInstant = Math.max(MIN_INSTANT_KG, Math.ceil(billableBase * 10) / 10); // 1 desimal
+      const billableRegular = Math.max(MIN_REG_KG, Math.ceil(billableBase)); // bulat kg
+
+      return {
+        qty,
+        actualKg: parseFloat(actualKg.toFixed(3)),
+        volumetricKg: parseFloat(volumetricKg.toFixed(3)),
+        billableBaseKg: parseFloat(billableBase.toFixed(3)),
+        billableInstantKg: billableInstant,
+        billableRegularKg: billableRegular
+      };
+    }
+
+    // ONGKIR
+    function getZone(provName) { return PROVINCE_ZONE[provName] || "other"; }
+
+    function calcShipping() {
+      shippingCost = 0; shippingEta = "-";
+      weightInfoState = getWeightBreakdown();
+      billableKg = weightInfoState.billableRegularKg;
+
+      const prov = elProv.options[elProv.selectedIndex]?.text || "";
+      const kab = elKab.options[elKab.selectedIndex]?.text || "";
+      const kec = elKec.options[elKec.selectedIndex]?.text || "";
+      const kel = elKel.options[elKel.selectedIndex]?.text || "";
+      const kurir = elKurir.value;
+      locationNames = { provinsi: prov, kabupaten: kab, kecamatan: kec, kelurahan: kel };
+
+      if(!prov || !kab || !kec || !kel || !kurir) {
+        setOngkirUI("Rp0", "-", "Lengkapi alamat & kurir untuk melihat ongkir.");
+        return;
+      }
+
+      const isSameProvince = prov === STORE_PROVINCE;
+      const isSameCity = isSameCityNormalized(kab);
+      const isSameDistrict = isSameCity && normalizeName(kec).includes(normalizeName(STORE_DISTRICT));
+      const zone = getZone(prov);
+
+      // Pickup
+      if(kurir === "Ambil di Toko") {
+        shippingCost = 0; shippingEta = SHIP_RATES[kurir].eta;
+        setOngkirUI("Rp0", shippingEta, `Ambil langsung: ${STORE_DETAIL}`);
+        return;
+      }
+
+      // Antar langsung (khusus Makassar)
+      if(kurir === "Antar Langsung") {
+        if(!isSameCity) { setOngkirUI("N/A", "-", "Antar langsung hanya untuk Kota Makassar, Tamalanrea"); showToast("Antar langsung hanya untuk Kota Makassar, Tamalanrea"); return; }
+        const rate = SHIP_RATES[kurir];
+        let baseFare = isSameDistrict ? rate.sameDistrict : (isSameCity ? (rate.nearCity || rate.outerCity) : rate.outerCity);
+        const kgInstant = weightInfoState.billableInstantKg;
+        // Tambahan bobot >1 kg
+        if(kgInstant > 1) baseFare += (kgInstant - 1) * INSTANT_EXTRA_PER_KG;
+        shippingCost = Math.max(baseFare, rate.minFare || 0);
+        shippingEta = rate.eta;
+        setOngkirUI(formatRupiah(shippingCost), shippingEta, `Antar langsung khusus area Tamalanrea • Dibulatkan: ${kgInstant.toFixed(1)} kg`);
+        return;
+      }
+
+      // Gosend (instant/sameday Makassar)
+      if(kurir === "Gosend") {
+        if(!isSameCity) { setOngkirUI("N/A", "-", "Gosend hanya untuk Kota Makassar."); showToast("Gosend hanya untuk Kota Makassar"); return; }
+        const rate = SHIP_RATES[kurir];
+        const kgInstant = weightInfoState.billableInstantKg;
+        const baseFare = isSameDistrict ? rate.sameCity : rate.cityOuter;
+        let cost = baseFare;
+        if(kgInstant > 1) cost += (kgInstant - 1) * INSTANT_EXTRA_PER_KG;
+        shippingCost = Math.max(cost, rate.minFare || 0);
+        shippingEta = rate.eta;
+        setOngkirUI(formatRupiah(shippingCost), shippingEta, `Instant Makassar • Dibulatkan: ${kgInstant.toFixed(1)} kg`);
+        return;
+      }
+
+      // Reguler
+      const rate = SHIP_RATES[kurir] || SHIP_RATES["J&T REG"];
+      let base = 0;
+      if(isSameCity) base = rate.sameCity;
+      else if(isSameProvince) base = rate.sameProvince;
+      else {
+        switch(zone) {
+          case "sulawesi": base = rate.sulawesi; break;
+          case "java": base = rate.java; break;
+          case "sumatra": base = rate.sumatra; break;
+          case "kalimantan": base = rate.kalimantan; break;
+          case "bali_nusa": base = rate.bali_nusa; break;
+          case "maluku_papua": base = rate.maluku_papua; break;
+          default: base = rate.maluku_papua;
+        }
+      }
+
+      const addPerKg = rate.addPerKg || 3500;
+      const kg = weightInfoState.billableRegularKg; // sudah dibulatkan ke atas (min 1 kg)
+      shippingCost = base + (kg - 1) * addPerKg;
+
+      // surcharge remote
+      if(REMOTE_SURCHARGE[zone]) shippingCost += REMOTE_SURCHARGE[zone];
+
+      shippingEta = rate.eta;
+      const breakdown = `${kab}, ${prov} • Zona: ${zone.toUpperCase().replace('_','/')} • Dibulatkan: ${kg} kg`;
+      setOngkirUI(formatRupiah(shippingCost), shippingEta, breakdown);
+    }
+
+    function setOngkirUI(text, eta, breakdown) {
+      elOngkirText.textContent = text;
+      elOngkirEta.textContent = `ETA ${eta}`;
+      elOngkirBreakdown.textContent = breakdown;
+      elWeightInfo.textContent = `Berat aktual: ${weightInfoState.actualKg} kg • Volume: ${weightInfoState.volumetricKg} kg • Dikenakan reguler: ${weightInfoState.billableRegularKg} kg | instant: ${weightInfoState.billableInstantKg.toFixed ? weightInfoState.billableInstantKg.toFixed(1) : weightInfoState.billableInstantKg} kg`;
+      elFooterShip.textContent = `Termasuk ongkir: ${text}`;
+      calculateTotal();
+    }
+
+    function formatRupiah(num) { return 'Rp' + (num || 0).toLocaleString('id-ID'); }
+
+    // TOTAL
     function calculateTotal() {
       const productVal = elProduk.value;
       const qty = parseInt(elJumlah.value) || 1;
       const paperbag = elPaperbag.value === 'Ya';
       const promoInput = elPromo.value.trim().toUpperCase();
+      const isPromoUsed = localStorage.getItem(PROMO_USED_KEY) === 'true';
 
       let price = 0;
-      if (productVal) {
-        // Extract price from value string "Name - 35000"
-        price = parseInt(productVal.split('-')[1].trim());
-      }
+      if (productVal) price = parseInt(productVal.split('-')[1].trim());
 
       let subtotal = price * qty;
       if (paperbag) subtotal += 5000;
+      subtotal += shippingCost;
 
-      // Promo Logic
       const promoStatus = document.getElementById('promoStatus');
-      if (promoInput === PROMO_CODE) {
+      if (isPromoUsed) {
+        discountActive = false;
+        elPromoBadge.style.display = 'none';
+        if(elPromo.value !== '') {
+          elPromo.value = '';
+          promoStatus.innerHTML = '<span style="color:var(--text-muted); font-style:italic;">Promo telah terpakai.</span>';
+        }
+      }
+      else if (promoInput === PROMO_CODE) {
         discountActive = true;
-        subtotal = subtotal * 0.9; // 10% off
+        subtotal = subtotal * 0.9;
         promoStatus.innerHTML = '<span style="color:var(--success)">✔ Kode promo aktif!</span>';
         elPromoBadge.style.display = 'inline';
       } else if (promoInput.length > 3) {
@@ -606,132 +761,109 @@
       }
 
       totalPrice = Math.floor(subtotal);
-      elTotalFooter.innerText = 'Rp' + totalPrice.toLocaleString('id-ID');
+      elTotalFooter.innerText = formatRupiah(totalPrice);
     }
 
-    // Validation & Modal Trigger
+    // VALIDATION
     function validateAndOrder() {
       let firstErrorEl = null;
       let errorMessage = "";
-
-      // 1. Reset Styles
       document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
 
-      // 2. Helper to check fields
-      const checkField = (id) => {
-        const el = document.getElementById(id);
-        if (!el.value.trim()) {
+      const checkField = (el) => {
+        if (!el.value || !el.value.trim()) {
           el.classList.add('input-error');
-          if (!firstErrorEl) {
-            firstErrorEl = el;
-            errorMessage = `${el.getAttribute('data-label')} belum diisi`;
-          }
+          if (!firstErrorEl) { firstErrorEl = el; errorMessage = `${el.getAttribute('data-label')} belum diisi`; }
           return false;
         }
         return true;
       };
 
-      // 3. Run Checks Sequence
-      checkField('nama');
-      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
+      if(!checkField(document.getElementById('nama'))) return handleError(firstErrorEl, errorMessage);
+      if(!checkField(document.getElementById('wa'))) return handleError(firstErrorEl, errorMessage);
+      if(!checkField(elProduk)) return handleError(firstErrorEl, errorMessage);
+      if (!elWarnaInput.value) { firstErrorEl = document.getElementById('colorGroup'); errorMessage = "Warna produk belum dipilih"; return handleError(firstErrorEl, errorMessage); }
+      if(!checkField(elProv)) return handleError(firstErrorEl, errorMessage);
+      if(!checkField(elKab)) return handleError(firstErrorEl, errorMessage);
+      if(!checkField(elKec)) return handleError(firstErrorEl, errorMessage);
+      if(!checkField(elKel)) return handleError(firstErrorEl, errorMessage);
+      if(!checkField(elDetail)) { elDetail.setAttribute('data-label','Detail Alamat'); return handleError(firstErrorEl, "Detail alamat belum diisi"); }
+      if(!checkField(elKurir)) return handleError(firstErrorEl, errorMessage);
+      if(shippingCost <= 0 && elKurir.value !== "Ambil di Toko") { firstErrorEl = elKurir; errorMessage = "Ongkir belum dihitung/kurir tidak valid"; return handleError(firstErrorEl, errorMessage); }
+      if(!checkField(document.getElementById('pembayaran'))) return handleError(firstErrorEl, errorMessage);
 
-      checkField('wa');
-      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
-
-      checkField('alamat');
-      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
-
-      checkField('produk');
-      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
-
-      // Special Check for Color
-      if (!elWarnaInput.value) {
-        firstErrorEl = document.getElementById('colorGroup'); // Scroll to group container
-        errorMessage = "Warna produk belum dipilih";
-        return handleError(firstErrorEl, errorMessage);
-      }
-
-      checkField('pengiriman');
-      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
-
-      checkField('pembayaran');
-      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
-
-      // If All Valid
       showSummaryModal();
     }
-
     function handleError(element, message) {
       showToast(message);
-      // Scroll to element with offset for Sticky Header
-      const yOffset = -100; // offset for top bar
+      const yOffset = -100;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({top: y, behavior: 'smooth'});
-      
-      // Focus if it's an input
       if(element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT') {
-        setTimeout(() => element.focus(), 500); // Delay focus for scroll animation
+        setTimeout(() => element.focus(), 500);
       }
     }
 
-
-    // Show Confirmation Modal
+    // SUMMARY MODAL
     function showSummaryModal() {
       const productName = elProduk.value.split('-')[0].trim();
       const color = elWarnaInput.value;
-      
+      const fullAddress = `${elDetail.value}, Kel. ${elKel.options[elKel.selectedIndex].text}, Kec. ${elKec.options[elKec.selectedIndex].text}, ${elKab.options[elKab.selectedIndex].text}, ${elProv.options[elProv.selectedIndex].text}`;
+      const kurir = elKurir.value;
       const html = `
         <div class="summary-item"><strong>Nama:</strong> <span>${document.getElementById('nama').value}</span></div>
-        <div class="summary-item"><strong>Alamat:</strong> <span style="text-align:right; max-width:60%;">${document.getElementById('alamat').value}</span></div>
+        <div class="summary-item"><strong>WA:</strong> <span>${document.getElementById('wa').value}</span></div>
+        <div class="summary-item"><strong>Alamat:</strong> <span style="text-align:right; max-width:60%;">${fullAddress}</span></div>
+        <div class="summary-item"><strong>Kurir:</strong> <span>${kurir} (${elOngkirEta.textContent})</span></div>
+        <div class="summary-item"><strong>Ongkir:</strong> <span>${formatRupiah(shippingCost)}</span></div>
+        <div class="summary-item"><strong>Berat Dikenakan:</strong> <span>${weightInfoState.billableRegularKg} kg (reg) / ${weightInfoState.billableInstantKg.toFixed ? weightInfoState.billableInstantKg.toFixed(1) : weightInfoState.billableInstantKg} kg (inst)</span></div>
         <div class="summary-item"><strong>Produk:</strong> <span>${productName}</span></div>
         <div class="summary-item"><strong>Warna:</strong> <span>${color}</span></div>
         <div class="summary-item"><strong>Jumlah:</strong> <span>${elJumlah.value} pcs</span></div>
-        <div class="summary-item"><strong>Pengiriman:</strong> <span>${document.getElementById('pengiriman').value}</span></div>
         <div class="summary-item"><strong>Pembayaran:</strong> <span>${document.getElementById('pembayaran').value}</span></div>
-        <div class="summary-total">
-          <span>Total Bayar</span>
-          <span>Rp${totalPrice.toLocaleString('id-ID')}</span>
-        </div>
+        <div class="summary-total"><span>Total Bayar</span><span>${formatRupiah(totalPrice)}</span></div>
       `;
-      
       document.getElementById('summaryContent').innerHTML = html;
       modal.style.display = 'flex';
 
-      // Setup WhatsApp Button
       document.getElementById('btnSendWa').onclick = () => {
+        markPromoAsUsed();
         const text = `Halo Admin FemmeiaCloth, saya ingin pesan:\n\n` +
           `• Nama: ${document.getElementById('nama').value}\n` +
+          `• WA: ${document.getElementById('wa').value}\n` +
+          `• Alamat: ${fullAddress}\n` +
+          `• Kurir: ${kurir} (${elOngkirEta.textContent})\n` +
+          `• Ongkir: ${formatRupiah(shippingCost)}\n` +
+          `• Berat dikenakan: ${weightInfoState.billableRegularKg} kg (reg) / ${weightInfoState.billableInstantKg.toFixed ? weightInfoState.billableInstantKg.toFixed(1) : weightInfoState.billableInstantKg} kg (inst)\n` +
           `• Produk: ${productName} (${color})\n` +
           `• Qty: ${elJumlah.value}\n` +
-          `• Total: Rp${totalPrice.toLocaleString('id-ID')}\n` +
-          `• Pengiriman: ${document.getElementById('pengiriman').value}\n` +
+          `• Total: ${formatRupiah(totalPrice)}\n` +
           `• Pembayaran: ${document.getElementById('pembayaran').value}\n` +
-          `• Alamat: ${document.getElementById('alamat').value}\n` +
           `• Catatan: ${document.getElementById('catatan').value || '-'}`;
-        
-        // Clear Storage after order
         localStorage.removeItem('femmeia_order_data');
         window.open(`https://wa.me/6287777420644?text=${encodeURIComponent(text)}`, '_blank');
+        closeModal();
+        checkPromoStatus();
+        calculateTotal();
       };
     }
+    function closeModal() { modal.style.display = 'none'; }
 
-    function closeModal() {
-      modal.style.display = 'none';
-    }
-
-    // --- LOCAL STORAGE LOGIC ---
+    // LOCAL STORAGE
     function saveFormData() {
       const data = {
         nama: document.getElementById('nama').value,
         wa: document.getElementById('wa').value,
-        alamat: document.getElementById('alamat').value,
         produk: elProduk.value,
         warna: elWarnaInput.value,
         jumlah: elJumlah.value,
         paperbag: elPaperbag.value,
-        pengiriman: document.getElementById('pengiriman').value,
         pembayaran: document.getElementById('pembayaran').value,
-        catatan: document.getElementById('catatan').value
+        catatan: document.getElementById('catatan').value,
+        promo: elPromo.value,
+        provinsi: elProv.value, kabupaten: elKab.value, kecamatan: elKec.value, kelurahan: elKel.value,
+        detail: elDetail.value,
+        kurir: elKurir.value
       };
       localStorage.setItem('femmeia_order_data', JSON.stringify(data));
     }
@@ -743,40 +875,36 @@
           const data = JSON.parse(saved);
           document.getElementById('nama').value = data.nama || '';
           document.getElementById('wa').value = data.wa || '';
-          document.getElementById('alamat').value = data.alamat || '';
           elJumlah.value = data.jumlah || 1;
           elPaperbag.value = data.paperbag || 'Tidak';
-          document.getElementById('pengiriman').value = data.pengiriman || '';
           document.getElementById('pembayaran').value = data.pembayaran || '';
           document.getElementById('catatan').value = data.catatan || '';
+          elPromo.value = data.promo || '';
 
           if (data.produk) {
             elProduk.value = data.produk;
-            renderColors(); // Re-render circles
-            
-            // Restore color selection visually
+            renderColors();
             if (data.warna) {
               const colorOptions = document.querySelectorAll('.color-option');
-              for (let div of colorOptions) {
-                if (div.title === data.warna) {
-                  selectColor(div, data.warna);
-                  break;
-                }
-              }
+              for (let div of colorOptions) if (div.title === data.warna) { selectColor(div, data.warna); break; }
             }
           }
-          calculateTotal();
-        } catch (e) {
-          console.error("Error loading data", e);
-        }
+          locationIds = { provinsi: data.provinsi || "", kabupaten: data.kabupaten || "", kecamatan: data.kecamatan || "", kelurahan: data.kelurahan || "" };
+          elDetail.value = data.detail || '';
+          elKurir.value = data.kurir || '';
+        } catch (e) { console.error("Error loading data", e); }
       }
     }
 
+    // RESET
     function resetForm() {
       if(confirm('Hapus semua data di formulir?')) {
         form.reset();
         localStorage.removeItem('femmeia_order_data');
-        elProduk.dispatchEvent(new Event('change')); // Reset colors
+        elProduk.dispatchEvent(new Event('change'));
+        shippingCost = 0;
+        setOngkirUI("Rp0", "-", "Lengkapi alamat & kurir untuk melihat ongkir.");
+        initLocationSelectors();
         calculateTotal();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
