@@ -121,6 +121,26 @@
     .reset-link a { color: var(--text-muted); font-size: 0.85rem; text-decoration: underline; cursor: pointer; }
 
     .badge { display: inline-flex; align-items: center; gap: 6px; background: #eef2ff; color: #4338ca; padding: 8px 10px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; }
+
+    /* Locator */
+    .btn-locate {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--accent-dark);
+      font-weight: 700;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .btn-locate:active { transform: scale(0.97); }
+    .btn-locate:disabled { opacity: 0.6; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -204,6 +224,14 @@
       <!-- ALAMAT & PENGIRIMAN -->
       <div class="card">
         <div class="card-header"><i data-lucide="map-pin"></i> Alamat & Pengiriman</div>
+
+        <div class="input-group">
+          <button type="button" class="btn-locate" id="btnLocate">
+            <i data-lucide="navigation"></i> Gunakan Lokasi Sekarang
+          </button>
+          <div id="locStatus" class="ship-breakdown" style="margin-top:6px;">Kami tidak menyimpan lokasi Anda.</div>
+        </div>
+
         <div class="input-group">
           <label>Provinsi</label>
           <div class="select-wrapper">
@@ -376,7 +404,7 @@
       "SPX REG":   { sameCity: 7000, sameProvince: 10500, java: 14500, sumatra: 16500, kalimantan: 18000, sulawesi: 11000, bali_nusa: 16500, maluku_papua: 27500, addPerKg: 3200, eta: "1-4 hari" },
       "POS Kilat": { sameCity: 7500, sameProvince: 11500, java: 16000, sumatra: 18000, kalimantan: 19500, sulawesi: 12000, bali_nusa: 18000, maluku_papua: 29500, addPerKg: 3800, eta: "2-6 hari" },
       "Ambil di Toko": { fixed: 0, eta: "Bisa hari ini" },
-      "Antar Langsung": { sameDistrict: 10000, nearCity: 11000, outerCity: 12000, eta: "Hari ini", minFare: 4000 }
+      "Antar Langsung": { sameDistrict: 5000, nearCity: 30000, outerCity: 40000, eta: "Hari ini", minFare: 4000 }
     };
     // Surcharge lokasi remote (lebih ringan)
     const REMOTE_SURCHARGE = { maluku_papua: 3000, kalimantan: 1500, sumatra: 800, bali_nusa: 800 };
@@ -406,6 +434,8 @@
     const elOngkirBreakdown = document.getElementById('ongkirBreakdown');
     const elWeightInfo = document.getElementById('weightInfo');
     const elPromoTopBar = document.getElementById('promoTopBar');
+    const btnLocate = document.getElementById('btnLocate');
+    const elLocStatus = document.getElementById('locStatus');
 
     // STATE
     let totalPrice = 0;
@@ -418,6 +448,7 @@
     let weightInfoState = { actualKg: 0, volumetricKg: 0, billableInstantKg: 0, billableRegularKg: 0 };
     let locationNames = { provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "" };
     let locationIds = { provinsi: "", kabupaten: "", kecamatan: "", kelurahan: "" };
+    let isLocating = false;
 
     window.addEventListener('DOMContentLoaded', () => {
       checkPromoStatus();
@@ -426,6 +457,7 @@
       lucide.createIcons();
       calcShipping();
       calculateTotal();
+      initLocatorButton();
     });
 
     form.addEventListener('input', (e) => {
@@ -590,6 +622,19 @@
       return target === base || target === baseAlt || target.includes(base) || target.includes(baseAlt);
     }
 
+    // Helper lokasi untuk ongkir
+    function getLocationContext() {
+      const prov = elProv.options[elProv.selectedIndex]?.text || "";
+      const kab = elKab.options[elKab.selectedIndex]?.text || "";
+      const kec = elKec.options[elKec.selectedIndex]?.text || "";
+      const kel = elKel.options[elKel.selectedIndex]?.text || "";
+      const zone = PROVINCE_ZONE[prov] || "other";
+      const isSameProvince = prov === STORE_PROVINCE;
+      const isSameCity = isSameCityNormalized(kab);
+      const isSameDistrict = isSameCity && normalizeName(kec).includes(normalizeName(STORE_DISTRICT));
+      return { prov, kab, kec, kel, zone, isSameProvince, isSameCity, isSameDistrict };
+    }
+
     // Berat & volumetrik detail (lebih akurat)
     function getWeightBreakdown() {
       const productVal = elProduk.value;
@@ -622,44 +667,44 @@
     }
 
     // ONGKIR
-    function getZone(provName) { return PROVINCE_ZONE[provName] || "other"; }
-
     function calcShipping() {
       shippingCost = 0; shippingEta = "-";
       weightInfoState = getWeightBreakdown();
       billableKg = weightInfoState.billableRegularKg;
 
-      const prov = elProv.options[elProv.selectedIndex]?.text || "";
-      const kab = elKab.options[elKab.selectedIndex]?.text || "";
-      const kec = elKec.options[elKec.selectedIndex]?.text || "";
-      const kel = elKel.options[elKel.selectedIndex]?.text || "";
+      const { prov, kab, kec, kel, zone, isSameProvince, isSameCity, isSameDistrict } = getLocationContext();
       const kurir = elKurir.value;
       locationNames = { provinsi: prov, kabupaten: kab, kecamatan: kec, kelurahan: kel };
 
+      // Data belum lengkap
       if(!prov || !kab || !kec || !kel || !kurir) {
         setOngkirUI("Rp0", "-", "Lengkapi alamat & kurir untuk melihat ongkir.");
         return;
       }
 
-      const isSameProvince = prov === STORE_PROVINCE;
-      const isSameCity = isSameCityNormalized(kab);
-      const isSameDistrict = isSameCity && normalizeName(kec).includes(normalizeName(STORE_DISTRICT));
-      const zone = getZone(prov);
+      const rate = SHIP_RATES[kurir];
+      if(!rate) {
+        setOngkirUI("N/A", "-", "Kurir tidak dikenali.");
+        showToast("Kurir tidak dikenali atau belum di-set", "error");
+        return;
+      }
 
       // Pickup
       if(kurir === "Ambil di Toko") {
-        shippingCost = 0; shippingEta = SHIP_RATES[kurir].eta;
+        shippingCost = 0; shippingEta = rate.eta;
         setOngkirUI("Rp0", shippingEta, `Ambil langsung: ${STORE_DETAIL}`);
         return;
       }
 
-      // Antar langsung (khusus Makassar)
+      // Antar langsung
       if(kurir === "Antar Langsung") {
-        if(!isSameCity) { setOngkirUI("N/A", "-", "Antar langsung hanya untuk Kota Makassar, Tamalanrea"); showToast("Antar langsung hanya untuk Kota Makassar, Tamalanrea"); return; }
-        const rate = SHIP_RATES[kurir];
+        if(!isSameCity) {
+          setOngkirUI("N/A", "-", "Antar langsung hanya untuk Kota Makassar, Tamalanrea");
+          showToast("Antar langsung hanya untuk Kota Makassar, Tamalanrea");
+          return;
+        }
         let baseFare = isSameDistrict ? rate.sameDistrict : (isSameCity ? (rate.nearCity || rate.outerCity) : rate.outerCity);
         const kgInstant = weightInfoState.billableInstantKg;
-        // Tambahan bobot >1 kg
         if(kgInstant > 1) baseFare += (kgInstant - 1) * INSTANT_EXTRA_PER_KG;
         shippingCost = Math.max(baseFare, rate.minFare || 0);
         shippingEta = rate.eta;
@@ -669,10 +714,13 @@
 
       // Gosend (instant/sameday Makassar)
       if(kurir === "Gosend") {
-        if(!isSameCity) { setOngkirUI("N/A", "-", "Gosend hanya untuk Kota Makassar."); showToast("Gosend hanya untuk Kota Makassar"); return; }
-        const rate = SHIP_RATES[kurir];
-        const kgInstant = weightInfoState.billableInstantKg;
+        if(!isSameCity) {
+          setOngkirUI("N/A", "-", "Gosend hanya untuk Kota Makassar.");
+          showToast("Gosend hanya untuk Kota Makassar");
+          return;
+        }
         const baseFare = isSameDistrict ? rate.sameCity : rate.cityOuter;
+        const kgInstant = weightInfoState.billableInstantKg;
         let cost = baseFare;
         if(kgInstant > 1) cost += (kgInstant - 1) * INSTANT_EXTRA_PER_KG;
         shippingCost = Math.max(cost, rate.minFare || 0);
@@ -682,31 +730,32 @@
       }
 
       // Reguler
-      const rate = SHIP_RATES[kurir] || SHIP_RATES["J&T REG"];
       let base = 0;
-      if(isSameCity) base = rate.sameCity;
-      else if(isSameProvince) base = rate.sameProvince;
-      else {
-        switch(zone) {
-          case "sulawesi": base = rate.sulawesi; break;
-          case "java": base = rate.java; break;
-          case "sumatra": base = rate.sumatra; break;
-          case "kalimantan": base = rate.kalimantan; break;
-          case "bali_nusa": base = rate.bali_nusa; break;
-          case "maluku_papua": base = rate.maluku_papua; break;
-          default: base = rate.maluku_papua;
-        }
+      if(isSameCity && rate.sameCity != null) {
+        base = rate.sameCity;
+      } else if(isSameProvince && rate.sameProvince != null) {
+        base = rate.sameProvince;
+      } else {
+        const z = zone;
+        base =
+          (z === "sulawesi"      && rate.sulawesi)      ? rate.sulawesi      :
+          (z === "java"          && rate.java)          ? rate.java          :
+          (z === "sumatra"       && rate.sumatra)       ? rate.sumatra       :
+          (z === "kalimantan"    && rate.kalimantan)    ? rate.kalimantan    :
+          (z === "bali_nusa"     && rate.bali_nusa)     ? rate.bali_nusa     :
+          (z === "maluku_papua"  && rate.maluku_papua)  ? rate.maluku_papua  :
+          rate.maluku_papua || rate.bali_nusa || rate.kalimantan || rate.sumatra || rate.java || rate.sulawesi || 0;
       }
 
-      const addPerKg = rate.addPerKg || 3500;
-      const kg = weightInfoState.billableRegularKg; // sudah dibulatkan ke atas (min 1 kg)
-      shippingCost = base + (kg - 1) * addPerKg;
+      const addPerKg = rate.addPerKg ?? 3500;
+      const kg = Math.max(1, billableKg || 1);
+      shippingCost = base + Math.max(0, kg - 1) * addPerKg;
 
       // surcharge remote
       if(REMOTE_SURCHARGE[zone]) shippingCost += REMOTE_SURCHARGE[zone];
 
       shippingEta = rate.eta;
-      const breakdown = `${kab}, ${prov} • Zona: ${zone.toUpperCase().replace('_','/')} • Dibulatkan: ${kg} kg`;
+      const breakdown = `${kab}, ${prov} • Zona: ${(zone || "other").toUpperCase().replace('_','/')} • Dibulatkan: ${kg} kg`;
       setOngkirUI(formatRupiah(shippingCost), shippingEta, breakdown);
     }
 
@@ -909,6 +958,142 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
+
+    // ---------------- LOCATOR (GPS) ----------------
+    function initLocatorButton() {
+      if (!navigator.geolocation) {
+        btnLocate.disabled = true;
+        elLocStatus.textContent = "Perangkat tidak mendukung GPS.";
+        return;
+      }
+      btnLocate.addEventListener('click', useCurrentLocation);
+    }
+
+    function setLocStatus(text) { elLocStatus.textContent = text; }
+
+    function useCurrentLocation() {
+      if (!navigator.geolocation) {
+        showToast("GPS tidak didukung di perangkat ini");
+        return;
+      }
+      if (isLocating) return;
+      isLocating = true;
+      btnLocate.disabled = true;
+      setLocStatus("Meminta izin lokasi...");
+
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setLocStatus(`Mendapatkan alamat (lat: ${latitude.toFixed(4)}, lon: ${longitude.toFixed(4)})...`);
+          const addr = await reverseGeocode(latitude, longitude);
+          if (!addr) {
+            setLocStatus("Gagal membaca alamat dari koordinat.");
+            btnLocate.disabled = false;
+            isLocating = false;
+            return;
+          }
+          const applied = await applyAddressFromGeocode(addr);
+          if (applied) {
+            setLocStatus("Alamat diisi dari lokasi Anda. Silakan pilih kurir.");
+            calcShipping();
+            calculateTotal();
+          } else {
+            setLocStatus("Alamat tidak cocok dengan daftar wilayah. Isi manual.");
+          }
+          btnLocate.disabled = false;
+          isLocating = false;
+        },
+        (err) => {
+          const msg =
+            err.code === err.PERMISSION_DENIED ? "Izin lokasi ditolak." :
+            err.code === err.POSITION_UNAVAILABLE ? "Lokasi tidak tersedia." :
+            err.code === err.TIMEOUT ? "Permintaan lokasi timeout." :
+            "Gagal mendapatkan lokasi.";
+          showToast(msg);
+          setLocStatus(msg);
+          btnLocate.disabled = false;
+          isLocating = false;
+        },
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
+      );
+    }
+
+    async function reverseGeocode(lat, lon) {
+      try {
+        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=id`;
+        const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        if (!res.ok) throw new Error("Reverse geocode gagal");
+        const data = await res.json();
+        return data.address || null;
+      } catch (e) {
+        console.error(e);
+        showToast("Gagal membaca alamat dari GPS");
+        return null;
+      }
+    }
+
+    function matchOptionByName(selectEl, name) {
+      const target = normalizeName(name || "");
+      if (!target) return false;
+      for (const opt of selectEl.options) {
+        if (!opt.value) continue;
+        const optNorm = normalizeName(opt.textContent || "");
+        if (optNorm === target || optNorm.includes(target) || target.includes(optNorm)) {
+          selectEl.value = opt.value;
+          return true;
+        }
+      }
+      return false;
+    }
+
+    async function applyAddressFromGeocode(address) {
+      const provName = address.state || address.region || address.province;
+      const kabName = address.city || address.city_district || address.town || address.municipality || address.county;
+      const kecName = address.suburb || address.district || address.state_district || address.city_block;
+      const kelName = address.village || address.hamlet || address.neighbourhood || address.suburb;
+
+      // Prefill detail jika kosong
+      if (!elDetail.value) {
+        const detailParts = [address.road, address.residential, address.neighbourhood, address.house_number]
+          .filter(Boolean)
+          .map(s => s.trim());
+        if (detailParts.length) elDetail.value = detailParts.join(", ");
+      }
+
+      // Pilih Provinsi
+      if (provName) {
+        if (!matchOptionByName(elProv, provName)) {
+          showToast("Provinsi tidak ditemukan di daftar");
+          return false;
+        }
+        await handleProvinceChange(false);
+      } else return false;
+
+      // Pilih Kabupaten/Kota
+      if (kabName) {
+        if (!matchOptionByName(elKab, kabName)) {
+          showToast("Kabupaten/Kota tidak ditemukan di daftar");
+          return false;
+        }
+        await handleKabChange(false);
+      } else return false;
+
+      // Pilih Kecamatan
+      if (kecName) {
+        if (!matchOptionByName(elKec, kecName)) {
+          showToast("Kecamatan tidak ditemukan di daftar");
+          return false;
+        }
+        await handleKecChange(false);
+      } else return false;
+
+      // Pilih Kelurahan (best-effort)
+      if (kelName) matchOptionByName(elKel, kelName);
+
+      saveFormData();
+      return true;
+    }
+    // ---------------- END LOCATOR ----------------
 
   </script>
 </body>
