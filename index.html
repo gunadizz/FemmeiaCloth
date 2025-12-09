@@ -1455,7 +1455,371 @@
             width: 20px;
             height: 20px;
         }
+/* --- FEMMEIA BOT AI STYLES --- */
 
+
+    .fab-ai {
+            position: fixed;
+            bottom: 50px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: var(--accent-dark);
+            cursor: pointer;
+            transition: var(--transition-speed);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 16px rgba(31, 41, 55, 0.15);
+            z-index: 1000;animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+        .fab-ai:hover {
+            transform: translateY(-3px) scale(1.1);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 24px rgba(31, 41, 55, 0.25);
+            animation: buttonPulse 2s infinite ease-in-out;
+        }
+
+       .fab-ai:active {
+            transform: translateY(1px) scale(0.95);
+        }
+
+      .fab-ai svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--accent-dark);
+            stroke-width: 2;
+        }
+
+
+
+/* Modal Overlay (Background Gelap Blur) */
+.ai-modal-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(31, 41, 55, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.ai-modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Modal Box (Glassmorphism Light) */
+.ai-modal-box {
+    width: 90%;
+    max-width: 480px;
+    height: 80vh;
+    max-height: 700px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.95) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ai-modal-overlay.active .ai-modal-box {
+    transform: scale(1) translateY(0);
+}
+
+/* Header Modal */
+.ai-header {
+    padding: 1rem 1.2rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(31, 41, 55, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ai-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ai-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.ai-close-btn:hover {
+    background: rgba(0,0,0,0.05);
+    color: var(--danger);
+}
+
+/* Chat History Area */
+.ai-chat-area {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    scroll-behavior: smooth;
+}
+
+.ai-chat-area::-webkit-scrollbar {
+    width: 6px;
+}
+.ai-chat-area::-webkit-scrollbar-thumb {
+    background: rgba(31, 41, 55, 0.1);
+    border-radius: 10px;
+}
+
+/* Bubbles */
+.chat-bubble {
+    max-width: 85%;
+    padding: 0.8rem 1rem;
+    border-radius: 18px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    position: relative;
+    word-wrap: break-word;
+    animation: fadeBubble 0.3s ease;
+}
+
+@keyframes fadeBubble {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-bubble.user {
+    align-self: flex-end;
+    background: var(--accent-dark);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 12px rgba(31, 41, 55, 0.15);
+}
+
+.chat-bubble.bot {
+    align-self: flex-start;
+    background: #fff;
+    color: var(--text);
+    border: 1px solid rgba(31, 41, 55, 0.08);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Markdown Styles inside bot bubble */
+.chat-bubble.bot strong { font-weight: 700; color: var(--accent-dark); }
+.chat-bubble.bot em { font-style: italic; }
+.chat-bubble.bot ul { margin-left: 1.2rem; margin-top: 0.5rem; }
+.chat-bubble.bot li { margin-bottom: 0.3rem; }
+
+/* Uploaded Image Preview in Chat */
+.chat-img-preview {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Actions (Copy/Regenerate) */
+.bot-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+}
+
+.bot-action-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--text-muted);
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.bot-action-btn:hover {
+    background: rgba(0,0,0,0.05);
+    color: var(--accent-dark);
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 0.5rem 0.8rem;
+    background: rgba(255,255,255,0.6);
+    border-radius: 12px;
+    width: fit-content;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+/* Input Area */
+.ai-input-area {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(31, 41, 55, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.ai-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ai-model-select {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(31, 41, 55, 0.15);
+    background: rgba(255,255,255,0.8);
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+}
+
+.ai-clear-btn {
+    font-size: 0.75rem;
+    color: var(--danger);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ai-input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.6rem;
+    background: #fff;
+    border: 1px solid rgba(31, 41, 55, 0.15);
+    border-radius: 24px;
+    padding: 0.5rem 0.8rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    transition: border-color 0.2s;
+}
+
+.ai-input-wrapper:focus-within {
+    border-color: var(--accent-dark);
+    box-shadow: 0 0 0 2px rgba(31, 41, 55, 0.1);
+}
+
+.ai-textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    max-height: 100px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    color: var(--text);
+}
+
+.ai-btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 6px;
+    border-radius: 50%;
+    transition: color 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-btn-icon:hover {
+    background: rgba(0,0,0,0.05);
+    color: var(--accent-dark);
+}
+
+.ai-send-btn {
+    background: var(--accent-dark);
+    color: #fff;
+}
+.ai-send-btn:hover {
+    background: var(--accent-mid);
+    color: #fff;
+}
+
+.img-preview-mini {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    display: none;
+}
+.img-preview-mini.show { display: block; }
+
+/* Responsive Mobile */
+@media (max-width: 520px) {
+    .ai-modal-box {
+        width: 100%;
+        height: 100%;
+        max-height: none;
+        border-radius: 0;
+        border: none;
+    }
+    .fab-ai {
+        bottom: 85px; 
+        right: 15px;
+        width: 50px;
+        height: 50px;
+    }
+}
     </style>
 </head>
 <body>
@@ -1485,10 +1849,7 @@
         <div class="scattered-shape diamond2"></div>
     </div>
 
-    <!-- Tombol Sticky Share -->
-    <button id="openShareModal" class="share-btn" aria-label="Bagikan Link">
-        <i data-lucide="share-2"></i>
-    </button>
+    
 
     <!-- Main Content -->
     <div class="container">
@@ -1819,6 +2180,76 @@
         </div>
     </div>
 
+
+<!-- FAB BOT AI -->
+<button id="openAiChat" class="fab-ai" aria-label="Tanya AI">
+    <i data-lucide="train-front-tunnel"></i></button>
+<!-- Tombol Sticky Share -->
+    <button id="openShareModal" class="share-btn" aria-label="Bagikan Link">
+        <i data-lucide="share-2"></i>
+    </button>
+    
+<!-- MODAL AI CHAT -->
+<div id="aiModalOverlay" class="ai-modal-overlay">
+    <div class="ai-modal-box">
+        <!-- Header -->
+        <div class="ai-header">
+            <div class="ai-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#4f46e5"><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/><path d="M12 16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2Z"/><path d="M2 12a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2 2 2 0 0 1-2 2H4a2 2 0 0 1-2-2Z"/><path d="M16 12a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2Z"/></svg>
+                AI Femmeia
+            </div>
+            <button id="closeAiChat" class="ai-close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+
+        <!-- Chat History -->
+        <div id="aiChatHistory" class="ai-chat-area">
+            <!-- Chat items will appear here -->
+            <div class="chat-bubble bot">
+                Halo! 👋 Saya AI Femmeia.<br>Ada yang bisa saya bantu tentang hijab premium atau stok terbaru?
+            </div>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div id="aiTypingIndicator" class="typing-indicator" style="display:none; margin-left: 1rem;">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="ai-input-area">
+            <div class="ai-controls">
+                <select id="aiModelSelect" class="ai-model-select">
+                    <option value="gemini-2.5-flash">2.5 Flash (Default)</option>
+                    <option value="gemini-2.5-pro">2.5 Pro (Smart)</option>
+                    <option value="gemini-1.5-flash-8b">2.5 Flash Lite</option>
+                </select>
+                <button id="clearChatHistory" class="ai-clear-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Hapus Chat
+                </button>
+            </div>
+
+            <div class="ai-input-wrapper">
+                <!-- Image Upload -->
+                <input type="file" id="aiImgInput" accept="image/*" style="display:none;">
+                <button id="triggerImgUpload" class="ai-btn-icon" title="Upload Gambar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                </button>
+                
+                <img id="aiImgPreview" class="img-preview-mini" alt="Preview">
+
+                <textarea id="aiTextInput" class="ai-textarea" rows="1" placeholder="Tanya sesuatu..."></textarea>
+                
+                <button id="sendAiMessage" class="ai-btn-icon ai-send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
@@ -1987,7 +2418,287 @@
                 }
             });
         });
+        /* --- FEMMEIA BOT LOGIC --- */
+document.addEventListener('DOMContentLoaded', () => {
+    // Configuration
+    const GEMINI_API_KEY = "AIzaSyD60PIrIH6El6XIRGXYUjfXyjRIZFVTsFU"; // Key Anda
+    const CONTEXT_PREFIX = `
+        Anda adalah Customer Service virtual untuk FemmeiaCloth, sebuah brand hijab premium lokal yang berbasis di Makassar.
+        Karakteristik Anda: Ramah, membantu, profesional, menggunakan bahasa Indonesia yang sopan dan santai (boleh pakai emoji).
         
+        Database | Informasi Produk & Brand:
+        - WhatsApp: +6285341899229 atau +6287777420644
+        - Tagline: "Tampil Syar'i, Tetap Stylish!"
+        - Produk Unggulan: Paris Jadul Premium (Rp 35.000), Earab Inner (Rp 25.000), Pashmina Kaos Premium (Rp 50.000)
+        - Keunggulan: Bahan adem, tidak gerah, potongan pas di muka, kualitas jahitan rapi, harga terjangkau.
+        - Lokasi Pengiriman: Makassar (Free Ongkir area tertentu).
+        - Kode Promo: "FEMMEIA10" (Diskon 10% pembelian pertama).
+        - Marketplace: Tersedia di Shopee, WhatsApp, dan Web.
+        
+        Tugas Anda:
+        gunakan emot friendly (🙏🌹🥰😘😍 dll yang sejenis itu).
+        1. Menjawab pertanyaan seputar stok, bahan, dan harga.
+        2. Memberikan rekomendasi mix & match warna hijab.
+        3. Menjelaskan cara pemesanan (arahkan ke tombol Pesan Sekarang atau WA).
+        4. Jika user mengirim gambar, analisis jenis/warna hijab tersebut dan berikan rekomendasi produk FemmeiaCloth yang mirip.
+        5. Jangan menjawab hal di luar konteks fashion/hijab secara mendalam.
+        6. Lihat database diatas, sesuaikan jawaban dan respon anda sesuai pertanyaan user.
+    `;
+
+    // DOM Elements
+    const fab = document.getElementById('openAiChat');
+    const overlay = document.getElementById('aiModalOverlay');
+    const closeBtn = document.getElementById('closeAiChat');
+    const chatHistoryEl = document.getElementById('aiChatHistory');
+    const textInput = document.getElementById('aiTextInput');
+    const sendBtn = document.getElementById('sendAiMessage');
+    const modelSelect = document.getElementById('aiModelSelect');
+    const typingIndicator = document.getElementById('aiTypingIndicator');
+    const clearBtn = document.getElementById('clearChatHistory');
+    const imgInput = document.getElementById('aiImgInput');
+    const imgTrigger = document.getElementById('triggerImgUpload');
+    const imgPreview = document.getElementById('aiImgPreview');
+
+    // State
+    let currentImageBase64 = null;
+    let chatHistory = JSON.parse(localStorage.getItem('femmeia_chat_history')) || [];
+
+    // --- INIT ---
+    renderHistory();
+
+    // --- EVENT LISTENERS ---
+    fab.onclick = () => {
+        overlay.classList.add('active');
+        scrollToBottom();
+    };
+
+    closeBtn.onclick = () => overlay.classList.remove('active');
+    overlay.onclick = (e) => {
+        if (e.target === overlay) overlay.classList.remove('active');
+    };
+
+    // Auto resize textarea
+    textInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+        if(this.value === '') this.style.height = 'auto';
+    });
+
+    // Send Message
+    sendBtn.onclick = handleSend;
+    textInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+        }
+    });
+
+    // Clear History
+    clearBtn.onclick = () => {
+        if(confirm('Hapus semua riwayat chat?')) {
+            chatHistory = [];
+            saveHistory();
+            chatHistoryEl.innerHTML = `
+                <div class="chat-bubble bot">
+                    Halo! 👋 Saya AI Femmeia.<br>Riwayat chat telah dibersihkan. Ada yang bisa dibantu?
+                </div>
+            `;
+        }
+    };
+
+    // Image Upload Handling
+    imgTrigger.onclick = () => imgInput.click();
+    
+    imgInput.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        // Convert to Base64
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            currentImageBase64 = e.target.result.split(',')[1]; // Remove data:image/jpeg;base64, prefix
+            imgPreview.src = e.target.result;
+            imgPreview.classList.add('show');
+        };
+        reader.readAsDataURL(file);
+    };
+
+    // --- FUNCTIONS ---
+
+    async function handleSend() {
+        const text = textInput.value.trim();
+        if (!text && !currentImageBase64) return;
+
+        // 1. Add User Bubble
+        const userMsg = { role: 'user', text: text, image: currentImageBase64 ? imgPreview.src : null };
+        appendBubble(userMsg);
+        
+        // Reset Input
+        textInput.value = '';
+        textInput.style.height = 'auto';
+        imgPreview.classList.remove('show');
+        imgInput.value = '';
+        
+        // Save temp image ref for API, then clear UI state
+        const imgPayload = currentImageBase64;
+        currentImageBase64 = null;
+
+        // 2. Show Typing
+        typingIndicator.style.display = 'flex';
+        scrollToBottom();
+
+        try {
+            // 3. Call Gemini API
+            const responseText = await callGeminiAPI(text, imgPayload);
+            
+            // 4. Add Bot Bubble
+            const botMsg = { role: 'model', text: responseText };
+            appendBubble(botMsg);
+            
+            // 5. Save History
+            chatHistory.push(userMsg); // Save without huge base64 ideally, but simplistic here
+            chatHistory.push(botMsg);
+            saveHistory();
+
+        } catch (error) {
+            appendBubble({ role: 'model', text: "Maaf, ada gangguan koneksi. Coba lagi ya kak! 🙏" });
+            console.error(error);
+        } finally {
+            typingIndicator.style.display = 'none';
+            scrollToBottom();
+        }
+    }
+
+    async function callGeminiAPI(prompt, imageBase64) {
+        const model = modelSelect.value; // gemini-1.5-flash, gemini-1.5-pro, etc.
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+
+        // Construct contents with History + Context
+        // Note: Gemini API format requires alternating user/model roles
+        
+        const contents = [
+            { role: 'user', parts: [{ text: CONTEXT_PREFIX }] }, // System instruction via user prompt workaround
+            { role: 'model', parts: [{ text: "Siap, saya mengerti. Saya adalah AI Femmeia yang siap membantu." }] }
+        ];
+
+        // Add last few messages for context (limit to last 10 to save tokens)
+        const recentHistory = chatHistory.slice(-10);
+        recentHistory.forEach(msg => {
+            // Skip images in history for simplicity/cost saving in this demo
+            contents.push({
+                role: msg.role,
+                parts: [{ text: msg.text || "[Gambar]" }]
+            });
+        });
+
+        // Add Current Message
+        const currentParts = [];
+        if (prompt) currentParts.push({ text: prompt });
+        if (imageBase64) {
+            currentParts.push({
+                inline_data: {
+                    mime_type: "image/jpeg",
+                    data: imageBase64
+                }
+            });
+        }
+        contents.push({ role: 'user', parts: currentParts });
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: contents })
+        });
+
+        const data = await response.json();
+        
+        if (data.candidates && data.candidates[0].content) {
+            return data.candidates[0].content.parts[0].text;
+        } else {
+            throw new Error('No response from API');
+        }
+    }
+
+    function appendBubble(msg) {
+        const div = document.createElement('div');
+        div.className = `chat-bubble ${msg.role === 'user' ? 'user' : 'bot'}`;
+        
+        let contentHtml = "";
+        
+        // Image rendering
+        if (msg.image && msg.role === 'user') { // Only render user images for now
+            // Check if it's base64 data url or just text place holder
+            if(msg.image.startsWith('data:image')) {
+                contentHtml += `<img src="${msg.image}" class="chat-img-preview"><br>`;
+            }
+        }
+
+        // Markdown Parsing (Simple)
+        let formattedText = (msg.text || "")
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+            .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
+            .replace(/\n/g, '<br>'); // Newline
+
+        contentHtml += formattedText;
+        div.innerHTML = contentHtml;
+
+        // Add Actions for Bot
+        if (msg.role === 'model') {
+            const actionDiv = document.createElement('div');
+            actionDiv.className = 'bot-actions';
+            
+            // Copy Button
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'bot-action-btn';
+            copyBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Salin`;
+            copyBtn.onclick = () => {
+                navigator.clipboard.writeText(msg.text);
+                copyBtn.innerHTML = "Disalin!";
+                setTimeout(() => copyBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Salin`, 1500);
+            };
+
+            // Regenerate Button (Re-ask last user question)
+            const regenBtn = document.createElement('button');
+            regenBtn.className = 'bot-action-btn';
+            regenBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg> Ulangi`;
+            regenBtn.onclick = () => {
+                // Find last user message
+                const lastUserMsg = [...chatHistory].reverse().find(m => m.role === 'user');
+                if(lastUserMsg) {
+                    textInput.value = lastUserMsg.text;
+                    handleSend();
+                }
+            };
+
+            actionDiv.appendChild(copyBtn);
+            actionDiv.appendChild(regenBtn);
+            div.appendChild(actionDiv);
+        }
+
+        chatHistoryEl.appendChild(div);
+        scrollToBottom();
+    }
+
+    function renderHistory() {
+        // Clear except default greeting if empty
+        if(chatHistory.length === 0) return;
+        
+        // Remove default greeting
+        chatHistoryEl.innerHTML = '';
+        
+        chatHistory.forEach(msg => appendBubble(msg));
+    }
+
+    function saveHistory() {
+        // Limit history to last 50 messages to prevent localStorage overflow
+        const toSave = chatHistory.slice(-50);
+        localStorage.setItem('femmeia_chat_history', JSON.stringify(toSave));
+    }
+
+    function scrollToBottom() {
+        chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
+    }
+});
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3270682405009922"
      crossorigin="anonymous">
