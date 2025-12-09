@@ -2,971 +2,786 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Form Pemesanan FemmeiaCloth - Toko hijab & aksesoris wanita dengan harga terjangkau dan pengiriman cepat.">
   <title>Form Pemesanan - FemmeiaCloth</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/IMG_3593.jpeg" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> 
+  <!-- Prevent zoom on mobile for inputs -->
+  
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" type="image/x-icon">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
+    /* --- VARIABLES (Sesuai index.html) --- */
     :root {
-      --bento-bg: #f6f7fb;
-      --bento-blur: rgba(255,255,255,0.85);
-      --soft-pink: #fbeff3;
-      --soft-purple: #f7f3fa;
-      --border: rgba(220,220,233,0.38);
-      --accent: #d7bce4;
-      --main-text: #48434f;
-      --secondary-text: #8e88a7;
-      --button: #f4f1fa;
-      --shadow: 0 4px 20px 0 rgba(206, 209, 219, 0.11), 0 1px 8px 0 rgba(160, 113, 206, 0.03);
-      --profile-shadow: 0 6px 26px 0 #e0c2ee0f, 0 1.5px 8px 0 #baa3e80a;
-      --header-grad: linear-gradient(90deg, #fbeff3 0%, #f7f3fa 100%);
-      --card-shadow: 0 10px 70px 0 rgba(180, 155, 209, 0.10), 0 1px 4px 0 rgba(160, 113, 206, 0.04);
-      --error-color: #d16a6a;
-      --success-color: #82ca9c;
+      --background: #f8fafc;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --accent-dark: #1f2937;
+      --accent-mid: #374151;
+      --border: rgba(55, 65, 81, 0.15);
+      --success: #059669;
+      --error: #e11d48;
+      --warning: #fbbf24;
+      --shadow: 0 8px 32px rgba(31, 41, 55, 0.06);
+      --shadow-hover: 0 16px 48px rgba(31, 41, 55, 0.1);
+      --glass-bg: rgba(255, 255, 255, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.5);
+      --radius-lg: 1.25rem;
+      --radius-md: 0.75rem;
+      --blur: 12px;
     }
+
+    /* --- BASE SETUP --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; -webkit-tap-highlight-color: transparent; }
+    
     body {
-      margin: 0;
-      background: var(--bento-bg);
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      color: var(--text);
       min-height: 100vh;
+      /* Adjusted Padding */
+      padding-top: 60px; /* Sedikit dilebihkan dari tinggi top-bar */
+      padding-bottom: 120px; /* Space for Sticky Footer */
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow-x: hidden;
     }
-    * { box-sizing: border-box; font-family: 'Quicksand', sans-serif; color: var(--main-text); }
-    /* Loader */
-    .page-loader-bg {
-      position: fixed; z-index: 2002; top:0; left:0; width:100vw; height:100vh;
-      background: rgba(252,251,254,0.93); display: flex; flex-direction: column; align-items: center; justify-content: center;
-      backdrop-filter: blur(15px);
+
+    /* --- BACKGROUND ANIMATION --- */
+    .scattered-shapes { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; }
+    .shape { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.6; animation: float 10s infinite alternate; }
+    .shape-1 { width: 300px; height: 300px; background: #e0e7ff; top: -50px; left: -100px; }
+    .shape-2 { width: 200px; height: 200px; background: #fce7f3; bottom: 10%; right: -50px; animation-duration: 15s; }
+    @keyframes float { from { transform: translate(0,0); } to { transform: translate(20px, 40px); } }
+
+    /* --- TOP BAR --- */
+    .top-bar {
+      position: fixed; top: 0; left: 0; width: 100%; height: 40px;
+      background: var(--accent-dark); color: #fff;
+      display: flex; align-items: center; z-index: 1000;
+      font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    .spinner { position: relative; width: 60px; height: 60px; border-radius: 50%; border: 6px solid #ede8f1; border-top: 7px solid #ecb5ca; border-bottom: 7px solid #b9cbe8; animation: spin 1.1s linear infinite, pulseShadow 1.4s infinite alternate; margin-bottom: 23px; background: rgba(255,255,255,0.67); box-shadow: 0 0 24px 0 #d3bff7a0; backdrop-filter: blur(9px); }
-    .spinner::after { content: ''; position: absolute; left: 22px; top: 22px; width: 15px; height: 15px; background: #fff6; border-radius: 50%; box-shadow: 0 0 8px #b9cbe8b9; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes pulseShadow { 0% { box-shadow: 0 0 24px 0 #d3bff7a0; } 100% { box-shadow: 0 0 34px 0 #ecb5ca60; } }
-    .page-loader-bg span { color: #b594a7; font-size: 1.14em; letter-spacing: .08em; opacity: .85; margin-top: 10px; text-shadow: 0 2px 14px #f1eaff50; }
-    /* Profile Card */
-    .profile-card { display: flex; align-items: center; gap: 18px; background: var(--bento-blur); border-radius: 32px; box-shadow: var(--profile-shadow), var(--card-shadow); border: 1.2px solid var(--border); margin-bottom: 5px; padding: 17px 16px 12px 14px; margin-top: 18px; }
-    .profile-avatar { width: 62px; height: 62px; border-radius: 50%; object-fit: cover; border: 3px solid #fbeff3; box-shadow: 0 2px 10px #e0c2ee18; background: #fff; }
-    .profile-info { flex: 1; }
-    .profile-title { font-size: 1.11em; font-weight: 700; color: #ad7dc7; margin-bottom: 2px; letter-spacing: .6px; }
-    .profile-desc { font-size: .98em; color: #7d6c91; margin-bottom: 3px; font-weight: 500; }
-    .profile-highlight { background: #ffeef4; color: #c45d7c; font-weight: 600; border-radius: 7px; font-size: .97em; padding: 3.5px 10px; display: inline-block; margin-bottom: 3px; margin-top: 1px; }
-    .profile-links { margin-top: 7px; display: flex; gap: 10px; }
-    .profile-link {
-      display: flex; align-items: center; gap: 7px;
-      color: #b594a7; background: #faf6fb; border-radius: 7px; padding: 4px 13px 4px 8px;
-      font-size: .98em; text-decoration: none; font-weight: 600; border: 1px solid #eee2f7;
-      box-shadow: 0 2px 8px #baa3e808; transition: .14s;
-      min-width: 38px;
-    }
-    .profile-link svg {
-      width: 20px; height: 20px; display: inline-block; vertical-align: middle;
-      color: #b594a7; background: none; border-radius: 50%;
-      transition: .14s;
-    }
-    .profile-link:hover { background: var(--soft-purple); color: #ad7dc7; }
-    .profile-link:hover svg { color: #ad7dc7; }
-    @media (max-width: 600px) {
-      .profile-card { padding: 13px 7px 11px 8px; gap: 9px; margin-bottom: 5px; margin-top: 11px; }
-      .profile-avatar { width: 48px; height: 48px; }
-      .profile-link { padding: 4px 8px 4px 6px; }
-      .profile-link svg { width: 18px; height: 18px; }
-    }
-    /* Testimoni Carousel */
-    .testi-title {
-      font-weight: 700;
-      font-size: 1.07em;
-      color: #b49bd1;
-      margin-bottom: 8px;
-      letter-spacing: 0.7px;
-      text-align: center;
-      background: var(--header-grad);
-      border-radius: 9px 9px 0 0;
-      padding: 7px 0 6px 0;
-      box-shadow: 0 1px 4px #e0c2ee13;
-    }
-    .mini-carousel {
-      width: 100%; max-width: 540px;
-      background: var(--bento-blur);
-      border-radius: 17px;
-      box-shadow: var(--card-shadow);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      position: relative;
-      margin-bottom: 10px;
+    .marquee { display: inline-block; padding-left: 100%; animation: marquee 20s linear infinite; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+    /* --- LAYOUT CONTAINER --- */
+    .container {
+      width: 94%; max-width: 550px; margin: 0 auto;
+      display: flex; flex-direction: column; 
+      gap: 1.5rem; /* DIUBAH: Menambah jarak antar card agar tidak terlalu rapat */
       z-index: 1;
+    }
+
+    /* --- CARDS & GLASSMORPHISM --- */
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem; /* DIUBAH: Menambah padding dalam card agar lebih lega */
+      box-shadow: var(--shadow);
+      transition: transform 0.2s;
+      margin-bottom: 0; /* Margin dihandle oleh gap container */
+    }
+    .card-header {
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; /* DIUBAH: Jarak header ke konten */
+      padding-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06);
+      font-weight: 700; color: var(--accent-dark); font-size: 1.1rem;
+    }
+    .card-header i { color: var(--accent-mid); width: 20px; height: 20px; }
+
+    /* --- FORM ELEMENTS --- */
+    label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--accent-mid); }
+    
+    .input-group { margin-bottom: 1.25rem; position: relative; } /* DIUBAH: Jarak antar input */
+    .input-group:last-child { margin-bottom: 0; }
+    
+    input, select, textarea {
+      width: 100%; padding: 0.8rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem; color: var(--text);
+      transition: all 0.2s; outline: none; appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent-dark); background: #fff;
+      box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
+    }
+    /* Custom Select Arrow */
+    .select-wrapper { position: relative; }
+    .select-wrapper::after {
+      content: ''; position: absolute; right: 15px; top: 40%;
+      border: 5px solid transparent; border-top-color: var(--text-muted); pointer-events: none;
+    }
+
+    /* Error States */
+    .input-error { 
+      border-color: var(--error) !important; 
+      background: #fff5f5 !important; 
+      animation: shake 0.3s;
+    }
+    @keyframes shake { 0%,100% {transform:translateX(0);} 25% {transform:translateX(-4px);} 75% {transform:translateX(4px);} }
+
+    /* --- TOAST NOTIFICATION --- */
+    .toast-container {
+      position: fixed;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2000;
+      display: flex;
       flex-direction: column;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .mini-carousel-inner {
-      width: 100%;
-      display: flex;
-      align-items: stretch;
-      justify-content: flex-start;
-      transition: transform .55s cubic-bezier(.77,0,.175,1);
-      min-height: 110px;
-    }
-    .testi-item {
-      box-sizing: border-box;
-      width: 100%;
-      min-width: 100%;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 16px 18px 14px 18px;
-      background: none;
-      position: relative;
-      user-select: none;
-      transition: background .18s;
-      flex-direction: row;
-    }
-    .testi-avatar {
-      width: 46px; height: 46px; border-radius: 50%;
-      background: #fff;
-      display: flex; align-items: center; justify-content: center; 
-      border: 2px solid #fbeff3;
-      margin-top: 3px;
-      box-shadow: 0 1px 7px #e0c2ee19;
-      flex-shrink: 0;
-    }
-    .testi-avatar svg {
-      width: 38px; height: 38px; display: block; color: #d7bce4; background: #fff; border-radius: 50%;
-    }
-    .testi-info { flex: 1; min-width: 0; }
-    .testi-name { display: block; font-weight: 600; color: #ad7dc7; font-size: .98em; margin-bottom: 2px; letter-spacing: .04em; }
-    .testi-product { font-size: .93em; color: #9d7fb7; font-weight: 600; margin-bottom: 2px; letter-spacing: 0.2px; }
-    .testi-stars { color: #ffd700; font-size: .96em; letter-spacing: 1px; margin-bottom: 2px; display: inline-block; }
-    .testi-text { font-size: .97em; color: #7d6c91; margin-bottom: 0; line-height: 1.38; display: block; word-break: break-word; }
-    .carousel-controls {
-      display: flex;
-      justify-content: center;
       gap: 10px;
-      
-      margin-bottom: 10px;
-      padding: 5px;
+      width: 90%;
+      max-width: 400px;
+      pointer-events: none;
     }
-    .carousel-btn {
-      background: #faf6fb;
-      border: 1px solid #eee2f7;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
+    .toast {
+      background: #333;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #b594a7;
-      transition: background .2s, color .2s;
-    }
-    .carousel-btn:hover {
-      background: var(--soft-purple);
-      color: #ad7dc7;
-    }
-    @media (max-width: 600px) {
-      .mini-carousel { padding: 0; }
-      .testi-item { padding: 13px 5vw 10px 5vw; }
-    }
-    /* Form & Other Styles */
-    .bento-container { margin: 0 0 24px 0; display: grid; grid-template-columns: 1fr; gap: 20px; width: 98vw; max-width: 540px; padding: 0 2vw; position: relative; }
-    .bento-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    .bento-tile { background: var(--bento-blur); border-radius: 24px; box-shadow: var(--card-shadow); border: 1.5px solid var(--border); padding: 18px 14px 10px 14px; min-width: 0; min-height: 0; position: relative; }
-    .bento-header { margin-bottom: 10px; font-size: 1.13rem; font-weight: 600; letter-spacing: 1px; color: #b49bd1; background: var(--header-grad); border-radius: 11px; padding: 7px 0 7px 15px; box-shadow: 0 1px 4px #e0c2ee13; }
-    label { font-weight: 600; margin-top: 9px; margin-bottom: 3px; display: block; color: var(--secondary-text); letter-spacing: .5px; font-size: .97em; }
-    input, textarea, select { width: 100%; padding: 11px 10px; margin-top: 2px; margin-bottom: 8px; border-radius: 15px; border: 1.5px solid var(--border); background: #fff; font-size: .97rem; outline: none; transition: border-color .16s, box-shadow .16s; }
-    input:focus, select:focus, textarea:focus { border-color: var(--accent); background: #faf6fb; box-shadow: 0 0 8px 0 #e0c2ee60; }
-    input.error, select.error, textarea.error { border-color: var(--error-color); }
-    textarea { min-height: 46px; resize: vertical; }
-    .select-wrapper { position: relative; }
-    .select-wrapper::after { content: ""; position: absolute; right: 13px; top: 53%; transform: translateY(-50%); pointer-events: none; color: #b3b5bc; font-size: .97em; opacity: .8; }
-    .color-preview { margin-top: 5px; height: 30px; border-radius: 10px; border: 1.5px solid var(--border); box-shadow: 0 1px 5px 0 #e4cff51d; display: flex; align-items: center; gap: 5px; padding: 0 7px; }
-    .color-dot { display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 1.1px solid #fff; box-shadow: 0 1px 4px 0 #e4cff526; margin-right: 2px; margin-top: 1.5px; cursor: pointer; }
-    .color-dot.selected { border: 2px solid #b49bd1; box-shadow: 0 0 0 1.5px #e6dbe7aa; }
-    .color-label { font-size: .92em; color: #7d6c91; margin-left: 1px; margin-right: 5px; font-weight: 500; letter-spacing: 0.4px; }
-    .bento-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
-    .error-message { color: var(--error-color); font-size: 0.9em; margin-top: -6px; margin-bottom: 6px; display: none; }
-    @media (max-width: 600px) {
-      .bento-container { max-width: 100vw; }
-      .bento-row { grid-template-columns: 1fr; gap: 8px; }
-      .bento-tile { padding: 10px 3vw 7px 3vw; }
-    }
-    .total-harga { font-weight: 600; font-size: 1em; text-align: right; color: #b594a7; background: var(--soft-purple); border-radius: 8px; padding: 6px 0 5px 0; margin: 6px 0 2px 0; box-shadow: 0 1px 4px 0 #e0c2ee13; }
-    .loading { display: none; text-align: center; margin: 14px 0 0 0; color: #b594a7; font-size: .95em; font-weight: 600; letter-spacing: .03em; }
-    .notif { color: #b594a7; font-weight: bold; margin: 6px 0 0 0; text-align: center; }
-    button { margin-top: 13px; padding: 10px; background: var(--button); color: #b594a7; font-weight: bold; font-size: 1.01rem; border: none; border-radius: 13px; cursor: pointer; width: 100%; box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816; transition: transform .19s, box-shadow .19s, background .19s, color .19s; }
-    button:hover, button:focus { color: #9b6ca1; background: #eee9f5; box-shadow: 0 6px 24px 0 #e8bad84c, 0 1px 8px #baa3e816; transform: scale(1.035) translateY(-1.5px) rotate(-.5deg); }
-    button:active { transform: scale(0.98); }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
-    .reset-btn { background: #f6f7fb; color: #b594a7; margin-top: 10px; }
-    .reset-btn:hover { background: #eee9f5; color: #9b6ca1; }
-    /* Modal */
-    .modal-bg {
-      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(230, 225, 236, 0.33); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(9px);
-    }
-    .modal-bg.open {
-      display: flex;
-      animation: modalFadeInBg .28s cubic-bezier(.67,0,.25,1);
-    }
-    @keyframes modalFadeInBg {
-      from { background: rgba(230, 225, 236, 0.0); }
-      to { background: rgba(230, 225, 236, 0.33); }
-    }
-    .modal-content {
-      background: #fff; border-radius: 16px; padding: 17px 13px; max-width: 340px; min-width: 220px; width: 98vw; box-shadow: 0 8px 22px 0 #e0c2ee1a; border: 1.5px solid var(--border);
-      opacity: 0;
-      transform: scale(.95) translateY(35px);
-      transition: opacity .27s cubic-bezier(.67,0,.25,1), transform .27s cubic-bezier(.67,0,.25,1);
-    }
-    .modal-bg.open .modal-content {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-      transition-delay: .06s;
-    }
-    .modal-bg.closing .modal-content {
-      opacity: 0;
-      transform: scale(.97) translateY(40px);
-      transition: opacity .24s cubic-bezier(.67,0,.25,1), transform .24s cubic-bezier(.67,0,.25,1);
-    }
-    .modal-content h3 { font-size: 1.01em; color: #af83b7; margin-bottom: 8px; }
-    .modal-content ul { padding-left: 12px; margin-bottom: 7px; }
-    .modal-content li { margin-bottom: 1px; }
-    .modal-content button { margin: 0 0 7px 0; width: 100%; font-size: .96em; }
-    .modal-content .total-harga { margin: 0 0 7px 0; }
-    #scrollToTopBtn { position: fixed; right: 22px; bottom: 30px; z-index: 1500; width: 42px; height: 42px; background: #F6F1FA; border-radius: 50%; border: 1.2px solid var(--border); box-shadow: 0 1px 5px #F6F1FA; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .21s; }
-    #scrollToTopBtn svg { width: 22px; height: 22px; color: #fff; }
-    #scrollToTopBtn.active { opacity: 1; pointer-events: auto; }
-    .toast { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); min-width: 160px; max-width: 88vw; background: #9F7CE8; color: #fff; border-radius: 10px; box-shadow: 0 1px 20px #9F7CE8; padding: 12px 19px; font-size: .98em; opacity: 0; pointer-events: none; transition: opacity 2s; }
-    .toast.show { opacity: 1; pointer-events: auto; }
-    .toast.hide { opacity: 0; pointer-events: none; }
-    /* Sticky Notification for Incomplete Fields */
-    .sticky-notif {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      min-width: 200px;
-      max-width: 300px;
-      background: #ffebee;
-      color: #c62828;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      padding: 12px 16px;
-      font-size: 0.95em;
-      z-index: 2000;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
       opacity: 0;
       transform: translateY(-20px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     }
-    .sticky-notif.show {
+    .toast.show {
       opacity: 1;
       transform: translateY(0);
     }
-    .sticky-notif.hide {
-      opacity: 0;
-      transform: translateY(-20px);
+    .toast.error { background: var(--error); }
+    .toast i { width: 18px; height: 18px; }
+
+
+    /* --- QUANTITY STEPPER (New) --- */
+    .qty-container {
+      display: flex; align-items: center; gap: 0.5rem;
     }
-    /* FAQ mini */
-    footer { margin: 0 auto 0 auto; max-width: 540px; width: 100%; padding: 0; position: relative; z-index: 0; }
-    .faq-mini {
-      margin: -5px auto 0 auto; background: var(--bento-blur); border-radius: 13px; box-shadow: var(--card-shadow); border: 1.2px solid var(--border);
-      padding: 7px 12px 6px 12px; max-width: 300px; margin-bottom: 12px; font-size: .93em; z-index: 0;
-      transition: box-shadow .19s;
+    .qty-btn {
+      width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border);
+      background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: var(--accent-dark); transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
-    .faq-title { font-weight: 700; font-size: .95em; color: #b49bd1; margin-bottom: 5px; letter-spacing: .3px; }
-    .faq-item { margin-bottom: 7px; border-radius: 7px; background: #f7f3fa70; box-shadow: 0 1px 3px #baa3e808; transition: box-shadow .19s, background .20s; padding: 6px 10px 6px 10px; cursor: pointer; position: relative; overflow: hidden; }
-    .faq-item:before, .faq-item:after { content: ''; position: absolute; left: 0; right: 0; height: 2.5px; border-radius: 6px; background: linear-gradient(90deg, #fbeff3 0%, #d7bce4 100%); opacity: 0; transform: scaleX(.7); transition: opacity .16s, transform .24s; }
-    .faq-item:before { top: 0; transform-origin: left; }
-    .faq-item:after { bottom: 0; transform-origin: right; }
-    .faq-item:hover:before, .faq-item:hover:after,
-    .faq-item.open:before, .faq-item.open:after { opacity: .36; transform: scaleX(1); }
-    .faq-q { font-weight: 600; color: #7d6c91; margin-bottom: 1px; font-size: .95em; }
-    .faq-a { color: #8e88a7; font-size: .91em; margin-top: 0; display: block; max-height: 0; overflow: hidden; padding: 0 2px; opacity: 0; transition: max-height .44s cubic-bezier(.77,0,.175,1), opacity .29s, padding .32s; }
-    .faq-item.open .faq-a { display: block; max-height: 220px; opacity: 1; animation: fadeInUp .5s .01s backwards; padding: 5px 2px 7px 2px; }
-    .faq-item:not(.open) .faq-a { max-height: 0; opacity: 0; padding: 0 2px; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-    /* Progress Indicator */
-    .progress-container {
-      width: 100%;
-      max-width: 540px;
-      margin: 10px 0;
-      padding: 0 2vw;
-      display: none;
+    .qty-btn:active { transform: scale(0.92); background: #f1f5f9; }
+    .qty-input {
+      width: 50px; text-align: center; font-weight: 700; font-size: 1.1rem; margin: 0; padding: 0.8rem 0;
     }
-    .progress-bar {
-      height: 8px;
-      background: #fff;
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 10px;
+
+    /* --- COLOR PICKER (New & Improved) --- */
+    .color-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+      gap: 8px; margin-top: 0.5rem;
     }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #d7bce4, #b49bd1);
-      width: 0;
-      transition: width 0.3s ease;
+    .color-option {
+      width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+      border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      position: relative; transition: transform 0.2s;
     }
-    .progress-text {
-      font-size: 0.9em;
-      color: #b594a7;
-      text-align: center;
+    .color-option:active { transform: scale(0.9); }
+    .color-option.selected {
+      transform: scale(1.15); border-color: #fff;
+      box-shadow: 0 0 0 2px var(--accent-dark), 0 4px 12px rgba(0,0,0,0.2);
     }
+    .color-option.selected::after {
+      content: '✔'; color: #fff; font-size: 12px; position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%, -50%); text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+    .selected-color-label {
+      margin-top: 8px; font-size: 0.9rem; font-weight: 600; color: var(--accent-dark);
+      background: rgba(255,255,255,0.6); padding: 4px 10px; border-radius: 8px; display: inline-block;
+    }
+
+    /* --- STICKY FOOTER (FAB Style) --- */
+    .sticky-footer {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      width: 94%; max-width: 550px;
+      background: rgba(31, 41, 55, 0.95); /* Dark theme */
+      backdrop-filter: blur(10px);
+      color: #fff;
+      border-radius: 16px;
+      padding: 12px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      z-index: 900;
+      animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .total-wrapper { display: flex; flex-direction: column; }
+    .total-label { font-size: 0.75rem; opacity: 0.8; }
+    .total-price { font-size: 1.2rem; font-weight: 700; }
+    .promo-applied { color: #4ade80; font-size: 0.75rem; font-weight: 600; display: none; }
+    
+    .btn-checkout {
+      background: #fff; color: var(--accent-dark);
+      border: none; padding: 10px 24px; border-radius: 12px;
+      font-weight: 700; font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: transform 0.2s;
+    }
+    .btn-checkout:hover { transform: scale(1.05); }
+    .btn-checkout:active { transform: scale(0.95); opacity: 0.9; }
+
+    /* --- MODAL --- */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+      z-index: 2000; display: none; align-items: center; justify-content: center;
+    }
+    .modal-box {
+      background: #fff; width: 90%; max-width: 400px; border-radius: 20px;
+      padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .modal-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .summary-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
+    .summary-item strong { color: var(--text-muted); }
+    .summary-total { margin-top: 15px; padding-top: 10px; border-top: 2px dashed #eee; font-weight: 700; font-size: 1.1rem; display: flex; justify-content: space-between; }
+    
+    .btn-wa {
+      background: #25D366; color: #fff; width: 100%; padding: 14px;
+      border: none; border-radius: 12px; font-weight: 700; font-size: 1rem;
+      margin-top: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-back {
+      background: transparent; color: var(--text-muted); width: 100%; padding: 10px;
+      border: none; margin-top: 5px; font-weight: 600; cursor: pointer;
+    }
+
+    /* Animations */
+    @keyframes slideUp { from { transform: translate(-50%, 100px); } to { transform: translate(-50%, 0); } }
+    @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* Helpers */
+    .hidden { display: none !important; }
+    .reset-link { text-align: center; margin-top: 10px; }
+    .reset-link a { color: var(--text-muted); font-size: 0.85rem; text-decoration: underline; cursor: pointer; }
   </style>
 </head>
 <body>
-  <!-- Loader -->
-  <div class="page-loader-bg" id="pageLoader">
-    <div class="spinner"></div>
-    <span>Memuat Form Pemesanan...</span>
+
+  <!-- Background Animated Shapes -->
+  <div class="scattered-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
   </div>
-  <div class="bento-container">
-    <!-- Profile Card -->
-    <div class="profile-card">
-      <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/main/IMG_3593.jpeg" alt="Logo FemmeiaCloth, toko hijab dan aksesoris wanita" class="profile-avatar">
-      <div class="profile-info">
-        <div class="profile-title">FemmeiaCloth</div>
-        <div class="profile-desc">Toko hijab & aksesoris wanita | Ready stok, harga terjangkau, pengiriman cepat</div>
-        <div class="profile-highlight">Promo: Gunakan kode <b>femmeia10</b> untuk diskon 10%!</div>
-        <div class="profile-links">
-          <a href="https://instagram.com/femmeia.cloth" target="_blank" class="profile-link" title="Instagram" aria-label="Instagram FemmeiaCloth">
-            <svg viewBox="0 0 24 24" fill="none"><rect width="17" height="17" x="3.5" y="3.5" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
-            Instagram
-          </a>
-          <a href="https://wa.me/6287777420644" target="_blank" class="profile-link" title="Chat WhatsApp" aria-label="WhatsApp FemmeiaCloth">
-            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7"/><path d="M16.4 14.1c-.2-.1-1.2-.6-1.4-.7-.2-.1-.4-.2-.5.1-.1.2-.5.7-.6.8-.1.1-.2.2-.4.1-.2-.1-.7-.3-1.3-.8-.5-.5-.8-1-1-1.1-.1-.2 0-.3.1-.4.1-.1.2-.3.4-.4.1-.2.1-.3.2-.4 0-.1 0-.2 0-.3 0-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4-.1 0-.3 0-.5 0-.2 0-.4.1-.6.3-.2.2-.7.7-.7 1.7 0 1 .7 2 1.2 2.5.7.8 1.8 1.5 2.8 1.6.4 0 .8 0 1.1-.2.3-.2.7-.5.8-.9.1-.4.1-.7.1-.8 0-.1-.2-.1-.4-.2z" fill="currentColor"/></svg>
-            WhatsApp
-          </a>
-        </div>
-      </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Top Marquee -->
+  <div class="top-bar">
+    <div class="marquee">
+       PROMO SPESIAL: Gunakan kode <b>FEMMEIA10</b> untuk DISKON 10% Pembelian Pertama! • Free Ongkir Makassar • Pengiriman Cepat
     </div>
-    <!-- Testimoni Mini Carousel -->
-    <div class="mini-carousel" id="testiCarousel">
-      <div class="testi-title">Testimoni & Review Pelanggan</div>
-      <div class="mini-carousel-inner" id="testiInner">
-        <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
-          <div class="testi-info">
-            <span class="testi-name">Nxxxx Pxxxxx</span>
-            <span class="testi-product">Paris Jadul</span>
-            <span class="testi-stars">★★★★★</span>
-            <span class="testi-text">"Paris Jadul super lembut dan adem. Warna hitamnya pekat banget, cocok buat semua acara. Packing rapi, harga ramah kantong! Pasti repeat order."</span>
-          </div>
-        </div>
-        <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
-          <div class="testi-info">
-            <span class="testi-name">Sxxx Rxxxx</span>
-            <span class="testi-product">Pashmina Kaos</span>
-            <span class="testi-stars">★★★★★</span>
-            <span class="testi-text">"Pashmina Kaos-nya nyaman dipakai, bahan stretch dan ringan. Warna navy real pict persis seperti di foto. Admin fast response. Makasih FemmeiaCloth!"</span>
-          </div>
-        </div>
-        <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
-          <div class="testi-info">
-            <span class="testi-name">Rxxx Axxxx</span>
-            <span class="testi-product">Premium Inner</span>
-            <span class="testi-stars">★★★★★</span>
-            <span class="testi-text">"Premium Inner nyaman banget dipakai seharian, nggak bikin gerah. Cocok dipadukan sama hijab favorit. Next order pasti nambah lagi!"</span>
-          </div>
-        </div>
-        <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
-          <div class="testi-info">
-            <span class="testi-name">Dxxx Sxxxx</span>
-            <span class="testi-product">Paris Jadul</span>
-            <span class="testi-stars">★★★★★</span>
-            <span class="testi-text">"Pesan Paris Jadul, kirimannya super cepat, packing aman, dapat bonus paper bag juga. Recommended seller!"</span>
-          </div>
-        </div>
-        <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
-          <div class="testi-info">
-            <span class="testi-name">Fxxx Mxxxx</span>
-            <span class="testi-product">Pashmina Kaos</span>
-            <span class="testi-stars">★★★★★</span>
-            <span class="testi-text">"Pelayanan ramah dan sabar, Pashmina Kaos-nya halus banget. Produk sesuai ekspektasi, pasti order lagi!"</span>
-          </div>
-        </div>
-        <div class="testi-item">
-          <span class="testi-avatar"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#fbeff3" stroke="#d7bce4" stroke-width="2"/><ellipse cx="32" cy="28" rx="13" ry="13" fill="#d7bce4"/></svg></span>
-          <div class="testi-info">
-            <span class="testi-name">Ixxx Hxxxx</span>
-            <span class="testi-product">Premium Inner</span>
-            <span class="testi-stars">★★★★★</span>
-            <span class="testi-text">"Order Premium Inner buat kado, dapat greeting card lucu juga. Sukses terus FemmeiaCloth, pasti rekomendasi ke teman!"</span>
-          </div>
-        </div>
+  </div>
+
+  <div class="container">
+    
+    <!-- Header Card -->
+    <div class="card" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem;">
+      <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/IMG_3593.jpeg" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-dark);" alt="Logo">
+      <div style="flex:1;">
+        <h2 style="font-size:1.1rem; font-weight:700;">Form Pemesanan</h2>
+        <p style="font-size:0.85rem; color:var(--text-muted);">FemmeiaCloth Official</p>
       </div>
-      <div class="carousel-controls">
-        <button class="carousel-btn prev-btn" aria-label="Testimoni Sebelumnya">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button class="carousel-btn next-btn" aria-label="Testimoni Selanjutnya">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
+      <a href="index.html" style="color:var(--text-muted);"><i data-lucide="home"></i></a>
     </div>
-    <!-- Modal Ringkasan -->
-    <div class="modal-bg" id="modalBg">
-      <div class="modal-content" id="modalContent">
-        <h3>Ringkasan Pesanan</h3>
-        <ul id="ringkasanList"></ul>
-        <div class="total-harga" id="ringkasanHarga"></div>
-        <button type="button" id="lanjutWA" aria-label="Lanjutkan ke WhatsApp untuk konfirmasi pesanan">Lanjut ke WhatsApp</button>
-        <button type="button" id="batalModal" style="background:#f6f7fb;color:#b594a7;" aria-label="Kembali untuk memeriksa ulang pesanan">Cek Ulang</button>
-      </div>
-    </div>
-    <!-- Progress Indicator -->
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div class="progress-text" id="progressText">Progres Pengisian: 0%</div>
-    </div>
-    <form id="orderForm" autocomplete="off" novalidate>
-      <div class="bento-grid">
-        <div class="bento-tile">
-          <div class="bento-header">Identitas Pembeli</div>
-          <label for="nama">Nama</label>
-          <input type="text" name="nama" id="nama" required placeholder="Contoh: Putri Maharani" autocomplete="name" aria-describedby="namaError">
-          <div class="error-message" id="namaError">Nama hanya boleh mengandung huruf dan spasi.</div>
-          <label for="wa">No. WhatsApp Aktif</label>
-          <input type="tel" name="wa" id="wa" required inputmode="numeric" pattern="(\+62|62|08)[0-9]{8,13}" minlength="10" maxlength="15" placeholder="081234567890" autocomplete="tel" aria-describedby="waError">
-          <div class="error-message" id="waError">Nomor WhatsApp harus diawali +62, 62, atau 08 dan berisi 10-15 angka.</div>
-          <label for="alamat">Alamat Lengkap</label>
-          <textarea name="alamat" id="alamat" required rows="3" placeholder="Contoh: Jl. Melati No. 99, RT 01 RW 02, Tamalanrea, Makassar" autocomplete="street-address" aria-describedby="alamatError"></textarea>
-          <div class="error-message" id="alamatError">Alamat harus diisi dengan lengkap.</div>
+
+    <form id="orderForm" novalidate style="display: flex; flex-direction: column; gap: 1.5rem;">
+      
+      <!-- IDENTITAS -->
+      <div class="card">
+        <div class="card-header"><i data-lucide="user"></i> Identitas Pembeli</div>
+        
+        <div class="input-group">
+          <label>Nama Lengkap</label>
+          <input type="text" name="nama" id="nama" placeholder="Contoh: Iftitah" required data-label="Nama Lengkap">
         </div>
-        <div class="bento-tile">
-          <div class="bento-header">Detail Produk</div>
-          <div class="bento-row">
-            <div>
-              <label for="productType">Jenis Produk</label>
-              <div class="select-wrapper">
-                <select id="productType" name="produk" required aria-describedby="produkError">
-                  <option value="">-- Pilih Produk --</option>
-                  <option value="Paris Jadul - 35.000">Paris Jadul – Rp35.000</option>
-                  <option value="Pashmina Kaos - 55.000">Pashmina Kaos – Rp55.000</option>
-                  <option value="Premium Inner - 25.000">Premium Inner – Rp25.000</option>
-                </select>
-              </div>
-              <div class="error-message" id="produkError">Harap pilih jenis produk.</div>
-            </div>
-            <div>
-              <label for="jumlah">Jumlah</label>
-              <input type="number" name="jumlah" id="jumlah" min="1" max="20" required value="1" placeholder="1" aria-describedby="jumlahError">
-              <div class="error-message" id="jumlahError">Jumlah harus antara 1 dan 20.</div>
-            </div>
-          </div>
-          <div>
-            <label for="warna">Warna</label>
-            <div class="color-preview" id="colorPreview"></div>
-            <div class="select-wrapper" style="margin-top:7px;">
-              <select id="warna" name="warna" required aria-describedby="warnaError">
-                <option value="">-- Pilih Warna --</option>
-              </select>
-            </div>
-            <div class="error-message" id="warnaError">Harap pilih warna produk.</div>
-          </div>
-          <label for="paperbag">Pakai Paper Bag</label>
+
+        <div class="input-group">
+          <label>Nomor WhatsApp</label>
+          <input type="tel" name="wa" id="wa" placeholder="0812xxxx" inputmode="numeric" required data-label="Nomor WhatsApp">
+        </div>
+
+        <div class="input-group">
+          <label>Alamat Lengkap</label>
+          <textarea name="alamat" id="alamat" rows="3" placeholder="Jalan, No. Rumah, RT/RW, Kecamatan, Kota" required data-label="Alamat Lengkap"></textarea>
+        </div>
+      </div>
+
+      <!-- PRODUK -->
+      <div class="card">
+        <div class="card-header"><i data-lucide="shopping-bag"></i> Detail Produk</div>
+        
+        <div class="input-group">
+          <label>Jenis Produk</label>
           <div class="select-wrapper">
-            <select name="paperbag" id="paperbag" required aria-describedby="paperbagError">
-              <option value="">-- Pilih --</option>
-              <option value="Tidak">Tidak</option>
-              <option value="Pakai (Rp5.000)">Pakai (+ Rp5.000)</option>
+            <select name="produk" id="produk" required data-label="Jenis Produk">
+              <option value="">-- Pilih Produk --</option>
+              <option value="Paris Jadul - 35000">Paris Jadul - Rp35.000</option>
+              <option value="Pashmina Kaos - 55000">Pashmina Kaos - Rp55.000</option>
+              <option value="Premium Inner - 25000">Premium Inner - Rp25.000</option>
             </select>
           </div>
-          <div class="error-message" id="paperbagError">Harap pilih opsi paper bag.</div>
         </div>
-        <div class="bento-tile">
-          <div class="bento-header">Pengiriman & Pembayaran</div>
-          <div class="bento-row">
-            <div>
-              <label for="pengiriman">Metode Pengiriman</label>
-              <div class="select-wrapper">
-                <select name="pengiriman" id="pengiriman" required aria-describedby="pengirimanError">
-                  <option value="">-- Pilih --</option>
-                  <option value="SPX ID">SPX ID</option>
-                  <option value="J&T">J&T</option>
-                  <option value="Gosend">Gosend</option>
-                  <option value="Antar Langsung (Khusus Area Tamalanrea)">Antar Langsung (Khusus Area Tamalanrea)</option>
-                  <option value="Ambil Langsung">Ambil langsung</option>
-                </select>
-              </div>
-              <div class="error-message" id="pengirimanError">Harap pilih metode pengiriman.</div>
-            </div>
-            <div>
-              <label for="pembayaran">Metode Pembayaran</label>
-              <div class="select-wrapper">
-                <select name="pembayaran" id="pembayaran" required aria-describedby="pembayaranError">
-                  <option value="">-- Pilih --</option>
-                  <option value="Transfer Bank">Transfer Bank</option>
-                  <option value="COD">COD</option>
-                  <option value="QRIS">QRIS</option>
-                  <option value="Dana / e-wallet">Dana / e-wallet</option>
-                </select>
-              </div>
-              <div class="error-message" id="pembayaranError">Harap pilih metode pembayaran.</div>
-            </div>
+
+        <div class="input-group" id="colorGroup">
+          <label>Warna: <span id="warnaLabel" style="font-weight:400; color:var(--text);">Belum dipilih</span></label>
+          <div id="colorGrid" class="color-grid"></div>
+          <input type="hidden" name="warna" id="warnaInput" data-label="Warna Produk">
+          <div id="msgSelectProduct" style="font-size:0.85rem; color:var(--text-muted; font-style:italic; margin-top:5px;">Silakan pilih produk terlebih dahulu.</div>
+        </div>
+
+        <div class="input-group">
+          <label>Jumlah</label>
+          <div class="qty-container">
+            <button type="button" class="qty-btn" onclick="updateQty(-1)">-</button>
+            <input type="number" name="jumlah" id="jumlah" class="qty-input" value="1" min="1" max="50">
+            <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
           </div>
         </div>
-        <div class="bento-tile">
-          <div class="bento-header">Catatan & Promo</div>
-          <label for="promoInput">Kode Promo (Jika Tersedia)</label>
-          <input type="text" name="promo" id="promoInput" placeholder="Opsional" aria-describedby="promoError">
-          <div class="error-message" id="promoError">Kode promo tidak valid. Gunakan femmeia10.</div>
-          <label for="catatan">Catatan Tambahan (Opsional)</label>
-          <textarea name="catatan" id="catatan" placeholder="Contoh: packing rapi, dll."></textarea>
-        </div>
-        <div class="bento-tile">
-          <div class="total-harga" id="totalHarga">Total: Rp0</div>
-          <button type="submit" id="pesanBtn" aria-label="Pesan Sekarang untuk mengirimkan pesanan">Pesan Sekarang</button>
-          <button type="button" id="resetBtn" class="reset-btn" aria-label="Atur Ulang untuk mengosongkan formulir">Atur Ulang</button>
-          <div class="loading" id="loadingText">Menyiapkan Pesanan...</div>
-          <div class="notif" id="notif"></div>
+
+        <div class="input-group">
+          <label>Tambahan Paper Bag</label>
+          <div class="select-wrapper">
+            <select name="paperbag" id="paperbag">
+              <option value="Tidak">Tidak</option>
+              <option value="Ya">Ya (+Rp5.000)</option>
+            </select>
+          </div>
         </div>
       </div>
+
+      <!-- PENGIRIMAN & BAYAR -->
+      <div class="card">
+        <div class="card-header"><i data-lucide="truck"></i> Pengiriman & Pembayaran</div>
+        
+        <div class="input-group">
+          <label>Metode Pengiriman</label>
+          <div class="select-wrapper">
+            <select name="pengiriman" id="pengiriman" required data-label="Metode Pengiriman">
+              <option value="">-- Pilih --</option>
+              <option value="SPX ID">SPX ID</option>
+              <option value="J&T">J&T</option>
+              <option value="Gosend">Gosend (Makassar)</option>
+              <option value="Antar Langsung">Antar Langsung (Khusus Tamalanrea)</option>
+              <option value="Ambil Langsung">Ambil Langsung (Ke Lokasi)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Metode Pembayaran</label>
+          <div class="select-wrapper">
+            <select name="pembayaran" id="pembayaran" required data-label="Metode Pembayaran">
+              <option value="">-- Pilih --</option>
+              <option value="Transfer Bank">Transfer Bank (BCA/BRI)</option>
+              <option value="COD">COD (Bayar di Tempat)</option>
+              <option value="QRIS">QRIS (Scan Barcode)</option>
+              <option value="E-Wallet">DANA / OVO / GoPay</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Kode Promo (Opsional)</label>
+          <input type="text" name="promo" id="promo" placeholder="Punya kode promo?" style="text-transform:uppercase;">
+          <div id="promoStatus" style="font-size:0.8rem; margin-top:4px;"></div>
+        </div>
+
+        <div class="input-group">
+          <label>Catatan Tambahan</label>
+          <textarea name="catatan" id="catatan" rows="2" placeholder="Pesan khusus untuk penjual..."></textarea>
+        </div>
+
+        <div class="reset-link">
+          <a onclick="resetForm()">Reset Formulir</a>
+        </div>
+      </div>
+      
     </form>
   </div>
-  <!-- Scroll To Top Button -->
-  <button id="scrollToTopBtn" aria-label="Kembali ke Atas" title="Kembali ke Atas" style="z-index:999;">
-    <svg viewBox="0 0 32 32" fill="white"><circle cx="16" cy="16" r="15" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M10 18l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-  <!-- Toast Notification -->
-  <div class="toast" id="toast"></div>
-  <!-- Sticky Notification for Incomplete Fields -->
-  <div class="sticky-notif" id="stickyNotif"></div>
-  <!-- FAQ FOOTER mini -->
-  <footer>
-    <div class="faq-mini" id="faqMini" style="z-index:-1;">
-      <div class="faq-title">FAQ</div>
-      <div class="faq-item"><div class="faq-q">Bisa bayar COD?</div><div class="faq-a">Bisa! Pilih metode pembayaran COD pada form.</div></div>
-      <div class="faq-item"><div class="faq-q">Kapan pesanan dikirim?</div><div class="faq-a">Pesanan dikirim maksimal H+1 setelah pembayaran/konfirmasi diterima.</div></div>
-      <div class="faq-item"><div class="faq-q">Stok ready?</div><div class="faq-a">Semua produk ready stok. Jika habis, admin akan menghubungi via WhatsApp.</div></div>
-      <div class="faq-item"><div class="faq-q">Klaim promo?</div><div class="faq-a">Masukkan kode <b>femmeia10</b> di kolom "Kode Promo".</div></div>
+
+  <!-- STICKY FOOTER (Total & Checkout) -->
+  <div class="sticky-footer">
+    <div class="total-wrapper">
+      <span class="total-label">Total Pembayaran <span id="promoBadge" class="promo-applied">(Diskon 10%)</span></span>
+      <span class="total-price" id="footerTotal">Rp0</span>
     </div>
-    <div style="text-align:center;font-size:.90em;color:#b49bd1;margin-bottom:13px;margin-top:4px;opacity:.82;">
-      &copy; 2025 FemmeiaCloth. All Rights Reserved.
+    <button type="button" class="btn-checkout" onclick="validateAndOrder()">
+      Pesan <i data-lucide="arrow-right" style="width:18px;"></i>
+    </button>
+  </div>
+
+  <!-- MODAL KONFIRMASI -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+      <div class="modal-title">Konfirmasi Pesanan</div>
+      <div id="summaryContent"></div>
+      
+      <button class="btn-wa" id="btnSendWa">
+        <i data-lucide="message-circle"></i> Lanjut ke WhatsApp
+      </button>
+      <button class="btn-back" onclick="closeModal()">Periksa Lagi</button>
     </div>
-  </footer>
+  </div>
+
   <script>
-    // Loader
-    window.addEventListener('load', function () {
-      document.getElementById('pageLoader').style.display = 'none';
-      document.querySelectorAll('.bento-tile').forEach(tile => {
-        tile.style.opacity = '';
-        tile.style.transform = '';
-      });
-    });
+    // Initialize Icons
+    lucide.createIcons();
 
-    // FAQ Accordion + Animasi
-    document.querySelectorAll('.faq-item').forEach(item => {
-      item.addEventListener('click', function() {
-        document.querySelectorAll('.faq-item').forEach(i => { if(i !== item) i.classList.remove('open'); });
-        item.classList.toggle('open');
-      });
-    });
+    // --- DATA ---
+    const PRODUCT_DATA = {
+      "Paris Jadul - 35000": [
+        "Hitam", "Stone", "Abu Ash", "Soft Latte", "Cream", "Vanilla", 
+        "Biskuit", "Dusty Rose", "Dark Blue", "Dark Choco", "Burgundy", "Maroon"
+      ],
+      "Pashmina Kaos - 55000": ["Hitam", "Dark Grey", "Khaky Putty", "Navy"],
+      "Premium Inner - 25000": ["BW", "Oat", "Hitam", "Silver", "Dark Grey", "Khaky"]
+    };
 
-    // Testi Carousel with Manual Controls
-    const testiInner = document.getElementById('testiInner');
-    const testiCount = testiInner.children.length;
-    let testiIndex = 0;
-    let testiInterval;
-    function startCarousel() {
-      testiInterval = setInterval(() => {
-        testiIndex = (testiIndex + 1) % testiCount;
-        testiInner.style.transform = `translateX(-${testiIndex * 100}%)`;
-      }, 6000);
-    }
-    function stopCarousel() {
-      clearInterval(testiInterval);
-    }
-    startCarousel();
-    document.querySelector('.prev-btn').addEventListener('click', () => {
-      stopCarousel();
-      testiIndex = (testiIndex - 1 + testiCount) % testiCount;
-      testiInner.style.transform = `translateX(-${testiIndex * 100}%)`;
-      startCarousel();
-    });
-    document.querySelector('.next-btn').addEventListener('click', () => {
-      stopCarousel();
-      testiIndex = (testiIndex + 1) % testiCount;
-      testiInner.style.transform = `translateX(-${testiIndex * 100}%)`;
-      startCarousel();
-    });
-    testiInner.addEventListener('mouseenter', stopCarousel);
-    testiInner.addEventListener('mouseleave', startCarousel);
-
-    // Warna real swatch
-    const colorHexMap = {
+    const COLOR_HEX = {
       "Hitam": "#191919", "Stone": "#b8b6b1", "Abu Ash": "#a7a6a6", "Soft Latte": "#e5ceb8",
       "Cream": "#fff6cf", "Vanilla": "#fbe7a2", "Biskuit": "#e2c39a", "Dusty Rose": "#e4aeb1",
       "Dark Blue": "#222e50", "Dark Choco": "#513c29", "Burgundy": "#7d2636", "Maroon": "#781f29",
       "Dark Grey": "#44474b", "Silver": "#c0c0c0", "Khaky": "#bdb76b", "Oat": "#e5d1b8",
       "BW": "#f8f8f8", "Khaky Putty": "#cabfa0", "Navy": "#2a3759"
     };
-    const warnaOptions = {
-      "Paris Jadul - 35.000": ["Hitam", "Stone", "Abu Ash", "Soft Latte", "Cream", "Vanilla", "Biskuit", "Dusty Rose", "Dark Blue", "Dark Choco", "Burgundy", "Maroon"],
-      "Pashmina Kaos - 55.000": ["Hitam", "Dark Grey", "Khaky Putty", "Navy"],
-      "Premium Inner - 25.000": ["BW", "Oat", "Hitam", "Silver", "Dark Grey", "Khaky"]
-    };
-    const hargaProduk = {
-      "Paris Jadul - 35.000": 35000,
-      "Pashmina Kaos - 55.000": 55000,
-      "Premium Inner - 25.000": 25000
-    };
-    const PROMO_CODE = "femmeia10";
-    const PROMO_DISKON = 0.10;
-    const productType = document.getElementById('productType');
-    const warna = document.getElementById('warna');
-    const colorPreview = document.getElementById('colorPreview');
-    const jumlah = document.querySelector('input[name="jumlah"]');
-    const paperbag = document.getElementById('paperbag');
-    const totalHarga = document.getElementById('totalHarga');
-    const notif = document.getElementById('notif');
-    const pesanBtn = document.getElementById('pesanBtn');
-    const promoInput = document.getElementById('promoInput');
-    const toast = document.getElementById('toast');
-    const resetBtn = document.getElementById('resetBtn');
 
-    // Modal animation helpers
-    const modalBg = document.getElementById('modalBg');
-    const modalContent = document.getElementById('modalContent');
-    function openModal() {
-      modalBg.classList.add('open');
-      modalBg.classList.remove('closing');
-      setTimeout(() => {
-        modalContent.scrollTop = 0;
-      }, 30);
-    }
-    function closeModal() {
-      modalBg.classList.add('closing');
-      modalBg.classList.remove('open');
-      setTimeout(() => {
-        modalBg.classList.remove('closing');
-      }, 250);
-    }
-    // Warna custom select sync
-    productType.addEventListener('change', function () {
-      const selected = this.value;
-      warna.innerHTML = '<option value="">-- Pilih Warna --</option>';
-      colorPreview.innerHTML = '';
-      if (warnaOptions[selected]) {
-        warnaOptions[selected].forEach(w => {
-          let opt = document.createElement('option');
-          opt.value = w;
-          opt.textContent = w;
-          warna.appendChild(opt);
-        });
-        updateColorPreview(selected, warna.value);
-      }
-      hitungTotal();
+    // --- ELEMENTS ---
+    const form = document.getElementById('orderForm');
+    const elProduk = document.getElementById('produk');
+    const elColorGrid = document.getElementById('colorGrid');
+    const elWarnaInput = document.getElementById('warnaInput');
+    const elWarnaLabel = document.getElementById('warnaLabel');
+    const elJumlah = document.getElementById('jumlah');
+    const elPaperbag = document.getElementById('paperbag');
+    const elPromo = document.getElementById('promo');
+    const elTotalFooter = document.getElementById('footerTotal');
+    const elPromoBadge = document.getElementById('promoBadge');
+    const modal = document.getElementById('confirmModal');
+    
+    // --- STATE ---
+    let totalPrice = 0;
+    let discountActive = false;
+    const PROMO_CODE = "FEMMEIA10";
+
+    // --- EVENT LISTENERS ---
+    
+    // 1. Load Data from LocalStorage on Startup
+    window.addEventListener('DOMContentLoaded', () => {
+      loadFormData();
+      lucide.createIcons(); // Re-init icons
     });
-    warna.addEventListener('focus', function () {
-      if (!productType.value) {
-        showToast("Silakan pilih jenis produk terlebih dahulu.");
-        productType.focus();
+
+    // 2. Auto Save on Input
+    form.addEventListener('input', (e) => {
+      // Remove error styling if user starts typing/selecting
+      if(e.target.classList.contains('input-error')) {
+        e.target.classList.remove('input-error');
       }
+      calculateTotal();
+      saveFormData();
     });
-    function updateColorPreview(prod, selectedWarna) {
-      colorPreview.innerHTML = '';
-      if (warnaOptions[prod]) {
-        warnaOptions[prod].forEach(w => {
-          const hex = colorHexMap[w] || '#fff';
-          const dot = document.createElement('span');
-          dot.className = 'color-dot' + (w === selectedWarna ? ' selected' : '');
-          dot.style.background = hex;
-          dot.title = w;
-          dot.onclick = function() {
-            warna.value = w;
-            updateColorPreview(prod, w);
-          };
-          colorPreview.appendChild(dot);
-        });
-        if (selectedWarna) {
-          const label = document.createElement('span');
-          label.className = 'color-label';
-          label.innerText = selectedWarna;
-          colorPreview.appendChild(label);
-        }
-      }
-    }
-    warna.addEventListener('change', function () {
-      updateColorPreview(productType.value, warna.value);
+
+    // 3. Product Change -> Update Colors
+    elProduk.addEventListener('change', () => {
+      renderColors();
+      calculateTotal();
+      saveFormData();
+      elProduk.classList.remove('input-error'); // Remove error style
     });
-    jumlah.addEventListener('input', hitungTotal);
-    productType.addEventListener('change', hitungTotal);
-    paperbag.addEventListener('change', hitungTotal);
-    promoInput.addEventListener('input', hitungTotal);
-    function hitungTotal() {
-      const prod = productType.value;
-      let qty = parseInt(jumlah.value) || 1;
-      if (qty < 1) qty = 1;
-      let harga = hargaProduk[prod] ? hargaProduk[prod] * qty : 0;
-      if (paperbag.value.startsWith('Pakai')) harga += 5000;
-      let promoValid = false;
-      let promoValue = promoInput.value.trim().toLowerCase();
-      if (promoValue === PROMO_CODE) {
-        promoValid = true;
-        harga = Math.floor(harga * (1 - PROMO_DISKON));
-        promoInput.style.borderColor = "var(--success-color)";
-        document.getElementById('promoError').style.display = 'none';
-      } else if (promoValue.length > 0) {
-        promoInput.style.borderColor = "var(--error-color)";
-        document.getElementById('promoError').style.display = 'block';
-      } else {
-        promoInput.style.borderColor = "";
-        document.getElementById('promoError').style.display = 'none';
-      }
-      totalHarga.innerText = `Total: Rp${harga.toLocaleString('id-ID')}` + (promoValid ? " (promo -10%)" : "");
-      return harga;
-    }
-    function resetNotif() { notif.innerText = ''; }
-    // Toast notification
-    function showToast(msg, duration=2100) {
-      toast.innerText = msg;
-      toast.className = "toast show";
-      setTimeout(() => { toast.className = "toast hide"; }, duration);
-    }
-    // Sticky Notification for Incomplete Fields
-    const stickyNotif = document.getElementById('stickyNotif');
-    function showStickyNotif(msg, duration=5000) {
-      stickyNotif.innerText = msg;
-      stickyNotif.className = "sticky-notif show";
-      setTimeout(() => { stickyNotif.className = "sticky-notif hide"; }, duration);
-    }
-    // Form validation
-    function validateField(field, errorId, errorMessage, validationFn) {
-      const errorElement = document.getElementById(errorId);
-      if (!validationFn(field.value)) {
-        field.classList.add('error');
-        errorElement.style.display = 'block';
-        errorElement.textContent = errorMessage;
-        return false;
-      } else {
-        field.classList.remove('error');
-        errorElement.style.display = 'none';
-        return true;
-      }
-    }
-    // Save form data to localStorage
-    function saveFormData() {
-      const formData = new FormData(document.getElementById('orderForm'));
-      const data = {};
-      formData.forEach((value, key) => {
-        data[key] = value;
+
+    // --- FUNCTIONS ---
+
+    // Toast Logic
+    function showToast(message, type = 'error') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icon = type === 'error' ? 'alert-circle' : 'check-circle';
+      toast.innerHTML = `<i data-lucide="${icon}"></i> <span>${message}</span>`;
+      
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      // Trigger animation
+      requestAnimationFrame(() => {
+        toast.classList.add('show');
       });
-      localStorage.setItem('formData', JSON.stringify(data));
+
+      // Remove after 3s
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
     }
-    // Load form data from localStorage
+
+    // Quantity Stepper Logic
+    function updateQty(change) {
+      let val = parseInt(elJumlah.value) || 1;
+      val += change;
+      if (val < 1) val = 1;
+      if (val > 50) val = 50;
+      elJumlah.value = val;
+      calculateTotal();
+      saveFormData();
+    }
+
+    // Render Colors based on Product
+    function renderColors() {
+      const selectedProduct = elProduk.value;
+      elColorGrid.innerHTML = '';
+      elWarnaInput.value = '';
+      elWarnaLabel.innerText = 'Belum dipilih';
+      document.getElementById('msgSelectProduct').style.display = selectedProduct ? 'none' : 'block';
+
+      if (!selectedProduct) return;
+
+      const colors = PRODUCT_DATA[selectedProduct] || [];
+      
+      colors.forEach(color => {
+        const hex = COLOR_HEX[color] || '#e5e7eb';
+        const div = document.createElement('div');
+        div.className = 'color-option';
+        div.style.backgroundColor = hex;
+        div.title = color;
+        div.onclick = () => selectColor(div, color);
+        elColorGrid.appendChild(div);
+      });
+    }
+
+    // Handle Color Selection
+    function selectColor(element, colorName) {
+      // Remove active class from all
+      document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+      // Add to clicked
+      element.classList.add('selected');
+      // Update Inputs
+      elWarnaInput.value = colorName;
+      elWarnaLabel.innerHTML = `<span class="selected-color-label">${colorName}</span>`;
+      saveFormData();
+    }
+
+    // Calculate Total Price
+    function calculateTotal() {
+      const productVal = elProduk.value;
+      const qty = parseInt(elJumlah.value) || 1;
+      const paperbag = elPaperbag.value === 'Ya';
+      const promoInput = elPromo.value.trim().toUpperCase();
+
+      let price = 0;
+      if (productVal) {
+        // Extract price from value string "Name - 35000"
+        price = parseInt(productVal.split('-')[1].trim());
+      }
+
+      let subtotal = price * qty;
+      if (paperbag) subtotal += 5000;
+
+      // Promo Logic
+      const promoStatus = document.getElementById('promoStatus');
+      if (promoInput === PROMO_CODE) {
+        discountActive = true;
+        subtotal = subtotal * 0.9; // 10% off
+        promoStatus.innerHTML = '<span style="color:var(--success)">✔ Kode promo aktif!</span>';
+        elPromoBadge.style.display = 'inline';
+      } else if (promoInput.length > 3) {
+        discountActive = false;
+        promoStatus.innerHTML = '<span style="color:var(--error)">✖ Kode tidak valid</span>';
+        elPromoBadge.style.display = 'none';
+      } else {
+        discountActive = false;
+        promoStatus.innerText = '';
+        elPromoBadge.style.display = 'none';
+      }
+
+      totalPrice = Math.floor(subtotal);
+      elTotalFooter.innerText = 'Rp' + totalPrice.toLocaleString('id-ID');
+    }
+
+    // Validation & Modal Trigger
+    function validateAndOrder() {
+      let firstErrorEl = null;
+      let errorMessage = "";
+
+      // 1. Reset Styles
+      document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+      // 2. Helper to check fields
+      const checkField = (id) => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) {
+          el.classList.add('input-error');
+          if (!firstErrorEl) {
+            firstErrorEl = el;
+            errorMessage = `${el.getAttribute('data-label')} belum diisi`;
+          }
+          return false;
+        }
+        return true;
+      };
+
+      // 3. Run Checks Sequence
+      checkField('nama');
+      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
+
+      checkField('wa');
+      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
+
+      checkField('alamat');
+      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
+
+      checkField('produk');
+      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
+
+      // Special Check for Color
+      if (!elWarnaInput.value) {
+        firstErrorEl = document.getElementById('colorGroup'); // Scroll to group container
+        errorMessage = "Warna produk belum dipilih";
+        return handleError(firstErrorEl, errorMessage);
+      }
+
+      checkField('pengiriman');
+      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
+
+      checkField('pembayaran');
+      if(firstErrorEl) return handleError(firstErrorEl, errorMessage);
+
+      // If All Valid
+      showSummaryModal();
+    }
+
+    function handleError(element, message) {
+      showToast(message);
+      // Scroll to element with offset for Sticky Header
+      const yOffset = -100; // offset for top bar
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({top: y, behavior: 'smooth'});
+      
+      // Focus if it's an input
+      if(element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT') {
+        setTimeout(() => element.focus(), 500); // Delay focus for scroll animation
+      }
+    }
+
+
+    // Show Confirmation Modal
+    function showSummaryModal() {
+      const productName = elProduk.value.split('-')[0].trim();
+      const color = elWarnaInput.value;
+      
+      const html = `
+        <div class="summary-item"><strong>Nama:</strong> <span>${document.getElementById('nama').value}</span></div>
+        <div class="summary-item"><strong>Alamat:</strong> <span style="text-align:right; max-width:60%;">${document.getElementById('alamat').value}</span></div>
+        <div class="summary-item"><strong>Produk:</strong> <span>${productName}</span></div>
+        <div class="summary-item"><strong>Warna:</strong> <span>${color}</span></div>
+        <div class="summary-item"><strong>Jumlah:</strong> <span>${elJumlah.value} pcs</span></div>
+        <div class="summary-item"><strong>Pengiriman:</strong> <span>${document.getElementById('pengiriman').value}</span></div>
+        <div class="summary-item"><strong>Pembayaran:</strong> <span>${document.getElementById('pembayaran').value}</span></div>
+        <div class="summary-total">
+          <span>Total Bayar</span>
+          <span>Rp${totalPrice.toLocaleString('id-ID')}</span>
+        </div>
+      `;
+      
+      document.getElementById('summaryContent').innerHTML = html;
+      modal.style.display = 'flex';
+
+      // Setup WhatsApp Button
+      document.getElementById('btnSendWa').onclick = () => {
+        const text = `Halo Admin FemmeiaCloth, saya ingin pesan:\n\n` +
+          `• Nama: ${document.getElementById('nama').value}\n` +
+          `• Produk: ${productName} (${color})\n` +
+          `• Qty: ${elJumlah.value}\n` +
+          `• Total: Rp${totalPrice.toLocaleString('id-ID')}\n` +
+          `• Pengiriman: ${document.getElementById('pengiriman').value}\n` +
+          `• Pembayaran: ${document.getElementById('pembayaran').value}\n` +
+          `• Alamat: ${document.getElementById('alamat').value}\n` +
+          `• Catatan: ${document.getElementById('catatan').value || '-'}`;
+        
+        // Clear Storage after order
+        localStorage.removeItem('femmeia_order_data');
+        window.open(`https://wa.me/6287777420644?text=${encodeURIComponent(text)}`, '_blank');
+      };
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    // --- LOCAL STORAGE LOGIC ---
+    function saveFormData() {
+      const data = {
+        nama: document.getElementById('nama').value,
+        wa: document.getElementById('wa').value,
+        alamat: document.getElementById('alamat').value,
+        produk: elProduk.value,
+        warna: elWarnaInput.value,
+        jumlah: elJumlah.value,
+        paperbag: elPaperbag.value,
+        pengiriman: document.getElementById('pengiriman').value,
+        pembayaran: document.getElementById('pembayaran').value,
+        catatan: document.getElementById('catatan').value
+      };
+      localStorage.setItem('femmeia_order_data', JSON.stringify(data));
+    }
+
     function loadFormData() {
-      const data = JSON.parse(localStorage.getItem('formData') || '{}');
-      if (data) {
-        const form = document.getElementById('orderForm');
-        Object.keys(data).forEach(key => {
-          const input = form.querySelector(`[name="${key}"]`);
-          if (input) {
-            input.value = data[key];
-            if (key === 'produk') {
-              productType.dispatchEvent(new Event('change'));
+      const saved = localStorage.getItem('femmeia_order_data');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          document.getElementById('nama').value = data.nama || '';
+          document.getElementById('wa').value = data.wa || '';
+          document.getElementById('alamat').value = data.alamat || '';
+          elJumlah.value = data.jumlah || 1;
+          elPaperbag.value = data.paperbag || 'Tidak';
+          document.getElementById('pengiriman').value = data.pengiriman || '';
+          document.getElementById('pembayaran').value = data.pembayaran || '';
+          document.getElementById('catatan').value = data.catatan || '';
+
+          if (data.produk) {
+            elProduk.value = data.produk;
+            renderColors(); // Re-render circles
+            
+            // Restore color selection visually
+            if (data.warna) {
+              const colorOptions = document.querySelectorAll('.color-option');
+              for (let div of colorOptions) {
+                if (div.title === data.warna) {
+                  selectColor(div, data.warna);
+                  break;
+                }
+              }
             }
           }
-        });
-        hitungTotal();
-        showToast("Data formulir sebelumnya telah dimuat.");
-      }
-    }
-    // Reset form and clear localStorage
-    resetBtn.addEventListener('click', function() {
-      if (confirm("Apakah Anda yakin ingin mengatur ulang formulir? Semua data yang diisi akan hilang.")) {
-        document.getElementById('orderForm').reset();
-        localStorage.removeItem('formData');
-        productType.dispatchEvent(new Event('change'));
-        hitungTotal();
-        document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('input, select, textarea').forEach(el => el.classList.remove('error'));
-        showToast("Formulir telah diatur ulang.");
-        updateProgress();
-      }
-    });
-    // Form submission
-    document.getElementById('orderForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      resetNotif();
-      let isValid = true;
-      let errorMessages = [];
-      if (!validateField(
-        this.nama, 'namaError', 'Nama hanya boleh mengandung huruf dan spasi.',
-        value => /^[a-zA-Z\s]+$/.test(value)
-      )) {
-        isValid = false;
-        errorMessages.push("Nama hanya boleh mengandung huruf dan spasi.");
-      }
-      if (!validateField(
-        this.wa, 'waError', 'Nomor WhatsApp harus diawali +62, 62, atau 08 dan berisi 10-15 angka.',
-        value => /^(\+62|62|08)[0-9]{8,13}$/.test(value)
-      )) {
-        isValid = false;
-        errorMessages.push("Nomor WhatsApp harus diawali +62, 62, atau 08.");
-      }
-      if (!validateField(
-        this.alamat, 'alamatError', 'Alamat harus diisi dengan lengkap.',
-        value => value.trim().length > 10
-      )) {
-        isValid = false;
-        errorMessages.push("Alamat harus diisi dengan lengkap.");
-      }
-      if (!validateField(
-        this.produk, 'produkError', 'Harap pilih jenis produk.',
-        value => value !== ''
-      )) {
-        isValid = false;
-        errorMessages.push("Harap pilih jenis produk.");
-      }
-      if (!validateField(
-        this.warna, 'warnaError', 'Harap pilih warna produk.',
-        value => value !== ''
-      )) {
-        isValid = false;
-        errorMessages.push("Harap pilih warna produk.");
-      }
-      if (!validateField(
-        this.jumlah, 'jumlahError', 'Jumlah harus antara 1 dan 20.',
-        value => parseInt(value) >= 1 && parseInt(value) <= 20
-      )) {
-        isValid = false;
-        errorMessages.push("Jumlah harus antara 1 dan 20.");
-      }
-      if (!validateField(
-        this.paperbag, 'paperbagError', 'Harap pilih opsi paper bag.',
-        value => value !== ''
-      )) {
-        isValid = false;
-        errorMessages.push("Harap pilih opsi paper bag.");
-      }
-      if (!validateField(
-        this.pengiriman, 'pengirimanError', 'Harap pilih metode pengiriman.',
-        value => value !== ''
-      )) {
-        isValid = false;
-        errorMessages.push("Harap pilih metode pengiriman.");
-      }
-      if (!validateField(
-        this.pembayaran, 'pembayaranError', 'Harap pilih metode pembayaran.',
-        value => value !== ''
-      )) {
-        isValid = false;
-        errorMessages.push("Harap pilih metode pembayaran.");
-      }
-      let promoValue = promoInput.value.trim().toLowerCase();
-      if (promoValue.length > 0 && promoValue !== PROMO_CODE) {
-        notif.innerText = 'Kode promo tidak valid! Masukkan: femmeia10';
-        promoInput.focus();
-        promoInput.style.borderColor = "var(--error-color)";
-        document.getElementById('promoError').style.display = 'block';
-        showToast('Kode promo salah. Gunakan femmeia10');
-        isValid = false;
-        errorMessages.push("Kode promo tidak valid.");
-      }
-      if (!isValid) {
-        showStickyNotif("Formulir belum lengkap: " + errorMessages[0]);
-        return;
-      }
-      pesanBtn.disabled = true;
-      document.getElementById('loadingText').style.display = 'block';
-      setTimeout(() => {
-        document.getElementById('loadingText').style.display = 'none';
-        pesanBtn.disabled = false;
-        const form = new FormData(this);
-        const pesan = [
-          ["Nama", form.get('nama')],
-          ["No WA", form.get('wa')],
-          ["Alamat", form.get('alamat')],
-          ["Produk", form.get('produk')],
-          ["Warna", form.get('warna')],
-          ["Jumlah", form.get('jumlah')],
-          ["Paperbag", form.get('paperbag')],
-          ["Pengiriman", form.get('pengiriman')],
-          ["Pembayaran", form.get('pembayaran')],
-          ["Kode Promo", form.get('promo')],
-          ["Catatan", form.get('catatan')],
-        ];
-        const harga = hitungTotal();
-        const ringkasanList = document.getElementById('ringkasanList');
-        ringkasanList.innerHTML = '';
-        pesan.forEach(([k,v]) => { if (v) ringkasanList.innerHTML += `<li><strong>${k}:</strong> ${v}</li>`; });
-        document.getElementById('ringkasanHarga').innerText = `Total: Rp${harga.toLocaleString('id-ID')}` + (promoValue === PROMO_CODE ? " (promo -10%)" : "");
-        openModal();
-        window._ringkasanMsg = `*Form Pemesanan | FemmeiaCloth:*\n\n` +
-          pesan.map(([k,v]) => `${k}: ${v}`).join('\n') +
-          `\nTotal: Rp${harga.toLocaleString('id-ID')}` + (promoValue === PROMO_CODE ? " (promo -10%)" : "");
-      }, 650);
-    });
-    document.getElementById('lanjutWA').onclick = function() {
-      closeModal();
-      pesanBtn.disabled = false;
-      const waNumber = "6287777420644";
-      const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(window._ringkasanMsg)}`;
-      window.open(url, "_blank");
-      showToast('Pesanan diarahkan ke WhatsApp!');
-      notif.innerText = '';
-      localStorage.removeItem('formData'); // Clear saved data after successful submission
-    };
-    document.getElementById('batalModal').onclick = function() {
-      closeModal();
-      pesanBtn.disabled = false;
-    };
-    productType.dispatchEvent(new Event('change'));
-    // Scroll To Top Button
-    const scrollBtn = document.getElementById('scrollToTopBtn');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 240) {
-        scrollBtn.classList.add('active');
-      } else {
-        scrollBtn.classList.remove('active');
-      }
-    });
-    scrollBtn.addEventListener('click', function() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-    // Autosave form data on input
-    document.querySelectorAll('input, select, textarea').forEach(input => {
-      input.addEventListener('input', saveFormData);
-      input.addEventListener('change', saveFormData);
-    });
-    // Load form data on page load
-    loadFormData();
-    // Progress Indicator
-    const progressContainer = document.getElementById('progressContainer');
-    const progressFill = document.getElementById('progressFill');
-    const progressText = document.getElementById('progressText');
-    function updateProgress() {
-      const form = document.getElementById('orderForm');
-      const requiredFields = form.querySelectorAll('[required]');
-      let filledFields = 0;
-      requiredFields.forEach(field => {
-        if (field.value.trim() !== '') {
-          filledFields++;
+          calculateTotal();
+        } catch (e) {
+          console.error("Error loading data", e);
         }
-      });
-      const progress = Math.round((filledFields / requiredFields.length) * 100);
-      progressFill.style.width = `${progress}%`;
-      progressText.textContent = `Progres Pengisian: ${progress}%`;
-      if (progress > 0) {
-        progressContainer.style.display = 'block';
-      } else {
-        progressContainer.style.display = 'none';
       }
     }
-    document.querySelectorAll('input, select, textarea').forEach(field => {
-      field.addEventListener('input', updateProgress);
-      field.addEventListener('change', updateProgress);
-    });
-    // Initialize progress on load
-    updateProgress();
+
+    function resetForm() {
+      if(confirm('Hapus semua data di formulir?')) {
+        form.reset();
+        localStorage.removeItem('femmeia_order_data');
+        elProduk.dispatchEvent(new Event('change')); // Reset colors
+        calculateTotal();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
   </script>
 </body>
 </html>
-
-
