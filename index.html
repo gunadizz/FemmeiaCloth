@@ -49,6 +49,10 @@
             --blur-strength: 10px;
             --glass-bg: rgba(255, 255, 255, 0.2);
             --glass-border: rgba(255, 255, 255, 0.1);
+            
+            /* Warna khusus Top Bar */
+            --marquee-bg: #1f2937;
+            --marquee-text: #ffffff;
         }
 
         * {
@@ -66,6 +70,7 @@
             color: var(--text);
             overflow-x: hidden;
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -74,8 +79,38 @@
             align-items: center;
             justify-content: flex-start;
             padding-bottom: 2rem;
+            padding-top: 40px; /* Space for Top Bar */
             position: relative;
             z-index: 1;
+        }
+
+        /* Top Bar Announcement */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: var(--marquee-bg);
+            color: var(--marquee-text);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            z-index: 1000;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+            padding-left: 100%;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
         }
 
         /* Scattered Shapes Background */
@@ -299,7 +334,7 @@
             border-radius: var(--radius-lg);
             margin-bottom: 2rem;
             position: relative;
-            overflow: hidden;
+            overflow: visible; /* Changed to visible for badges */
             animation: fadeInUp 0.8s ease;
             box-shadow: var(--shadow);
             width: 100%;
@@ -440,7 +475,7 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .link-card {
@@ -451,11 +486,33 @@
             transition: var(--transition-speed);
             box-shadow: var(--shadow);
             position: relative;
-            overflow: hidden;
+            overflow: visible; /* Changed for badges */
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 0.2rem;
+        }
+
+        /* Badge Styles */
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background: #e11d48;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 5;
+            animation: badgePulse 1.5s infinite;
+        }
+        
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .link-btn {
@@ -523,6 +580,230 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
+        /* --- NEW SECTION STYLES --- */
+
+        /* Produk Terlaris Showcase */
+        .showcase-section {
+            width: 100%;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            margin-bottom: 1rem;
+            text-align: left;
+            padding-left: 0.5rem;
+            border-left: 4px solid var(--accent-dark);
+            line-height: 1.2;
+        }
+
+        .showcase-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 1rem;
+            padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .showcase-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-card {
+            flex: 0 0 180px;
+            background: #fff;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition-speed);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .product-info {
+            padding: 0.8rem;
+            text-align: left;
+        }
+
+        .product-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+        }
+
+        .product-price {
+            font-size: 0.9rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* Dot Indicators */
+        .dot-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: -10px;
+            margin-bottom: 1rem;
+        }
+        
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: #cbd5e1;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .dot.active {
+            background-color: var(--accent-dark);
+            width: 20px;
+            border-radius: 4px;
+        }
+
+        /* Testimonials */
+        .testimonial-section {
+            width: 100%;
+            margin-bottom: 2.5rem;
+        }
+
+        .testimonial-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 1rem;
+            padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+            scrollbar-width: none;
+        }
+        
+        .testimonial-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .testimonial-card {
+            flex: 0 0 280px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            padding: 1.2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .testi-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .testi-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .testi-user {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--accent-dark);
+        }
+
+        .testi-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .stars {
+            color: var(--warning);
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+            display: block;
+        }
+
+        /* FAQ Accordion */
+        .faq-section {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .accordion-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.8rem;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-align: left;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: var(--background-light);
+            padding: 0 1rem;
+        }
+
+        .accordion-content p {
+            padding: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 200px; /* Approximate max height */
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+
         /* Modal Styles */
         .modal-screenshot {
             display: none;
@@ -572,6 +853,26 @@
             border: 1px solid var(--glass-border);
         }
 
+        .modal-action-btn {
+            margin-top: 1rem;
+            background: #ee4d2d; /* Shopee orange */
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .modal-action-btn:hover {
+            transform: translateY(-2px);
+            background: #d03e1f;
+        }
+
         @keyframes modalIn {
             from { opacity: 0; transform: scale(0.92); }
             to { opacity: 1; transform: scale(1); }
@@ -580,9 +881,9 @@
         .modal-img {
             width: 100%;
             max-width: 500px;
-            max-height: 70vh;
+            max-height: 60vh;
             border-radius: var(--radius-md);
-            margin: 1rem 0;
+            margin: 1rem 0 0.5rem 0;
             display: block;
             box-shadow: var(--shadow);
             background: #eee;
@@ -1158,6 +1459,13 @@
     </style>
 </head>
 <body>
+    <!-- Top Bar Marquee -->
+    <div class="top-bar">
+        <div class="marquee-content">
+            DISKON 10% UNTUK PEMBELIAN PERTAMA! GUNAKAN KODE: FEMMEIA10 FREE ONGKIR MAKASSAR • HIJAB PREMIUM NYAMAN SEHARIAN
+        </div>
+    </div>
+
     <!-- Loading Screen -->
     <div class="loading-screen">
         <div class="loading-text">FemmeiaCloth</div>
@@ -1191,27 +1499,27 @@
             <h2>Tampil Syar'i, Tetap Stylish!</h2>
             
             <div class="profile-social-container">
-    <div class="profile-tags">
-    <a href="https://instagram.com/femmeia.cloth" class="btn-social ig" target="_blank" title="Instagram @femmeia.cloth">
-      <span class="social-icon">
-        <i data-lucide="instagram"></i>
-      </span>
-      @femmeia.cloth
-    </a>
-    <a href="https://wa.me/6287777420644" class="btn-social wa" target="_blank" title="WhatsApp 087777420644">
-      <span class="social-icon">
-        <i data-lucide="phone"></i>
-      </span>
-      087777420644
-    </a>
-    <span class="profile-tag">#hijabsyari</span>
-    <span class="profile-tag">#premiumbrand</span>
-  </div>
-</div>
+                <div class="profile-tags">
+                <a href="https://instagram.com/femmeia.cloth" class="btn-social ig" target="_blank" title="Instagram @femmeia.cloth">
+                  <span class="social-icon">
+                    <i data-lucide="instagram"></i>
+                  </span>
+                  @femmeia.cloth
+                </a>
+                <a href="https://wa.me/6287777420644" class="btn-social wa" target="_blank" title="WhatsApp 087777420644">
+                  <span class="social-icon">
+                    <i data-lucide="phone"></i>
+                  </span>
+                  087777420644
+                </a>
+                <span class="profile-tag">#hijabsyari</span>
+                <span class="profile-tag">#premiumbrand</span>
+              </div>
+            </div>
 
             <button style="margin-top:5px; box-shadow: 0 13px 40px #273345; border-radius: 20px 8px 20px 8px;" id="openScreenshotModal" class="katalog-btn">Lihat Katalog</button>
+            
             <div class="info-cards fade-in" style="animation-delay: 0.2s">
-                
                 <div class="info-card">
                     <i data-lucide="truck" class="info-icon"></i>
                     <div class="info-text">Pengiriman Seluruh Indonesia</div>
@@ -1225,9 +1533,11 @@
                     <div class="info-text">Layanan Fast Response</div>
                 </div>
             </div>
-              <!-- Silahkan Atur Link Anda Disini-->  
+            
+            <!-- Links Section -->
             <div class="links-container fade-in" style="animation-delay: 0.4s">
                 <div class="link-card">
+                    <span class="badge">PROMO</span>
                     <a href="/order.html" class="link-btn"><i data-lucide="shopping-cart" class="link-icon"></i>Pesan Sekarang</a>
                 </div>
                 <div class="link-card">
@@ -1237,6 +1547,7 @@
                     <a href="https://www.instagram.com/femmeia.cloth" class="link-btn"><i data-lucide="instagram" class="link-icon"></i>Instagram</a>
                 </div>
                 <div class="link-card">
+                    <span class="badge">FREE ONGKIR</span>
                     <a href="https://shopee.co.id/femmeiacloth" class="link-btn"><i data-lucide="shopping-bag" class="link-icon"></i>Shopee</a>
                 </div>
                 <div class="link-card">
@@ -1249,6 +1560,174 @@
                     <a href="/payment2.html" class="link-btn"><i data-lucide="credit-card" class="link-icon"></i>Metode Pembayaran</a>
                 </div>
             </div>
+
+            <!-- Showcase Produk Terlaris -->
+            <div class="showcase-section fade-in" style="animation-delay: 0.5s">
+                <h3 class="section-title">Produk Terlaris</h3>
+                <div class="showcase-slider" id="productSlider">
+                    <!-- Produk 1 -->
+                    <div class="product-card">
+                        <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Produk 1" class="product-img">
+                        <div class="product-info">
+                            <div class="product-name">Paris Jadul Premium</div>
+                            <div class="product-price">Rp 35.000</div>
+                        </div>
+                    </div>
+                    <!-- Produk 2 -->
+                    <div class="product-card">
+                        <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Produk 2" class="product-img">
+                        <div class="product-info">
+                            <div class="product-name">Earab Inner</div>
+                            <div class="product-price">Rp 25.000</div>
+                        </div>
+                    </div>
+                     <!-- Produk 3 -->
+                    <div class="product-card">
+                        <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Produk 3" class="product-img">
+                        <div class="product-info">
+                            <div class="product-name">Pashmina </div>
+                            <div class="product-price">Rp 50.000</div>
+                        </div>
+                    </div>
+                     <!-- Produk 4 -->
+                    <div class="product-card">
+                        <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Produk 4" class="product-img">
+                        <div class="product-info">
+                            <div class="product-name">Malas edit</div>
+                            <div class="product-price">Rp 50.000</div>
+                        </div>
+                    </div>
+                    <!-- Produk 5 -->
+                    <div class="product-card">
+                        <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Produk 3" class="product-img">
+                        <div class="product-info">
+                            <div class="product-name">Pashmina </div>
+                            <div class="product-price">Rp 50.000</div>
+                        </div>
+                    </div>
+                     <!-- Produk 6 -->
+                    <div class="product-card">
+                        <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Produk 4" class="product-img">
+                        <div class="product-info">
+                            <div class="product-name">Malas edit</div>
+                            <div class="product-price">Rp 50.000</div>
+                        </div>
+                    </div>
+             
+                </div>
+                
+                <!-- Dot Indicators untuk Produk -->
+                <div class="dot-indicators" id="productDots">
+                    <!-- Dots will be generated by JS -->
+                </div>
+            </div>
+
+            <!-- Testimonial Section -->
+            <div class="testimonial-section fade-in" style="animation-delay: 0.6s">
+                <h3 class="section-title">Apa Kata Mereka?</h3>
+                <div class="testimonial-slider" id="testimonialSlider">
+                    <!-- Testi 1 -->
+                    <div class="testimonial-card">
+                        <div class="testi-header">
+                            <div class="testi-avatar">S</div>
+                            <div class="testi-user">S*** N*******a</div>
+                        </div>
+                        <p class="testi-text">"Bahannya adem banget dipakai seharian, gak bikin gerah. Suka banget sama warnanya yang soft!"
+                            <span class="stars">★★★★★</span>
+                        </p>
+                    </div>
+                    <!-- Testi 2 -->
+                    <div class="testimonial-card">
+                        <div class="testi-header">
+                            <div class="testi-avatar">R</div>
+                            <div class="testi-user">R*** A******i</div>
+                        </div>
+                        <p class="testi-text">"Pengiriman cepat, packing rapih. Kualitas jahitan juga oke banget untuk harga segini. Recommended!"
+                            <span class="stars">★★★★★</span>
+                        </p>
+                    </div>
+                    <!-- Testi 3 -->
+                    <div class="testimonial-card">
+                        <div class="testi-header">
+                            <div class="testi-avatar">D</div>
+                            <div class="testi-user">D*** P*******i</div>
+                        </div>
+                        <p class="testi-text">"Udah langganan beli di sini, modelnya selalu update dan kekinian. Mantap FemmeiaCloth!"
+                            <span class="stars">★★★★★</span>
+                        </p>
+                    </div>
+                    <!-- Testi 4 (Baru) -->
+                    <div class="testimonial-card">
+                        <div class="testi-header">
+                            <div class="testi-avatar">A</div>
+                            <div class="testi-user">A*** L*******i</div>
+                        </div>
+                        <p class="testi-text">"Suka banget sama potongannya, pas di muka. Gak perlu ribet pake jarum pentul banyak-banyak."
+                            <span class="stars">★★★★★</span>
+                        </p>
+                    </div>
+                    <!-- Testi 5 (Baru) -->
+                    <div class="testimonial-card">
+                        <div class="testi-header">
+                            <div class="testi-avatar">M</div>
+                            <div class="testi-user">M*** H*******h</div>
+                        </div>
+                        <p class="testi-text">"Adminnya ramah banget responsnya. Baju gamisnya juga flowy, gak nerawang. Top deh!"
+                            <span class="stars">★★★★★</span>
+                        </p>
+                    </div>
+                    <!-- Testi 6 (Baru) -->
+                    <div class="testimonial-card">
+                        <div class="testi-header">
+                            <div class="testi-avatar">F</div>
+                            <div class="testi-user">F*** Z****a</div>
+                        </div>
+                        <p class="testi-text">"Warnanya real pict, gak beda jauh sama foto. Bakal order lagi warna lain nih."
+                            <span class="stars">★★★★★</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- Dot Indicators untuk Testimonial -->
+                <div class="dot-indicators" id="testiDots">
+                    <!-- Dots will be generated by JS -->
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section fade-in" style="animation-delay: 0.7s">
+                <h3 class="section-title">FAQ</h3>
+                
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        Berapa lama pengiriman?
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Pengiriman dilakukan dari Makassar. Untuk sesama Makassar/Sulawesi Selatan biasanya 1-2 hari. Untuk luar pulau estimasi 3-5 hari kerja tergantung ekspedisi.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        Bisa COD (Bayar di Tempat)?
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Tentu! Kami melayani COD via kurir J&T dan SPX untuk area yang terjangkau. Pastikan alamat lengkap ya kak.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        Apakah bisa tukar barang?
+                        <i data-lucide="chevron-down" class="accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Bisa, jika barang yang diterima cacat produksi atau salah kirim warna/model. Wajib sertakan video unboxing saat klaim retur ya.</p>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </div>
 
@@ -1266,6 +1745,10 @@
             </button>
             <a href="https://shopee.co.id/femmeiacloth" target="_blank" rel="noopener">
                 <img src="https://raw.githubusercontent.com/gunadizz/FemmeiaCloth/refs/heads/main/img/IMG_20250519_192937.png" alt="Catalog Screenshot for FemmeiaCloth products" class="modal-img" />
+            </a>
+            <!-- Added Shopee Button inside Modal -->
+            <a href="https://shopee.co.id/femmeiacloth" target="_blank" class="modal-action-btn">
+                <i data-lucide="shopping-bag"></i> Buka di Shopee
             </a>
         </div>
     </div>
@@ -1350,6 +1833,67 @@
             }, 2500);
         });
 
+        // --- FAQ Accordion Logic ---
+        const accordions = document.querySelectorAll('.accordion-header');
+        accordions.forEach(acc => {
+            acc.addEventListener('click', function() {
+                const item = this.parentElement;
+                // Close other items
+                document.querySelectorAll('.accordion-item').forEach(i => {
+                    if (i !== item) i.classList.remove('active');
+                });
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+
+        // --- Slider Dots Logic (Generic Function) ---
+        function setupSliderDots(sliderId, dotsContainerId, itemSelector) {
+            const slider = document.getElementById(sliderId);
+            const dotsContainer = document.getElementById(dotsContainerId);
+            const items = slider.querySelectorAll(itemSelector);
+            
+            if (!slider || !dotsContainer || items.length === 0) return;
+
+            // Create dots
+            items.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => {
+                    const itemWidth = items[0].offsetWidth + 16; // width + gap
+                    slider.scrollTo({
+                        left: index * itemWidth,
+                        behavior: 'smooth'
+                    });
+                });
+                dotsContainer.appendChild(dot);
+            });
+
+            // Update active dot on scroll
+            slider.addEventListener('scroll', () => {
+                const itemWidth = items[0].offsetWidth + 16;
+                const scrollPos = slider.scrollLeft;
+                const activeIndex = Math.round(scrollPos / itemWidth);
+                
+                const dots = dotsContainer.querySelectorAll('.dot');
+                dots.forEach((dot, index) => {
+                    if (index === activeIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        // Initialize Sliders
+        window.addEventListener('load', () => {
+            setupSliderDots('productSlider', 'productDots', '.product-card');
+            setupSliderDots('testimonialSlider', 'testiDots', '.testimonial-card');
+        });
+
+
         // Modal logic untuk katalog
         const modal = document.getElementById('screenshotModal');
         const openBtn = document.getElementById('openScreenshotModal');
@@ -1431,7 +1975,7 @@
             }, 2000);
         }
 
-        // Smooth Scrolling untuk link-link Internal (jika dibutuhkan nanti)
+        // Smooth Scrolling untuk link-link Internal
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
