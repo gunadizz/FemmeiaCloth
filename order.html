@@ -106,7 +106,7 @@
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000; display: none; align-items: center; justify-content: center; }
     .modal-box { background: #fff; width: 90%; max-width: 400px; border-radius: 20px; padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .modal-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-    .summary-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
+    .summary-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; gap: 8px; }
     .summary-item strong { color: var(--text-muted); }
     .summary-total { margin-top: 15px; padding-top: 10px; border-top: 2px dashed #eee; font-weight: 700; font-size: 1.1rem; display: flex; justify-content: space-between; }
 
@@ -372,6 +372,7 @@
     const MIN_INSTANT_KG = 0.5;         // minimum charge same-day/instant (0.5 kg)
     const MIN_REG_KG = 1;               // minimum charge reguler (dibulatkan ke 1 kg)
     const INSTANT_EXTRA_PER_KG = 3000;  // tambahan per kg (atau per 0.5kg dibulat) untuk layanan instant jika di atas 1 kg
+    const SAME_PROVINCE_MAX_FIRST_KG = 15000; // batas atas ongkir 1kg untuk provinsi yang sama (khusus Sulsel)
 
     // TOKO
     const STORE_CITY_BASE = "Makassar";
@@ -397,12 +398,12 @@
     // base: per 1 kg pertama, addPerKg: tiap kg berikutnya
     const SHIP_RATES = {
       "Gosend":    { sameCity: 8000, cityOuter: 9000, eta: "3-6 jam", minFare: 6000 },
-      "J&T REG":   { sameCity: 7000, sameProvince: 11000, java: 15000, sumatra: 17000, kalimantan: 18000, sulawesi: 12000, bali_nusa: 17000, maluku_papua: 28000, addPerKg: 3500, eta: "1-5 hari" },
-      "JNE REG":   { sameCity: 8000, sameProvince: 12000, java: 16000, sumatra: 18000, kalimantan: 19000, sulawesi: 12500, bali_nusa: 18000, maluku_papua: 29000, addPerKg: 3800, eta: "1-5 hari" },
-      "SiCepat REG":{ sameCity: 7000, sameProvince: 11000, java: 15000, sumatra: 17000, kalimantan: 18500, sulawesi: 11500, bali_nusa: 17000, maluku_papua: 28000, addPerKg: 3400, eta: "1-4 hari" },
-      "AnterAja REG":{ sameCity: 7500, sameProvince: 11500, java: 15500, sumatra: 17500, kalimantan: 19000, sulawesi: 11800, bali_nusa: 17500, maluku_papua: 28500, addPerKg: 3400, eta: "1-4 hari" },
-      "SPX REG":   { sameCity: 7000, sameProvince: 10500, java: 14500, sumatra: 16500, kalimantan: 18000, sulawesi: 11000, bali_nusa: 16500, maluku_papua: 27500, addPerKg: 3200, eta: "1-4 hari" },
-      "POS Kilat": { sameCity: 7500, sameProvince: 11500, java: 16000, sumatra: 18000, kalimantan: 19500, sulawesi: 12000, bali_nusa: 18000, maluku_papua: 29500, addPerKg: 3800, eta: "2-6 hari" },
+      "J&T REG":   { sameCity: 7000, sameProvince: 11000, java: 15000, sumatra: 17000, kalimantan: 18000, sulawesi: 12000, bali_nusa: 17000, maluku_papua: 28000, addPerKg: 3500, eta: "1-5 hari", sameProvinceCap: 14000 },
+      "JNE REG":   { sameCity: 8000, sameProvince: 12000, java: 16000, sumatra: 18000, kalimantan: 19000, sulawesi: 12500, bali_nusa: 18000, maluku_papua: 29000, addPerKg: 3800, eta: "1-5 hari", sameProvinceCap: 15000 },
+      "SiCepat REG":{ sameCity: 7000, sameProvince: 11000, java: 15000, sumatra: 17000, kalimantan: 18500, sulawesi: 11500, bali_nusa: 17000, maluku_papua: 28000, addPerKg: 3400, eta: "1-4 hari", sameProvinceCap: 14000 },
+      "AnterAja REG":{ sameCity: 7500, sameProvince: 11500, java: 15500, sumatra: 17500, kalimantan: 19000, sulawesi: 11800, bali_nusa: 17500, maluku_papua: 28500, addPerKg: 3400, eta: "1-4 hari", sameProvinceCap: 14500 },
+      "SPX REG":   { sameCity: 7000, sameProvince: 10500, java: 14500, sumatra: 16500, kalimantan: 18000, sulawesi: 11000, bali_nusa: 16500, maluku_papua: 27500, addPerKg: 3200, eta: "1-4 hari", sameProvinceCap: 13500 },
+      "POS Kilat": { sameCity: 7500, sameProvince: 11500, java: 16000, sumatra: 18000, kalimantan: 19500, sulawesi: 12000, bali_nusa: 18000, maluku_papua: 29500, addPerKg: 3800, eta: "2-6 hari", sameProvinceCap: 15000 },
       "Ambil di Toko": { fixed: 0, eta: "Bisa hari ini" },
       "Antar Langsung": { sameDistrict: 5000, nearCity: 30000, outerCity: 40000, eta: "Hari ini", minFare: 4000 }
     };
@@ -442,6 +443,8 @@
     let discountActive = false;
     const PROMO_CODE = "FEMMEIA10";
     const PROMO_USED_KEY = "femmeia_promo_used";
+    let discountValue = 0;
+    let subtotalBeforeDiscount = 0;
     let shippingCost = 0;
     let shippingEta = "-";
     let billableKg = 0;
@@ -748,14 +751,23 @@
       }
 
       const addPerKg = rate.addPerKg ?? 3500;
-      const kg = Math.max(1, billableKg || 1);
-      shippingCost = base + Math.max(0, kg - 1) * addPerKg;
+      let kg = Math.max(1, billableKg || 1);
+      let extraKgCost = Math.max(0, kg - 1) * addPerKg;
+      shippingCost = base + extraKgCost;
+
+      // Diskon khusus provinsi yang sama (Sulawesi Selatan) untuk hindari ongkir >20k
+      if(isSameProvince && prov === STORE_PROVINCE) {
+        const cappedBase = rate.sameProvinceCap || SAME_PROVINCE_MAX_FIRST_KG;
+        const adjustedAdd = rate.addPerKgSameProvince ?? Math.min(addPerKg, 3000);
+        extraKgCost = Math.max(0, kg - 1) * adjustedAdd;
+        shippingCost = Math.min(base, cappedBase) + extraKgCost;
+      }
 
       // surcharge remote
       if(REMOTE_SURCHARGE[zone]) shippingCost += REMOTE_SURCHARGE[zone];
 
       shippingEta = rate.eta;
-      const breakdown = `${kab}, ${prov} • Zona: ${(zone || "other").toUpperCase().replace('_','/')} • Dibulatkan: ${kg} kg`;
+      const breakdown = `${kab}, ${prov} • Zona: ${(zone || "other").toUpperCase().replace('_','/')} • Dibulatkan: ${kg} kg${isSameProvince ? " • Diskon provinsi aktif" : ""}`;
       setOngkirUI(formatRupiah(shippingCost), shippingEta, breakdown);
     }
 
@@ -781,9 +793,12 @@
       let price = 0;
       if (productVal) price = parseInt(productVal.split('-')[1].trim());
 
-      let subtotal = price * qty;
-      if (paperbag) subtotal += 5000;
-      subtotal += shippingCost;
+      subtotalBeforeDiscount = price * qty;
+      if (paperbag) subtotalBeforeDiscount += 5000;
+      subtotalBeforeDiscount += shippingCost;
+
+      let subtotal = subtotalBeforeDiscount;
+      discountValue = 0;
 
       const promoStatus = document.getElementById('promoStatus');
       if (isPromoUsed) {
@@ -796,7 +811,8 @@
       }
       else if (promoInput === PROMO_CODE) {
         discountActive = true;
-        subtotal = subtotal * 0.9;
+        discountValue = Math.round(subtotalBeforeDiscount * 0.1);
+        subtotal = subtotalBeforeDiscount - discountValue;
         promoStatus.innerHTML = '<span style="color:var(--success)">✔ Kode promo aktif!</span>';
         elPromoBadge.style.display = 'inline';
       } else if (promoInput.length > 3) {
@@ -859,6 +875,10 @@
       const color = elWarnaInput.value;
       const fullAddress = `${elDetail.value}, Kel. ${elKel.options[elKel.selectedIndex].text}, Kec. ${elKec.options[elKec.selectedIndex].text}, ${elKab.options[elKab.selectedIndex].text}, ${elProv.options[elProv.selectedIndex].text}`;
       const kurir = elKurir.value;
+
+      const promoLine = discountActive ? `${PROMO_CODE} (-${formatRupiah(discountValue)})` : "Tidak ada";
+      const paperBagLine = elPaperbag.value === 'Ya' ? "Ya (+Rp5.000)" : "Tidak";
+      const subtotalBarang = subtotalBeforeDiscount - shippingCost;
       const html = `
         <div class="summary-item"><strong>Nama:</strong> <span>${document.getElementById('nama').value}</span></div>
         <div class="summary-item"><strong>WA:</strong> <span>${document.getElementById('wa').value}</span></div>
@@ -869,8 +889,12 @@
         <div class="summary-item"><strong>Produk:</strong> <span>${productName}</span></div>
         <div class="summary-item"><strong>Warna:</strong> <span>${color}</span></div>
         <div class="summary-item"><strong>Jumlah:</strong> <span>${elJumlah.value} pcs</span></div>
+        <div class="summary-item"><strong>Paper Bag:</strong> <span>${paperBagLine}</span></div>
         <div class="summary-item"><strong>Pembayaran:</strong> <span>${document.getElementById('pembayaran').value}</span></div>
+        <div class="summary-item"><strong>Subtotal Barang:</strong> <span>${formatRupiah(subtotalBarang)}</span></div>
+        <div class="summary-item"><strong>Diskon Promo:</strong> <span>${discountActive ? "-" + formatRupiah(discountValue) : "Rp0 (tidak ada)"}</span></div>
         <div class="summary-total"><span>Total Bayar</span><span>${formatRupiah(totalPrice)}</span></div>
+        <div class="summary-item" style="margin-top:8px;"><strong>Kode Promo:</strong> <span>${promoLine}</span></div>
       `;
       document.getElementById('summaryContent').innerHTML = html;
       modal.style.display = 'flex';
@@ -886,7 +910,11 @@
           `• Berat dikenakan: ${weightInfoState.billableRegularKg} kg (reg) / ${weightInfoState.billableInstantKg.toFixed ? weightInfoState.billableInstantKg.toFixed(1) : weightInfoState.billableInstantKg} kg (inst)\n` +
           `• Produk: ${productName} (${color})\n` +
           `• Qty: ${elJumlah.value}\n` +
+          `• Paper bag: ${paperBagLine}\n` +
+          `• Subtotal barang: ${formatRupiah(subtotalBarang)}\n` +
+          `• Diskon promo: ${discountActive ? "-" + formatRupiah(discountValue) : "Rp0"}\n` +
           `• Total: ${formatRupiah(totalPrice)}\n` +
+          `• Kode promo: ${promoLine}\n` +
           `• Pembayaran: ${document.getElementById('pembayaran').value}\n` +
           `• Catatan: ${document.getElementById('catatan').value || '-'}`;
         localStorage.removeItem('femmeia_order_data');
